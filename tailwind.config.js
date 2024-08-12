@@ -3,10 +3,21 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    flowbite.content(),
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'greenBlack' : '#000000',
+        'brandPrimary' : '#5CE1E6',
+        'whiteText' : '#ffffff',
+        'neutralGrey' : '#7E8589',
+      }
+
+    },
   },
-  plugins: [],
+  plugins: [
+    flowbite.plugin(),
+  ],
 }
 

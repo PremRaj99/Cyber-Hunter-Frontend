@@ -19,10 +19,20 @@ import UserDetail from "./pages/UserDetail";
 import VerifyOTP from "./pages/VerifyOTP";
 import Profile from "./pages/Profile";
 import Course from "./pages/Course";
+//manik home page 
+import './App.css'
+import Navbar from './components/Navbar'
+import Home from './components/Home'
 
 export default function App() {
+
   return (
+    
     <BrowserRouter>
+     <>
+      <Navbar/>
+      <Home/>
+    </>
       <Header />
       <Routes>
         <Route path="/*" element={<Home />} />
