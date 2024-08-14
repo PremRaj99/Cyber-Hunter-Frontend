@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 // components of navigation
-import Home from "./pages/Home";
+// import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
@@ -21,8 +21,8 @@ import Profile from "./pages/Profile";
 import Course from "./pages/Course";
 //manik home page 
 import './App.css'
-import Navbar from './components/Navbar'
-import Home from './components/Home'
+import Navbar from '../src/components/Navbar'
+import Home from '../src/components/Home'
 
 export default function App() {
 
