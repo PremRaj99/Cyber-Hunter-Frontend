@@ -23,6 +23,7 @@ import Course from "./pages/Course";
 import './App.css'
 import Navbar from '../src/components/Navbar'
 import Home from '../src/components/Home'
+import Login from '../src/components/Login' //login page
 
 export default function App() {
 
@@ -32,6 +33,7 @@ export default function App() {
      <>
       <Navbar/>
       <Home/>
+      <Login/>
     </>
       <Header />
       <Routes>
