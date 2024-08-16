@@ -14,12 +14,12 @@ export default function BadgeSection() {
     "https://png.pngtree.com/png-vector/20230116/ourmid/pngtree-3d-star-badge-clipart-png-image_6564314.png",
   ];
   return (
-    <div className="flex px-2 items-center h-full w-full gap-2">
+    <div className="flex px-2 py-2 items-center h-full w-full gap-2">
       {badges.map((badge, index) => (
         <img
           src={badge}
           key={index}
-          className="w-20 h-20 object-cover"
+          className="md:w-20 w-12 md:h-20 h-12 object-cover"
           alt=""
         />
       ))}

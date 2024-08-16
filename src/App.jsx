@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 // components of navigation
-import Home from "./pages/Home";
+// import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
@@ -21,8 +21,7 @@ import Profile from "./pages/Profile";
 import Course from "./pages/Course";
 //manik home page 
 import './App.css'
-import Navbar from './components/Navbar'
-import Home from './components/Home'
+// import Home from './components/Home'
 
 export default function App() {
 
@@ -30,12 +29,11 @@ export default function App() {
     
     <BrowserRouter>
      <>
-      <Navbar/>
-      <Home/>
+      {/* <Home/> */}
     </>
       <Header />
       <Routes>
-        <Route path="/*" element={<Home />} />
+        {/* <Route path="/*" element={<Home />} /> */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/createpassword" element={<CreatePassword />} />
         <Route path="/event" element={<Event />} />

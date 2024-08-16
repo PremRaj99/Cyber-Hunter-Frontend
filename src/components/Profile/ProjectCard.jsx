@@ -11,7 +11,7 @@ export default function ProjectCard() {
           alt="Thumbnail"
         />
         <div className="flex-1 text-sm">
-          <h3 className="text-lg font-semibold text-[#00D8FF]">Team Name</h3>
+          <h3 className="text-lg font-semibold text-[#00D8FF]">Project Name</h3>
           <p className="text-sm">
             Points: <span className="text-green-500">69</span>
           </p>

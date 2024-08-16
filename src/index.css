@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+    background: #000;
+}
+
+.bg-profile {
+    background: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ), url('./assets/profile-bg.jpg');;
+    background-size: cover;
+    background-repeat: no-repeat;
+}

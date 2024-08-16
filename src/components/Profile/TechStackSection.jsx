@@ -45,9 +45,9 @@ export default function TechStackSection() {
     { name: "Docker", icon: FaDocker },
   ];
 
-  return <div className="w-full h-full p-6 grid grid-cols-4">
+  return <div className="w-full h-full p-6 grid md:grid-cols-4 sm:grid-cols-3">
     {techStackIcons.map((Icon, index) => (
-        < Icon.icon key={index} className="text-5xl text-gray-300" title={Icon.name} />
+        < Icon.icon key={index} className="md:text-5xl text-4xl text-gray-300" title={Icon.name} />
     ))}
   </div>;
 }
