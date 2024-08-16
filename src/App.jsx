@@ -21,7 +21,8 @@ import Profile from "./pages/Profile";
 import Course from "./pages/Course";
 //manik home page 
 import './App.css'
-// import Home from './components/Home'
+// import Navbar from '../src/components/Navbar'
+import Home from '../src/components/Home'
 
 export default function App() {
 
@@ -33,7 +34,7 @@ export default function App() {
     </>
       <Header />
       <Routes>
-        {/* <Route path="/*" element={<Home />} /> */}
+        <Route path="/*" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/createpassword" element={<CreatePassword />} />
         <Route path="/event" element={<Event />} />

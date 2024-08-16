@@ -39,7 +39,6 @@ const Navbar = () => {
     ];
 
     return (
-        <BrowserRouter>
             <header className='w-full bg-transparent md:border-transparent fixed top-0 left-0 right-0 '>
                 <nav className={`py-3 lg:px-14 px-4 bg-transparent ${isSticky ? "sticky top-0 left-0 right-0 border-white bg-duration-300" : ""} `}> {/*if want border-b*/}
                     <div className='flex justify-between items-center text-base gap-8 border-b-2 border-b-brandPrimary py-4'>
@@ -85,7 +84,6 @@ const Navbar = () => {
 
                 </nav>
             </header>
-        </BrowserRouter>
     )
 }
 

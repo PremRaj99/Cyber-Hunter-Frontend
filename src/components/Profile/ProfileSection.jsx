@@ -9,7 +9,7 @@ export default function ProfileSection() {
       </div>
       <div className="absolute right-2 top-4">
         <div
-          className="text-gray-400 text-xs cursor-pointer"
+          className="text-gray-300 text-xs cursor-pointer"
           title="3000 points"
         >
           <span className="text-green-500 text-lg font-semibold">3000</span> Pts
@@ -21,7 +21,7 @@ export default function ProfileSection() {
         alt=""
       />
       <h2 className="text-2xl text-[#00D8FF] font-semibold">Prem Raj</h2>
-      <div className="flex justify-between gap-8 text-gray-400">
+      <div className="flex justify-between gap-8 text-gray-300">
         <div className="">
             <p>Username</p>
             <p>Course</p>

@@ -10,7 +10,7 @@ export default function TeamProfileSection() {
       </div>
       <div className="absolute right-2 top-4">
         <div
-          className="text-gray-400 text-xs cursor-pointer"
+          className="text-gray-300 text-xs cursor-pointer"
           title="3000 points"
         >
           <span className="text-green-500 text-lg font-semibold">3000</span> Pts
@@ -22,7 +22,7 @@ export default function TeamProfileSection() {
         alt=""
       />
       <h2 className="text-2xl text-[#00D8FF] font-semibold">Ideal Bits</h2>
-      <div className="flex flex-col justify-between gap-2 w-96 text-gray-400">
+      <div className="flex flex-col justify-between gap-2 w-96 text-gray-300">
         <ProfileListItem isLeader={true} name={"Prem Raj"} rank={1} />
         <ProfileListItem name={"Woh jiska naam nhi le shakte"} rank={5} />
         <ProfileListItem name={"Naman Kumar"} rank={3} />
