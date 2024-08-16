@@ -4,7 +4,7 @@ export default function DiscriptionSection() {
     const skill = ["Frontend", "Backend", "DBMS", "Security", "DevOps"]
   return (
     <div className="w-full h-full flex justify-between gap-10 p-2">
-      <p className="w-[100ch] text-gray-400">
+      <p className="w-[100ch] text-gray-300">
         TeamSync is designed to adapt to your workflow, making it easier to
         manage projects and collaborate with your team, no matter where they
         are. With a user-friendly interface and powerful features, TeamSync

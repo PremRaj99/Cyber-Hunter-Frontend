@@ -11,21 +11,21 @@ export default function ProjectCard() {
           alt="Thumbnail"
         />
         <div className="flex-1 text-sm">
-          <h3 className="text-lg font-semibold text-[#00D8FF]">Team Name</h3>
-          <p className="text-sm">
+          <h3 className="text-lg font-semibold text-[#00D8FF]">Project Name</h3>
+          <p className="text-sm text-gray-300">
             Points: <span className="text-green-500">69</span>
           </p>
-          <div className="flex hover:text-white cursor-pointer items-center mt-4 mb-2 gap-2">
+          <div className="flex hover:text-white text-gray-300 cursor-pointer items-center mt-4 mb-2 gap-2">
             <FaGithub className="text-black text-lg" />
             <p>GitHub</p>
           </div>
-          <div className="flex hover:text-white cursor-pointer items-center gap-2">
+          <div className="flex hover:text-white text-gray-300 cursor-pointer items-center gap-2">
             <FaExternalLinkAlt className="text-red-600" />
             <p>Live</p>
           </div>
         </div>
       </div>
-      <p className="text-sm mt-2">
+      <p className="text-sm text-gray-300 mt-2">
         TeamSync is an all-in-one project management and team collabora platform
         designed to streamline workflows, TeamSync is an all-in-one project
         management...

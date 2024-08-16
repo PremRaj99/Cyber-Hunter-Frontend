@@ -8,5 +8,5 @@ header{
     z-index: 10001 !important;
 }
 .btn-primary{
-    @apply px-7 py-2 my-5 mx-10 bg-brandPrimary text-whiteText rounded hover:bg-neutralGrey transition-all duration-300 hover:translate-x-3;
+    @apply px-7 py-2 my-5 mx-5 bg-brandPrimary text-whiteText rounded hover:bg-neutralGrey transition-all duration-300 hover:translate-x-3;
 }
