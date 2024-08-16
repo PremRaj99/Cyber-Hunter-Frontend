@@ -33,7 +33,7 @@ export default function App() {
      <>
       <Navbar/>
       <Home/>
-      <Login/>
+      <Login/> 
     </>
       <Header />
       <Routes>
