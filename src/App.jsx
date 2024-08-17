@@ -44,7 +44,7 @@ export default function App() {
         <Route path="/verifyotp" element={<VerifyOTP />} />
         <Route path="/course" element={<Course />} />
       </Routes>
-      {/* <Footer /> */}
+      <Footer />
     </BrowserRouter>
   );
 }
