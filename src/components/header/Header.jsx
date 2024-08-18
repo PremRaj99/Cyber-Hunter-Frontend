@@ -1,10 +1,13 @@
+
 import React, { useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { NavLink, useNavigate } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const {currentUser}=useSelector(state=> state.user);
+  const [isMenuOpen, setIsMenuOpen] = useState(currentUser);
+  const [isLoggedIn, setIsLoggedIn] = useState(currentUser); // prem add a state to track login status
   const navigate = useNavigate();
 
   // set toggle Menu
@@ -55,25 +58,34 @@ export default function Header() {
             Courses
           </NavLink>
         </div>
-        {/* <div className="flex items-center justify-center gap-4">
-          <button className="px-4 py-1 font-semibold rounded-full text-[#00D8FF] border border-[#00D8FF] bg-transparent hover:bg-[#00D8FF] hover:text-black">
-            Signup
-          </button>
-          <button className="px-4 py-1 font-semibold rounded-full text-[#00D8FF] border border-[#00D8FF] bg-transparent hover:bg-[#00D8FF] hover:text-black">
-            Login
-          </button>
-        </div> */}
-        <div
-          className="md:flex hidden items-center gap-3 border rounded-full p-1 pr-2 text-gray-300 cursor-pointer hover:text-[#00D8FF] hover:border-[#00D8FF]"
-          title="Prem Raj"
-        >
-          <img
-            src="https://plus.unsplash.com/premium_photo-1661757403301-ae68e1f1b827?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt="Profile"
-            className="w-6 h-6 rounded-full"
-          />
-          <span className="font-semibold">Prem Raj</span>
-        </div>
+        {isLoggedIn ? (
+          <div
+            className="md:flex hidden items-center gap-3 border rounded-full p-1 pr-2 text-gray-300 cursor-pointer hover:text-[#00D8FF] hover:border-[#00D8FF]"
+            title="Prem Raj"
+          >
+            <img
+              src="https://plus.unsplash.com/premium_photo-1661757403301-ae68e1f1b827?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Profile"
+              className="w-6 h-6 rounded-full"
+            />
+            <span className="font-semibold">Prem Raj</span>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center gap-4">
+            <button
+              className="px-4 py-1 font-semibold rounded-full text-[#00D8FF] border border-[#00D8FF] bg-transparent hover:bg-[#00D8FF] hover:text-black"
+              onClick={() => navigate("/signup")}
+            >
+              Signup
+            </button>
+            <button
+              className="px-4 py-1 font-semibold rounded-full text-[#00D8FF] border border-[#00D8FF] bg-transparent hover:bg-[#00D8FF] hover:text-black"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </button>
+          </div>
+        )}
         {/* menu button for only mobile devices */}
         <div className="md:hidden">
           <button
