@@ -12,7 +12,7 @@ const Footer = () => {
       <div className="flex flex-col lg:flex-row justify-evenly bg-[#49AAAD] shadow-md box-border w-full text-left font-bold text-lg">
         <div className="footer-left w-full lg:w-2/3 p-4  flex lg:flex-row  md:justify-evenly">
           <div className="flex w-full lg:w-1/2 flex-col lg:pr-0 pr-8 justify-center items-center border-black lg:border-r-2 ">
-            <img src={logo2} alt="logo" className="w-20 h-20" />
+            <img src={logo2} alt="logo" className="w-40 h-40" />
             <p className="text-sm font-normal my-4 text-center">
               Let's Hack Together
             </p>
