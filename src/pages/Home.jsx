@@ -22,7 +22,7 @@ const Home = () => {
                 teams and individuals compete, grow, and lead the way to
                 success.
               </p>
-              <button className="btn-primary">Register Now</button>
+              <button className="btn-primary text-black">Register Now</button>
             </div>
             {/* image */}
             <div className="w-1/2">

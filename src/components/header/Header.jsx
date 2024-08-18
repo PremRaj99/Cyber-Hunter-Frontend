@@ -1,13 +1,11 @@
-
 import React, { useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 export default function Header() {
-  const {currentUser}=useSelector(state=> state.user);
-  const [isMenuOpen, setIsMenuOpen] = useState(currentUser);
-  const [isLoggedIn, setIsLoggedIn] = useState(currentUser); // prem add a state to track login status
+  const { currentUser } = useSelector((state) => state.user);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   // set toggle Menu
@@ -19,7 +17,12 @@ export default function Header() {
     <div className="w-full h-16 md:px-10 px-4 bg-black">
       <div className="w-full h-full flex justify-between items-center border-b-2 border-[#00D8FF]">
         <div className="text-2xl flex items-center gap-2 font-bold relative">
-          <div className="z-10 cursor-pointer" onClick={() => {navigate("/")}}>
+          <div
+            className="z-10 cursor-pointer"
+            onClick={() => {
+              navigate("/");
+            }}
+          >
             <span className="text-[#00D8FF]">Cyber</span> Hunter
           </div>
           <div className="h-40 w-40 bg-[#00D8FF] absolute top-0 -translate-y-1/2 right-0 translate-x-1/4 rounded-full opacity-45 blur-2xl"></div>
@@ -58,7 +61,7 @@ export default function Header() {
             Courses
           </NavLink>
         </div>
-        {isLoggedIn ? (
+        {currentUser ? (
           <div
             className="md:flex hidden items-center gap-3 border rounded-full p-1 pr-2 text-gray-300 cursor-pointer hover:text-[#00D8FF] hover:border-[#00D8FF]"
             title="Prem Raj"
@@ -68,7 +71,7 @@ export default function Header() {
               alt="Profile"
               className="w-6 h-6 rounded-full"
             />
-            <span className="font-semibold">Prem Raj</span>
+            <span className="font-semibold">{ currentUser.name || "Anomonous"}</span>
           </div>
         ) : (
           <div className="flex items-center justify-center gap-4">
