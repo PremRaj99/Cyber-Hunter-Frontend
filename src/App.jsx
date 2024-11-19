@@ -18,6 +18,7 @@ import UserDetail from "./pages/UserDetail";
 import VerifyOTP from "./pages/VerifyOTP";
 import Profile from "./pages/Profile";
 import Course from "./pages/Course";
+import Event from "./pages/Event";
 //manik home page 
 import './App.css'
 

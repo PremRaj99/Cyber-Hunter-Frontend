@@ -77,7 +77,7 @@ export default function Header() {
           <div className="flex items-center justify-center gap-4">
             <button
               className="px-4 py-1 font-semibold rounded-full text-[#00D8FF] border border-[#00D8FF] bg-transparent hover:bg-[#00D8FF] hover:text-black"
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate("/login")}
             >
               Signup
             </button>
