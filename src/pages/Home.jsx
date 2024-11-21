@@ -24,7 +24,7 @@ const Home = () => {
                 teams and individuals compete, grow, and lead the way to
                 success.
               </p>
-              <div className="w-full ">
+              <div className="w-full flex justify-center">
               <button className="btn-primary text-black">Register Now</button>
               </div>
             </div>
@@ -55,7 +55,9 @@ const Home = () => {
                 teams and individuals compete, grow, and lead the way to
                 success.
               </p>
+              <div className="w-full flex justify-center">
               <button className="btn-primary text-black">Register Now</button>
+              </div>
             </div>
             {/* image */}
             <div className="w-1/2">
