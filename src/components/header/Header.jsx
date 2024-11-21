@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -14,8 +14,8 @@ export default function Header() {
   };
 
   return (
-    <div className="w-full h-16 md:px-10 px-4 bg-black">
-      <div className="w-full h-full flex justify-between items-center border-b-2 border-[#00D8FF]">
+    <div className=" sticky z-50 top-0 w-full h-20 md:px-10 px-4 bg-black" >
+      <div className="w-full h-full flex justify-between items-center border-b-2 border-[#00D8FF] sticky">
         <div className="text-2xl flex items-center gap-2 font-bold relative">
           <div
             className="z-10 cursor-pointer"
