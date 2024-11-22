@@ -65,7 +65,7 @@ export default function Team() {
             {/* ------------------------------Member One End  */}
 
             {/* Member Two */}
-            <div className="w-3/4  flex flex-col-reverse md:flex-row rounded-2xl items-center  md:gap-10 bg-transparent border">
+            <div className="w-3/4 flex flex-col-reverse md:flex-row rounded-2xl items-center  md:gap-10 bg-transparent border">
               <div className="w-full md:w-1/2 mx-2 p-2 relative">
                 <h4 className=" text-3xl p-4 md:text-4xl font-semibold md:mx-5 text-white  relative z-10 transition-all duration-300">
                   Yash Rana
@@ -73,11 +73,9 @@ export default function Team() {
                 <p className=" text-gray-400 text-sm p-4 font- mb-2 md:my-2 md:mx-5 transition-all duration-700">
                   Experienced full stack and blockchain developer specializing
                   in smart contract development and dApp creation. Expert in
-                  Solidity, Hardhat, Truffle, and IPFS with a strong focus on
+                  Solidity,Rust with a strong focus on
                   security and performance optimization. Skilled in implementing
-                  Web3 integrations and blockchain solutions using cutting-edge
-                  technologies. Committed to delivering secure, scalable
-                  blockchain projects with measurable impact.
+                  Web3 integrations and blockchain.
                 </p>
                 <div className="w-full flex p-4 px-5 md:px-10 md:w-1/2 gap-4  transform  transition-all duration-700">
                   <a href="">
@@ -109,7 +107,7 @@ export default function Team() {
                 <img
                   src={yashRana}
                   alt=""
-                  className="w-[450px] h-3/4  z-10 object-cover hover:-translate-y-1 transition-all duration-700"
+                  className="w-[200px] h-3/4  z-10 object-cover hover:-translate-y-1 transition-all duration-700"
                 />
               </div>
             </div>
