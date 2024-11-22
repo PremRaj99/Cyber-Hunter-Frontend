@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import logo2 from "../../assets/logo2.png";
 import googleIcon from "../../assets/google_icon.png";
 import githubIcon from "../../assets/github_icon.png";
@@ -15,7 +15,7 @@ const Footer = () => {
           <div className="flex-1 flex w-full lg:w-1/2 flex-col lg:pr-0 pr-8 justify-center items-center border-black lg:border-r ">
             <img src={logo2} alt="logo" className="w-40 h-40" />
             <p className="text-sm my-4 text-center">
-              Let's Hack Together
+              Let&apos;s Hack Together
             </p>
             <p className="flex lg:space-x-5 space-x-2 justify-center items-center">
               <a
