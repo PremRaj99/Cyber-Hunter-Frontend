@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cyber Hunter</title>
   </head>
@@ -15,7 +16,7 @@
       }
       /* width */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 4px;
 }
 
 /* Track */
@@ -25,17 +26,28 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #00f2ff;
+  background: linear-gradient(black, #00f2ff);
   border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(#00f2ff, black);
+  cursor:grabbing;
 }
 
     </style>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+        
+        // Initialize Feather Icons
+        feather.replace();
+    </script>
   </body>
 </html>

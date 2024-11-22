@@ -23,15 +23,15 @@ export default function Header() {
               navigate("/");
             }}
           >
-            <span className="text-[#00D8FF]">Cyber</span> Hunter
+            <span className="text-[#00D8FF]">Cyber</span> <span className="drop-shadow-[0px_0px_5px_#00D8FF] ">Hunter</span>
           </div>
-          <div className="h-40 w-40 bg-[#00D8FF] absolute top-0 -translate-y-1/2 right-0 translate-x-1/4 rounded-full opacity-45 blur-2xl"></div>
+          <div className="h-40 w-40 bg-[#00D8FF] overflow-hidden absolute top-0 -translate-y-1/2 right-0 translate-x-1/4 rounded-full opacity-45 blur-2xl"></div>
         </div>
-        <div className="md:flex items-center hidden text-gray-300 justify-center gap-4">
+        <div className="md:flex items-center hidden text-white font-bold justify-center gap-4">
           <NavLink
             to="/"
             className={({ isActive }) =>
-              isActive ? "text-[#00D8FF]" : "hover:text-white"
+              isActive ? "text-[#00D8FF]" : "hover:text-brandPrimary"
             }
           >
             Home
@@ -39,7 +39,7 @@ export default function Header() {
           <NavLink
             to="/dashboard"
             className={({ isActive }) =>
-              isActive ? "text-[#00D8FF]" : "hover:text-white"
+              isActive ? "text-[#00D8FF]" : "hover:text-brandPrimary"
             }
           >
             Dashboard
@@ -47,7 +47,7 @@ export default function Header() {
           <NavLink
             to="/service"
             className={({ isActive }) =>
-              isActive ? "text-[#00D8FF]" : "hover:text-white"
+              isActive ? "text-[#00D8FF]" : "hover:text-brandPrimary"
             }
           >
             Service
@@ -55,7 +55,7 @@ export default function Header() {
           <NavLink
             to="/course"
             className={({ isActive }) =>
-              isActive ? "text-[#00D8FF]" : "hover:text-white"
+              isActive ? "text-[#00D8FF]" : "hover:text-brandPrimary "
             }
           >
             Courses
@@ -109,7 +109,7 @@ export default function Header() {
               : "hidden"
           }`}
         >
-          <div className="flex flex-col items-center text-gray-300 justify-center gap-4">
+          <div className="flex flex-col items-center text-gray-400 font-bold justify-center gap-4">
             <NavLink
               to="/"
               className={({ isActive }) =>
