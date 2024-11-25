@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-// error showing in the multiselect Input
+
 export default function MultiSelectInput({
   fieldName = "Tag",
   apiEndpoint = "/api/tag",

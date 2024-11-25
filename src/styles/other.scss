@@ -1,0 +1,47 @@
+@import "_mixin";
+
+
+.dNotification{
+    background-color: red;
+    @include grid(1fr 0.01fr 3.3fr);
+    margin-top:0.6rem ;
+    // max-height: 97%;
+    height: 97%;
+    >.dNotList{
+        >h4{
+            margin-bottom: 0.7rem;
+            @include title(0,800,1rem,#00d8ff)
+        }
+        >ul{
+            background-color: wheat;
+            @include flex(column,unset,unset,1rem);
+            overflow-y: auto;
+            &::-webkit-scrollbar{
+                display: none;
+            }
+            >li{
+                background-color: green;
+                // background-color: white;
+                padding: 0.5rem 1rem;
+                border-radius: 14px;
+                z-index: 10;
+                >p{
+                    @include title(0,700,1rem,black)
+                }
+            }
+        }
+    }
+
+    >.dmessage{
+        margin: 1rem;
+        background-color: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        >p{
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+    }
+
+    
+}
