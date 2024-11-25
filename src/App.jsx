@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 // components of navigation
@@ -19,8 +19,11 @@ import VerifyOTP from "./pages/VerifyOTP";
 import Profile from "./pages/Profile";
 import Course from "./pages/Course";
 import Event from "./pages/Event";
+import Service from "./pages/Service";
+import ServiceItem from "./components/Service/ServiceItem";
+
 //manik home page 
-import './App.css'
+import './App.css';
 
 export default function App() {
 
@@ -44,6 +47,8 @@ export default function App() {
         <Route path="/userdetail" element={<UserDetail />} />
         <Route path="/verifyotp" element={<VerifyOTP />} />
         <Route path="/course" element={<Course />} />
+        <Route path="/service" element={<Service />} />
+        <Route path="/service/:id" element={<ServiceItem />} />
       </Routes>
       <Footer />
     </BrowserRouter>

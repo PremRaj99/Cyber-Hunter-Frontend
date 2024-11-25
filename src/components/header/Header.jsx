@@ -1,21 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { motion, useAnimation } from "framer-motion";
 import { FaBars } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const controls = useAnimation();
   const navigate = useNavigate();
 
-  // set toggle Menu
+  // Toggle Menu
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Track scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+        controls.start({ backgroundColor: "rgba(0, 0, 0, 1)" });
+      } else {
+        setIsScrolled(false);
+        controls.start({ backgroundColor: "rgba(0, 0, 0, 0)" });
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [controls]);
+
   return (
-    <div className=" sticky z-50 top-0 w-full h-20 md:px-10 px-4 bg-black" >
-      <div className="w-full h-full flex justify-between items-center border-b-2 border-[#00D8FF] sticky">
+    <motion.div
+      className="sticky z-50 top-0 w-full h-20 md:px-10 px-4"
+      animate={controls}
+      initial={{ backgroundColor: "black" }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="w-full h-full flex justify-between items-center border-b-2 border-[#00D8FF]">
+        {/* Logo */}
         <div className="text-2xl flex items-center gap-2 font-bold relative">
           <div
             className="z-10 cursor-pointer"
@@ -23,10 +49,13 @@ export default function Header() {
               navigate("/");
             }}
           >
-            <span className="text-[#00D8FF]">Cyber</span> <span className="drop-shadow-[0px_0px_5px_#00D8FF] ">Hunter</span>
+            <span className="text-[#00D8FF]">Cyber</span>{" "}
+            <span className="drop-shadow-[0px_0px_5px_#00D8FF]">Hunter</span>
           </div>
           <div className="h-40 w-40 bg-[#00D8FF] overflow-hidden absolute top-0 -translate-y-1/2 right-0 translate-x-1/4 rounded-full opacity-45 blur-2xl"></div>
         </div>
+
+        {/* Desktop Menu */}
         <div className="md:flex items-center hidden text-white font-bold justify-center gap-4">
           <NavLink
             to="/"
@@ -61,6 +90,8 @@ export default function Header() {
             Courses
           </NavLink>
         </div>
+
+        {/* User Profile / Buttons */}
         {currentUser ? (
           <div
             className="md:flex hidden items-center gap-3 border rounded-full p-1 pr-2 text-gray-300 cursor-pointer hover:text-[#00D8FF] hover:border-[#00D8FF]"
@@ -71,12 +102,14 @@ export default function Header() {
               alt="Profile"
               className="w-6 h-6 rounded-full"
             />
-            <span className="font-semibold">{ currentUser.name || "Anomonous"}</span>
+            <span className="font-semibold">
+              {currentUser.name || "Anonymous"}
+            </span>
           </div>
         ) : (
           <div className="flex items-center justify-center gap-4">
             <button
-              className="px-4 py-1 font-semibold rounded-full text-[#00D8FF] border border-[#00D8FF] bg-transparent hover:bg-[#00D8FF] hover:text-black transition-all duration-300"
+              className="px-4 py-1 hidden md:block font-semibold rounded-full text-[#00D8FF] border border-[#00D8FF] bg-transparent hover:bg-[#00D8FF] hover:text-black transition-all duration-300"
               onClick={() => navigate("/login")}
             >
               Signup
@@ -89,10 +122,11 @@ export default function Header() {
             </button>
           </div>
         )}
-        {/* menu button for only mobile devices */}
+
+        {/* Mobile Menu Button */}
         <div className="md:hidden">
           <button
-            className="text-brandPrimary focus:outline-none focus:text-brandPrimary transition-all duration-700 "
+            className="text-brandPrimary focus:outline-none focus:text-brandPrimary transition-all duration-700"
             onClick={toggleMenu}
           >
             {isMenuOpen ? (
@@ -102,6 +136,8 @@ export default function Header() {
             )}
           </button>
         </div>
+
+        {/* Mobile Menu */}
         <div
           className={`space-y-8 px-4 mt-16 py-7 text-center list-none  ${
             isMenuOpen
@@ -145,6 +181,6 @@ export default function Header() {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
