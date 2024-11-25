@@ -1,12 +1,10 @@
-<<<<<<< HEAD
+
 // File Imports
 // import React from "react";
 import { motion } from "framer-motion";
-import Hero from "../components/home/hero";
-=======
+
 // file imports
 import Hero from "../components/home/Hero";
->>>>>>> 39a1d95 (dashboard_update)
 import About from "../components/home/About";
 import Service from "../components/home/Service";
 import Team from "../components/home/Team";
