@@ -24,6 +24,7 @@ import ServiceItem from "./components/Service/ServiceItem";
 
 //manik home page 
 import './App.css';
+import PopUp from "./pages/PopUp";
 
 export default function App() {
 
@@ -48,6 +49,7 @@ export default function App() {
         <Route path="/verifyotp" element={<VerifyOTP />} />
         <Route path="/course" element={<Course />} />
         <Route path="/service" element={<Service />} />
+        <Route path="/popup" element={<PopUp />} />
         <Route path="/service/:id" element={<ServiceItem />} />
       </Routes>
       <Footer />
