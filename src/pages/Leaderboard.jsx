@@ -1,7 +1,10 @@
-import React from 'react'
+// import React from 'react';
+import Leaderboardmain from "../components/leaderboard/Leaderboardmain";
 
 export default function Leaderboard() {
   return (
-    <div>Leaderboard</div>
-  )
+    <div>
+      <Leaderboardmain />
+    </div>
+  );
 }

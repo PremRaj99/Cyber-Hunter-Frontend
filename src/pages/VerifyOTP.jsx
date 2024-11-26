@@ -1,5 +1,6 @@
 import React from 'react';
-import ForgotImg from '../assets/login-signup-imgs/otp-img.png';
+// import ForgotImg from '../assets/login-signup-imgs/otp-img.png';
+import Verifyotp from "../assets/login-signup-imgs/verifyotp.gif"
 import { FaArrowRight, FaLock } from "react-icons/fa6";
 
 const VerifyOTP = () => {
@@ -10,15 +11,15 @@ const VerifyOTP = () => {
         <div className="max-w-6xl mx-auto">
           {/* <!-- Header --> */}
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 border-2 text-white border-white p-8 rounded-lg shadow-lg">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 border-4 text-white border-brandPrimary p-6 rounded-lg shadow-lg">
             {/* <!-- image --> */}
             <div className="space-y-8" data-aos="fade-right">
-              <img src={ForgotImg} alt="banner-img" className="w-fit h-fit md:h-fit  object-cover hover:-translate-y-3 transition-all duration-700" />
+              <img src={Verifyotp} alt="banner-img" className="w-full h-full md:h-fit  object-cover hover:-translate-y-3 transition-all duration-700" />
             </div>
 
             {/* <!-- OTP sent--> */}
             <div
-              className=" border-2 text-white border-white p-8 rounded-lg shadow-lg"
+              className=" border-2 text-white border-white p-6 rounded-lg shadow-lg"
               data-aos="fade-left"
             >
               <form className="space-y-6 flex flex-col">
@@ -50,7 +51,7 @@ const VerifyOTP = () => {
                   <button
                     type="submit"
                     className="lg:w-1/2 md:w-full flex items-center justify-center bg-brandPrimary text-black font-bold py-3 px-6 rounded-lg hover:bg-black hover:text-brandPrimary hover:border hover:border-brandPrimary transform hover:scale-105 transition-all duration-300"
-                    onClick={() => console.log(email)}
+                    onClick={() => console.log("email")}
                   >
                     Verify OTP
                     <span className="ml-2">

@@ -1,4 +1,3 @@
-
 // File Imports
 // import React from "react";
 import { motion } from "framer-motion";
@@ -16,6 +15,7 @@ const Home = () => {
     visible: { opacity: 1, y: 0 },
   };
 
+  // main home section
   return (
     <>
       <div className="bg-black m-0 p-0 w-dvw">
