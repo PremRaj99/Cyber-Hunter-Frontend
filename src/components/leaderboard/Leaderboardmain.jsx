@@ -217,7 +217,7 @@ export default function Leaderboard() {
           transition={{ duration: 0.5 }}
           className="text-2xl md:text-4xl font-bold text-cyan-400 text-center mb-20 md:mb-24"
         >
-          <span className="border-b-4 border-cyan-400">LEADERBOARD</span>
+          <span className="border-b-2 border-cyan-400">LEADERBOARD</span>
         </motion.h2>
 
         {/* Top 3 Teams/Individuals */}
@@ -230,7 +230,7 @@ export default function Leaderboard() {
           {[2, 1, 3].map((rank) => {
             let crownSrc = "";
             let namecol = "";
-            let pointcol = ""
+            let pointcol = "";
             if (rank === 2) {
               crownSrc = silverCrown;
               namecol = "text-silver-400";
@@ -249,7 +249,7 @@ export default function Leaderboard() {
               <motion.div
                 key={rank}
                 variants={itemVariants}
-                className="flex flex-col items-center relative"
+                className="flex flex-col items-center relative w-[100px] mx-auto"
               >
                 {/* Crown SVG */}
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-full md:w-40">
@@ -273,7 +273,9 @@ export default function Leaderboard() {
                     className={`w-full h-full rounded-full`}
                   />
                 </motion.div>
-                <p className={`text-white text-sm md:text-base text-center mt-2 ${namecol}`}>
+                <p
+                  className={`text-white text-sm md:text-base text-center mt-2 ${namecol}`}
+                >
                   {activeTab === "INDIVIDUAL"
                     ? individualData[rank - 1].name
                     : teamData[rank - 1].name}
@@ -288,12 +290,14 @@ export default function Leaderboard() {
           })}
         </motion.div>
 
+        <hr className="m-10" />
+
         {/* Toggle Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex justify-center mb-8 border-4 border-cyan-400 rounded-full md:mx-40 overflow-hidden mx-18 transition-all ease-in duration-300"
+          className="flex justify-center mb-8 border-2 border-cyan-400 rounded-full md:mx-40 overflow-hidden mx-18 transition-all ease-in duration-300"
         >
           <button
             onClick={() => setActiveTab("INDIVIDUAL")}
@@ -324,7 +328,7 @@ export default function Leaderboard() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="flex flex-col md:flex-row gap-4 md:gap-8"
+          className="flex flex-col md:flex-row gap-4 md:gap-12 "
         >
           {/* Left Sidebar */}
           <div className="w-full md:w-64 space-y-4">

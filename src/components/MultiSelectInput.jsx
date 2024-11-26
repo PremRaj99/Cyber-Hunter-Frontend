@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { toast } from "react-toastify";
 
 export default function MultiSelectInput({
@@ -107,18 +107,18 @@ export default function MultiSelectInput({
   };
 
   return (
-    <div className="relative w-full max-w-lg mx-auto mt-4">
-      <div className="flex flex-wrap items-center border border-gray-300 rounded p-2">
+    <div className="relative w-full">
+      <div className="flex flex-wrap items-center rounded-md border border-cyan-400/50 bg-black/50 px-4 py-2 text-white shadow-sm focus:border-none transition duration-300 hover:border-cyan-300">
         {selectedTags.map((tag) => (
           <div
             key={tag.tagId}
-            className="flex items-center bg-blue-100 text-blue-700 rounded px-2 py-1 m-1"
+            className="flex items-center bg-cyan-400/20 text-cyan-300 rounded px-2 py-1 m-1"
           >
             {tag.content}
             <button
               type="button"
               onClick={() => handleTagRemove(tag.tagId)}
-              className="ml-2 text-blue-700 hover:text-blue-900 focus:outline-none"
+              className="ml-2 text-cyan-300 hover:text-cyan-100 focus:outline-none"
             >
               &times;
             </button>
@@ -131,16 +131,16 @@ export default function MultiSelectInput({
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           placeholder={`Search and select ${fieldName}`}
-          className="flex-grow p-1 border-none outline-none"
+          className="flex-grow bg-transparent p-1 text-white placeholder-cyan-400/50 border-none outline-none focus:outline-none focus:ring-0"
         />
       </div>
       {showDropdown && tags.length > 0 && (
-        <div className="absolute z-10 w-full bg-white border border-gray-300 rounded mt-1 max-h-40 overflow-y-auto">
+        <div className="absolute z-10 w-full bg-black/80 border border-cyan-400/50 rounded mt-1 max-h-40 overflow-y-auto">
           {tags.map((tag) => (
             <div
               key={tag.tagId}
               onClick={() => handleTagSelect(tag)}
-              className="cursor-pointer p-2 hover:bg-gray-200"
+              className="cursor-pointer p-2 text-white hover:bg-cyan-400/10 transition"
             >
               {tag.content}
             </div>
@@ -148,12 +148,12 @@ export default function MultiSelectInput({
         </div>
       )}
       {showDropdown && tags.length === 0 && query && (
-        <div className="absolute z-10 w-full bg-white border border-gray-300 rounded mt-1 p-2">
+        <div className="absolute z-10 w-full bg-black/80 border border-cyan-400/50 rounded mt-1 p-2 text-white">
           <span>No {fieldName.toLowerCase()} found</span>
           <button
             type="button"
             onClick={() => handleCreateTag(query)}
-            className="ml-2 bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition"
+            className="ml-2 bg-cyan-400 text-black px-2 py-1 rounded hover:bg-cyan-300 transition"
           >
             Create {fieldName}
           </button>

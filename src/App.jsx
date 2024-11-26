@@ -21,6 +21,11 @@ import Course from "./pages/Course";
 import Event from "./pages/Event";
 import Service from "./pages/Service";
 import ServiceItem from "./components/Service/ServiceItem";
+import Addproject from "./pages/Addproject";
+import Teamselection from "./pages/Teamselection";
+import Viewproject from "./pages/Viewproject";
+import Personselection from "./pages/Personselection";
+
 
 //manik home page 
 import './App.css';
@@ -51,6 +56,10 @@ export default function App() {
         <Route path="/service" element={<Service />} />
         <Route path="/popup" element={<PopUp />} />
         <Route path="/service/:id" element={<ServiceItem />} />
+        <Route path="/Addproject" element={<Addproject/>} />
+        <Route path="/Viewproject" element={<Viewproject/>} />
+        <Route path="/Teamselection" element={<Teamselection/>} />
+        <Route path="/Personselection" element={<Personselection/>} />
       </Routes>
       <Footer />
     </BrowserRouter>
