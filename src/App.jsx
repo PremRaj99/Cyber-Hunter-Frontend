@@ -26,12 +26,12 @@ import Teamselection from "./pages/Teamselection";
 import Viewproject from "./pages/Viewproject";
 import Personselection from "./pages/Personselection";
 import EventDetail from "./pages/EventDetail";
-
+import CreateTeam from "./pages/CreateTeam";
+import ProfileSetting from "./pages/ProfileSetting";
 
 //manik home page 
 import './App.css';
 import PopUp from "./pages/PopUp";
-
 export default function App() {
 
   return (
@@ -61,7 +61,9 @@ export default function App() {
         <Route path="/Viewproject" element={<Viewproject/>} />
         <Route path="/Teamselection" element={<Teamselection/>} />
         <Route path="/Personselection" element={<Personselection />} />
-        <Route path="/EventDetail" element={<EventDetail/>} />
+        <Route path="/EventDetail" element={<EventDetail />} />
+        <Route path="/CreateTeam" element={<CreateTeam />} />
+        <Route path="/ProfileSetting" element={<ProfileSetting />} />
       </Routes>
       <Footer />
     </BrowserRouter>

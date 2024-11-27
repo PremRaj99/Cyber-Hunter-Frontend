@@ -2,6 +2,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import leaduserdemo from "../../assets/leaduserdemo.png";
+import { FaCheck } from "react-icons/fa";
+import { FaXmark } from "react-icons/fa6";
 
 const ViewPersonItem = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -150,10 +152,10 @@ const ViewPersonItem = () => {
               <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
                 <div className="flex space-x-2">
                   <button className="rounded-md bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-600 focus:outline-none">
-                    Accept
+                    <span className="flex items-center text-l gap-1"><FaCheck/>Accept</span>
                   </button>
                   <button className="rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600 focus:outline-none">
-                    Reject
+                    <span className="flex items-center text-l gap-1"><FaXmark/>Reject</span>
                   </button>
                 </div>
               </div>
