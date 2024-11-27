@@ -25,6 +25,7 @@ import Addproject from "./pages/Addproject";
 import Teamselection from "./pages/Teamselection";
 import Viewproject from "./pages/Viewproject";
 import Personselection from "./pages/Personselection";
+import EventDetail from "./pages/EventDetail";
 
 
 //manik home page 
@@ -59,7 +60,8 @@ export default function App() {
         <Route path="/Addproject" element={<Addproject/>} />
         <Route path="/Viewproject" element={<Viewproject/>} />
         <Route path="/Teamselection" element={<Teamselection/>} />
-        <Route path="/Personselection" element={<Personselection/>} />
+        <Route path="/Personselection" element={<Personselection />} />
+        <Route path="/EventDetail" element={<EventDetail/>} />
       </Routes>
       <Footer />
     </BrowserRouter>

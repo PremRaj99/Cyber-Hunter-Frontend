@@ -68,7 +68,8 @@ const Home = () => {
         >
           <Contact />
         </motion.section>
-      </div>    </>
+      </div>{" "}
+    </>
   );
 };
 

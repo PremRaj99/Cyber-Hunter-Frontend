@@ -33,6 +33,39 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [controls]);
 
+  // Mobile menu variants
+  const mobileMenuVariants = {
+    hidden: {
+      opacity: 0,
+      y: -50,
+      transition: {
+        duration: 0.3,
+      },
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 120,
+        damping: 20,
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  // Mobile menu item variants
+  const mobileMenuItemVariants = {
+    hidden: {
+      opacity: 0,
+      x: -20,
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+    },
+  };
+
   return (
     <motion.div
       className="sticky z-50 top-0 w-full h-20 md:px-10 px-4"
@@ -138,48 +171,62 @@ export default function Header() {
           </div>
         </div>
         {/* Mobile Menu */}
-        <div
-          className={`space-y-8 px-4 mt-16 py-7 text-center list-none  ${
+        <motion.div
+          className={`space-y-8 px-4 mt-16 py-7 text-center list-none ${
             isMenuOpen
               ? "block fixed top-0 right-0 backdrop-blur-lg left-0 z-10 border bg-black backdrop:opacity-50"
               : "hidden"
           }`}
+          variants={mobileMenuVariants}
+          initial="hidden"
+          animate={isMenuOpen ? "visible" : "hidden"}
         >
-          <div className="flex flex-col items-center text-gray-400 font-bold justify-center gap-4">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive ? "text-[#00D8FF]" : "hover:text-white"
-              }
-            >
-              Home
-            </NavLink>
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) =>
-                isActive ? "text-[#00D8FF]" : "hover:text-white"
-              }
-            >
-              Dashboard
-            </NavLink>
-            <NavLink
-              to="/service"
-              className={({ isActive }) =>
-                isActive ? "text-[#00D8FF]" : "hover:text-white"
-              }
-            >
-              Service
-            </NavLink>
-            <NavLink
-              to="/course"
-              className={({ isActive }) =>
-                isActive ? "text-[#00D8FF]" : "hover:text-white"
-              }
-            >
-              Courses
-            </NavLink>
-          </div>
-        </div>
+          <motion.div
+            className="flex flex-col items-center text-gray-400 font-bold justify-center gap-4"
+            variants={mobileMenuVariants}
+          >
+            <motion.div variants={mobileMenuItemVariants}>
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive ? "text-[#00D8FF]" : "hover:text-white"
+                }
+              >
+                Home
+              </NavLink>
+            </motion.div>
+            <motion.div variants={mobileMenuItemVariants}>
+              <NavLink
+                to="/dashboard"
+                className={({ isActive }) =>
+                  isActive ? "text-[#00D8FF]" : "hover:text-white"
+                }
+              >
+                Dashboard
+              </NavLink>
+            </motion.div>
+            <motion.div variants={mobileMenuItemVariants}>
+              <NavLink
+                to="/service"
+                className={({ isActive }) =>
+                  isActive ? "text-[#00D8FF]" : "hover:text-white"
+                }
+              >
+                Service
+              </NavLink>
+            </motion.div>
+            <motion.div variants={mobileMenuItemVariants}>
+              <NavLink
+                to="/course"
+                className={({ isActive }) =>
+                  isActive ? "text-[#00D8FF]" : "hover:text-white"
+                }
+              >
+                Courses
+              </NavLink>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </div>
     </motion.div>
   );
