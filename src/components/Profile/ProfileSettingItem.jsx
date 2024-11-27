@@ -1,11 +1,107 @@
 import React, { useState, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { MdEdit } from "react-icons/md";
 import { FaGithub, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+
+// Popup Component
+const SocialLinksPopup = ({ isOpen, onClose, initialLinks, onSave }) => {
+  const [socialLinks, setSocialLinks] = useState(initialLinks);
+
+  const handleInputChange = (platform, value) => {
+    setSocialLinks(prev => ({
+      ...prev,
+      [platform]: value
+    }));
+  };
+
+  const handleSave = () => {
+    onSave(socialLinks);
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <AnimatePresence>
+    {isOpen && ( // Replace `isOpen` with your state to control the visibility
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="bg-gray-800 rounded-lg p-6 w-96"
+      >
+        <motion.h2
+          className="text-xl font-bold text-cyan-400 mb-4"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.3 }}
+        >
+          Edit Social Links
+        </motion.h2>
+        {Object.entries({
+          github: FaGithub,
+          instagram: FaInstagram,
+          linkedin: FaLinkedin,
+          twitter: FaTwitter,
+        }).map(([platform, Icon], index) => (
+          <motion.div
+            key={platform}
+            className="mb-4"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+              delay: 0.3 + index * 0.1,
+              duration: 0.3,
+            }}
+          >
+            <label className="block text-gray-400 mb-2 capitalize">
+              {platform} Profile URL
+            </label>
+            <div className="flex items-center">
+              <Icon className="mr-2 text-gray-400" />
+              <input
+                type="text"
+                value={socialLinks[platform]}
+                onChange={(e) => handleInputChange(platform, e.target.value)}
+                className="w-full rounded bg-gray-700 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                placeholder={`Enter ${platform} profile URL`}
+              />
+            </div>
+          </motion.div>
+        ))}
+        <div className="flex justify-end space-x-2 mt-4">
+          <motion.button
+            onClick={onClose}
+            className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.3 }}
+          >
+            Cancel
+          </motion.button>
+          <motion.button
+            onClick={handleSave}
+            className="px-4 py-2 bg-cyan-400 text-black rounded hover:bg-cyan-500"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.3 }}
+          >
+            Save
+          </motion.button>
+        </div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</div>
+  );
+};
 
 export default function ProfileSettingsItem() {
   const [isEditing, setIsEditing] = useState(false);
   const [editingField, setEditingField] = useState(null);
+  const [isSocialLinksPopupOpen, setIsSocialLinksPopupOpen] = useState(false);
   const [profileData, setProfileData] = useState({
     userName: "Prem_2004",
     course: "Btech",
@@ -16,6 +112,12 @@ export default function ProfileSettingsItem() {
     points: 600,
     role: "Code Builder",
     profileImage: null,
+    socialLinks: {
+      github: "",
+      instagram: "",
+      linkedin: "",
+      twitter: ""
+    }
   });
 
   const fileInputRef = useRef(null);
@@ -32,6 +134,13 @@ export default function ProfileSettingsItem() {
     }));
     setIsEditing(false);
     setEditingField(null);
+  };
+
+  const handleSocialLinksSave = (links) => {
+    setProfileData((prev) => ({
+      ...prev,
+      socialLinks: links
+    }));
   };
 
   const handleImageUpload = (event) => {
@@ -127,8 +236,10 @@ export default function ProfileSettingsItem() {
                 accept="image/*"
                 onChange={handleImageUpload}
               />
-              <div className="h-32 w-32 rounded-full bg-cyan-400 flex items-center justify-center overflow-hidden"
-                onClick={() => fileInputRef.current.click()}>
+              <div 
+                className="h-32 w-32 rounded-full bg-cyan-400 flex items-center justify-center overflow-hidden"
+                onClick={() => fileInputRef.current.click()}
+              >
                 {profileData.profileImage ? (
                   <img
                     src={profileData.profileImage}
@@ -223,16 +334,19 @@ export default function ProfileSettingsItem() {
                 <button
                   key={social.name}
                   className={`rounded-full bg-gray-700 p-3 ${social.color} hover:bg-gray-600`}
-                  onClick={() => console.log(`Open ${social.name}`)}
+                  onClick={() => {
+                    const link = profileData.socialLinks[social.name.toLowerCase()];
+                    if (link) window.open(link, '_blank');
+                  }}
                 >
                   <span className="sr-only">{social.name}</span>
                   <social.icon className="h-5 w-5" />
                 </button>
               ))}
-              <div className="items-center ">
+              <div className="items-center">
                 <button
                   className="border rounded-full p-1 text-cyan-400"
-                  onClick={() => console.log("Edit social links")}
+                  onClick={() => setIsSocialLinksPopupOpen(true)}
                 >
                   <MdEdit />
                 </button>
@@ -241,6 +355,13 @@ export default function ProfileSettingsItem() {
           </motion.div>
         </motion.div>
       </div>
+
+      <SocialLinksPopup 
+        isOpen={isSocialLinksPopupOpen}
+        onClose={() => setIsSocialLinksPopupOpen(false)}
+        initialLinks={profileData.socialLinks}
+        onSave={handleSocialLinksSave}
+      />
     </motion.div>
   );
 }
