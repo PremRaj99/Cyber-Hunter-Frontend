@@ -112,7 +112,7 @@ export default function ViewprojectItem() {
     <div className="min-h-screen  p-4 md:p-8">
       <motion.h1
         initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
+        animate={{ opacity: 1, scale: 0.95 }}
         transition={{ duration: 0.5 }}
         className="mb-8 text-3xl font-bold text-center"
       >
@@ -154,7 +154,7 @@ function ProjectCard({ project, variants }) {
         ref={ref}
         style={{ opacity, y }}
         variants={variants}
-        whileHover={{ scale: 1.02 }}
+        whileHover={{ scale: 1.005 }}
         className="relative flex flex-col gap-4 rounded-lg border-2 border-brandPrimary p-4 shadow-lg transition-transform md:flex-row md:items-center"
       >
         <div className="h-30 w-30 md:h-30 md:w-40 shrink-0 overflow-hidden rounded-lg">
@@ -173,12 +173,12 @@ function ProjectCard({ project, variants }) {
             {project.name}
           </h2>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-4 text-sm font-light text-gray-400">
+            <div className="flex items-center gap-2 hover:underline cursor-pointer">
               <FaGithub className="h-4 w-4 rounded-full" />
               GitHub
             </div>
-            <div className="flex items-center gap-2 ">
+            <div className="flex items-center gap-2 hover:underline cursor-pointer">
               <FaEye className="h-4 w-4 rounded-full " />
               Live
             </div>
@@ -186,7 +186,7 @@ function ProjectCard({ project, variants }) {
           </div>
         </div>
         <div className="text-l font-semibold text-green-400">
-          <span className="text-gray-400">Points : </span>
+          <span className="text-gray-400 font-light">Points : </span>
           {project.points}
         </div>
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto justify-between md:justify-end">

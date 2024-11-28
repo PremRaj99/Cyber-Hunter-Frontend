@@ -31,6 +31,7 @@ import ProfileSetting from "./pages/ProfileSetting";
 
 //manik home page 
 import './App.css';
+import About from "./components/home/About";
 
 export default function App() {
 
@@ -40,6 +41,7 @@ export default function App() {
       <Header />
       <Routes>
         <Route path="/*" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/createpassword" element={<CreatePassword />} />
         <Route path="/event" element={<Event />} />

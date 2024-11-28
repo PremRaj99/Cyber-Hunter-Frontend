@@ -15,7 +15,7 @@ export default function Contact() {
           {/* <!-- Header --> */}
           <div className="text-center mb-16" data-aos="fade-down">
             <div className="text-center mb-10 sm:mb-12 md:mb-16">
-              <span className="text-4xl font-extrabold text-brandPrimary text-500 text-center  md:m-4  border-b-2   border-brandPrimary">
+              <span className="text-3xl font-semibold text-brandPrimary text-500 text-center  md:m-4  border-b-2   border-brandPrimary">
                 Contact Us
               </span>
               <p className="text-white text-lg mt-10">

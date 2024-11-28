@@ -215,7 +215,7 @@ export default function Leaderboard() {
           initial={{ opacity: 0, y: -50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          className="text-2xl md:text-4xl font-bold text-cyan-400 text-center mb-20 md:mb-24"
+          className="text-2xl md:text-3xl font-semibold text-cyan-400 text-center mb-20 md:mb-24"
         >
           <span className="border-b-2 border-cyan-400">LEADERBOARD</span>
         </motion.h2>
@@ -368,7 +368,7 @@ export default function Leaderboard() {
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="absolute z-10 w-full mt-1  bg-black bg-opacity-800 rounded-lg shadow-lg"
+                    className="absolute z-10 w-full mt-1  bg-gray-900 bg-opacity-800 rounded-lg shadow-lg"
                   >
                     {dropdown.options.map((option) => (
                       <motion.div
