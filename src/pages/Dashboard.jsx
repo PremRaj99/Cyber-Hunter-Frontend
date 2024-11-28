@@ -5,6 +5,7 @@ import DPersonal from "../components/dashboard/dPersonal"
 import DContact from "../components/dashboard/dContact"
 import DLeaderBoard from "../components/dashboard/dLeaderBorad"
 import DNotification from "../components/dashboard/dNotification"
+import DSetting from '../components/dashboard/dSetting'
 
 
 export default function Dashboard() {
@@ -25,7 +26,7 @@ export default function Dashboard() {
       case 'contact':
         return <DContact/>;
       case 'settings':
-        return <DPersonal/>;
+        return <DSetting/>;
       default:
         return <h1>Welcome</h1>;
     }
