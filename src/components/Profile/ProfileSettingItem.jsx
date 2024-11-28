@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import{ useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MdEdit } from "react-icons/md";
 import { FaGithub, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
@@ -8,9 +8,9 @@ const SocialLinksPopup = ({ isOpen, onClose, initialLinks, onSave }) => {
   const [socialLinks, setSocialLinks] = useState(initialLinks);
 
   const handleInputChange = (platform, value) => {
-    setSocialLinks(prev => ({
+    setSocialLinks((prev) => ({
       ...prev,
-      [platform]: value
+      [platform]: value,
     }));
   };
 
@@ -19,82 +19,82 @@ const SocialLinksPopup = ({ isOpen, onClose, initialLinks, onSave }) => {
     onClose();
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <AnimatePresence>
-    {isOpen && ( // Replace `isOpen` with your state to control the visibility
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="bg-gray-800 rounded-lg p-6 w-96"
-      >
-        <motion.h2
-          className="text-xl font-bold text-cyan-400 mb-4"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.3 }}
-        >
-          Edit Social Links
-        </motion.h2>
-        {Object.entries({
-          github: FaGithub,
-          instagram: FaInstagram,
-          linkedin: FaLinkedin,
-          twitter: FaTwitter,
-        }).map(([platform, Icon], index) => (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <motion.div
-            key={platform}
-            className="mb-4"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{
-              delay: 0.3 + index * 0.1,
-              duration: 0.3,
-            }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="bg-gray-800 rounded-lg p-6 w-96"
           >
-            <label className="block text-gray-400 mb-2 capitalize">
-              {platform} Profile URL
-            </label>
-            <div className="flex items-center">
-              <Icon className="mr-2 text-gray-400" />
-              <input
-                type="text"
-                value={socialLinks[platform]}
-                onChange={(e) => handleInputChange(platform, e.target.value)}
-                className="w-full rounded bg-gray-700 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
-                placeholder={`Enter ${platform} profile URL`}
-              />
+            <motion.h2
+              className="text-xl font-bold text-cyan-400 mb-4"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.3 }}
+            >
+              Edit Social Links
+            </motion.h2>
+            {Object.entries({
+              github: FaGithub,
+              instagram: FaInstagram,
+              linkedin: FaLinkedin,
+              twitter: FaTwitter,
+            }).map(([platform, Icon], index) => (
+              <motion.div
+                key={platform}
+                className="mb-4"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{
+                  delay: 0.3 + index * 0.1,
+                  duration: 0.3,
+                }}
+              >
+                <label className="block text-gray-400 mb-2 capitalize">
+                  {platform} Profile URL
+                </label>
+                <div className="flex items-center">
+                  <Icon className="mr-2 text-gray-400" />
+                  <input
+                    type="text"
+                    value={socialLinks[platform]}
+                    onChange={(e) =>
+                      handleInputChange(platform, e.target.value)
+                    }
+                    className="w-full rounded bg-gray-700 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                    placeholder={`Enter ${platform} profile URL`}
+                  />
+                </div>
+              </motion.div>
+            ))}
+            <div className="flex justify-end space-x-2 mt-4">
+              <motion.button
+                onClick={onClose}
+                className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.3 }}
+              >
+                Cancel
+              </motion.button>
+              <motion.button
+                onClick={handleSave}
+                className="px-4 py-2 bg-cyan-400 text-black rounded hover:bg-cyan-500"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.9, duration: 0.3 }}
+              >
+                Save
+              </motion.button>
             </div>
           </motion.div>
-        ))}
-        <div className="flex justify-end space-x-2 mt-4">
-          <motion.button
-            onClick={onClose}
-            className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.3 }}
-          >
-            Cancel
-          </motion.button>
-          <motion.button
-            onClick={handleSave}
-            className="px-4 py-2 bg-cyan-400 text-black rounded hover:bg-cyan-500"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.3 }}
-          >
-            Save
-          </motion.button>
         </div>
-      </motion.div>
-    )}
-  </AnimatePresence>
-</div>
+      )}
+    </AnimatePresence>
   );
 };
 
@@ -106,7 +106,7 @@ export default function ProfileSettingsItem() {
     userName: "Prem_2004",
     course: "Btech",
     branch: "CSE",
-    session: "2022-205",
+    session: "2022-2025",
     qId: "22030179",
     gender: "Male",
     points: 600,
@@ -116,8 +116,8 @@ export default function ProfileSettingsItem() {
       github: "",
       instagram: "",
       linkedin: "",
-      twitter: ""
-    }
+      twitter: "",
+    },
   });
 
   const fileInputRef = useRef(null);
@@ -139,7 +139,7 @@ export default function ProfileSettingsItem() {
   const handleSocialLinksSave = (links) => {
     setProfileData((prev) => ({
       ...prev,
-      socialLinks: links
+      socialLinks: links,
     }));
   };
 
@@ -186,19 +186,7 @@ export default function ProfileSettingsItem() {
             onClick={() => handleEdit(field)}
             className="rounded-full bg-gray-700 p-2 hover:bg-gray-600"
           >
-            <svg
-              className="h-4 w-4 text-cyan-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-              />
-            </svg>
+            <MdEdit className="h-4 w-4 text-cyan-400" />
           </button>
         </div>
       </div>
@@ -236,8 +224,7 @@ export default function ProfileSettingsItem() {
                 accept="image/*"
                 onChange={handleImageUpload}
               />
-              <div 
-                className="h-32 w-32 rounded-full bg-cyan-400 flex items-center justify-center overflow-hidden"
+              <div className="h-32 w-32 rounded-full bg-cyan-400 flex items-center justify-center overflow-hidden"
                 onClick={() => fileInputRef.current.click()}
               >
                 {profileData.profileImage ? (
@@ -260,19 +247,7 @@ export default function ProfileSettingsItem() {
                 className="absolute bottom-0 right-0 rounded-full bg-gray-700 p-2 text-cyan-400 hover:bg-gray-600"
                 onClick={() => fileInputRef.current.click()}
               >
-                <svg
-                  className="h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                  />
-                </svg>
+                <MdEdit />
               </button>
             </div>
             <div className="flex items-center gap-2 text-cyan-400">
@@ -281,19 +256,7 @@ export default function ProfileSettingsItem() {
                 className="rounded-full bg-gray-700 p-1 hover:bg-gray-600"
                 onClick={() => console.log("Edit role")}
               >
-                <svg
-                  className="h-3 w-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                  />
-                </svg>
+                <MdEdit className="h-3 w-3" />
               </button>
             </div>
           </div>
@@ -335,8 +298,9 @@ export default function ProfileSettingsItem() {
                   key={social.name}
                   className={`rounded-full bg-gray-700 p-3 ${social.color} hover:bg-gray-600`}
                   onClick={() => {
-                    const link = profileData.socialLinks[social.name.toLowerCase()];
-                    if (link) window.open(link, '_blank');
+                    const link =
+                      profileData.socialLinks[social.name.toLowerCase()];
+                    if (link) window.open(link, "_blank");
                   }}
                 >
                   <span className="sr-only">{social.name}</span>
@@ -356,7 +320,7 @@ export default function ProfileSettingsItem() {
         </motion.div>
       </div>
 
-      <SocialLinksPopup 
+      <SocialLinksPopup
         isOpen={isSocialLinksPopupOpen}
         onClose={() => setIsSocialLinksPopupOpen(false)}
         initialLinks={profileData.socialLinks}
