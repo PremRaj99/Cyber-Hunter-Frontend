@@ -1,0 +1,28 @@
+.cards-container {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 p-8 text-white min-h-screen;
+}
+.card {
+    @apply relative bg-transparent rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105;
+}
+  
+.card-image {
+    @apply w-full h-48 object-cover;
+}
+  
+.card-content {
+    @apply absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black to-transparent w-full flex justify-between items-center;
+}
+.card-text {
+    @apply text-left text-white;
+}
+.card-title {
+    @apply text-xl font-semibold mb-2;
+}
+.card-date {
+    @apply text-cyan-400 text-sm mb-4;
+}
+  
+.card-button {
+    @apply bg-cyan-500 hover:bg-cyan-600 text-black px-4 py-1 rounded hover:-translate-y-1 hover:scale-105;
+}
+  

@@ -1,0 +1,46 @@
+.add-project-container-2 {
+    @apply bg-black text-white p-8 rounded-lg shadow-lg mx-auto mt-8;  
+    width: 95%; 
+    max-width: 1200px;
+}
+.add-project-title-2 {
+    @apply text-3xl font-bold text-teal-400 mb-8 text-center;
+    margin-top: -2rem; 
+}
+.upload-section-2 {
+    @apply mb-8; 
+}
+
+.upload-link-2 {
+    @apply text-teal-300 underline font-medium hover:text-teal-400 block mb-2;
+}
+
+.upload-instructions-2 {
+    @apply text-sm text-gray-400 mt-2 mb-6; 
+}
+#skills-required {
+    @apply resize-none; 
+    height: 160px; 
+}
+#tech-stacks {
+    @apply resize-none; 
+    height: 160px; 
+}
+.skills-section-2, .tech-stack-section-2 {
+    @apply mb-8; 
+}
+
+.label-2 {
+    @apply block text-lg font-medium mb-2 text-white;
+}
+
+.input-field-2 {
+    @apply w-full p-6 rounded-lg border border-teal-400 bg-black text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-teal-300;
+}
+
+.skills-section-2,
+.tech-stack-section-2 {
+    width: 100%; 
+    margin-left: 0; 
+    margin-right: 0; 
+}

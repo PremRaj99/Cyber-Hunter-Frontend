@@ -1,0 +1,38 @@
+.add-project-container-1 {
+    @apply bg-black text-white p-8 rounded-lg shadow-lg w-3/4 mx-auto;
+}
+
+.add-project-title-1 {
+    @apply text-3xl font-bold text-center mb-8 text-teal-400;
+}
+
+.input-section-1 {
+    @apply mb-6 text-left; 
+}
+
+.input-label-1 {
+    @apply block text-lg font-medium mb-2 text-white text-left;
+}
+
+.input-field-1 {
+    @apply w-full p-3 rounded-lg border border-teal-400 bg-black text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-teal-300;
+}
+
+#project-description {
+    @apply resize-none; 
+    height: 200px; 
+}
+
+.file-upload-section-1 {
+    @apply mt-6 text-left; 
+}
+
+.file-upload-link-1 {
+    @apply text-teal-300 underline font-medium hover:text-teal-400;
+}
+.upload-instructions-1 {
+    @apply mt-3 text-sm text-gray-400 list-disc pl-5;
+}
+.upload-instructions-1 li {
+    @apply mb-1;
+}

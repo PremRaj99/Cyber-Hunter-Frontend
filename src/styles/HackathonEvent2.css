@@ -1,0 +1,47 @@
+.hero {
+  @apply bg-black text-white;
+}
+.carousel-container {
+  @apply flex justify-center py-12;
+}
+.carousel {
+  @apply relative w-4/5 h-96;
+}
+.carousel-image {
+  @apply w-full h-full object-cover rounded-lg;
+}
+.carousel-text {
+  @apply absolute bottom-4 left-4 text-white p-4 bg-black bg-opacity-50 w-3/4;
+}
+.event-title {
+  @apply text-4xl font-bold mb-2;
+}
+.event-date {
+  @apply text-lg text-cyan-400 mb-4;
+}
+.carousel-buttons {
+  @apply flex space-x-4;
+}
+.view-details,
+.register {
+  @apply bg-cyan-400 text-black px-6 py-2 rounded-lg font-semibold transition-all ease-in-out duration-300;
+}
+.view-details:hover,
+.register:hover {
+  @apply bg-cyan-500 text-white transition-all ease-in-out duration-300;
+}
+.status-tabs {
+  @apply flex justify-center space-x-4 mt-4 mb-28;
+}
+.status-tab {
+  @apply bg-black text-blue-400 px-6 py-2 rounded-full font-semibold transition-all ease-in-out duration-300;
+}
+.status-tab:hover {
+  @apply bg-blue-500 text-white transition-all ease-in-out duration-300;
+}
+.status-tab.active {
+  @apply bg-black text-blue-400;
+}
+.status-tab.active:hover {
+  @apply bg-blue-400 text-white;
+}

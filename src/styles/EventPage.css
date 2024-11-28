@@ -1,0 +1,41 @@
+.event-container {
+  @apply flex justify-center items-center bg-black text-white min-h-screen px-4;
+}
+.event-card {
+  @apply text-white p-6 rounded-lg shadow-lg w-full max-w-6xl; 
+}
+.event-image {
+  @apply w-full h-80 rounded-md object-cover mb-6; 
+}
+
+.event-content {
+  @apply bg-gray-800 p-4 rounded-lg w-full; 
+}
+
+.title-date-row {
+  @apply flex justify-between items-center mb-4;
+}
+
+.event-title {
+  @apply text-2xl font-bold;
+}
+
+.event-highlight {
+  @apply text-cyan-400;
+}
+
+.event-date {
+  @apply text-cyan-400 font-semibold text-lg;
+}
+.event-details-row {
+  @apply flex items-center justify-between mb-4; 
+}
+.event-details-list {
+  @apply list-disc list-inside text-lg w-2/3; 
+}
+.event-detail {
+  @apply mb-2;
+}
+.event-button {
+  @apply bg-black text-white border border-cyan-400 px-6 py-2 rounded-lg font-semibold  hover:bg-cyan-400 hover:text-black transition-transform transform hover:scale-105 w-auto ml-4 mt-6; 
+}

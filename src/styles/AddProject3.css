@@ -1,0 +1,45 @@
+.add-project-container-3 {
+    @apply bg-black text-white p-8 rounded-lg shadow-lg mx-auto;
+    margin-top: -2rem; 
+    width: 100%; 
+    max-width: 1200px;
+}
+.add-project-title-3 {
+@apply text-3xl font-bold text-teal-400 mb-8 text-center;
+}
+.input-section-3 {
+@apply mb-6; 
+}
+
+.input-label-3 {
+@apply block text-lg font-medium mb-2 text-white;
+}
+
+.input-field-3 {
+@apply w-full p-4 text-base rounded-lg border border-teal-400 bg-black text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-teal-300;
+height: 60px; 
+resize: none; 
+}
+
+.note-section-3 {
+@apply bg-gray-800 p-4 rounded-lg mt-6;
+}
+
+.note-title-3 {
+@apply text-lg text-teal-400 font-bold mb-2;
+}
+
+.note-list-3 {
+@apply text-sm text-gray-400 list-disc pl-6;
+}
+.note-list-3 li {
+@apply mb-1; 
+}
+
+.sign-up-button-container-3 {
+@apply flex justify-center mt-4;
+}
+
+.sign-up-button-3 {
+@apply px-6 py-3 bg-teal-400 text-black font-bold rounded-lg hover:bg-teal-300 transition duration-200 ease-in-out hover:-translate-y-1 hover:scale-105;
+}

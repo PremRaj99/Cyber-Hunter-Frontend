@@ -21,6 +21,13 @@ import Course from "./pages/Course";
 import Event from "./pages/Event";
 //manik home page 
 import './App.css'
+import AddProject from "./pages/AddProject";
+import AddProject2 from "./pages/AddProject2";
+import AddProject3 from "./pages/AddProject3";
+import Description from "./pages/Description";
+import EventPage from "./pages/EventPage";
+import HackathonEvent2 from "./pages/HackathonEvent2";
+import HackathonEvents from "./pages/HackathonEvents";
 
 export default function App() {
 
@@ -44,7 +51,14 @@ export default function App() {
         <Route path="/userdetail" element={<UserDetail />} />
         <Route path="/verifyotp" element={<VerifyOTP />} />
         <Route path="/course" element={<Course />} />
-      </Routes>
+        <Route path="/addproject" element={<AddProject />} />
+        <Route path="/addproject2" element={<AddProject2/>} />
+        <Route path="/addproject3" element={<AddProject3 />} />
+        <Route path="/description" element={<Description />} />
+        <Route path="/eventpage" element={<EventPage />} />
+        <Route path="/hackathonevent2" element={<HackathonEvent2 />} />
+        <Route path="/hackathonevents" element={<HackathonEvents />} />
+        </Routes>
       <Footer />
     </BrowserRouter>
   );
