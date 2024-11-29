@@ -10,7 +10,7 @@ import { FaCode } from "react-icons/fa6";
 export default function service() {
   return (
     <div>
-      <div className="service">
+      <div className="service overflow-hidden">
         <section className="py-12 px-16 sm:py-16 md:py-20 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
           <div className="text-center mb-10 sm:mb-12 md:mb-16">
             <span className="text-3xl font-semibold text-brandPrimary text-500 text-center  md:m-4  border-b-2   border-brandPrimary">
@@ -131,8 +131,7 @@ export default function service() {
         </section>
         {/* <!---------------- Service Section End -----------------> */}
 
-        {/*----------------- Team Section ---------------------------------*/}
-        <section className="w-full max-w-7xl mx-auto"></section>
+        
       </div>
     </div>
   );

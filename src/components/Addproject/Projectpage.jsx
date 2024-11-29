@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import MultiSelectInput from "../MultiSelectInput";
+import MultiSelectInput from "../Input/MultiSelectInput";
 import {
   MdOutlineDriveFileRenameOutline,
   MdOutlineDescription,
@@ -49,7 +49,6 @@ export default function Projectpage() {
       reader.readAsDataURL(file);
     }
   };
-
 
   const ScreenshotFileChange = (e) => {
     const file = e.target.files[0];

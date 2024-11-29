@@ -7,7 +7,7 @@ import { Carousel } from "flowbite-react";
 export default function Hero() {
   return (
     <div>
-      <div className=" lg:px-16 max-w-screen-2xl mx-auto h-[700px] md:h-screen">
+      <div className=" lg:px-16 max-w-screen-2xl mx-auto h-[700px] md:h-screen overflow-hidden">
         <Carousel className="w-full my-auto mb-[80px]">
           {/* -------------------------------Carousel one */}
           <div className="w-3/4  flex flex-col-reverse md:flex-row rounded-2xl md:mb-4 items-center  md:gap-12 bg-transparent border">

@@ -9,7 +9,7 @@ import {
 
 export default function Contact() {
   return (
-    <div>
+    <div className="overflow-hidden">
       <section className="py-16 px-4 md:px-8 lg:px-16">
         <div className="max-w-6xl mx-auto">
           {/* <!-- Header --> */}

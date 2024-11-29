@@ -32,6 +32,8 @@ import ProfileSetting from "./pages/ProfileSetting";
 //manik home page 
 import './App.css';
 import About from "./components/home/About";
+import Freelancer from "./pages/Freelancer";
+import ClientLogin from "./pages/ClientLogin";
 
 export default function App() {
 
@@ -65,6 +67,8 @@ export default function App() {
         <Route path="/EventDetail" element={<EventDetail />} />
         <Route path="/CreateTeam" element={<CreateTeam />} />
         <Route path="/ProfileSetting" element={<ProfileSetting />} />
+        <Route path="/freelancer" element={<Freelancer />} />
+        <Route path="/clientlogin" element={<ClientLogin />} />
       </Routes>
       <Footer />
     </BrowserRouter>

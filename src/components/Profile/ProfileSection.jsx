@@ -1,5 +1,5 @@
 import React from "react";
-import RankBadge from "../RankBadge";
+import RankBadge from "../Input/RankBadge";
 
 export default function ProfileSection() {
   return (
@@ -23,27 +23,43 @@ export default function ProfileSection() {
       <h2 className="text-2xl text-[#00D8FF] font-semibold">Prem Raj</h2>
       <div className="flex justify-between gap-8 text-gray-300">
         <div className="">
-            <p>Username</p>
-            <p>Course</p>
-            <p>Branch</p>
-            <p>Session</p>
-            <p>Q-Id</p>
-            <p>Gender</p>
+          <p>Username</p>
+          <p>Course</p>
+          <p>Branch</p>
+          <p>Session</p>
+          <p>Q-Id</p>
+          <p>Gender</p>
         </div>
         <div className="text-white">
-            <p>PremRaj_2004</p>
-            <p>B.Tech</p>
-            <p>CSE</p>
-            <p>2022-26</p>
-            <p>22030404</p>
-            <p>Male</p>
+          <p>PremRaj_2004</p>
+          <p>B.Tech</p>
+          <p>CSE</p>
+          <p>2022-26</p>
+          <p>22030404</p>
+          <p>Male</p>
         </div>
       </div>
       <div className="flex mt-4 items-center gap-4">
-        <img className="w-8 h-8 object-cover hover:scale-105 cursor-pointer rounded-md" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRokEYt0yyh6uNDKL8uksVLlhZ35laKNQgZ9g&s" alt="" />
-        <img className="w-8 h-8 object-cover hover:scale-105 cursor-pointer" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/800px-Instagram_logo_2022.svg.png" alt="" />
-        <img className="w-8 h-8 object-cover hover:scale-105 cursor-pointer bg-gray-300 rounded-full" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/1200px-GitHub_Invertocat_Logo.svg.png" alt="" />
-        <img className="w-8 h-8 object-cover hover:scale-105 cursor-pointer" src="https://freepnglogo.com/images/all_img/1691832581twitter-x-icon-png.png" alt="" />
+        <img
+          className="w-8 h-8 object-cover hover:scale-105 cursor-pointer rounded-md"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRokEYt0yyh6uNDKL8uksVLlhZ35laKNQgZ9g&s"
+          alt=""
+        />
+        <img
+          className="w-8 h-8 object-cover hover:scale-105 cursor-pointer"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/800px-Instagram_logo_2022.svg.png"
+          alt=""
+        />
+        <img
+          className="w-8 h-8 object-cover hover:scale-105 cursor-pointer bg-gray-300 rounded-full"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/1200px-GitHub_Invertocat_Logo.svg.png"
+          alt=""
+        />
+        <img
+          className="w-8 h-8 object-cover hover:scale-105 cursor-pointer"
+          src="https://freepnglogo.com/images/all_img/1691832581twitter-x-icon-png.png"
+          alt=""
+        />
       </div>
     </div>
   );

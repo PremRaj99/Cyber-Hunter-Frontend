@@ -89,7 +89,7 @@ export default function Header() {
         </div>
 
         {/* Desktop Menu */}
-        <div className="md:flex items-center hidden text-white font-bold justify-center gap-4">
+        <div className="md:flex items-center hidden text-stone-400 font-bold justify-center gap-4">
           <NavLink
             to="/"
             className={({ isActive }) =>
@@ -121,6 +121,22 @@ export default function Header() {
             }
           >
             Courses
+          </NavLink>
+          <NavLink
+            to="/event"
+            className={({ isActive }) =>
+              isActive ? "text-[#00D8FF]" : "hover:text-brandPrimary "
+            }
+          >
+            Event
+          </NavLink>
+          <NavLink
+            to="/leaderboard"
+            className={({ isActive }) =>
+              isActive ? "text-[#00D8FF]" : "hover:text-brandPrimary "
+            }
+          >
+            Leader Board
           </NavLink>
         </div>
         <div className="flex gap-6 items-center">
@@ -223,6 +239,26 @@ export default function Header() {
                 }
               >
                 Courses
+              </NavLink>
+            </motion.div>
+            <motion.div variants={mobileMenuItemVariants}>
+              <NavLink
+                to="/Event"
+                className={({ isActive }) =>
+                  isActive ? "text-[#00D8FF]" : "hover:text-white"
+                }
+              >
+                Event
+              </NavLink>
+            </motion.div>
+            <motion.div variants={mobileMenuItemVariants}>
+              <NavLink
+                to="/leaderboard"
+                className={({ isActive }) =>
+                  isActive ? "text-[#00D8FF]" : "hover:text-white"
+                }
+              >
+                Leader Board
               </NavLink>
             </motion.div>
           </motion.div>

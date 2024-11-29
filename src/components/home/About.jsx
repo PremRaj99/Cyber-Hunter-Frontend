@@ -4,7 +4,7 @@ import aboutImg from '../../assets/aboutImg.png';
 export default function About() {
   return (
     <div>
-      <div>
+      <div className="overflow-hidden">
         <div className="mt-10">
           <div className="text-center mb-10 sm:mb-12 md:mb-16">
             <span className="text-3xl font-semibold text-brandPrimary text-500 text-center  md:m-4  border-b-2   border-brandPrimary">

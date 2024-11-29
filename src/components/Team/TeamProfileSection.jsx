@@ -1,5 +1,5 @@
 // import React from "react";
-import RankBadge from "../RankBadge";
+import RankBadge from "../Input/RankBadge";
 import ProfileListItem from "./ProfileListItem";
 
 export default function TeamProfileSection() {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import banner1 from "../assets/banner1.png";
 import googleIcon from "../assets/google_icon.png";
 import githubIcon from "../assets/github_icon.png";
@@ -164,8 +164,7 @@ export default function Login() {
                   className="w-full flex flex-col items-center justify-center"
                   onSubmit={(e) => {
                     isSignup ? handleSignup(e) : handleLogin(e);
-                  }}
-                >
+                  }}>
                   <div className="mb-2">
                     <label htmlFor="email" className="flex text-gray-300">
                       <MdEmail className="h-6 mx-2" />

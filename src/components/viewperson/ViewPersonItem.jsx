@@ -104,7 +104,7 @@ const ViewPersonItem = () => {
         <div className="relative mb-8">
           <input
             type="text"
-            placeholder="Search For Person by Entering Person name"
+            placeholder="Search For Person by Entering Person name" 
             className="w-full rounded-lg border-2 border-cyan-400 bg-gray-800 px-4 py-3 pl-10 text-white placeholder-gray-400 focus:border-cyan-500 focus:outline-none focus:ring-0"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
