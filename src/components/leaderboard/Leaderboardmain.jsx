@@ -7,7 +7,7 @@ import { useRef } from "react";
 
 import { default as goldCrown } from "../../assets/goldCrown.svg";
 import { default as silverCrown } from "../../assets/silverCrown.svg";
-import { default as bronzeCrown } from "../../assets/BronzeCrown.svg";
+import { default as bronzeCrown } from "../../assets/bronzeCrown.svg";
 
 export default function Leaderboard() {
   const [activeTab, setActiveTab] = useState("INDIVIDUAL");

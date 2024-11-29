@@ -1,8 +1,11 @@
 import React from 'react'
+import Leaderboard from  '../leaderboard/Leaderboardmain'
 
 const dLeaderBorad = () => {
   return (
-    <div>dLeaderBorad</div>
+    <div className="dLeaderBoardContainer">
+      <Leaderboard />
+    </div>
   )
 }
 
