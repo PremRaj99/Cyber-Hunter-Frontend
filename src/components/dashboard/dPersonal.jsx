@@ -40,7 +40,7 @@ const dPersonal = () => {
             </li>
 
             <li>
-              <Link to="/personalManagement">
+              <Link to="/accountsetting">
               <SettingsIcon/>
               PERSONAL MANAGEMENT
               </Link>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Sidebar from "../components/dashboard/Sidebar"
 import DTeam from "../components/dashboard/dTeam"
 import DPersonal from "../components/dashboard/dPersonal"
@@ -37,7 +37,7 @@ export default function Dashboard() {
   return (
     <div className='_dashboard'>
       
-      <h2>HOME{'>'}DASHBOARD</h2>
+      <h2>HOME {'>'} DASHBOARD</h2>
       <div className='dMainContainer'>
         <Sidebar onSectionChange={setActiveSection} activeSection={activeSection}/>
         

@@ -2,10 +2,8 @@
 
 
 .dNotification{
-    // background-color: red;
     @include grid(1fr 0.01fr 3.3fr);
     margin-top:0.6rem ;
-    // max-height: 97%;
     height: 97%;
     >.dNotList{
         >h4{
@@ -13,7 +11,6 @@
             @include title(0,800,1rem,#00d8ff)
         }
         >ul{
-            // background-color: wheat;
             @include flex(column,unset,unset,1rem);
             overflow-y: auto;
             &::-webkit-scrollbar {
@@ -23,7 +20,6 @@
             >li{
                 cursor: pointer;
                 background-color: white;
-                // background-color: white;
                 padding: 0.5rem 1rem;
                 border-radius: 14px;
                 z-index: 10;
@@ -51,8 +47,6 @@
 
 
 .dContact{
-    
-    // background-color: red;
     height: 100%;
 
     >h2{
@@ -63,22 +57,21 @@
     
     >form{
         @include flex(column,unset,center,2rem);
-        // background-color: green;
-
         input,textarea{
             width: 100%;
-            border: 3.5px solid #00d8ff;
+            border: 2px solid #00d8ff;
             border-radius: 14px;
             padding-left: 2rem;
             background-color: black;
             z-index: 10;
+            
         }
 
 
         >button{
             background-color: black;
             @include title(0,600,1.15rem,#00d8ff);
-            border: 3.5px solid #00d8ff;
+            border: 2px solid #00d8ff;
             border-radius: 25px;
             padding: 0.5rem 2.5rem;
         }
@@ -87,7 +80,7 @@
 
 .dLeaderBoardContainer{
     overflow-y: auto;
-    // background-color: green;
+
     max-height: 571px;
     margin-top: -1rem;
     &::-webkit-scrollbar{
@@ -98,20 +91,17 @@
 
 
 .dSetting{
-    // background-color: red;
     >h2{
         @include title(0,700,1.45rem,#00d8ff);
         text-align: center;
     }
     >ul{
-        // background-color: green;
         width: 50%;
         @include flex(column,unset,center,3.5rem);
         margin: auto;
         margin-top: 4rem;
         >li{
             width: 100%;
-            // background-color: grey;
             padding: 0.75rem 2.5rem;
             border: 3.5px dashed black;
             border-radius: 13px;

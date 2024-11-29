@@ -1,14 +1,32 @@
-import React from 'react'
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CgProfile } from 'react-icons/cg';
 import { MdMail } from 'react-icons/md';
 import { RxCross1 } from 'react-icons/rx';
 
+const VerifyEmail = () => {
+    const [isVisible, setIsVisible] = useState(false);
+    const showPopUp = () => {
+        setIsVisible(true);
+    };
+    const hidePopUp = () => {
+        setIsVisible(false);
+    };
 
-const PopUpLinks = () => {
-  return (
-    <div>
-      <AnimatePresence>
+    return (
+        <div>
+            {/* Profile button to open the popup */}
+            <div className="flex justify-center mt-4">
+                <button
+                    className="border-2 border-black bg-black text-white rounded-lg p-2 hover:bg-white hover:text-black transition-all"
+                    onClick={showPopUp}
+                >
+                    <CgProfile className="h-8 w-8" />
+                </button>
+            </div>
+
+            {/* Popup with Framer Motion */}
+            <AnimatePresence>
                 {isVisible && (
                     <motion.section
                         initial={{ opacity: 0 }}
@@ -49,8 +67,8 @@ const PopUpLinks = () => {
                     </motion.section>
                 )}
             </AnimatePresence>
-    </div>
-  )
-}
+        </div>
+    );
+};
 
-export default PopUpLinks
+export default VerifyEmail;
