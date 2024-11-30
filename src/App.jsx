@@ -1,4 +1,4 @@
-// import React from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 // components of navigation
@@ -37,12 +37,24 @@ import ProjectDetail from "../src/components/Freelancer/ProjectDetail";
 //manik home page 
 import './App.css';
 import About from "./components/home/About";
+import Preloader from "./components/Common/Preloader";
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate content loading
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000); // Adjust this value to control how long the preloader is shown
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     
     <BrowserRouter>
+      {loading && <Preloader />}
       <Header />
       <Routes>
         <Route path="/*" element={<Home />} />
