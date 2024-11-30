@@ -1,7 +1,11 @@
-import React from 'react'
+// import React from 'react'
+
+import Evnetpage from '../components/Event/Evnetpage'
 
 export default function Event() {
   return (
-    <div>Event</div>
+    <div>
+      <Evnetpage />
+    </div>
   )
 }

@@ -1,0 +1,116 @@
+@import "_mixin";
+@import "other";
+
+
+
+
+
+._dashboard{
+    width:100%;
+    height: 90vh;
+    padding: 0 8rem 1.5rem 8rem;
+    >h2{
+        @include heading(1px,800);
+        color: white;
+        margin:  1.5rem 0;
+        z-index: 1;
+    }
+
+    box-sizing: border-box;
+}
+
+
+
+.dMainContainer{
+    box-sizing: border-box;
+    height: 75vh;
+    
+    @include grid(1fr 0.01fr 3.3fr, 1.5rem);
+    >aside{
+        width: 100%;
+        padding: 0 1rem 0 0rem;
+        >ul{
+            @include flex(column,unset,unset,1.8rem);
+            list-style-type: none;
+            >li{
+                @include flex(row,unset,center,0);
+                cursor: pointer;
+                padding: 0.43rem 0.7rem;
+                border-radius: 16px;
+
+                text-decoration: none;
+                border: 5px solid #00d8ff;
+                @include title(0,600,1.2rem,#00d8ff);
+                svg{
+                    font-size: 2.8rem;
+                    color: #00d8ff;
+                    margin-right: 0.3rem;
+                }
+            }
+        }
+    }
+
+    >.ddivider{
+        background-color: white;
+    }
+
+    >.dmain{
+        background-color: rgba(255, 255, 255, 0.081);
+        border-radius: 16px;
+        padding: 1rem 2rem;
+    }
+}
+
+.dTeam, .dPersonal{
+    >h2{
+        @include title(1px, 700,1.5rem,#00d8ff);
+        text-decoration: underline;
+        text-align: center;
+        
+    }
+    >ul{
+        @include flex(row,center,unset,4rem);
+        padding: 1.5rem;
+        flex-wrap: wrap;
+        >li{
+            padding: 2rem 1rem;
+            border: 3.5px dashed black;
+            border-radius: 15px;
+            min-width: 36%;
+            max-width: 90%;
+            z-index: 1;
+            a{
+                @include title(0,600,1.2rem,white);
+                @include flex(row,unset);
+
+                svg{
+                    font-size: 2.5rem;
+                    color: white;
+                    margin-right: 0.4rem;
+                }
+            }
+
+            
+        }
+    }
+}
+
+
+.dMainContainer aside ul  {
+    >li.dActive{
+        color: #19aac3ea;  // Highlight active item with red text
+        background-color: rgba(255, 255, 255, 0.108);  // Optional background color change for active item
+        border-color: #19a9c3ea; 
+        svg{
+            color: #19a9c3ea;
+        } // Change border color as well (if needed)
+    }
+    
+}
+
+.dtos{
+    position: absolute;
+    width: 100%;
+    height: 10px;
+}
+

@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 // components of navigation
@@ -19,8 +19,21 @@ import VerifyOTP from "./pages/VerifyOTP";
 import Profile from "./pages/Profile";
 import Course from "./pages/Course";
 import Event from "./pages/Event";
+import Service from "./pages/Service";
+import ServiceItem from "./components/Service/ServiceItem";
+import Addproject from "./pages/Addproject";
+import Teamselection from "./pages/Teamselection";
+import Viewproject from "./pages/Viewproject";
+import Personselection from "./pages/Personselection";
+import EventDetail from "./pages/EventDetail";
+import CreateTeam from "./pages/CreateTeam";
+import ProfileSetting from "./pages/ProfileSetting";
+
 //manik home page 
-import './App.css'
+import './App.css';
+import About from "./components/home/About";
+import Freelancer from "./pages/Freelancer";
+import ClientLogin from "./pages/ClientLogin";
 
 export default function App() {
 
@@ -30,6 +43,7 @@ export default function App() {
       <Header />
       <Routes>
         <Route path="/*" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/createpassword" element={<CreatePassword />} />
         <Route path="/event" element={<Event />} />
@@ -44,6 +58,17 @@ export default function App() {
         <Route path="/userdetail" element={<UserDetail />} />
         <Route path="/verifyotp" element={<VerifyOTP />} />
         <Route path="/course" element={<Course />} />
+        <Route path="/service" element={<Service />} />
+        <Route path="/service/:id" element={<ServiceItem />} />
+        <Route path="/Addproject" element={<Addproject/>} />
+        <Route path="/Viewproject" element={<Viewproject/>} />
+        <Route path="/Teamselection" element={<Teamselection/>} />
+        <Route path="/Personselection" element={<Personselection />} />
+        <Route path="/EventDetail" element={<EventDetail />} />
+        <Route path="/CreateTeam" element={<CreateTeam />} />
+        <Route path="/ProfileSetting" element={<ProfileSetting />} />
+        <Route path="/freelancer" element={<Freelancer />} />
+        <Route path="/clientlogin" element={<ClientLogin />} />
       </Routes>
       <Footer />
     </BrowserRouter>
