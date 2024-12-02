@@ -28,6 +28,7 @@ import Personselection from "./pages/Personselection";
 import EventDetail from "./pages/EventDetail";
 import CreateTeam from "./pages/CreateTeam";
 import ProfileSetting from "./pages/ProfileSetting";
+import ProfileSettings from "./components/Profile/profileSettings";
 
 //manik home page 
 import './App.css';
@@ -65,6 +66,7 @@ export default function App() {
         <Route path="/EventDetail" element={<EventDetail />} />
         <Route path="/CreateTeam" element={<CreateTeam />} />
         <Route path="/ProfileSetting" element={<ProfileSetting />} />
+        <Route path="ProfileSettings" element={<ProfileSettings/>}/>
       </Routes>
       <Footer />
     </BrowserRouter>
