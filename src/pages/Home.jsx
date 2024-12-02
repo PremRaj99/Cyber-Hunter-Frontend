@@ -1,5 +1,5 @@
 // File Imports
-// import React from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 // file imports
@@ -8,12 +8,29 @@ import About from "../components/home/About";
 import Service from "../components/home/Service";
 import Team from "../components/home/Team";
 import Contact from "../components/home/Contact";
+import Preloader from "../components/Common/Preloader";
+
 
 const Home = () => {
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0 },
   };
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate content loading
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000); // Adjust this value to control how long the preloader is shown
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Preloader />;
+  }
 
   // main home section
   return (
