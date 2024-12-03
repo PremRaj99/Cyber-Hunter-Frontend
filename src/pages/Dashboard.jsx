@@ -9,7 +9,7 @@ import DNotification from "../components/dashboard/dNotification";
 import DSetting from "../components/dashboard/dSetting";
 
 export default function Dashboard() {
-  const [activeSection, setActiveSection] = useState("case");
+  const [activeSection, setActiveSection] = useState("team");
 
   const renderContent = () => {
     switch (activeSection) {
@@ -45,15 +45,15 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="_dashboard">
-      <motion.h2
+    <div className="w-full h-[90vh] px-4 md:px-16 lg:px-32 pb-6 box-border">
+      <motion.h2 className='text-white text-sm md:text-lg font-extrabold tracking-wide mt-6 mb-6 z-[1'
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
       >
         HOME {">"} DASHBOARD
       </motion.h2>
-      <div className="dMainContainer">
+      <div className="dMainContainer box-border h-[75vh] grid grid-cols-[1fr_0.01fr_3.3fr] gap-6">
         <Sidebar
           onSectionChange={setActiveSection}
           activeSection={activeSection}
