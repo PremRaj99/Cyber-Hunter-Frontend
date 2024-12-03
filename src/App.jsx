@@ -33,6 +33,8 @@ import ClientLogin from "./pages/ClientLogin";
 import PostProject from "./pages/PostProject";
 import ProjectList from "./pages/ProjectList";
 import ProjectDetail from "../src/components/Freelancer/ProjectDetail";
+import VerifyAchievement from "./pages/VerifyAchievement";
+import OurTeam from "./pages/OurTeam";
 
 //manik home page 
 import './App.css';
@@ -52,45 +54,49 @@ export default function App() {
   }, []);
 
   return (
-      <BrowserRouter>
-      {loading ? <Preloader /> : (
+    <BrowserRouter>
+      {loading ? (
+        <Preloader />
+      ) : (
         <>
-        <Header />
-        <Routes>
-          <Route path="/*" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/createpassword" element={<CreatePassword />} />
-          <Route path="/event" element={<Event />} />
-          <Route path="/forgetpassword" element={<ForgetPassword />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/payment" element={<Payment />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/project" element={<Project />} />
-          <Route path="/projectsearch" element={<ProjectSearch />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/userdetail" element={<UserDetail />} />
-          <Route path="/verifyotp" element={<VerifyOTP />} />
-          <Route path="/course" element={<Course />} />
-          <Route path="/service" element={<Service />} />
-          <Route path="/service/:id" element={<ServiceItem />} />
-          <Route path="/Addproject" element={<Addproject />} />
-          <Route path="/Viewproject" element={<Viewproject />} />
-          <Route path="/Teamselection" element={<Teamselection />} />
-          <Route path="/Personselection" element={<Personselection />} />
-          <Route path="/EventDetail" element={<EventDetail />} />
-          <Route path="/CreateTeam" element={<CreateTeam />} />
-          <Route path="/ProfileSetting" element={<ProfileSetting />} />
-          <Route path="/freelancer" element={<Freelancer />} />
-          <Route path="/clientlogin" element={<ClientLogin />} />
-          <Route path="/postproject" element={<PostProject />} />
-          <Route path="/projectlist" element={<ProjectList />} />
-          <Route path="/projectdetail" element={<ProjectDetail />} />
-        </Routes>
-        <Footer />
-          </>)
-      }
-      </BrowserRouter>
+          <Header />
+          <Routes>
+            <Route path="/*" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/createpassword" element={<CreatePassword />} />
+            <Route path="/event" element={<Event />} />
+            <Route path="/forgetpassword" element={<ForgetPassword />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/project" element={<Project />} />
+            <Route path="/projectsearch" element={<ProjectSearch />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/userdetail" element={<UserDetail />} />
+            <Route path="/verifyotp" element={<VerifyOTP />} />
+            <Route path="/course" element={<Course />} />
+            <Route path="/service" element={<Service />} />
+            <Route path="/service/:id" element={<ServiceItem />} />
+            <Route path="/Addproject" element={<Addproject />} />
+            <Route path="/Viewproject" element={<Viewproject />} />
+            <Route path="/Teamselection" element={<Teamselection />} />
+            <Route path="/Personselection" element={<Personselection />} />
+            <Route path="/EventDetail" element={<EventDetail />} />
+            <Route path="/CreateTeam" element={<CreateTeam />} />
+            <Route path="/ProfileSetting" element={<ProfileSetting />} />
+            <Route path="/freelancer" element={<Freelancer />} />
+            <Route path="/clientlogin" element={<ClientLogin />} />
+            <Route path="/postproject" element={<PostProject />} />
+            <Route path="/projectlist" element={<ProjectList />} />
+            <Route path="/projectdetail" element={<ProjectDetail />} />
+            <Route path="/ourteam" element={<OurTeam />} />
+            <Route path="/verifyachievement" element={<VerifyAchievement />} />
+          </Routes>
+          <Footer />
+        </>
+      )}
+    </BrowserRouter>
   );
 }

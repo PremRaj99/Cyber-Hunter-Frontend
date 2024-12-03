@@ -1,11 +1,24 @@
-import React from 'react'
+// import React from "react";
+import { motion } from "framer-motion";
 
-const NotificationItem = ({notification,onclick}) => {
+const NotificationItem = ({ notification, onclick }) => {
   return (
-    <li onClick={onclick}>
-      <p>{notification.message.slice(0,17)}</p>
-    </li>
-  )
-}
+    <motion.li
+      onClick={onclick}
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.97 }}
+      viewport={{ once: true }}
+      transition={{
+        duration: 0.3,
+        type: "spring",
+        stiffness: 300,
+      }}
+    >
+      <p>{notification.message.slice(0, 17)}</p>
+    </motion.li>
+  );
+};
 
-export default NotificationItem
+export default NotificationItem;

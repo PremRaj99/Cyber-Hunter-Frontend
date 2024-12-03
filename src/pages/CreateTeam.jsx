@@ -5,7 +5,7 @@ import CreateTeamItem from "../components/Team/CreateTeamItem";
 export default function CreateTeam() {
   return (
     <div>
-      <CreateTeamItem/>
+      <CreateTeamItem />
     </div>
   );
 }

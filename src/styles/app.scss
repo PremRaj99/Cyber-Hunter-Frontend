@@ -37,9 +37,9 @@
                 cursor: pointer;
                 padding: 0.43rem 0.7rem;
                 border-radius: 16px;
-
+                background: #000;
                 text-decoration: none;
-                border: 5px solid #00d8ff;
+                border: 2px solid #00d8ff;
                 @include title(0,600,1.2rem,#00d8ff);
                 svg{
                     font-size: 2.8rem;
@@ -55,7 +55,7 @@
     }
 
     >.dmain{
-        background-color: rgba(255, 255, 255, 0.081);
+        background-color: rgba(255, 255, 255, 0.094);
         border-radius: 16px;
         padding: 1rem 2rem;
     }

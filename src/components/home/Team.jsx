@@ -16,7 +16,7 @@ export default function Team() {
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae.",
       photo: yashPic,
-      portfolio:"https://yashranaportfolio.netlify.app/",
+      portfolio: "https://yashranaportfolio.netlify.app/",
       socialMedia: {
         github: "https://github.com/yash-rana0101",
         instagram: "https://www.instagram.com/yashrana.ai",
@@ -39,7 +39,6 @@ export default function Team() {
       },
     },
   ];
-  
 
   return (
     <div>
@@ -57,11 +56,11 @@ export default function Team() {
         </div>
         <div className=" lg:px-16 max-w-screen-2xl mx-auto h-[700px] md:h-screen">
           <Carousel indicators={false} className="w-full my-auto mb-[80px]">
-              {memberData.map((member) => (
-            <div className="w-3/4  flex flex-col-reverse md:flex-row rounded-2xl md:mb-4 items-center  md:gap-12 bg-transparent border">
+            {memberData.map((member) => (
+              <div className="w-3/4  flex flex-col-reverse md:flex-row rounded-2xl md:mb-4 items-center  md:gap-12 bg-transparent border">
                 <MemberCard key={member.id} memberData={member} />
-            </div>
-              ))}
+              </div>
+            ))}
           </Carousel>
         </div>
       </div>

@@ -34,7 +34,8 @@
     "react-router-dom": "^6.25.1",
     "react-toastify": "^10.0.5",
     "redux-persist": "^6.0.0",
-    "sass": "^1.81.0"
+    "sass": "^1.81.0",
+    "tailwind-scrollbar-hide": "^1.1.7"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

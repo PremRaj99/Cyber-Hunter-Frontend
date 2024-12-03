@@ -26,7 +26,7 @@ const dPersonal = () => {
             </li>
             
             <li>
-              <Link to="/verifyProject">
+              <Link to="/verifyachievement">
               <VerifiedOutlinedIcon style={{color:'#06db62'}}/>
               VERIFY ACHIEVEMENT
               </Link>
