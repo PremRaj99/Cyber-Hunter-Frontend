@@ -16,3 +16,11 @@ html {
     background-size: cover;
     background-repeat: no-repeat;
 }
+
+.btn-primary {
+    @apply px-7 py-2 my-5 mx-10 bg-[#5CE1E6] text-white rounded hover:bg-[#7E8589] transition-all duration-300 hover:translate-x-3;
+}
+
+.payButton{
+    @apply bg-[#3d7d12] hover:bg-[#8fff44]  text-white hover:text-black font-bold rounded-3xl px-6 py-3 mt-6 ;
+}

@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
-import React, { useState } from 'react'
+import { useState } from 'react'
 import GroupsIcon from '@mui/icons-material/Groups';
 import PersonIcon from '@mui/icons-material/Person';
 import {FiMail,FiLock} from "react-icons/fi";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
-const dAccountSetting = () => {
+const DAccountSetting = () => {
 
     
 
@@ -17,7 +17,7 @@ const dAccountSetting = () => {
             case'personal':
                return div2();
             default:
-                <h1>Welcome</h1>;
+                return <h1>Welcome</h1>;
         }
     }
 
@@ -109,4 +109,4 @@ const div2 = () => (
         </motion.div>
     );
 
-export default dAccountSetting
+export default DAccountSetting

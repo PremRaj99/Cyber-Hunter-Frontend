@@ -5,6 +5,7 @@ export default function MultiSelectInput({
   fieldName = "Tag",
   apiEndpoint = "/api/tag",
   onTagsChange,
+  className = ""
 }) {
   const [query, setQuery] = useState("");
   const [tags, setTags] = useState([]);
@@ -108,7 +109,7 @@ export default function MultiSelectInput({
 
   return (
     <div className="relative w-full">
-      <div className="flex flex-wrap items-center rounded-md border border-cyan-400/50 bg-black/50 px-4 py-2 text-white shadow-sm focus:border-none transition duration-300 hover:border-cyan-300">
+      <div className={`${className} flex flex-wrap items-center rounded-md border border-cyan-400/50 bg-black/50 px-4 py-2 text-white shadow-sm focus:border-none transition duration-300 hover:border-cyan-300`}>
         {selectedTags.map((tag) => (
           <div
             key={tag.tagId}

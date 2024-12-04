@@ -35,12 +35,14 @@ import ProjectList from "./pages/ProjectList";
 import ProjectDetail from "../src/components/Freelancer/ProjectDetail";
 import VerifyAchievement from "./pages/VerifyAchievement";
 import OurTeam from "./pages/OurTeam";
-import DAccountSetting from "./components/dashboard/dAccountSetting"
+import DAccountSetting from "./components/dashboard/DAccountSetting"
 
 //manik home page 
 import './App.css';
 import About from "./components/home/About";
 import Preloader from "./components/Common/Preloader";
+import TeamSetting from "./pages/TeamSetting";
+import SignUpForm from "./pages/SignUpForm";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -95,6 +97,8 @@ export default function App() {
             <Route path="/projectdetail" element={<ProjectDetail />} />
             <Route path="/ourteam" element={<OurTeam />} />
             <Route path="/verifyachievement" element={<VerifyAchievement />} />
+            <Route path="/teamsetting" element={<TeamSetting />} />
+            <Route path="/signupform" element={<SignUpForm />} />
           </Routes>
           <Footer />
         </>
