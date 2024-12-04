@@ -45,22 +45,22 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="w-full h-[90vh] px-4 md:px-16 lg:px-32 pb-6 box-border">
-      <motion.h2 className='text-white text-sm md:text-lg font-extrabold tracking-wide mt-6 mb-6 z-[1'
+    <div className=" w-full min-h-screen px-4 md:px-16 lg:px-32 pb-6 box-border">
+      <motion.h2 className='text-white text-sm md:text-lg font-extrabold tracking-wide mt-6 mb-6 z-[1]'
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
       >
         HOME {">"} DASHBOARD
       </motion.h2>
-      <div className="dMainContainer box-border h-[75vh] grid grid-cols-[1fr_0.01fr_3.3fr] gap-6">
+      <div className="dMainContainer box-border min-h-[75vh] grid md:grid-cols-[1fr_0.01fr_3.3fr] grid-cols-[1fr_8fr] md:gap-6 gap-0">
         <Sidebar
           onSectionChange={setActiveSection}
           activeSection={activeSection}
         />
 
-        <div className="ddivider"></div>
-        <div className="dmain">
+        <div className="ddivider bg-white"></div>
+        <div className="relative bg-white/10 rounded-lg p-4 md:p-8">
           <motion.div
             initial={{ opacity: 0.6, scale: 0.9 }}
             animate={{ opacity: 0.45, scale: 1 }}

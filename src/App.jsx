@@ -35,7 +35,7 @@ import ProjectList from "./pages/ProjectList";
 import ProjectDetail from "../src/components/Freelancer/ProjectDetail";
 import VerifyAchievement from "./pages/VerifyAchievement";
 import OurTeam from "./pages/OurTeam";
-import DAccountSetting from "./components/dashboard/DAccountSetting"
+import DAccountSetting from "./components/dashboard/dAccountSetting"
 
 //manik home page 
 import './App.css';

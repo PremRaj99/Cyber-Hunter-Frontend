@@ -1,40 +1,44 @@
 
 @mixin heading($spacing:3px,$weight:300,$case:uppercase){
-    letter-spacing: $spacing;
-    font-weight: $weight;
-    text-transform: $case;
+  letter-spacing: $spacing;
+  font-weight: $weight;
+  text-transform: $case;
 }
 
 
 @mixin title($spacing:1px,$Weight:500,$size:2.5rem,$col:black,$case:uppercase){
-  letter-spacing: $spacing;
-    font-weight: $Weight;
-    text-transform: $case;
-    font-size: $size;
-    color: $col;
+letter-spacing: $spacing;
+  font-weight: $Weight;
+  text-transform: $case;
+  font-size: $size;
+  color: $col;
 }
 
 @mixin flex(
-  $dir: row,
-  $justifyContent: center,
-  $alignItems: center,
-  $gap: 0rem
+$dir: row,
+$justifyContent: center,
+$alignItems: center,
+$gap: 0rem
 ) {
-  display: flex;
-  flex-direction: $dir;
-  justify-content: $justifyContent;
-  align-items: $alignItems;
-  gap: $gap;
+display: flex;
+flex-direction: $dir;
+justify-content: $justifyContent;
+align-items: $alignItems;
+gap: $gap;
 }
 
 @mixin grid($col: 1fr, $gap: 1rem, $row: unset) {
-    display: grid;
-    grid-template-columns: $col;
-    grid-template-rows: $row;
-    gap: $gap;
+  display: grid;
+  grid-template-columns: $col;
+  grid-template-rows: $row;
+  gap: $gap;
+}
+
+
+.ddivider{
+  background-color: white;
+  
+  @media screen and (max-width:767px) {
+    display: none;
   }
-
-
-  .ddivider{
-    background-color: white;
 }
