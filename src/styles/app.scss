@@ -1,17 +1,8 @@
-@import "_mixin";
-@import "other";
+// @import "_mixin";
 
 *{
     box-sizing: border-box;
 }
-
-
-
-
-
-
-
-
 
 .dMainContainer{      
                 svg{
@@ -30,18 +21,6 @@
 }
 
 
-// .dMainContainer aside ul  {
-//     >li.dActive{
-//         color: #19aac3ea;  // Highlight active item with red text
-//         background-color: rgba(255, 255, 255, 0.108);  // Optional background color change for active item
-//         border-color: #19a9c3ea; 
-//         svg{
-//             color: #19a9c3ea;
-//         } // Change border color as well (if needed)
-//     }
-    
-// }
-
 .dActive{
     color: #19aac3ea;  // Highlight active item with red text
     background-color: rgba(255, 255, 255, 0.108);  // Optional background color change for active item
@@ -56,4 +35,48 @@
     width: 100%;
     height: 10px;
 }
+
+.dLeaderBoardContainer{
+    overflow-y: auto;   
+    margin-top: -1rem;
+    &::-webkit-scrollbar{
+        display: none;
+    }
+    @media screen and (min-width: 768px){
+        max-height: 571px;
+    }
+}
+
+
+
+.dSetting{         
+                svg{
+                    font-size: 2.5rem !important;
+                    margin-right: 2.5rem !important; 
+                }
+}
+
+
+.dNotification{
+    >.dNotList{
+        >ul{
+            &::-webkit-scrollbar {
+                display: none;
+            }
+            max-height:490px ;
+
+
+        }
+    }
+    
+}
+
+.ddivider{
+    background-color: white;
+    
+    @media screen and (max-width:767px) {
+      display: none;
+    }
+  }
+
 

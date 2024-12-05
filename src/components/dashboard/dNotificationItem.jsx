@@ -15,8 +15,9 @@ const NotificationItem = ({ notification, onclick }) => {
         type: "spring",
         stiffness: 300,
       }}
+      
     >
-      <p>{notification.message.slice(0, 17)}</p>
+      <p className="text-bold text-black-400 text-base">{notification.message.slice(0, 17)}</p>
     </motion.li>
   );
 };

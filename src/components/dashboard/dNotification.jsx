@@ -54,17 +54,18 @@ const DNotification = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
-      className="dNotification"
+      className="dNotification mt-2 h-full  grid grid-cols-[1fr_0.01fr_3.3fr] gap-4"
     >
       <div className="dNotList">
         <motion.h4
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
+          className="font-extrabold text-cyan-400 mb-4 uppercase text-base"
         >
           Notifications
         </motion.h4>
-        <motion.ul variants={containerVariants}>
+        <motion.ul variants={containerVariants} className="w-full flex flex-col gap-4 overflow-y-auto">
           <AnimatePresence>
             {noteList.map((notification) => (
               <motion.li
@@ -73,6 +74,7 @@ const DNotification = () => {
                 whileHover="hover"
                 initial="hidden"
                 animate="visible"
+                className="p-4 bg-gray-800 rounded-2xl cursor-pointer bg-white py-2 px-4"
               >
                 <NotificationItem
                   notification={notification}
@@ -85,7 +87,7 @@ const DNotification = () => {
       </div>
       <div className="ddivider"></div>
       <motion.div
-        className="dmessage"
+        className="dmessage m-4 bg-white p-6 rounded-2xl"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -97,6 +99,7 @@ const DNotification = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              className="text-base text-black-400"
             >
               {selectedNotification.message}
             </motion.p>
@@ -106,6 +109,7 @@ const DNotification = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              className="text-base text-black-400"
             >
               Select a notification to view details
             </motion.p>

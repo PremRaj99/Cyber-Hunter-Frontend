@@ -45,7 +45,7 @@ const dPersonal = () => {
         initial={{ x: -50, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className='text-cyan-400 font-bold text-[1.5rem] underline tracking-wide md:tracking-wider'
+        className='text-cyan-400 font-bold text-[1.5rem] underline tracking-wide md:tracking-wider text-center'
       >
         PERSONAL
       </motion.h2>

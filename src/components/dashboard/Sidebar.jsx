@@ -135,7 +135,7 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
             key={item.section}
             className={`flex items-center justify-center text-gray-400 font-bold cursor-pointer p-2 rounded-lg transition-all ${activeSection === item.section ? "dActive" : ""}`}
             onClick={() => {
-              onSectionChange(team.text);
+              onSectionChange(item.section);
               toggleMenu();
             }}
           >
