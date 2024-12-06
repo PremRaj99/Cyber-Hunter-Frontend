@@ -17,7 +17,7 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
   };
 
   const sidebarItems = [
-    { icon: <GroupsIcon className="mr-2" />, text: "TEAM", section: "team" },
+    { icon: <GroupsIcon  />, text: "TEAM", section: "team" },
     { icon: <PersonIcon />, text: "PERSONAL", section: "personal" },
     {
       icon: <LeaderboardOutlinedIcon />,
