@@ -43,6 +43,7 @@ import About from "./components/home/About";
 import Preloader from "./components/Common/Preloader";
 import TeamSetting from "./pages/TeamSetting";
 import SignUpForm from "./pages/SignUpForm";
+import ScrollToTop from "./components/Common/ScrollToTop";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -63,6 +64,7 @@ export default function App() {
       ) : (
         <>
           <Header />
+          <ScrollToTop />
           <Routes>
             <Route path="/*" element={<Home />} />
             <Route path="/about" element={<About />} />
