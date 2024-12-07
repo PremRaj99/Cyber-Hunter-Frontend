@@ -16,6 +16,7 @@ import {
   signInSuccess,
   signInFailure,
 } from "../../redux/User/userSlice";
+import axios from "../../utils/Axios";
 
 export default function Login() {
   const [isSignup, setIsSignup] = useState(false);
@@ -76,23 +77,19 @@ export default function Login() {
     try {
       dispatch(signInStart());
       setLoading(true);
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/auth/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formdata),
-        }
-      );
-      const data = await res.json();
-      setLoading(false);
-      if (data.success === false) {
-        dispatch(signInFailure(data.message));
-        return toast.error(data.message);
-      }
-      if (res.ok) {
+      const { data } = await axios.post("/api/v1/auth/login", {
+        email: formdata.email,
+        password: formdata.password,
+      });
+
+      if (data.success) {
         dispatch(signInSuccess(data));
         navigate("/profile");
+        return toast.success(data.message);
+      } else {
+        setLoading(false);
+        dispatch(signInFailure(data.message));
+        return toast.error(data.message);
       }
     } catch (error) {
       dispatch(signInFailure(error.message));
@@ -119,24 +116,19 @@ export default function Login() {
     try {
       dispatch(signInStart());
       setLoading(true);
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/auth/signup`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formdata),
-        }
-      );
-      const data = await res.json();
+      const { data } = await axios.post("/api/v1/auth/signin", {
+        email: formdata.email,
+        password: formdata.password,
+        confirmPassword: formdata.confirmPassword,
+      });
       setLoading(false);
-      if (data.success === false) {
-        dispatch(signInFailure(data.message));
-        return toast.error(data.message);
-      }
-      if (res.ok) {
+      if (data.success) {
         dispatch(signInSuccess(data));
         navigate("/profile");
+        return toast.success(data.message);
       }
+      dispatch(signInFailure(data.message));
+      return toast.error(data.message);
     } catch (error) {
       dispatch(signInFailure(error.message));
       toast.error(error.message);

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { toast } from "react-toastify";
+import axios from "../../utils/Axios";
 
 export default function MultiSelectInput({
   fieldName = "Tag",
@@ -17,11 +18,7 @@ export default function MultiSelectInput({
     const fetchTags = async () => {
       if (query) {
         try {
-          const response = await fetch(`${apiEndpoint}/?q=${query}`);
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          const data = await response.json();
+          const {data} = await axios.get(`${apiEndpoint}/?q=${query}`);
           setTags(data);
           setShowDropdown(true);
         } catch (error) {
@@ -44,17 +41,11 @@ export default function MultiSelectInput({
 
   const handleCreateTag = async (inputValue) => {
     try {
-      const response = await fetch(apiEndpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ content: inputValue }),
-      });
 
-      const newTag = await response.json();
+      const { data: newTag } = await axios.post(apiEndpoint, { content: inputValue });
 
-      if (!newTag.ok) {
+
+      if (!newTag) {
         return toast.error(newTag.message);
       }
       const updatedSelectedTags = [

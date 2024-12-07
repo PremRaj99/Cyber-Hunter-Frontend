@@ -4,6 +4,8 @@ import { FaBars } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { toast } from "react-toastify";
 // import {
 //   signOutUserStart,
 //   signOutUserSuccess,
@@ -63,22 +65,19 @@ export default function Header() {
   // Logout handler
   const handleLogout = async () => {
     try {
-      // dispatch(signOutUserStart());
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/auth/logout`,
-        {
-          method: "POST",
-        }
-      );
-      const data = await res.json();
-      if (data.success === false) {
-        // dispatch(signOutUserFailure(data.message));
-        return;
+      dispatch(signOutUserStart());
+      const { data } = await axios.post("/api/auth/v1/logout");
+      if (data.success) {
+        dispatch(signOutUserSuccess());
+        navigate("/login");
+        return toast.success(data.message);
+      } else {
+        dispatch(signOutUserFailure(data.message));
+        return toast.error(data.message);
       }
-      // dispatch(signOutUserSuccess());
-      navigate("/login");
     } catch (error) {
-      // dispatch(signOutUserFailure(error.message));
+      dispatch(signOutUserFailure(error.message));
+      return toast.error(error.message);
     }
   };
 

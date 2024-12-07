@@ -18,7 +18,7 @@
     "@mui/icons-material": "^6.1.8",
     "@mui/material": "^6.1.8",
     "@reduxjs/toolkit": "^2.2.6",
-    "axios": "^1.7.2",
+    "axios": "^1.7.9",
     "flowbite": "^2.5.1",
     "flowbite-react": "^0.10.1",
     "framer-motion": "^11.11.17",
