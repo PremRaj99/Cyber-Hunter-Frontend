@@ -83,8 +83,11 @@ export default function Login() {
       });
 
       if (data.success) {
-        dispatch(signInSuccess(data));
+        dispatch(signInSuccess(data.data));
         navigate("/profile");
+        localStorage.setItem("accessToken", data.data.accessToken);
+        localStorage.setItem("refreshToken", data.data.refreshToken);
+        setLoading(false);
         return toast.success(data.message);
       } else {
         setLoading(false);
@@ -123,10 +126,13 @@ export default function Login() {
       });
       setLoading(false);
       if (data.success) {
-        dispatch(signInSuccess(data));
+        dispatch(signInSuccess(data.data));
         navigate("/profile");
+        localStorage.setItem("accessToken", data.data.accessToken);
+        localStorage.setItem("refreshToken", data.data.refreshToken);
         return toast.success(data.message);
       }
+      setLoading(false);
       dispatch(signInFailure(data.message));
       return toast.error(data.message);
     } catch (error) {

@@ -3,14 +3,14 @@ import { motion, useAnimation } from "framer-motion";
 import { FaBars } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "../../utils/Axios";
 import { toast } from "react-toastify";
-// import {
-//   signOutUserStart,
-//   signOutUserSuccess,
-//   signOutUserFailure,
-// } from "../../redux/User/userSlice"; // Adjust import path as needed
+import {
+  signOutUserStart,
+  signOutUserSuccess,
+  signOutUserFailure,
+} from "../../redux/User/userSlice"; // Adjust import path as needed
 
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
@@ -19,7 +19,7 @@ export default function Header() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const controls = useAnimation();
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   // Toggle Menu
   const toggleMenu = () => {
@@ -66,7 +66,7 @@ export default function Header() {
   const handleLogout = async () => {
     try {
       dispatch(signOutUserStart());
-      const { data } = await axios.post("/api/auth/v1/logout");
+      const { data } = await axios.post("/api/v1/auth/logout");
       if (data.success) {
         dispatch(signOutUserSuccess());
         navigate("/login");

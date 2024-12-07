@@ -1,12 +1,14 @@
 import axios from "axios";
 
-const axios = axios.create({
+const token = localStorage.getItem("accessToken");
+
+const Axios = axios.create({
   baseURL: "http://localhost:3000",
   timeout: 1000,
   headers: {
     "Content-Type": "application/json",
-    "Authorization": "Bearer " + localStorage.getItem("accessToken"),
+    ...(token && { "Authorization": "Bearer " + token }),
   },
 });
 
-export default axios;
+export default Axios;

@@ -8,13 +8,13 @@ import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   signInStart,
   signInSuccess,
   signInFailure,
 } from "../redux/User/userSlice";
-import axios from "axios";
+import axios from "../utils/Axios";
 
 export default function Login() {
   const [isSignup, setIsSignup] = useState(false);
@@ -44,10 +44,12 @@ export default function Login() {
         email: formdata.email,
         password: formdata.password,
       });
-
       if (data.success) {
-        dispatch(signInSuccess(data));
+        dispatch(signInSuccess(data.data));
         navigate("/profile");
+        localStorage.setItem("accessToken", data.data.accessToken);
+        localStorage.setItem("refreshToken", data.data.refreshToken);
+        setLoading(false);
         return toast.success(data.message);
       } else {
         setLoading(false);
@@ -86,10 +88,13 @@ export default function Login() {
       });
       setLoading(false);
       if (data.success) {
-        dispatch(signInSuccess(data));
+        dispatch(signInSuccess(data.data));
         navigate("/profile");
+        localStorage.setItem("accessToken", data.data.accessToken);
+        localStorage.setItem("refreshToken", data.data.refreshToken);
         return toast.success(data.message);
       }
+      setLoading(false);
       dispatch(signInFailure(data.message));
       return toast.error(data.message);
     } catch (error) {
