@@ -65,6 +65,10 @@
 
 
 .dNotification{
+    @media screen and (max-width:950px) {
+        grid-template-columns: 1fr;
+    }
+
     >.dNotList{
         >ul{
             &::-webkit-scrollbar {
@@ -75,7 +79,35 @@
 
         }
     }
+
+    >.dBack{
+        display: none;
+    }
+
+    >.dmessage, .ddivider{
+        @media screen and (max-width:950px) {
+            display: none;
+          }
+    }
+
     
+}
+
+.dMobile{
+    @media screen and (max-width:950px) {
+        grid-template-columns: 1fr;
+        .dNotList{
+            display: none;
+        }
+        .dmessage{
+            display: block;
+        }
+        .dBack{
+            display: block;
+        }
+    }
+
+
 }
 
 .ddivider{

@@ -6,6 +6,7 @@ import {FiMail,FiLock} from "react-icons/fi";
 import { Link } from 'react-router-dom';
 import { FaBars } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
+import { default as profile } from "../../assets/profile.png";
 
 const DAccountSetting = () => {
 
@@ -217,6 +218,20 @@ const DAccountSetting = () => {
   )
 }
 
+const inputVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
+  hover: {
+    scale: 1.02,
+    transition: { duration: 0.2 },
+  },
+};
 
 
 const containerVariants = {
@@ -261,7 +276,7 @@ const div1 = () => (
             >
                 SETTINGS
             </motion.h2>
-            <motion.ul variants={containerVariants} className="w-full max-w-md flex flex-col items-center gap-14 m-auto mt-16">
+            <motion.ul variants={containerVariants} className="w-full max-w-md flex flex-col items-center gap-14 m-auto mt-20">
                 <motion.li className="w-full py-3 px-10 border-4 border-dashed border-black rounded-2xl  text-white" variants={itemVariants} whileHover="hover"><Link to="/" className="flex items-center text-xl font-medium capitalize text-white gap-0"> <FiMail />Email Verification</Link></motion.li>
                 <motion.li className="w-full py-3 px-10 border-4 border-dashed border-black rounded-2xl  text-white" variants={itemVariants} whileHover="hover"><Link to="/" className="flex items-center text-xl font-medium capitalize text-white gap-0"> <FiMail />Email Change</Link></motion.li>
                 <motion.li className="w-full py-3 px-10 border-4 border-dashed border-black rounded-2xl  text-white" variants={itemVariants} whileHover="hover"><Link to="/" className="flex items-center text-xl font-medium capitalize text-white gap-0"><FiLock />Password Change</Link></motion.li>
@@ -274,7 +289,82 @@ const div2 = () => (
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
         variants={containerVariants} >
-            <motion.h2 className="text-white">PERSONAL ACCOUNT SETTING</motion.h2>
+            <motion.h2 initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-2xl font-bold text-cyan-400 mb-8 text-center"
+            >
+                Profile Setup
+            </motion.h2>
+            <motion.div className="w-full max-w-xl flex flex-col items-center gap-8 m-auto mt-12 dSettingPersonal">
+              <motion.div className="flex sm:flex-row flex-col gap-8 justify-center items-center">
+                <img src={profile} alt="" className="rounded-full sm:h-32 h-24"/>
+                <button className="py-1 px-4 border-4 rounded-lg border-cyan-400 text-cyan-400 font-semibold">Upload Photo</button>
+                <button className="py-1 px-4 border-4 rounded-lg border-rose-500 text-rose-500 font-semibold">Delete Avatar</button>
+              </motion.div>
+              <motion.div className="w-full flex flex-col gap-6 items-center">
+
+
+
+
+            
+
+       <motion.div className="w-full">
+         <motion.label for="fullName" className="text-base font-medium text-gray-200"> Full Name </motion.label>
+       
+         <motion.input
+             variants={inputVariants}
+             whileHover="hover"
+             type="text"
+             name="fullName"
+             id="fullName"
+             required
+             placeholder="Enter full name"
+             className="w-full border-2 border-cyan-400 rounded-2xl pl-8 bg-black text-white placeholder-gray-400"
+         />
+       </motion.div>
+
+       <motion.div className="w-full">
+         <motion.label for="phone" className="text-base font-medium text-gray-200"> Phone </motion.label>
+
+         <motion.input
+            variants={inputVariants}
+            whileHover="hover"
+            type="text"
+            name="phone"
+            id="phone"
+            required
+            placeholder="Enter phone number"
+            className="w-full border-2 border-cyan-400 rounded-2xl pl-8 bg-black text-white placeholder-gray-400"
+         />
+       </motion.div>
+
+       <motion.div className="w-full">
+
+        <motion.label for="gender" className="text-base font-medium text-gray-200"> Full name </motion.label>
+        <select name="gender" id="gender" placeholder="Select" className="w-full border-2 border-cyan-400 rounded-2xl pl-8 bg-black text-white placeholder-gray-400 appearance-none">
+         <option value="male">Male</option>
+         <option value="female">Female</option>
+         <option value="other">Other</option>
+        </select>
+
+       </motion.div>
+
+        <motion.button
+          variants={inputVariants}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          type="submit"
+          className="bg-black text-cyan-400 font-semibold border-2 border-cyan-400 rounded-full px-10 py-2  text-lg uppercase"
+        >
+          Update       
+        </motion.button>
+                
+
+
+              </motion.div>
+
+            </motion.div>
         </motion.div>
     );
 

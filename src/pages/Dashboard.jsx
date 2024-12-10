@@ -76,6 +76,7 @@ export default function Dashboard() {
               exit="out"
               variants={pageVariants}
               transition={pageTransition}
+              className="h-full"
             >
               {renderContent()}
             </motion.div>
@@ -85,7 +86,4 @@ export default function Dashboard() {
     </div>
   );
 }
-
-
-// className="mr-2"
 

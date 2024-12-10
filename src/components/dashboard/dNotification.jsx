@@ -19,11 +19,17 @@ const DNotification = () => {
   ];
 
   const [noteList, setNoteList] = useState(defaultNotifications);
+  const [messageBoxView, setMessageBoxView] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState(null);
 
   const handleNotificationClick = (notification) => {
     setSelectedNotification(notification);
+    setMessageBoxView(true);
   };
+
+  const handleBackClick = () => {
+    setMessageBoxView(false);
+  }
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -36,25 +42,14 @@ const DNotification = () => {
     },
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.5 },
-    },
-    hover: {
-      scale: 1.02,
-      transition: { duration: 0.2 },
-    },
-  };
+  
 
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
-      className="dNotification mt-2 h-full  grid grid-cols-[1fr_0.01fr_3.3fr] gap-4"
+      className={`dNotification mt-2 h-full  grid grid-cols-[1fr_0.01fr_3.3fr] gap-4 dMoblie ${messageBoxView ? 'dMobile':''}`}
     >
       <div className="dNotList">
         <motion.h4
@@ -68,24 +63,32 @@ const DNotification = () => {
         <motion.ul variants={containerVariants} className="w-full flex flex-col gap-4 overflow-y-auto">
           <AnimatePresence>
             {noteList.map((notification) => (
-              <motion.li
-                key={notification.id}
-                variants={itemVariants}
-                whileHover="hover"
-                initial="hidden"
-                animate="visible"
-                className="p-4 bg-gray-800 rounded-2xl cursor-pointer bg-white py-2 px-4"
-              >
+
                 <NotificationItem
                   notification={notification}
                   onclick={() => handleNotificationClick(notification)}
+                  key={notification.id}
                 />
-              </motion.li>
+
             ))}
           </AnimatePresence>
         </motion.ul>
       </div>
       <div className="ddivider"></div>
+
+
+      <motion.h4
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          onClick={()=> handleBackClick()}
+          className="font-extrabold text-cyan-400 mb-4 uppercase text-base absolute left-5 -top-3 dBack"
+        >
+          {"<<<"} BACK
+        </motion.h4>
+
+
+
       <motion.div
         className="dmessage m-4 bg-white p-6 rounded-2xl"
         initial={{ opacity: 0 }}
