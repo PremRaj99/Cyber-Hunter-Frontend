@@ -1,6 +1,7 @@
 import  { useState, useRef } from "react";
 import { IoCloudUpload } from "react-icons/io5";// Ensure you have this icon package installed
 import leaduserdemo from "../../assets/leaduserdemo.png"
+import { FaAsterisk } from "react-icons/fa6";
 
 
 function ImageUploader() {
@@ -32,8 +33,8 @@ function ImageUploader() {
         />
       )}
       <div className="flex flex-col justify-center mt-4 md:mt-0 md:m-8 items-center md:items-start">
-        <h2 className="text-lg text-white text-center md:text-left">
-          UPLOAD PHOTO
+        <h2 className="flex gap-2 text-lg text-white text-center md:text-left">
+          UPLOAD PHOTO <span className="text-red-700 text-xs"><FaAsterisk/></span>
         </h2>
         
         <button

@@ -29,7 +29,7 @@ import EventDetail from "./pages/EventDetail";
 import CreateTeam from "./pages/CreateTeam";
 import ProfileSetting from "./pages/ProfileSetting";
 import Freelancer from "./pages/Freelancer";
-import ClientLogin from "./pages/ClientLogin";
+import VendorLogin from "./pages/VendorLogin";
 import PostProject from "./pages/PostProject";
 import ProjectList from "./pages/ProjectList";
 import ProjectDetail from "../src/components/Freelancer/ProjectDetail";
@@ -42,8 +42,8 @@ import './App.css';
 import About from "./components/home/About";
 import Preloader from "./components/Common/Preloader";
 import TeamSetting from "./pages/TeamSetting";
-import SignUpForm from "./pages/SignUpForm";
 import ScrollToTop from "./components/Common/ScrollToTop";
+import VendorForm from "./components/Freelancer/VendorForm";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -52,7 +52,7 @@ export default function App() {
     // Simulate content loading
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 3000); // Adjust this value to control how long the preloader is shown
+    }, 500); // Adjust this value to control how long the preloader is shown
 
     return () => clearTimeout(timer);
   }, []);
@@ -69,7 +69,7 @@ export default function App() {
             <Route path="/*" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/accountSetting" element={<DAccountSetting/>}/>
+            <Route path="/accountSetting" element={<DAccountSetting />} />
             <Route path="/createpassword" element={<CreatePassword />} />
             <Route path="/event" element={<Event />} />
             <Route path="/forgetpassword" element={<ForgetPassword />} />
@@ -93,14 +93,14 @@ export default function App() {
             <Route path="/CreateTeam" element={<CreateTeam />} />
             <Route path="/ProfileSetting" element={<ProfileSetting />} />
             <Route path="/freelancer" element={<Freelancer />} />
-            <Route path="/clientlogin" element={<ClientLogin />} />
+            <Route path="/vendorlogin" element={<VendorLogin />} />
             <Route path="/postproject" element={<PostProject />} />
             <Route path="/projectlist" element={<ProjectList />} />
             <Route path="/projectdetail" element={<ProjectDetail />} />
             <Route path="/ourteam" element={<OurTeam />} />
             <Route path="/verifyachievement" element={<VerifyAchievement />} />
             <Route path="/teamsetting" element={<TeamSetting />} />
-            <Route path="/signupform" element={<SignUpForm />} />
+            <Route path="/Vendorform" element={<VendorForm /> } />
           </Routes>
           <Footer />
         </>

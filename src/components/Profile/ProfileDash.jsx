@@ -1,17 +1,59 @@
 // import React from "react";
+import axios from "axios";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
+import { useSelector,useDispatch } from "react-redux";
+import { signInSuccess } from "../../redux/User/userSlice";
+import { useNavigate } from "react-router-dom";
+
+
+
 
 export default function ProfileDash() {
-  const userDetails = {
-    name: "Prem Raj",
-    course: "BTech",
-    branch: "CSE",
-    session: "2022-205",
-    qId: "22030179",
-    gender: "Male",
-    points: "600 pts",
-  };
+  // const [userDetails, setUserDetails] = useState({});
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!user) {
+      alert("User does not exist, Please signup first");
+      navigate("/login");
+    }
+  }, [user, navigate]);
+  // console.log(user)
+
+  // const userDetails = {
+  //   name: "Prem Raj",
+  //   course: "BTech",
+  //   branch: "CSE",
+  //   session: "2022-205",
+  //   qId: "22030179",
+  //   gender: "Male",
+  //   points: "600 pts",
+  // };
+ const userDetails =  {
+       name: user.name,
+       course: user.course,
+       branch: user.branch,
+       session: user.session,
+       qId: user.qId,
+       gender: user.gender, 
+       points: user.points,
+     }
+  
+  const dispatch = useDispatch();
+
+  // console.log(user.name);
+  useEffect(() => {
+    document.title = "Profile";
+    axios.get(`${import.meta.env.VITE_API_URL}/api/v1/user`,user?.userId).then((res) => {
+      dispatch(signInSuccess(res.data));
+    }).catch((err) => {
+      console.log(err);
+    });
+  }, [dispatch, user?.userId]);
+  
   const techStack = [
     { name: "Java", color: "text-orange-400" },
     { name: "HTML5", color: "text-red-400" },
@@ -65,7 +107,7 @@ export default function ProfileDash() {
             className="h-[450px] md:h-[525px] p-2 rounded-2xl overflow-y-auto pr-2 scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-cyan-400"
             variants={itemVariants}
           >
-            {[1, 2, 3, 4, 5].map((item) => (
+            {Array.from({length: 5}).map((item) => (
               <motion.div
                 key={item}
                 className="bg-gray-800 rounded-xl p-4 shadow-lg mb-4 last:mb-0"

@@ -72,7 +72,7 @@ const DTeam = () => {
           {
             icon: <SettingsIcon />,
             text: "TEAM MANAGEMENT",
-            path: "/teamManagement",
+            path: "/teamsetting",
           },
         ].map((item, index) => (
           <motion.li

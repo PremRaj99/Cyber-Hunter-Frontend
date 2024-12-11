@@ -18,7 +18,7 @@ import {
 } from "../../redux/User/userSlice";
 import axios from "../../utils/Axios";
 
-export default function Login() {
+export default function VendorLoginMain() {
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formdata, setFormdata] = useState({
