@@ -23,7 +23,7 @@ export default function ProfileDash() {
   }, [user, navigate]);
   
   
- const userDetails =  {
+ const userDetails = user ? {
        name: user.name,
        course: user.course,
        branch: user.branch,
@@ -31,7 +31,7 @@ export default function ProfileDash() {
        qId: user.qId,
        gender: user.gender, 
        points: user.points,
-     }
+     } : {};
   
   const dispatch = useDispatch();
 
