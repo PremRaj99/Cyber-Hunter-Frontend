@@ -21,17 +21,8 @@ export default function ProfileDash() {
       navigate("/login");
     }
   }, [user, navigate]);
-  // console.log(user)
-
-  // const userDetails = {
-  //   name: "Prem Raj",
-  //   course: "BTech",
-  //   branch: "CSE",
-  //   session: "2022-205",
-  //   qId: "22030179",
-  //   gender: "Male",
-  //   points: "600 pts",
-  // };
+  
+  
  const userDetails =  {
        name: user.name,
        course: user.course,

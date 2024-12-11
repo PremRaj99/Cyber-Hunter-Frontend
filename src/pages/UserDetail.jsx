@@ -130,7 +130,7 @@ export default function UserDetail() {
     }
   };
 
-  // Reset form method
+  // Reset form method to clear form fields
   const resetForm = () => {
     setUserDetails({
       name: "",
@@ -143,7 +143,6 @@ export default function UserDetail() {
       dob: "",
       gender: "",
       phone: "",
-
     });
   };
 
