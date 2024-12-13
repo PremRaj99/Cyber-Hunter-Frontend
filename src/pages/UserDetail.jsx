@@ -155,7 +155,7 @@ export default function UserDetail() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex justify-center mb-6">
-            <ImageUploader onImageUpload={handleImageUpload} />
+            <ImageUploader onImageUpload={handleImageUpload} shouldBeRound={false}/>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -220,28 +220,6 @@ export default function UserDetail() {
                   </option>
                 ))}
               </select>
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="email" className="flex gap-1 text-sm font-medium">
-                Email
-                <span className="text-red-700 text-xs">
-                  <FaAsterisk />
-                </span>
-              </label>
-              <div className="relative">
-                <IoIosArrowForward className="absolute left-3 top-1/2 transform -translate-y-1/2 text-cyan-400" />
-                <input
-                  id="email"
-                  type="email"
-                  value={userDetails.email}
-                  onChange={(e) =>
-                    setUserDetails({ ...userDetails, email: e.target.value })
-                  }
-                  placeholder="example@gmail.com"
-                  className="w-full pl-10 pr-3 py-2 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-                  required
-                />
-              </div>
             </div>
             <div className="space-y-2">
               <label htmlFor="qid" className="flex gap-1 text-sm font-medium">
@@ -437,7 +415,7 @@ export default function UserDetail() {
               </div>
             </div>
             <div className="space-y-2">
-              <label htmlFor="dob" className="flex text-sm font-medium">
+              <label htmlFor="dob" className="flex gap-1 text-sm font-medium">
                 Interest
                 <span className="text-red-700 text-xs">
                   <FaAsterisk />
@@ -544,7 +522,7 @@ export default function UserDetail() {
 
           <button
             type="submit"
-            className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out"
+            className="w-full bg-brandPrimary hover:text-brandPrimary hover:bg-black hover:border-2 hover:border-brandPrimary text-black font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out"
           >
             Submit and Pay | ₹{totalAmount}
           </button>

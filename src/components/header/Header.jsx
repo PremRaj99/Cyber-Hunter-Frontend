@@ -135,6 +135,10 @@ export default function Header() {
       name: "leaderboard",
       link: "/leaderboard",
     },
+    {
+      name: "Event",
+      link: "/event",
+    }
   ];
 
   return (

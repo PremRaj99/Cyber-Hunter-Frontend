@@ -123,11 +123,11 @@ export default function MultiSelectInput({
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           placeholder={`Search and select ${fieldName}`}
-          className="flex-grow bg-transparent p-1 text-white placeholder-cyan-400/50 border-none outline-none focus:outline-none focus:ring-0"
+          className=" bg-transparent w-full px-1 py-0 text-white placeholder-cyan-400/50 border-none outline-none focus:outline-none focus:ring-0"
         />
       </div>
       {showDropdown && tags.length > 0 && (
-        <div className="absolute z-10 w-full bg-black/80 border border-cyan-400/50 rounded mt-1 max-h-40 overflow-y-auto">
+        <div className="absolute z-10 w-full bg-black border border-cyan-400 rounded mt-1 max-h-40 overflow-y-auto">
           {tags.map((tag) => (
             <div
               key={tag.tagId}
@@ -140,7 +140,7 @@ export default function MultiSelectInput({
         </div>
       )}
       {showDropdown && tags.length === 0 && query && (
-        <div className="absolute z-10 w-full bg-black/80 border border-cyan-400/50 rounded mt-1 p-2 text-white">
+        <div className="absolute z-10 w-full bg-black/90 border border-cyan-400/50 rounded mt-1 p-2 text-white">
           <span>No {fieldName.toLowerCase()} found</span>
           <button
             type="button"
