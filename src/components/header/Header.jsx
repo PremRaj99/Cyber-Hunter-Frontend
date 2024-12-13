@@ -132,7 +132,7 @@ export default function Header() {
       link: "/contact",
     },
     {
-      name: "leaderboard",
+      name: "Leaderboard",
       link: "/leaderboard",
     },
     {
