@@ -100,7 +100,7 @@ export default function App() {
             <Route path="/ourteam" element={<OurTeam />} />
             <Route path="/verifyachievement" element={<VerifyAchievement />} />
             <Route path="/teamsetting" element={<TeamSetting />} />
-            <Route path="/Vendorform" element={<VendorForm /> } />
+            <Route path="/Vendorform" element={<VendorForm />} />
           </Routes>
           <Footer />
         </>

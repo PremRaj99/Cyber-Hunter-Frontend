@@ -23,6 +23,9 @@ function ImageUploader() {
     fileInputRef.current.click();
   };
 
+
+
+
   return (
     <div className="flex flex-col md:flex-row justify-evenly items-center w-96">
       {imageSrc && (
@@ -53,6 +56,7 @@ function ImageUploader() {
           accept="image/*"
         />
       </div>
+        
     </div>
   );
 }

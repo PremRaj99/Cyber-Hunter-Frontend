@@ -114,7 +114,7 @@ export default function UserDetail() {
         if (res.status === 200) {
           toast.success("Registration Successful, Please Login to continue.");
           resetForm();
-          navigate("/login");
+          navigate("/payment");
         }
       });
     } catch (error) {
