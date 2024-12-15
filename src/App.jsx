@@ -57,6 +57,8 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
+
+  // trying to fix the current bug
   return (
     <BrowserRouter>
       {loading ? (
