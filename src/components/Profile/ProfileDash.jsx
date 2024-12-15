@@ -1,16 +1,47 @@
 // import React from "react";
+import axios from "axios";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
+import { useSelector,useDispatch } from "react-redux";
+import { signInSuccess } from "../../redux/User/userSlice";
+
 
 export default function ProfileDash() {
-  const userDetails = {
-    name: "Prem Raj",
-    course: "BTech",
-    branch: "CSE",
-    session: "2022-205",
-    qId: "22030179",
-    gender: "Male",
-    points: "600 pts",
-  };
+  // const [userDetails, setUserDetails] = useState({});
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
+
+  // https://api.cloudinary.com/v1_1/dkvrajw28/image/upload
+  // CLOUDINARY_API_SECRET = lFeHYW98PypmkcX006UKWs4rHUE;
+  // CLOUDINARY_CLOUD_NAME = dkvrajw28;
+  // CLOUDINARY_API_KEY = 567986218168593;
+
+  const userDetails = user
+    ? {
+        name: user.name,
+        course: user.course,
+        branch: user.branch,
+        session: user.session,
+        qId: user.qId,
+        gender: user.gender,
+        points: user.points,
+      }
+    : {};
+
+  const dispatch = useDispatch();
+
+  // console.log(user.name);
+  useEffect(() => {
+    document.title = "Profile";
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/api/v1/user`, user?.userId)
+      .then((res) => {
+        dispatch(signInSuccess(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [dispatch, user?.userId]);
 
   const techStack = [
     { name: "Java", color: "text-orange-400" },
@@ -65,7 +96,7 @@ export default function ProfileDash() {
             className="h-[450px] md:h-[525px] p-2 rounded-2xl overflow-y-auto pr-2 scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-cyan-400"
             variants={itemVariants}
           >
-            {[1, 2, 3, 4, 5].map((item) => (
+            {Array.from({ length: 5 }).map((item) => (
               <motion.div
                 key={item}
                 className="bg-gray-800 rounded-xl p-4 shadow-lg mb-4 last:mb-0"
@@ -169,7 +200,7 @@ export default function ProfileDash() {
                 <div className="w-32 h-32 rounded-full bg-blue-900 flex items-center justify-center">
                   <img
                     src="https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?q=80&w=1966&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    alt="Profile Picture"
+                    alt="Profile"
                     className="w-full h-full rounded-full object-cover"
                   />
                 </div>

@@ -1,5 +1,7 @@
 // import React from 'react';
 
+import { Link } from "react-router-dom";
+
 export default function Listevent() {
   const hackathons = [
     {
@@ -57,9 +59,11 @@ export default function Listevent() {
                 {hackathon.title}
               </h3>
               <p className="text-cyan-400 mb-2 text-sm">{hackathon.date}</p>
-              <button className="bg-transparent text-sm hover:bg-cyan-400 text-cyan-400 hover:text-gray-900 border border-cyan-400 font-semibold py-1 px-3 rounded-md transition-colors duration-300">
-                Register
-              </button>
+              <Link to="/eventdetail">
+                <button className="bg-transparent text-sm hover:bg-cyan-400 text-cyan-400 hover:text-gray-900 border border-cyan-400 font-semibold py-1 px-3 rounded-md transition-colors duration-300">
+                  Register
+                </button>
+              </Link>
             </div>
           </div>
         ))}

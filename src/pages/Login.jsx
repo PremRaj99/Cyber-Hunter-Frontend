@@ -81,15 +81,17 @@ export default function Login() {
     try {
       dispatch(signInStart());
       setLoading(true);
-      const { data } = await axios.post("/api/v1/auth/signin", {
+      const { data } = await axios.post("/api/v1/auth/signup", {
         email: formdata.email,
         password: formdata.password,
         confirmPassword: formdata.confirmPassword,
       });
+      console.log(data)
       setLoading(false);
       if (data.success) {
         dispatch(signInSuccess(data.data));
-        navigate("/profile");
+        console.log(data.data);
+        navigate("/userdetail");
         localStorage.setItem("accessToken", data.data.accessToken);
         localStorage.setItem("refreshToken", data.data.refreshToken);
         return toast.success(data.message);

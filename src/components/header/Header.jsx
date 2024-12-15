@@ -82,7 +82,8 @@ export default function Header() {
   const handleLogout = async () => {
     try {
       dispatch(signOutUserStart());
-      const { data } = await axios.post("/api/v1/auth/logout");
+      const { data } = await axios.post(
+        "/api/v1/auth/logout");
       if (data.success) {
         dispatch(signOutUserSuccess());
         navigate("/login");
@@ -149,9 +150,13 @@ export default function Header() {
       link: "/contact",
     },
     {
-      name: "leaderboard",
+      name: "Leaderboard",
       link: "/leaderboard",
     },
+    {
+      name: "Event",
+      link: "/event",
+    }
   ];
 
   const newNav = [
