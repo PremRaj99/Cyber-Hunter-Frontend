@@ -143,7 +143,7 @@ export default function Header() {
     },
     {
       name: "Services",
-      link: "/services",
+      link: "/service",
     },
     {
       name: "Contact",
