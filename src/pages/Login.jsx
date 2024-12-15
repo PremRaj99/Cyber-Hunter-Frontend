@@ -8,12 +8,13 @@ import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   signInStart,
   signInSuccess,
   signInFailure,
 } from "../redux/User/userSlice";
+import axios from "../utils/Axios";
 
 export default function Login() {
   const [isSignup, setIsSignup] = useState(false);
@@ -32,35 +33,28 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (
-      !formdata.email ||
-      !formdata.password ||
-      formdata.email === "" ||
-      formdata.password === ""
-    ) {
-      toast.error("Plesase fill out all the fields.");
-      return dispatch(signInFailure("Plesase fill out all the fields."));
+    if (!formdata.email || !formdata.password) {
+      toast.error("Please fill out all the fields.");
+      return dispatch(signInFailure("Please fill out all the fields."));
     }
     try {
       dispatch(signInStart());
       setLoading(true);
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/auth/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formdata),
-        }
-      );
-      const data = await res.json();
-      setLoading(false);
-      if (data.success === false) {
+      const { data } = await axios.post("/api/v1/auth/login", {
+        email: formdata.email,
+        password: formdata.password,
+      });
+      if (data.success) {
+        dispatch(signInSuccess(data.data));
+        navigate("/profile");
+        localStorage.setItem("accessToken", data.data.accessToken);
+        localStorage.setItem("refreshToken", data.data.refreshToken);
+        setLoading(false);
+        return toast.success(data.message);
+      } else {
+        setLoading(false);
         dispatch(signInFailure(data.message));
         return toast.error(data.message);
-      }
-      if (res.ok) {
-        dispatch(signInSuccess(data));
-        navigate("/profile");
       }
     } catch (error) {
       dispatch(signInFailure(error.message));
@@ -68,44 +62,43 @@ export default function Login() {
       setLoading(false);
     }
   };
+
   const handleSignup = async (e) => {
     e.preventDefault();
     if (
       !formdata.email ||
       !formdata.password ||
       !formdata.confirmPassword ||
-      formdata.email === "" ||
-      formdata.password === "" ||
-      formdata.confirmPassword === ""
+      formdata.confirmPassword !== formdata.password
     ) {
-      toast.error("Plesase fill out all the fields.");
-      return dispatch(signInFailure("Plesase fill out all the fields."));
-    }
-    if (formdata.confirmPassword !== formdata.password) {
-      toast.error("Password do not match!");
-      return dispatch(signInFailure("Password do not match!"));
+      const errorMsg =
+        formdata.confirmPassword !== formdata.password
+          ? "Passwords do not match!"
+          : "Please fill out all the fields.";
+      toast.error(errorMsg);
+      return dispatch(signInFailure(errorMsg));
     }
     try {
       dispatch(signInStart());
       setLoading(true);
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/auth/signup`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formdata),
-        }
-      );
-      const data = await res.json();
+      const { data } = await axios.post("/api/v1/auth/signup", {
+        email: formdata.email,
+        password: formdata.password,
+        confirmPassword: formdata.confirmPassword,
+      });
+      console.log(data)
       setLoading(false);
-      if (data.success === false) {
-        dispatch(signInFailure(data.message));
-        return toast.error(data.message);
+      if (data.success) {
+        dispatch(signInSuccess(data.data));
+        console.log(data.data);
+        navigate("/userdetail");
+        localStorage.setItem("accessToken", data.data.accessToken);
+        localStorage.setItem("refreshToken", data.data.refreshToken);
+        return toast.success(data.message);
       }
-      if (res.ok) {
-        dispatch(signInSuccess(data));
-        navigate("/profile");
-      }
+      setLoading(false);
+      dispatch(signInFailure(data.message));
+      return toast.error(data.message);
     } catch (error) {
       dispatch(signInFailure(error.message));
       toast.error(error.message);
@@ -164,7 +157,8 @@ export default function Login() {
                   className="w-full flex flex-col items-center justify-center"
                   onSubmit={(e) => {
                     isSignup ? handleSignup(e) : handleLogin(e);
-                  }}>
+                  }}
+                >
                   <div className="mb-2">
                     <label htmlFor="email" className="flex text-gray-300">
                       <MdEmail className="h-6 mx-2" />

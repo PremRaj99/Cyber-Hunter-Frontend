@@ -27,8 +27,8 @@ export default function Hero() {
                 teams and individuals compete, grow, and lead the way to
                 success.
               </p>
-              <div className="w-full flex justify-center md:w-1/2">
-                <button className="btn-primary font-bold hover:bg-black hover:text-brandPrimary hover:border-2 hover:border-brandPrimary text-black transition-all duration-300">
+              <div className="w-full flex justify-center md:w-1/2 text-black">
+                <button className="btn-primary text-sm  font-bold hover:bg-black hover:text-brandPrimary hover:border-2 hover:border-brandPrimary  transition-all duration-300">
                   Register Now
                 </button>
               </div>
@@ -62,7 +62,7 @@ export default function Hero() {
                 tutorials, and real-world projects.
               </p>
               <div className="w-full flex justify-center md:w-1/2">
-                <button className="btn-primary font-bold hover:bg-black hover:text-brandPrimary hover:border-2 hover:border-brandPrimary text-black transition-all duration-300">
+                <button className="btn-primary font-bold text-sm hover:bg-black hover:text-brandPrimary hover:border-2 hover:border-brandPrimary transition-all duration-300">
                   Register Now
                 </button>
               </div>

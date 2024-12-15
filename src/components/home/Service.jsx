@@ -6,7 +6,8 @@ import {
   BsShieldLockFill,
 } from "react-icons/bs";
 import { TbHeartRateMonitor } from "react-icons/tb";
-import { FaCode } from "react-icons/fa6";
+import { FaArrowRight, FaCode } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 export default function service() {
   return (
     <div>
@@ -128,10 +129,21 @@ export default function service() {
               </div>
             </div>
           </div>
+          <div className="flex items-center justify-center mt-12">
+            <Link to="/service">
+              <button
+                type="submit"
+                className=" flex items-center justify-center bg-brandPrimary text-black font-bold py-3 px-6 rounded-lg hover:bg-black hover:text-brandPrimary hover:border hover:border-brandPrimary transform hover:scale-105 transition-all duration-300"
+              >
+                Send Message
+                <span className="ml-2">
+                  <FaArrowRight />
+                </span>
+              </button>
+            </Link>
+          </div>
         </section>
         {/* <!---------------- Service Section End -----------------> */}
-
-        
       </div>
     </div>
   );
