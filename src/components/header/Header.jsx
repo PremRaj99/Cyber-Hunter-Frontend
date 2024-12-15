@@ -10,7 +10,9 @@ import {
   signOutUserStart,
   signOutUserSuccess,
   signOutUserFailure,
-} from "../../redux/User/userSlice"; // Adjust import path as needed
+} from "../../redux/User/userSlice";
+import DefaultImg from '../../assets/profile.png'
+import { TbLogin, TbLogout } from "react-icons/tb";
 
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
@@ -62,6 +64,20 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [controls]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth <= 768);
+      if (window.innerWidth > 768) {
+        setIsUserDropdownOpen(false); // Close dropdown on resize if it's not mobile view
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  
+
   // Logout handler
   const handleLogout = async () => {
     try {
@@ -81,11 +97,12 @@ export default function Header() {
     }
   };
 
+
   // Mobile menu variants
   const mobileMenuVariants = {
     hidden: {
       opacity: 0,
-      y: -50,
+      x: 0,
       transition: {
         duration: 0.3,
       },
@@ -106,7 +123,7 @@ export default function Header() {
   const mobileMenuItemVariants = {
     hidden: {
       opacity: 0,
-      x: -20,
+      y: 20,
     },
     visible: {
       opacity: 1,
@@ -136,6 +153,33 @@ export default function Header() {
       link: "/leaderboard",
     },
   ];
+
+  const newNav = [
+    {
+      name2: "Profile",
+      link2: "/profile",
+    },
+    {
+      name2: "Dashboard",
+      link2: "/dashboard",
+    },
+  ];
+
+
+  // mobile image , name , points
+  const [profile, setProfile] = useState({
+    name: "John Doe",
+    points: 120,
+    profileImg: "https://your-new-image-url.com/image.jpg",
+  });
+
+  // mobile login /logout
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const toggleLoginState = () => {
+    setIsLoggedIn(!isLoggedIn);
+  };
+
 
   return (
     <motion.div
@@ -307,17 +351,59 @@ export default function Header() {
         </div>
         {/* Mobile Menu */}
         <motion.div
-          className={`space-y-8 px-4 mt-16 py-7 text-center list-none ${
-            isMenuOpen
-              ? "block fixed top-0 right-0 backdrop-blur-lg left-0 z-10 border bg-black backdrop:opacity-50"
-              : "hidden"
-          }`}
+          className={`h-[91%]  space-y-8 px-4 mt-20 py-7 text-center list-none ${isMenuOpen
+            ? "block fixed top-0 right-0 backdrop-blur-lg left-[50%] z-10 border bg-black backdrop:opacity-50"
+            : "hidden"
+            }`}
           variants={mobileMenuVariants}
           initial="hidden"
           animate={isMenuOpen ? "visible" : "hidden"}
         >
+          <div className="space-y-2 flex-col text-white w-full flex justify-center items-center">
+            {isLoggedIn ? (
+              <img
+                className="rounded-full h-28 w-28"
+                src={profile.profileImg}
+                alt={`${profile.name}'s profile`}
+              />
+            ) : (
+              <div className="rounded-full h-28 w-28 bg-gray-500">
+                <img className="rounded-full" src={DefaultImg} alt="" />
+              </div>
+            )}
+
+            {isLoggedIn ? (
+              <>
+                <h2 className="">{profile.name}</h2>
+                <p>Points: {profile.points}</p>
+              </>
+            ) : (
+              <>
+                <h2 className="">Guest</h2>
+                <p>Points: 0</p>
+              </>
+            )}
+          </div>
+          {/* newnavLinks */}
           <motion.div
-            className="flex flex-col items-center text-gray-400 font-bold justify-center gap-4"
+            className="flex flex-col border-t-2 text-gray-400 font-bold  gap-4"
+            variants={mobileMenuVariants}
+          >
+            {newNav.map(({ name2, link2 }) => (
+              <motion.div key={name2} variants={mobileMenuItemVariants}>
+                <NavLink
+                  to={link2}
+                  className={({ isActive }) =>
+                    isActive ? "float-start text-[#00D8FF]" : "float-start hover:text-brandPrimary"
+                  }
+                >
+                  {name2}
+                </NavLink>
+              </motion.div>
+            ))}
+          </motion.div>
+          <motion.div
+            className="flex flex-col border-t-2 text-gray-400 font-bold  gap-4"
             variants={mobileMenuVariants}
           >
             {nav.map(({ name, link }) => (
@@ -325,7 +411,7 @@ export default function Header() {
                 <NavLink
                   to={link}
                   className={({ isActive }) =>
-                    isActive ? "text-[#00D8FF]" : "hover:text-brandPrimary"
+                    isActive ? "float-start text-[#00D8FF]" : "float-start hover:text-brandPrimary"
                   }
                 >
                   {name}
@@ -333,6 +419,26 @@ export default function Header() {
               </motion.div>
             ))}
           </motion.div>
+          <div className="w-full border-t-2 justify-center text-white absolute left-0 bottom-2">
+            {currentUser ? (
+              <button
+                className="w-full text-white my-2 flex justify-center items-center hover:text-brandPrimary"
+                onClick={handleLogout}
+              >
+                <TbLogout className="mx-2 h-8 w-8" />
+                Logout
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate('/login')}
+                className="w-full text-white my-2 flex justify-center items-center hover:text-brandPrimary"
+              >
+                <TbLogin className="mx-2 h-8 w-8" />
+                LogIn
+              </button>
+            )}
+          </div>
+
         </motion.div>
       </div>
     </motion.div>
