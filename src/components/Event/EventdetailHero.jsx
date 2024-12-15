@@ -1,6 +1,5 @@
 // import React from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 
 export default function Eventdetails() {
   return (
@@ -90,7 +89,6 @@ export default function Eventdetails() {
                 </motion.div>
 
                 {/* Register Button */}
-                <Link to="/eventdetail">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -100,8 +98,7 @@ export default function Eventdetails() {
                   className="w-full md:w-auto px-4 py-2 bg-transparent border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-colors rounded"
                 >
                   Register
-                  </motion.button>
-                </Link>
+                </motion.button>
               </div>
             </div>
           </motion.div>

@@ -16,9 +16,8 @@ import {
   signInSuccess,
   signInFailure,
 } from "../../redux/User/userSlice";
-import axios from "../../utils/Axios";
 
-export default function VendorLoginMain() {
+export default function Login() {
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formdata, setFormdata] = useState({
@@ -77,22 +76,23 @@ export default function VendorLoginMain() {
     try {
       dispatch(signInStart());
       setLoading(true);
-      const { data } = await axios.post("/api/v1/auth/login", {
-        email: formdata.email,
-        password: formdata.password,
-      });
-
-      if (data.success) {
-        dispatch(signInSuccess(data.data));
-        navigate("/profile");
-        localStorage.setItem("accessToken", data.data.accessToken);
-        localStorage.setItem("refreshToken", data.data.refreshToken);
-        setLoading(false);
-        return toast.success(data.message);
-      } else {
-        setLoading(false);
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formdata),
+        }
+      );
+      const data = await res.json();
+      setLoading(false);
+      if (data.success === false) {
         dispatch(signInFailure(data.message));
         return toast.error(data.message);
+      }
+      if (res.ok) {
+        dispatch(signInSuccess(data));
+        navigate("/profile");
       }
     } catch (error) {
       dispatch(signInFailure(error.message));
@@ -119,22 +119,24 @@ export default function VendorLoginMain() {
     try {
       dispatch(signInStart());
       setLoading(true);
-      const { data } = await axios.post("/api/v1/auth/signin", {
-        email: formdata.email,
-        password: formdata.password,
-        confirmPassword: formdata.confirmPassword,
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/signup`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formdata),
+        }
+      );
+      const data = await res.json();
       setLoading(false);
-      if (data.success) {
-        dispatch(signInSuccess(data.data));
-        navigate("/profile");
-        localStorage.setItem("accessToken", data.data.accessToken);
-        localStorage.setItem("refreshToken", data.data.refreshToken);
-        return toast.success(data.message);
+      if (data.success === false) {
+        dispatch(signInFailure(data.message));
+        return toast.error(data.message);
       }
-      setLoading(false);
-      dispatch(signInFailure(data.message));
-      return toast.error(data.message);
+      if (res.ok) {
+        dispatch(signInSuccess(data));
+        navigate("/profile");
+      }
     } catch (error) {
       dispatch(signInFailure(error.message));
       toast.error(error.message);

@@ -1,4 +1,4 @@
-// import React from 'react'
+import React from 'react'
 import Leaderboard from  '../leaderboard/Leaderboardmain'
 
 const dLeaderBorad = () => {
@@ -10,5 +10,3 @@ const dLeaderBorad = () => {
 }
 
 export default dLeaderBorad
-
-

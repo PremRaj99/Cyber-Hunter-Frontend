@@ -18,11 +18,10 @@
     "@mui/icons-material": "^6.1.8",
     "@mui/material": "^6.1.8",
     "@reduxjs/toolkit": "^2.2.6",
-    "axios": "^1.7.9",
+    "axios": "^1.7.2",
     "flowbite": "^2.5.1",
     "flowbite-react": "^0.10.1",
     "framer-motion": "^11.11.17",
-    "js-cookie": "^3.0.5",
     "lucide-react": "^0.460.0",
     "motion": "^11.11.17",
     "next": "^14.2.18",
@@ -35,8 +34,7 @@
     "react-router-dom": "^6.25.1",
     "react-toastify": "^10.0.5",
     "redux-persist": "^6.0.0",
-    "sass": "^1.81.0",
-    "tailwind-scrollbar-hide": "^1.1.7"
+    "sass": "^1.81.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

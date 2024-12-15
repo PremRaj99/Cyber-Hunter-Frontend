@@ -1,12 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { toast } from "react-toastify";
-import axios from "../../utils/Axios";
 
 export default function MultiSelectInput({
   fieldName = "Tag",
   apiEndpoint = "/api/tag",
   onTagsChange,
-  className = ""
 }) {
   const [query, setQuery] = useState("");
   const [tags, setTags] = useState([]);
@@ -18,7 +16,11 @@ export default function MultiSelectInput({
     const fetchTags = async () => {
       if (query) {
         try {
-          const {data} = await axios.get(`${apiEndpoint}/?q=${query}`);
+          const response = await fetch(`${apiEndpoint}/?q=${query}`);
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const data = await response.json();
           setTags(data);
           setShowDropdown(true);
         } catch (error) {
@@ -41,11 +43,17 @@ export default function MultiSelectInput({
 
   const handleCreateTag = async (inputValue) => {
     try {
+      const response = await fetch(apiEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content: inputValue }),
+      });
 
-      const { data: newTag } = await axios.post(apiEndpoint, { content: inputValue });
+      const newTag = await response.json();
 
-
-      if (!newTag) {
+      if (!newTag.ok) {
         return toast.error(newTag.message);
       }
       const updatedSelectedTags = [
@@ -100,7 +108,7 @@ export default function MultiSelectInput({
 
   return (
     <div className="relative w-full">
-      <div className={`${className} flex flex-wrap items-center rounded-md border border-cyan-400/50 bg-black/50 px-4 py-2 text-white shadow-sm focus:border-none transition duration-300 hover:border-cyan-300`}>
+      <div className="flex flex-wrap items-center rounded-md border border-cyan-400/50 bg-black/50 px-4 py-2 text-white shadow-sm focus:border-none transition duration-300 hover:border-cyan-300">
         {selectedTags.map((tag) => (
           <div
             key={tag.tagId}
@@ -123,11 +131,11 @@ export default function MultiSelectInput({
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           placeholder={`Search and select ${fieldName}`}
-          className=" bg-transparent w-full px-1 py-0 text-white placeholder-cyan-400/50 border-none outline-none focus:outline-none focus:ring-0"
+          className="flex-grow bg-transparent p-1 text-white placeholder-cyan-400/50 border-none outline-none focus:outline-none focus:ring-0"
         />
       </div>
       {showDropdown && tags.length > 0 && (
-        <div className="absolute z-10 w-full bg-black border border-cyan-400 rounded mt-1 max-h-40 overflow-y-auto">
+        <div className="absolute z-10 w-full bg-black/80 border border-cyan-400/50 rounded mt-1 max-h-40 overflow-y-auto">
           {tags.map((tag) => (
             <div
               key={tag.tagId}
@@ -140,7 +148,7 @@ export default function MultiSelectInput({
         </div>
       )}
       {showDropdown && tags.length === 0 && query && (
-        <div className="absolute z-10 w-full bg-black/90 border border-cyan-400/50 rounded mt-1 p-2 text-white">
+        <div className="absolute z-10 w-full bg-black/80 border border-cyan-400/50 rounded mt-1 p-2 text-white">
           <span>No {fieldName.toLowerCase()} found</span>
           <button
             type="button"
