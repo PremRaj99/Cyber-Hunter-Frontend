@@ -44,6 +44,7 @@ import Preloader from "./components/Common/Preloader";
 import TeamSetting from "./pages/TeamSetting";
 import ScrollToTop from "./components/Common/ScrollToTop";
 import VendorForm from "./components/Freelancer/VendorForm";
+import Contact from "./components/home/Contact";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -103,6 +104,7 @@ export default function App() {
             <Route path="/verifyachievement" element={<VerifyAchievement />} />
             <Route path="/teamsetting" element={<TeamSetting />} />
             <Route path="/Vendorform" element={<VendorForm />} />
+            <Route path="/contact" element={<Contact />} />
           </Routes>
           <Footer />
         </>
