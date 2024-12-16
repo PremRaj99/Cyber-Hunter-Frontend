@@ -57,6 +57,8 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
+
+  // trying to fix the current bug
   return (
     <BrowserRouter>
       {loading ? (
@@ -100,7 +102,7 @@ export default function App() {
             <Route path="/ourteam" element={<OurTeam />} />
             <Route path="/verifyachievement" element={<VerifyAchievement />} />
             <Route path="/teamsetting" element={<TeamSetting />} />
-            <Route path="/Vendorform" element={<VendorForm /> } />
+            <Route path="/Vendorform" element={<VendorForm />} />
           </Routes>
           <Footer />
         </>

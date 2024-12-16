@@ -1,11 +1,10 @@
 import  { useState, useRef } from "react";
 import { IoCloudUpload } from "react-icons/io5";// Ensure you have this icon package installed
-import leaduserdemo from "../../assets/leaduserdemo.png"
 
 
 
 function ImageUploader() {
-  const [imageSrc, setImageSrc] = useState(leaduserdemo);
+  const [imageSrc, setImageSrc] = useState();
   const fileInputRef = useRef(null);
 
   const handleImageUpload = (event) => {
