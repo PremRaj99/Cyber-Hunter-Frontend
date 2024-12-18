@@ -14,7 +14,7 @@ export default function Team() {
       name: "Yash Rana",
       role: "Founder & CTO",
       description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae.",
+        "EMPOWERING STUDENTS TO TURN IDEAS INTO IMPACTFUL SOLUTIONS.",
       photo: yashPic,
       portfolio: "https://yashranaportfolio.netlify.app/",
       socialMedia: {
@@ -29,8 +29,9 @@ export default function Team() {
       name: "Naman Kumar",
       role: "Founder & CEO",
       description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae.",
+        "BLOCKCHAIN ISN’T JUST TECH, IT’S A REVOLUTION WAITING TO BE BUILT",
       photo: namanPic,
+      portfolio: "https://www.namankumar.live/",
       socialMedia: {
         github: "https://github.com/naman-kumar",
         instagram: "https://www.instagram.com/naman_kumar",
