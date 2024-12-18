@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import MultiSelectInput from "../Input/MultiSelectInput";
 import axios from "axios";
@@ -9,6 +9,8 @@ import {
 import { FaGithub, FaImage, FaImages, FaAsterisk } from "react-icons/fa6";
 import { FaEye, FaSearch } from "react-icons/fa";
 import ProjectImageUpload from "../Common/ProjectImageUpload";
+import Input from "../Common/Input";
+import Button from "../Common/Button";
 
 export default function Projectpage() {
   const [interest, setInterest] = useState([]);
@@ -26,9 +28,6 @@ export default function Projectpage() {
     liveLink: "",
   });
 
-  
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(project);
@@ -37,91 +36,6 @@ export default function Projectpage() {
     }).catch((err) => {
       console.log(err);
     });
-  };
-
-  const fileInputRef = useRef(null);
-
-  // Predefined skills and tech stacks (you can expand these)
-
-  // const handleFileChange = (e) => {
-  //   const file = e.target.files[0];
-
-  //   // Validate file size and type
-  //   if (file) {
-  //     const validTypes = ["image/jpeg", "image/png", "image/jpg"];
-  //     const maxSize = 2 * 1024 * 1024; // 2MB
-
-  //     if (!validTypes.includes(file.type)) {
-  //       setError("Only JPG, PNG, and JPEG files are supported");
-  //       return;
-  //     }
-
-  //     if (file.size > maxSize) {
-  //       setError("File size should not exceed 2MB");
-  //       return;
-  //     }
-
-  //     // Create preview
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setThumbnailPreview(reader.result);
-  //       setProject({ ...project, thumbnail: file });
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
-  // const handleFileLoadEnd = (file, result) => {
-  //   setProject((prevProject) => ({
-  //     ...prevProject,
-  //     screenshots: [...prevProject.screenshots, { file, preview: result }],
-  //   }));
-  // };
-
-  // const ScreenshotFileChange = (e) => {
-  //   const files = Array.from(e.target.files);
-
-  //   // Validate file size and type
-  //   const validTypes = ["image/jpeg", "image/png", "image/jpg"];
-  //   const maxSize = 5 * 1024 * 1024; // 5MB
-
-  //   const validFiles = files.filter((file) => {
-  //     if (!validTypes.includes(file.type)) {
-  //       setError("Only JPG, PNG, and JPEG files are supported");
-  //       return false;
-  //     }
-
-  //     if (file.size > maxSize) {
-  //       setError("File size should not exceed 5MB");
-  //       return false;
-  //     }
-
-  //     return true;
-  //   });
-
-  //   if (validFiles.length > 0) {
-  //         validFiles.forEach((file) => {
-  //           const reader = new FileReader();
-  //           reader.onloadend = () => handleFileLoadEnd(file, reader.result);
-  //           reader.readAsDataURL(file);
-  //         });
-    
-  //     const handleFileLoadEnd = (file, result) => {
-  //       setProject((prevProject) => ({
-  //         ...prevProject,
-  //         screenshots: [...prevProject.screenshots, { file, preview: result }],
-  //       }));
-  //     };
-  //   }
-  // };
-    
-
-  // Here you would typically send the data to a backend
-  // console.log("Form Submitted:", formData);
-
-
-  const triggerFileInput = () => {
-    fileInputRef.current.click();
   };
 
   return (
@@ -157,16 +71,10 @@ export default function Projectpage() {
                 </span>
               </label>
             </div>
-            <input
-              type="text"
-              id="live-link"
-              value={project.projectName}
+            <Input
               onChange={(e) =>
                 setProject({ ...project, projectName: e.target.value })
               }
-              className="mt-1 block w-full rounded-md border border-cyan-400/50 bg-black/50 px-4 py-2 text-white shadow-sm focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400 transition duration-300 hover:border-cyan-300"
-              placeholder="Enter your Project Name"
-              required
             />
           </motion.div>
 
@@ -230,28 +138,6 @@ export default function Projectpage() {
                   setThumbnailPreview={setThumbnailPreview}
                 />
               </div>
-              {/* <motion.button
-                type="button"
-                onClick={triggerFileInput}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center space-x-2 rounded-md border border-cyan-400/50 bg-black/50 px-4 py-2 text-cyan-400 hover:bg-cyan-400/10 transition duration-300"
-              >
-                <svg
-                  className="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                  />
-                </svg>
-                <span>click here</span>
-              </motion.button> */}
               {thumbnailPreview && (
                 <div className="mt-2">
                   <img
@@ -282,53 +168,26 @@ export default function Projectpage() {
               </span>
             </label>
             <div className="mt-1 flex gap-4">
-              {/* <input
-                type="file"
-                ref={fileInputRef}
-                onChange={ScreenshotFileChange}
-                accept=".jpg,.jpeg,.png"
-                className="hidden"
-              /> */}
-              <motion.button
-                type="button"
-                onClick={triggerFileInput}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center space-x-2 rounded-md border border-cyan-400/50 bg-black/50 px-4 py-2 text-cyan-400 hover:bg-cyan-400/10 transition duration-300"
-              >
-                <svg
-                  className="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                  />
-                </svg>
-                <span>click here</span>
-              </motion.button>
-              {project.thumbnailPreview && (
+              <div className="flex justify-start mb-6">
+                <ProjectImageUpload
+                  project={project}
+                  setProject={setProject}
+                  error={error}
+                  setError={setError}
+                  thumbnailPreview={thumbnailPreview}
+                  setThumbnailPreview={setThumbnailPreview}
+                />
+              </div>
+              {thumbnailPreview && (
                 <div className="mt-2">
                   <img
-                    src={project.thumbnailPreview}
+                    src={thumbnailPreview}
                     alt="Thumbnail Preview"
                     className="max-w-[200px] max-h-[200px] rounded-md"
                   />
                 </div>
               )}
-              {project.thumbnailError && (
-                <p className="mt-1 text-xs text-red-500">
-                  {project.thumbnailError}
-                </p>
-              )}
-              <p className="mt-1 text-xs text-red-500">
-                • Do not upload the image more than 5mb
-                <br />• only Jpg,png,jpeg supported
-              </p>
+              {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
             </div>
           </motion.div>
 
@@ -388,8 +247,6 @@ export default function Projectpage() {
             </div>
           </motion.div>
 
-          {/* Submit Button */}
-
           {/* Languages */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -415,21 +272,6 @@ export default function Projectpage() {
                 apiEndpoint={`${import.meta.env.VITE_API_URL}/api/v1/interest`}
                 onTagsChange={setInterest}
               />
-              <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                <svg
-                  className="w-5 h-5 text-cyber"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
             </div>
           </motion.div>
 
@@ -452,17 +294,7 @@ export default function Projectpage() {
                   <FaAsterisk />
                 </span>
               </label>
-              <input
-                type="text"
-                id="github-link"
-                value={project.githubLink}
-                onChange={(e) =>
-                  setProject({ ...project, githubLink: e.target.value })
-                }
-                className="mt-1 block w-full rounded-md border border-cyan-400/50 bg-black/50 px-4 py-2 text-white shadow-sm focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400 transition duration-300 hover:border-cyan-300"
-                placeholder="Enter your Project Name"
-                required
-              />
+              <Input onChange={(e) => setProject({ ...project, githubLink: e.target.value })} />
             </div>
           </motion.div>
 
@@ -482,17 +314,7 @@ export default function Projectpage() {
                 </span>
                 Live Link
               </label>
-              <input
-                type="text"
-                id="live-link"
-                value={project.liveLink}
-                onChange={(e) =>
-                  setProject({ ...project, liveLink: e.target.value })
-                }
-                className="mt-1 block w-full rounded-md border border-cyan-400/50 bg-black/50 px-4 py-2 text-white shadow-sm focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400 transition duration-300 hover:border-cyan-300"
-                placeholder="Enter your Project Name"
-                required
-              />
+              <Input onChange={(e) => setProject({ ...project, liveLink: e.target.value })} />
             </div>
           </motion.div>
           {/* Note Section */}
@@ -515,13 +337,9 @@ export default function Projectpage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.5 }}
+            className="flex justify-center w-full"
           >
-            <button
-              type="submit"
-              className="w-full rounded-md  bg-cyan-400 py-2 text-black font-semibold hover:bg-black transition duration-300 hover:border-2 hover:border-brandPrimary hover:text-brandPrimary"
-            >
-              Add Project
-            </button>
+            <Button type="submit">Add Project</Button>
           </motion.div>
         </form>
       </main>
