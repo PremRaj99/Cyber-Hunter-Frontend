@@ -1,27 +1,31 @@
 // import React from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import namanPic from "../../assets/team/namanKumar.png";
+import yashPic from "../../assets/team/yashRana.png";
+import premPic from "../../assets/team/premrajpic.png";
+import manikPic from "../../assets/team/manikDutt.png";
 import { Facebook, Twitter, Linkedin, Github } from "lucide-react";
 
 const coreTeamMembers = [
   {
-    name: "John Doe",
+    name: "Naman Kumar",
     role: "Founder & CEO",
-    image: "https://picsum.photos/200/300",
+    image: namanPic,
     description:
-      "Visionary leader with 10+ years of experience in tech innovation next gen.",
+      "Tech guru specializing in scalable architecture and emerging technologies.",
     social: {
-      twitter: "https://twitter.com/johndoe",
-      linkedin: "https://linkedin.com/in/johndoe",
-      github: "https://github.com/johndoe",
+      twitter: "https://twitter.com/naman_kumar",
+      linkedin: "https://www.linkedin.com/in/namankh",
+      github: "https://github.com/6829nkhpas",
     },
   },
   {
-    name: "Jane Smith",
-    role: "CTO",
-    image: "https://picsum.photos/200/300",
+    name: "Yash Rana",
+    role: "Founder & CTO",
+    image: yashPic,
     description:
-      "Tech guru specializing in scalable architecture and emerging technologies.",
+      "Visionary leader with 2+ years of experience in tech innovation next gen.",
     social: {
       twitter: "https://twitter.com/janesmith",
       linkedin: "https://linkedin.com/in/janesmith",
@@ -29,27 +33,27 @@ const coreTeamMembers = [
     },
   },
   {
-    name: "Mike Johnson",
-    role: "Lead Designer",
-    image: "https://unsplash.it/300/300",
+    name: "Prem Raj",
+    role: "Co-Founder & Backend Dev.",
+    image: premPic,
     description:
-      "Creative mind with a passion for user-centric design and branding.",
+      "Backend expert with a knack for building robust and scalable APIs.",
     social: {
-      twitter: "https://twitter.com/mikejohnson",
-      linkedin: "https://linkedin.com/in/mikejohnson",
-      facebook: "https://facebook.com/mikejohnson",
+      twitter: "https://twitter.com/premraj99",
+      linkedin: "https://linkedin.com/in/prem-raj99/",
+      github: "https://facebook.com/PremRaj99",
     },
   },
   {
-    name: "Mike Johnson",
-    role: "Lead Designer",
-    image: "https://unsplash.it/300/300",
+    name: "Manik Dutt",
+    role: "Co-Founder & Frontend Dev.",
+    image: manikPic,
     description:
       "Creative mind with a passion for user-centric design and branding.",
     social: {
-      twitter: "https://twitter.com/mikejohnson",
-      linkedin: "https://linkedin.com/in/mikejohnson",
-      facebook: "https://facebook.com/mikejohnson",
+      twitter: "https://twitter.com/manikdutt157",
+      linkedin: "https://www.linkedin.com/in/manik-dutt-92b9ab250/",
+      github: "https://github.com/manikdutt157",
     },
   },
 ];
@@ -113,11 +117,13 @@ const CoreTeam = () => {
             }}
             className="flex-shrink-0 w-80 border-2 border-brandPrimary rounded-lg shadow-lg overflow-hidden"
           >
-            <img
-              src={member.image}
-              alt={member.name}
-              className="w-full h-64 object-cover"
-            />
+            <div className="flex items-center justify-center">
+              <img
+                src={member.image}
+                alt={member.name}
+                className="w-full h-72 object-cover"
+              />
+            </div>
             <div className="p-6">
               <h3 className="text-xl font-semibold text-brandPrimary ">
                 {member.name}

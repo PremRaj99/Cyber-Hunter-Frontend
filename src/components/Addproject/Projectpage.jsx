@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import MultiSelectInput from "../Input/MultiSelectInput";
-import axios from "axios";
+// import axios from "axios";
 import {
   MdOutlineDriveFileRenameOutline,
   MdOutlineDescription,
@@ -11,6 +11,7 @@ import { FaEye, FaSearch } from "react-icons/fa";
 import ProjectImageUpload from "../Common/ProjectImageUpload";
 import Input from "../Common/Input";
 import Button from "../Common/Button";
+// import { headers } from "next/headers";
 
 export default function Projectpage() {
   const [interest, setInterest] = useState([]);
@@ -28,15 +29,23 @@ export default function Projectpage() {
     liveLink: "",
   });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(project);
-    await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/project`, project).then((res) => {
-      console.log(res);
-    }).catch((err) => {
-      console.log(err);
-    });
-  };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   console.log(project);
+  //   await axios
+  //     .post(`${import.meta.env.VITE_API_URL}/api/v1/project`, project, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   return (
     <div className="min-h-screen bg-black bg-gradient-to-br from-black via-black to-cyan-950">
@@ -50,7 +59,7 @@ export default function Projectpage() {
           <span className="border-b-2 border-cyan-400">ADD PROJECT </span>
         </motion.h2>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={""} className="space-y-6">
           {/* Project Name */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -72,6 +81,10 @@ export default function Projectpage() {
               </label>
             </div>
             <Input
+              placeholder={"Project Name"}
+              value={project.projectName}
+              type={"password"}
+              width={"full"}
               onChange={(e) =>
                 setProject({ ...project, projectName: e.target.value })
               }
@@ -294,7 +307,7 @@ export default function Projectpage() {
                   <FaAsterisk />
                 </span>
               </label>
-              <Input onChange={(e) => setProject({ ...project, githubLink: e.target.value })} />
+              <Input onChange={(e) => setProject({ ...project, githubLink: e.target.value })} width={"full"}/>
             </div>
           </motion.div>
 
@@ -314,9 +327,10 @@ export default function Projectpage() {
                 </span>
                 Live Link
               </label>
-              <Input onChange={(e) => setProject({ ...project, liveLink: e.target.value })} />
+              <Input onChange={(e) => setProject({ ...project, liveLink: e.target.value })} width={"full"} />
             </div>
           </motion.div>
+
           {/* Note Section */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -337,9 +351,10 @@ export default function Projectpage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.5 }}
-            className="flex justify-center w-full"
+            className="flex justify-center w-full "
           >
-            <Button type="submit">Add Project</Button>
+            <Button type={"submit"} rounded={'md'} width={"full"}>Add Project</Button>
+            
           </motion.div>
         </form>
       </main>

@@ -1,7 +1,6 @@
-import  { useState, useRef } from "react";
-import { IoCloudUpload } from "react-icons/io5";// Ensure you have this icon package installed
-
-
+import { useState, useRef } from "react";
+import { IoCloudUpload } from "react-icons/io5"; // Ensure you have this icon package installed
+import Button from "./Button";
 
 function ImageUploader() {
   const [imageSrc, setImageSrc] = useState();
@@ -32,13 +31,12 @@ function ImageUploader() {
         />
       )}
       <div className="flex flex-col justify-center mt-4 md:mt-0 md:m-8 items-center md:items-start">
-        <button
-          className="bg-[#5CE1E6] text-black hover:bg-transparent hover:border-[#5CE1E6] hover:text-[#5CE1E6] hover:border font-bold rounded-md flex justify-evenly items-center px-4 py-1 mt-2 transition duration-500"
-          onClick={handleButtonClick}
-        >
-          <IoCloudUpload className="h-6 w-6 m-1 " />
-          Click Here
-        </button>
+        <Button type="submit" rounded="md" onClick={handleButtonClick}>
+          <span className="flex items-center">
+            <IoCloudUpload className="h-6 w-6 m-1 " />
+            <p>Click Here</p>
+          </span>
+        </Button>
         <input
           type="file"
           required

@@ -135,7 +135,7 @@ export default function service() {
                 type="submit"
                 className=" flex items-center justify-center bg-brandPrimary text-black font-bold py-3 px-6 rounded-lg hover:bg-black hover:text-brandPrimary hover:border hover:border-brandPrimary transform hover:scale-105 transition-all duration-300"
               >
-                Send Message
+                See More
                 <span className="ml-2">
                   <FaArrowRight />
                 </span>
