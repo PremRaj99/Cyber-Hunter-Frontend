@@ -1,9 +1,9 @@
-import { useState, useCallback, useEffect,useRef } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 // import ImageUploader from "../components/Common/ImageUpload";
 import leaduserdemo from "../assets/leaduserdemo.png";
 import MultiSelectInput from "../components/Input/MultiSelectInput";
-import axios from "axios";
+import axios from "../utils/Axios";
 import { useNavigate } from "react-router-dom";
 import { FaAsterisk } from "react-icons/fa6";
 import { toast } from "react-toastify";
@@ -11,30 +11,26 @@ import Button from "../components/Common/Button";
 import { IoCloudUpload } from "react-icons/io5";
 // import { headers } from "next/headers";
 
-
 export default function UserDetail() {
-
   const navigate = useNavigate();
   // Initial amounts
   const clubReg = 100;
   const clubId = 50;
 
   // States for form fields
-  const [userDetails, setUserDetails] = useState(
-    {
-      profilePicture: "",
-      name: "",
-      section: "",
-      email: "",
-      qId: "",
-      program: "",
-      branch: "",
-      session: "",
-      dob: "",
-      gender: "",
-      phone: "",
-    }
-  );
+  const [userDetails, setUserDetails] = useState({
+    profilePicture: "",
+    name: "",
+    section: "",
+    email: "",
+    qId: "",
+    program: "",
+    branch: "",
+    session: "",
+    dob: "",
+    gender: "",
+    phone: "",
+  });
 
   // Interest
   const [interest, setInterest] = useState([]);
@@ -85,7 +81,6 @@ export default function UserDetail() {
     const formData = new FormData();
     formData.append("name", userDetails.name);
     formData.append("qId", userDetails.qId);
-    formData.append("userId", userDetails.email); // Using email as userId
     formData.append("course", userDetails.program);
     formData.append("session", userDetails.session);
     formData.append("branch", userDetails.branch);
@@ -94,8 +89,6 @@ export default function UserDetail() {
     formData.append("gender", userDetails.gender.toLowerCase());
     formData.append("section", userDetails.section);
 
-
-
     // Handle profile picture
     if (profilePicture) {
       formData.append("profilePicture", profilePicture);
@@ -103,23 +96,21 @@ export default function UserDetail() {
 
     try {
       // Send data to backend
-      await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/user`,
-        formData,
-        {
+      await axios
+        .post(`/api/v1/user`, formData, {
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            "Content-Type": "multipart/form-data",
+            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
           },
-        }
-      ).then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          toast.success("Registration Successful, Please Login to continue.");
-          resetForm();
-          navigate("/login");
-        }
-      });
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            toast.success(res.data.message);
+            resetForm();
+            navigate("/login");
+          }
+        });
     } catch (error) {
       // Handle registration error
       console.error(
@@ -151,12 +142,14 @@ export default function UserDetail() {
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
+    console.log(file);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImageSrc(reader.result);
       };
       reader.readAsDataURL(file);
+      setProfilePicture(file);
     }
   };
 
@@ -164,7 +157,6 @@ export default function UserDetail() {
     fileInputRef.current.click();
   };
 
-  
   return (
     <div className="min-h-screen bg-gradient-to-b text-white p-4 md:p-8">
       <div className="max-w-4xl mx-auto bg-gray-800 rounded-lg shadow-lg p-6 md:p-8">
@@ -175,38 +167,42 @@ export default function UserDetail() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex flex-col md:flex-row justify-center items-center ">
-                {imageSrc && (
-                  <img
-                    src={imageSrc}
-                    alt="Uploaded"
-                    className="h-24 w-24 md:h-32 md:w-32 object-cover rounded-full"
-                  />
-                )}
-                <div className="flex flex-col justify-center mt-4 md:mt-0 md:m-8 items-center md:items-start">
-                  <h2 className="flex gap-2 text-lg text-white text-center md:text-left">
-                    UPLOAD PHOTO{" "}
-                    <span className="text-red-700 text-xs">
-                      <FaAsterisk />
-                    </span>
-                  </h2>
-                  <Button type="submit" rounded="3xl" width={"full"}  onClick={handleButtonClick}>
-                    <span className="flex gap-2 items-center">
-          
-                    <IoCloudUpload className="h-6 w-6 " />
-                    <p>Click Here</p>
-                    </span>
-                  </Button>
-          
-                  <input
-                    type="file"
-                    required
-                    ref={fileInputRef}
-                    style={{ display: "none" }}
-                    onChange={handleImageUpload}
-                    accept="image/*"
-                  />
-                </div>
-              </div>
+            {imageSrc && (
+              <img
+                src={imageSrc}
+                alt="Uploaded"
+                className="h-24 w-24 md:h-32 md:w-32 object-cover rounded-full"
+              />
+            )}
+            <div className="flex flex-col justify-center mt-4 md:mt-0 md:m-8 items-center md:items-start">
+              <h2 className="flex gap-2 text-lg text-white text-center md:text-left">
+                UPLOAD PHOTO{" "}
+                <span className="text-red-700 text-xs">
+                  <FaAsterisk />
+                </span>
+              </h2>
+              <Button
+                type="submit"
+                rounded="3xl"
+                width={"full"}
+                onClick={handleButtonClick}
+              >
+                <span className="flex gap-2 items-center">
+                  <IoCloudUpload className="h-6 w-6 " />
+                  <p>Click Here</p>
+                </span>
+              </Button>
+
+              <input
+                type="file"
+                required
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                onChange={handleImageUpload}
+                accept="image/*"
+              />
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">

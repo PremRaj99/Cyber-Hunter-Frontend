@@ -5,7 +5,7 @@ console.log(token);
 
 const Axios = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 1000,
+  timeout: 10000,
   headers: {
     "Content-Type": "application/json",
     ...(token ? { Authorization: "Bearer " + token } : {}),

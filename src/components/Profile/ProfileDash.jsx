@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useSelector,useDispatch } from "react-redux";
 import { signInSuccess } from "../../redux/User/userSlice";
+import { current } from "@reduxjs/toolkit";
 
 
 export default function ProfileDash() {
@@ -11,18 +12,13 @@ export default function ProfileDash() {
   const user = useSelector((state) => state.user.currentUser);
   console.log(user);
 
-  // https://api.cloudinary.com/v1_1/dkvrajw28/image/upload
-  // CLOUDINARY_API_SECRET = lFeHYW98PypmkcX006UKWs4rHUE;
-  // CLOUDINARY_CLOUD_NAME = dkvrajw28;
-  // CLOUDINARY_API_KEY = 567986218168593;
-
   const userDetails = user
     ? {
         name: user.name,
+        qId: user.qId,
         course: user.course,
         branch: user.branch,
         session: user.session,
-        qId: user.qId,
         gender: user.gender,
         points: user.points,
       }
@@ -199,7 +195,7 @@ export default function ProfileDash() {
               <div className="grid justify-center items-center gap-4 mb-6">
                 <div className="w-32 h-32 rounded-full bg-blue-900 flex items-center justify-center">
                   <img
-                    src="https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?q=80&w=1966&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    src={user?.profilePicture}
                     alt="Profile"
                     className="w-full h-full rounded-full object-cover"
                   />
