@@ -1,10 +1,9 @@
-/* eslint-disable react/jsx-key */
 // import React from 'react';
 import { Carousel } from "flowbite-react";
 import namanPic from "../../assets/team/namanKumar.png";
 import yashPic from "../../assets/team/yashRana.png";
 import premPic from "../../assets/team/premrajpic.png";
-import manikPic from "../../assets/team/manikDutt.png";
+import manikPic from "../../assets/team/manikdutt.png";
 // Internal Import
 import MemberCard from "../Team/MemberCard";
 import { Link } from "react-router-dom";

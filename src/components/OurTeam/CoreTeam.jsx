@@ -4,7 +4,7 @@ import { useInView } from "react-intersection-observer";
 import namanPic from "../../assets/team/namanKumar.png";
 import yashPic from "../../assets/team/yashRana.png";
 import premPic from "../../assets/team/premrajpic.png";
-import manikPic from "../../assets/team/manikDutt.png";
+import manikPic from "../../assets/team/manikdutt.png";
 import { Facebook, Twitter, Linkedin, Github } from "lucide-react";
 
 const coreTeamMembers = [

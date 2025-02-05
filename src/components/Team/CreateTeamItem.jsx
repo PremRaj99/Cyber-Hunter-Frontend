@@ -1,51 +1,58 @@
-import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import leaduserdemo from "../../assets/leaduserdemo.png";
+"use client"
+
+import { useState, useMemo } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import React from "react" // Added import for React
+import leadUserDemo from "../../assets/leaduserdemo.png" // Added import for leadUserDemo
+import CreateTeamPopUp from "./CreateTeamPopUp"
 
 export default function CreateTeamItem() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("")
+  const [isFormVisible, setIsFormVisible] = useState(false)
+  const [newTeamName, setNewTeamName] = useState("")
 
   const teams = [
     {
       id: 1,
       name: "Code Hunter",
       score: 90,
-      icon: leaduserdemo,
+      icon: leadUserDemo,
     },
     {
       id: 2,
       name: "CodeSec",
       score: 85,
-      icon: leaduserdemo,
+      icon: leadUserDemo,
     },
     {
       id: 3,
       name: "Hunters",
       score: 80,
-      icon: leaduserdemo,
+      icon: leadUserDemo,
     },
     {
       id: 4,
       name: "Noob coders",
       score: 75,
-      icon: leaduserdemo,
+      icon: leadUserDemo,
     },
-  ];
+  ]
 
   // Filtered teams based on search query
   const filteredTeams = useMemo(() => {
-    return teams.filter((team) =>
-      team.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [searchQuery, teams]);
+    return teams.filter((team) => team.name.toLowerCase().includes(searchQuery.toLowerCase()))
+  }, [searchQuery])
+
+  const handleCreateTeam = (e) => {
+    e.preventDefault()
+    // Here you would typically handle the team creation logic
+    console.log("Creating team:", newTeamName)
+    setNewTeamName("")
+    setIsFormVisible(false)
+  }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="p-4 md:p-8"
-    >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="p-4 md:p-8">
       <div className="mx-auto max-w-4xl">
         {/* Header Section */}
         <div className="mb-8 flex flex-col sm:flex-row items-center mt-4 justify-between">
@@ -95,7 +102,10 @@ export default function CreateTeamItem() {
           transition={{ duration: 0.3, delay: 0.1 }}
           className="mb-8 flex justify-center"
         >
-          <button className="flex items-center gap-2 rounded-full bg-white px-6 py-2 text-black transition-transform hover:scale-105">
+          <button
+            onClick={() => setIsFormVisible(true)}
+            className="flex items-center gap-2 rounded-full bg-white px-6 py-2 text-black transition-transform hover:scale-105"
+          >
             <span className="text-2xl">+</span>
             Create your team
           </button>
@@ -130,8 +140,10 @@ export default function CreateTeamItem() {
                     <span className="text-lg text-gray-400">{team.id}</span>
                     <div className="h-10 w-10 overflow-hidden rounded-full">
                       <img
-                        src={team.icon}
+                        src={team.icon || "/placeholder.svg"}
                         alt={`${team.name} icon`}
+                        width={40}
+                        height={40}
                         className="h-full w-full object-cover"
                       />
                     </div>
@@ -139,10 +151,8 @@ export default function CreateTeamItem() {
                   </div>
 
                   <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-8">
-                    <span className="text-lg text-white">
-                      Score : {team.score}
-                    </span>
-                    <button className="rounded bg-brandPrimary px-6 py-1 text-sm font-medium text-black transition-colors hover:bg-black hover:border hover:border-brandPrimary hover:text-brandPrimary">
+                    <span className="text-lg text-white">Score : {team.score}</span>
+                    <button className="rounded bg-cyan-400 px-6 py-1 text-sm font-medium text-black transition-colors hover:bg-black hover:border hover:border-cyan-400 hover:text-cyan-400">
                       JOIN
                     </button>
                   </div>
@@ -150,16 +160,44 @@ export default function CreateTeamItem() {
               ))}
             </div>
           ) : (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-gray-400 py-4">
+              No teams found matching your search
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Create Team Form Pop-up */}
+        <AnimatePresence>
+          {isFormVisible && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center text-gray-400 py-4"
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
             >
-              No teams found matching your search
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-gray-800 rounded-lg p-6 w-full max-w-md"
+              >
+                <h2 className="text-2xl font-bold text-white mb-4">Create Your Team</h2>
+                <form onSubmit={handleCreateTeam}>
+                  <div className="space-y-4">
+                    <CreateTeamPopUp
+                      newTeamName={newTeamName}
+                      setNewTeamName={setNewTeamName}
+                      setIsFormVisible={setIsFormVisible}
+                      handleCreateTeam={handleCreateTeam}
+                    />
+                  </div>
+                </form>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
     </motion.div>
-  );
+  )
 }
+

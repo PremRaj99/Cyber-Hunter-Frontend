@@ -1,51 +1,109 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import MultiSelectInput from "../Input/MultiSelectInput";
-// import axios from "axios";
+import axios from "axios";
 import {
   MdOutlineDriveFileRenameOutline,
   MdOutlineDescription,
 } from "react-icons/md";
 import { FaGithub, FaImage, FaImages, FaAsterisk } from "react-icons/fa6";
 import { FaEye, FaSearch } from "react-icons/fa";
-import ProjectImageUpload from "../Common/ProjectImageUpload";
 import Input from "../Common/Input";
 import Button from "../Common/Button";
-// import { headers } from "next/headers";
 
 export default function Projectpage() {
-  const [interest, setInterest] = useState([]);
   const [error, setError] = useState("");
+  const [interest, setInterest] = useState([]);
   const [thumbnailPreview, setThumbnailPreview] = useState("");
+  const [screenshotPreview, setScreenshotPreview] = useState([]);
   const [project, setProject] = useState({
     projectName: "",
-    description: "",
-    techStack: "",
-    thumbnail: null,
-    screenshots: [],
+    projectDescription: "",
+    techStack: [],
+    projectThumbnail: null,
+    projectImage: [],
     skills: [],
-    languages: [],
-    githubLink: "",
+    language: [],
+    gitHubLink: "",
     liveLink: "",
   });
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   console.log(project);
-  //   await axios
-  //     .post(`${import.meta.env.VITE_API_URL}/api/v1/project`, project, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+  const thumbnailInputRef = useRef(null);
+  const screenshotsInputRef = useRef(null);
+
+  const handleThumbnailChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setThumbnailPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setProject({ ...project, projectThumbnail: file });
+    }
+  };
+
+  const handleScreenshotsChange = (event) => {
+    const files = Array.from(event.target.files);
+    const previews = files.map((file) => URL.createObjectURL(file));
+    setScreenshotPreview(previews);
+    setProject({ ...project, projectImage: files });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      // Validate required fields
+      if (!project.projectName || !project.projectDescription || !project.projectThumbnail) {
+        setError("Please fill in all required fields");
+        return;
+      }
+
+      const formData = new FormData();
+
+      // Append basic text fields
+      formData.append("projectName", project.projectName);
+      formData.append("projectDescription", project.projectDescription);
+      formData.append("gitHubLink", project.gitHubLink);
+      formData.append("liveLink", project.liveLink);
+
+      // Append arrays as JSON strings
+      formData.append("techStack", JSON.stringify(project.techStack));
+      formData.append("skills", JSON.stringify(project.skills));
+      formData.append("language", JSON.stringify(project.language));
+
+      // Append files
+      if (project.projectThumbnail) {
+        formData.append("projectThumbnail", project.projectThumbnail);
+      }
+
+      project.projectImage.forEach((image, index) => {
+        formData.append(`projectImage`, image);
+      });
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/v1/project`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+
+      if (response.data) {
+        // Reset form or redirect
+        alert("Project added successfully!");
+        // You might want to redirect here
+      }
+    } catch (err) {
+      console.error("Error submitting project:", err);
+      setError(err.response?.data?.message || "Error submitting project");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black bg-gradient-to-br from-black via-black to-cyan-950">
@@ -59,7 +117,7 @@ export default function Projectpage() {
           <span className="border-b-2 border-cyan-400">ADD PROJECT </span>
         </motion.h2>
 
-        <form onSubmit={""} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Project Name */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -83,7 +141,7 @@ export default function Projectpage() {
             <Input
               placeholder={"Project Name"}
               value={project.projectName}
-              type={"password"}
+              type={"text"}
               width={"full"}
               onChange={(e) =>
                 setProject({ ...project, projectName: e.target.value })
@@ -112,9 +170,9 @@ export default function Projectpage() {
             <textarea
               id="description"
               rows={6}
-              value={project.description}
+              value={project.projectDescription}
               onChange={(e) =>
-                setProject({ ...project, description: e.target.value })
+                setProject({ ...project, projectDescription: e.target.value })
               }
               className="mt-1 block w-full rounded-md border border-cyan-400/50 bg-black/50 px-4 py-2 text-white shadow-sm focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400 transition duration-300 hover:border-cyan-300"
               placeholder="Project Description"
@@ -129,7 +187,7 @@ export default function Projectpage() {
             transition={{ delay: 0.4, duration: 0.5 }}
           >
             <label
-              htmlFor="skills-required"
+              htmlFor="thumbnail"
               className="flex items-middle text-l gap-2 font-medium text-white"
             >
               <span>
@@ -141,16 +199,19 @@ export default function Projectpage() {
               </span>
             </label>
             <div className="mt-1 flex gap-4">
-              <div className="flex justify-start mb-6">
-                <ProjectImageUpload
-                  project={project}
-                  setProject={setProject}
-                  error={error}
-                  setError={setError}
-                  thumbnailPreview={thumbnailPreview}
-                  setThumbnailPreview={setThumbnailPreview}
-                />
-              </div>
+              <input
+                type="file"
+                ref={thumbnailInputRef}
+                style={{ display: "none" }}
+                onChange={handleThumbnailChange}
+                accept="image/*"
+              />
+              <Button
+                type="button"
+                onClick={() => thumbnailInputRef.current.click()}
+              >
+                Upload Thumbnail
+              </Button>
               {thumbnailPreview && (
                 <div className="mt-2">
                   <img
@@ -163,13 +224,15 @@ export default function Projectpage() {
               {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
             </div>
           </motion.div>
+
+          {/* Project Screenshots */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
             <label
-              htmlFor="skills-required"
+              htmlFor="screenshots"
               className="flex items-middle text-l gap-2 font-medium text-white"
             >
               <span>
@@ -181,23 +244,30 @@ export default function Projectpage() {
               </span>
             </label>
             <div className="mt-1 flex gap-4">
-              <div className="flex justify-start mb-6">
-                <ProjectImageUpload
-                  project={project}
-                  setProject={setProject}
-                  error={error}
-                  setError={setError}
-                  thumbnailPreview={thumbnailPreview}
-                  setThumbnailPreview={setThumbnailPreview}
-                />
-              </div>
-              {thumbnailPreview && (
-                <div className="mt-2">
-                  <img
-                    src={thumbnailPreview}
-                    alt="Thumbnail Preview"
-                    className="max-w-[200px] max-h-[200px] rounded-md"
-                  />
+              <input
+                type="file"
+                ref={screenshotsInputRef}
+                style={{ display: "none" }}
+                onChange={handleScreenshotsChange}
+                accept="image/*"
+                multiple
+              />
+              <Button
+                type="button"
+                onClick={() => screenshotsInputRef.current.click()}
+              >
+                Upload Screenshots
+              </Button>
+              {screenshotPreview.length > 0 && (
+                <div className="mt-2 flex gap-2 flex-wrap">
+                  {screenshotPreview.map((src, index) => (
+                    <img
+                      key={index}
+                      src={src}
+                      alt={`Screenshot Preview ${index + 1}`}
+                      className="max-w-[200px] max-h-[200px] rounded-md"
+                    />
+                  ))}
                 </div>
               )}
               {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
@@ -281,7 +351,7 @@ export default function Projectpage() {
             </label>
             <div className="relative">
               <MultiSelectInput
-                fieldName="Langugaes"
+                fieldName="Languages"
                 apiEndpoint={`${import.meta.env.VITE_API_URL}/api/v1/interest`}
                 onTagsChange={setInterest}
               />
@@ -307,7 +377,12 @@ export default function Projectpage() {
                   <FaAsterisk />
                 </span>
               </label>
-              <Input onChange={(e) => setProject({ ...project, githubLink: e.target.value })} width={"full"}/>
+              <Input
+                onChange={(e) =>
+                  setProject({ ...project, gitHubLink: e.target.value })
+                }
+                width={"full"}
+              />
             </div>
           </motion.div>
 
@@ -327,7 +402,12 @@ export default function Projectpage() {
                 </span>
                 Live Link
               </label>
-              <Input onChange={(e) => setProject({ ...project, liveLink: e.target.value })} width={"full"} />
+              <Input
+                onChange={(e) =>
+                  setProject({ ...project, liveLink: e.target.value })
+                }
+                width={"full"}
+              />
             </div>
           </motion.div>
 
@@ -353,8 +433,14 @@ export default function Projectpage() {
             transition={{ delay: 0.7, duration: 0.5 }}
             className="flex justify-center w-full "
           >
-            <Button type={"submit"} rounded={'md'} width={"full"}>Add Project</Button>
-            
+            <Button
+              type={"submit"}
+              rounded={"md"}
+              width={"full"}
+              onClick={handleSubmit}
+            >
+              Add Project
+            </Button>
           </motion.div>
         </form>
       </main>

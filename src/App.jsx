@@ -95,7 +95,7 @@ export default function App() {
             <Route path="/EventDetail" element={<EventDetail />} />
             <Route path="/CreateTeam" element={<CreateTeam />} />
             <Route path="/ProfileSetting" element={<ProfileSetting />} />
-            <Route path="/freelancer" element={<Freelancer />} />
+            <Route path="/freelance" element={<Freelancer />} />
             <Route path="/vendorlogin" element={<VendorLogin />} />
             <Route path="/postproject" element={<PostProject />} />
             <Route path="/projectlist" element={<ProjectList />} />
