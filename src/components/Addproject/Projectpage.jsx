@@ -31,6 +31,8 @@ export default function Projectpage() {
   const thumbnailInputRef = useRef(null);
   const screenshotsInputRef = useRef(null);
 
+  const [loading, setLoading] = useState(false);
+
   const handleThumbnailChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -53,12 +55,17 @@ export default function Projectpage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
       // Validate required fields
-      if (!project.projectName || !project.projectDescription || !project.projectThumbnail) {
+      if (
+        !project.projectName ||
+        !project.projectDescription ||
+        !project.projectThumbnail
+      ) {
         setError("Please fill in all required fields");
-        return;
+        return setLoading(false);
       }
 
       const formData = new FormData();
@@ -102,6 +109,8 @@ export default function Projectpage() {
     } catch (err) {
       console.error("Error submitting project:", err);
       setError(err.response?.data?.message || "Error submitting project");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -435,11 +444,18 @@ export default function Projectpage() {
           >
             <Button
               type={"submit"}
+              disabled={loading}
               rounded={"md"}
               width={"full"}
               onClick={handleSubmit}
             >
-              Add Project
+              {loading ? (
+                <div className="flex items-center justify-center">
+                  <div className="w-5 h-5 border-t-2 border-b-2 border-cyan-400 rounded-full animate-spin"></div>
+                </div>
+              ) : (
+                "Submit"
+              )}
             </Button>
           </motion.div>
         </form>
