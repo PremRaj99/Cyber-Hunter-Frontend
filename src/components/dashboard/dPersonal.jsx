@@ -55,17 +55,17 @@ const dPersonal = () => {
           {
             icon: <AddCircleRoundedIcon />,
             text: "ADD PROJECT",
-            path: "/addProject",
+            path: "/dashboard/profile/addprojects",
           },
           {
             icon: <VisibilityOutlinedIcon />,
             text: "VIEW PROJECT",
-            path: "/viewProject",
+            path: "/dashboard/profile/viewProject",
           },
           {
             icon: <VerifiedOutlinedIcon style={{ color: "#06db62" }} />,
             text: "VERIFY ACHIEVEMENT",
-            path: "/verifyachievement",
+            path: "/dashboard/profile/personalachivement",
           },
           {
             icon: <ChatBubbleIcon />,

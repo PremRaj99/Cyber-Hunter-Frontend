@@ -12,7 +12,7 @@ import {
   signOutUserFailure,
 } from "../../redux/User/userSlice";
 import DefaultImg from '../../assets/profile.png'
-import { TbLogin, TbLogout } from "react-icons/tb";
+import { TbLogin, TbLogout, TbSignRight } from "react-icons/tb";
 
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
@@ -86,7 +86,7 @@ export default function Header() {
         "/api/v1/auth/logout");
       if (data.success) {
         dispatch(signOutUserSuccess());
-        navigate("/login");
+        navigate("/auth/login");
         return toast.success(data.message);
       } else {
         dispatch(signOutUserFailure(data.message));
@@ -254,7 +254,7 @@ export default function Header() {
                   <ul className="py-1">
                     <li
                       onClick={() => {
-                        navigate("/profile");
+                        navigate("/dashboard/profile");
                         setIsUserDropdownOpen(false);
                       }}
                       className="px-4 py-2 hover:bg-[#00D8FF]/10 cursor-pointer text-gray-300 hover:text-[#00D8FF] flex items-center"
@@ -324,18 +324,19 @@ export default function Header() {
               )}
             </div>
           ) : (
-            <div className="flex items-center justify-center gap-4">
+              <div className="flex items-center justify-center gap-4">
+                
               <button
                 className="px-4 py-1 hidden md:block font-semibold rounded-full text-[#00D8FF] border border-[#00D8FF] bg-transparent hover:bg-[#00D8FF] hover:text-black transition-all duration-300"
-                onClick={() => navigate("/login")}
-              >
-                Signup
+                onClick={() => navigate("/auth/login")}
+                >
+                  <span className="flex">Signup</span>
               </button>
               <button
                 className="px-4 py-1 font-semibold rounded-full  text-[#00D8FF] border border-[#00D8FF] bg-transparent hover:bg-[#00D8FF] hover:text-black"
-                onClick={() => navigate("/login")}
+                onClick={() => navigate("/auth/login")}
               >
-                Login
+                  <span className="flex">Login</span>
               </button>
             </div>
           )}

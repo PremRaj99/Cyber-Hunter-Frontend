@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 
 export default function CreateTeamPopUp({ newTeamName, setNewTeamName, setIsFormVisible, handleCreateTeam, teamLeader, setTeamLeader, member1, setMember1, member2, setMember4, setTeamLogo }) {
-
+  const [fileName, setFileName] = useState("");
   const [teamDescription, setTeamDescription] = useState("");
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setFileName(file.name);
+  };
+
   return (
-      <div onSubmit={handleCreateTeam}>
+    <>
         <div className="mb-4">
           <label htmlFor="teamName" className="block text-sm font-medium text-gray-300 mb-2">
             Team Name
@@ -74,32 +79,41 @@ export default function CreateTeamPopUp({ newTeamName, setNewTeamName, setIsForm
             required
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="teamLogo" className="block text-sm font-medium text-gray-300 mb-2">
-            Upload Team Logo (Optional)
-          </label>
+      <div className="mb-6">
+        <label
+          htmlFor="teamLogo"
+          className="block text-sm font-medium text-gray-200 mb-2"
+        >
+          Upload Team Logo <span className="text-gray-400">(Optional)</span>
+        </label>
+        <div className="relative group">
           <input
             type="file"
             id="teamLogo"
-            onChange={(e) => setTeamLogo(e.target.files[0])}
-            className="w-full px-3 py-2 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            onChange={handleFileChange}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
           />
+          <div className="flex items-center justify-center px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-gray-300 group-hover:bg-gray-700 group-hover:border-cyan-400 transition duration-300">
+            <span className="text-sm">{ fileName || "choose file" }</span>
+          </div>
         </div>
+      </div>
+
         <div className="flex justify-end space-x-3">
           <button
             type="button"
             onClick={() => setIsFormVisible(false)}
-            className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white focus:outline-none"
+            className="px-4 py-2 text-sm text-gray-300 hover:text-white focus:outline-none bg-black rounded-md font-semibold"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-cyan-400 text-black rounded-md hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-opacity-50"
-          >
+            className="px-4 py-2 bg-cyan-400 text-black rounded-md hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-opacity-50 font-semibold transition duration-300"
+          > 
             Create Team
           </button>
         </div>
-      </div>
+    </>
   );
 }

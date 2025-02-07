@@ -46,7 +46,7 @@ export default function Login() {
       });
       if (data.success) {
         dispatch(signInSuccess(data.data));
-        navigate("/profile");
+        navigate("/dashboard/profile", { replace: true });
         localStorage.setItem("accessToken", data.data.accessToken);
         localStorage.setItem("refreshToken", data.data.refreshToken);
         setLoading(false);
@@ -90,10 +90,9 @@ export default function Login() {
       setLoading(false);
       if (data.success) {
         dispatch(signInSuccess(data.data));
-        console.log(data.data);
-        navigate("/userdetail");
         localStorage.setItem("accessToken", data.data.accessToken);
         localStorage.setItem("refreshToken", data.data.refreshToken);
+        navigate("/auth/userdetails", { replace: true });
         return toast.success(data.message);
       }
       setLoading(false);

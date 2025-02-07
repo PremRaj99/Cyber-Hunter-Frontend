@@ -152,7 +152,7 @@ export default function CreateTeamItem() {
 
                   <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-8">
                     <span className="text-lg text-white">Score : {team.score}</span>
-                    <button className="rounded bg-cyan-400 px-6 py-1 text-sm font-medium text-black transition-colors hover:bg-black hover:border hover:border-cyan-400 hover:text-cyan-400">
+                    <button className="rounded bg-cyan-400 px-6 py-2 text-sm font-medium text-black transition-colors hover:bg-black hover:border hover:border-cyan-400 hover:text-cyan-400">
                       JOIN
                     </button>
                   </div>
@@ -181,7 +181,7 @@ export default function CreateTeamItem() {
                 exit={{ scale: 0.9, opacity: 0 }}
                 className="bg-gray-800 rounded-lg p-6 w-full max-w-md"
               >
-                <h2 className="text-2xl font-bold text-white mb-4">Create Your Team</h2>
+                <h2 className="text-2xl font-bold text-white text-center mb-4">Create Your Team</h2>
                 <form onSubmit={handleCreateTeam}>
                   <div className="space-y-4">
                     <CreateTeamPopUp

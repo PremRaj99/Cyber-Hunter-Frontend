@@ -52,17 +52,17 @@ const DTeam = () => {
           {
             icon: <AddCircleRoundedIcon />,
             text: "ADD PROJECT",
-            path: "/addProject",
+            path: "/dashboard/team/addteamproject",
           },
           {
             icon: <VisibilityOutlinedIcon />,
             text: "VIEW PROJECT",
-            path: "/viewProject",
+            path: "/dashboard/project/viewproject",
           },
           {
             icon: <VerifiedOutlinedIcon style={{ color: "#06db62" }} />,
             text: "VERIFY ACHIEVEMENT",
-            path: "/verifyachievement",
+            path: "/dashboard/achievement",
           },
           {
             icon: <ChatBubbleIcon />,
@@ -72,7 +72,7 @@ const DTeam = () => {
           {
             icon: <SettingsIcon />,
             text: "TEAM MANAGEMENT",
-            path: "/teamsetting",
+            path: "/dashboard/team/teamsetting",
           },
         ].map((item, index) => (
           <motion.li

@@ -97,7 +97,7 @@ export default function UserDetail() {
     try {
       // Send data to backend
       await axios
-        .post(`/api/v1/user`, formData, {
+        .post(`${import.meta.env.VITE_API_URL}/api/v1/user`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
@@ -108,7 +108,7 @@ export default function UserDetail() {
           if (res.status === 200) {
             toast.success(res.data.message);
             resetForm();
-            navigate("/login");
+            navigate("/auth/login");
           }
         });
     } catch (error) {

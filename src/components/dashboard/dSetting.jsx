@@ -49,7 +49,7 @@ const DSetting = () => {
       <motion.ul variants={containerVariants} className="w-full max-w-md flex flex-col items-center gap-14 m-auto mt-16">
         {[
           {
-            to: "/profileSetting",
+            to: "/dashboard/profile/setting",
             icon: <BsPersonCircle />,
             text: "Profile Settings",
           },
