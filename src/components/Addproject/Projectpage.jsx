@@ -10,10 +10,14 @@ import { FaGithub, FaImage, FaImages, FaAsterisk } from "react-icons/fa6";
 import { FaEye, FaSearch } from "react-icons/fa";
 import Input from "../Common/Input";
 import Button from "../Common/Button";
+import { toast } from "react-toastify";
+import LoadingButton from "../Common/LoadingButton";
+import { useNavigate } from "react-router-dom";
 
 export default function Projectpage() {
   const [error, setError] = useState("");
   const [interest, setInterest] = useState([]);
+  const navigate = useNavigate();
   const [thumbnailPreview, setThumbnailPreview] = useState("");
   const [screenshotPreview, setScreenshotPreview] = useState([]);
   const [project, setProject] = useState({
@@ -54,7 +58,6 @@ export default function Projectpage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
     try {
@@ -62,33 +65,59 @@ export default function Projectpage() {
       if (
         !project.projectName ||
         !project.projectDescription ||
-        !project.projectThumbnail
+        !project.projectThumbnail ||
+        !project.techStack.length ||  // Added validation for arrays
+        !project.skills.length ||
+        !project.language.length
       ) {
-        setError("Please fill in all required fields");
+        toast.error("Please fill in all required fields including tech stack, skills, and languages");
         return setLoading(false);
       }
+
+      // github and live link validation... (keep existing validation)
 
       const formData = new FormData();
 
       // Append basic text fields
       formData.append("projectName", project.projectName);
       formData.append("projectDescription", project.projectDescription);
-      formData.append("gitHubLink", project.gitHubLink);
-      formData.append("liveLink", project.liveLink);
+      formData.append("gitHubLink", project.gitHubLink || "");
+      formData.append("liveLink", project.liveLink || "");
 
-      // Append arrays as JSON strings
-      formData.append("techStack", JSON.stringify(project.techStack));
-      formData.append("skills", JSON.stringify(project.skills));
-      formData.append("language", JSON.stringify(project.language));
+      // Format and append arrays similar to interest handling
+      const techStackIds = project.techStack.map(item => item.tagId);
+      techStackIds.forEach((id, index) => {
+        formData.append(`techStackId[${index}]`, id);
+      });
+
+      const skillIds = project.skills.map(item => item.tagId);
+      skillIds.forEach((id, index) => {
+        formData.append(`skillId[${index}]`, id);
+      });
+
+      const languageIds = project.language.map(item => item.tagId);
+      languageIds.forEach((id, index) => {
+        formData.append(`languageId[${index}]`, id);
+      });
+
+      // Debug logging
+      console.log('Tech Stack IDs being sent:', techStackIds);
+      console.log('Skill IDs being sent:', skillIds);
+      console.log('Language IDs being sent:', languageIds);
 
       // Append files
       if (project.projectThumbnail) {
         formData.append("projectThumbnail", project.projectThumbnail);
       }
 
-      project.projectImage.forEach((image, index) => {
-        formData.append(`projectImage`, image);
+      project.projectImage.forEach((image) => {
+        formData.append("projectImage", image);
       });
+
+      // Log all form data entries
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+      }
 
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/v1/project`,
@@ -102,13 +131,22 @@ export default function Projectpage() {
       );
 
       if (response.data) {
-        // Reset form or redirect
-        alert("Project added successfully!");
-        // You might want to redirect here
+        setProject({
+          projectName: "",
+          projectDescription: "",
+          techStack: [],
+          projectThumbnail: null,
+          projectImage: [],
+          skills: [],
+          language: [],
+          gitHubLink: "",
+          liveLink: "",
+        });
+        toast.success("Project added successfully!");
+        navigate("/dashboard");
       }
     } catch (err) {
-      console.error("Error submitting project:", err);
-      setError(err.response?.data?.message || "Error submitting project");
+      toast.error(err.response?.data?.message || "Error submitting project");
     } finally {
       setLoading(false);
     }
@@ -230,7 +268,7 @@ export default function Projectpage() {
                   />
                 </div>
               )}
-              {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+              {error && <p className="mt-1 text-xs text-red-500">{toast.error(error)}</p>}
             </div>
           </motion.div>
 
@@ -279,7 +317,7 @@ export default function Projectpage() {
                   ))}
                 </div>
               )}
-              {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+              {error && <p className="mt-1 text-xs text-red-500">{toast.error(error)}</p>}
             </div>
           </motion.div>
 
@@ -306,7 +344,8 @@ export default function Projectpage() {
                 placeholder="Search and select Skills"
                 fieldName="skills"
                 apiEndpoint={`${import.meta.env.VITE_API_URL}/api/v1/interest`}
-                onTagsChange={setInterest}
+                onTagsChange={(tags) => setProject({ ...project, skills: tags })}
+                value={project.skills}
               />
             </div>
           </motion.div>
@@ -332,9 +371,10 @@ export default function Projectpage() {
             <div className="relative mt-1">
               <MultiSelectInput
                 placeholder="Search and select Tech Stack"
-                fieldName="Tech Stack"
-                apiEndpoint={`${import.meta.env.VITE_API_URL}/api/v1/interest`}
-                onTagsChange={setInterest}
+                fieldName="techStack"
+                apiEndpoint={`${import.meta.env.VITE_API_URL}/api/v1/techStack`}
+                onTagsChange={(tags) => setProject({ ...project, techStack: tags })}
+                value={project.techStack}
               />
             </div>
           </motion.div>
@@ -360,9 +400,11 @@ export default function Projectpage() {
             </label>
             <div className="relative">
               <MultiSelectInput
-                fieldName="Languages"
-                apiEndpoint={`${import.meta.env.VITE_API_URL}/api/v1/interest`}
-                onTagsChange={setInterest}
+                placeholder="Search and select Languages"
+                fieldName="language"
+                apiEndpoint={`${import.meta.env.VITE_API_URL}/api/v1/language`}
+                onTagsChange={(tags) => setProject({ ...project, language: tags })}
+                value={project.language}
               />
             </div>
           </motion.div>
@@ -442,21 +484,7 @@ export default function Projectpage() {
             transition={{ delay: 0.7, duration: 0.5 }}
             className="flex justify-center w-full "
           >
-            <Button
-              type={"submit"}
-              disabled={loading}
-              rounded={"md"}
-              width={"full"}
-              onClick={handleSubmit}
-            >
-              {loading ? (
-                <div className="flex items-center justify-center">
-                  <div className="w-5 h-5 border-t-2 border-b-2 border-cyan-400 rounded-full animate-spin"></div>
-                </div>
-              ) : (
-                "Submit"
-              )}
-            </Button>
+            <LoadingButton loading={loading} onClick={handleSubmit} />
           </motion.div>
         </form>
       </main>

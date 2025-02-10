@@ -4,7 +4,7 @@ import ViewprojectItem from "../components/Project/ViewprojectItem" ;
 
 export default function Viewproject() {
   return (
-    <div>
+    <div className="max-h-[calc(100vh-8rem)]">
       <ViewprojectItem />
     </div>
   );

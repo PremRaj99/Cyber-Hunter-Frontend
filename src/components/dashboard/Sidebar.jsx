@@ -1,13 +1,8 @@
-import {useState} from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import GroupsIcon from "@mui/icons-material/Groups";
-import PersonIcon from "@mui/icons-material/Person";
-import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
-import CampaignOutlinedIcon from "@mui/icons-material/CampaignOutlined";
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import { FaBars } from "react-icons/fa";
-import { FaXmark } from "react-icons/fa6";
+import { Camera, Users, User, LineChart, Bell, BookUser, Settings } from "lucide-react";
+import { FaBars } from "react-icons/fa6";
+import { GiCrossMark } from "react-icons/gi";
 
 const Sidebar = ({ activeSection, onSectionChange }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,30 +12,19 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
   };
 
   const sidebarItems = [
-    { icon: <GroupsIcon  />, text: "TEAM", section: "team" },
-    { icon: <PersonIcon />, text: "PERSONAL", section: "personal" },
-    {
-      icon: <LeaderboardOutlinedIcon />,
-      text: "LEADERBOARD",
-      section: "leaderboard",
-    },
-    {
-      icon: <CampaignOutlinedIcon />,
-      text: "NOTIFICATION",
-      section: "notification",
-    },
-    { icon: <ContactsOutlinedIcon />, text: "CONTACT", section: "contact" },
-    { icon: <SettingsOutlinedIcon />, text: "SETTINGS", section: "settings" },
+    { icon: <Users className="w-6 h-6" />, text: "TEAM", section: "team" },
+    { icon: <User className="w-6 h-6" />, text: "PERSONAL", section: "personal" },
+    { icon: <LineChart className="w-6 h-6" />, text: "LEADERBOARD", section: "leaderboard" },
+    { icon: <Bell className="w-6 h-6" />, text: "NOTIFICATION", section: "notification" },
+    { icon: <BookUser className="w-6 h-6" />, text: "CONTACT", section: "contact" },
+    { icon: <Settings className="w-6 h-6" />, text: "SETTINGS", section: "settings" }
   ];
-
 
   const mobileMenuVariants = {
     hidden: {
       opacity: 0,
       y: -50,
-      transition: {
-        duration: 0.3,
-      },
+      transition: { duration: 0.3 }
     },
     visible: {
       opacity: 1,
@@ -49,13 +33,10 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
         type: "spring",
         stiffness: 120,
         damping: 20,
-        staggerChildren: 0.1,
-      },
-    },
+        staggerChildren: 0.1
+      }
+    }
   };
-
-
-
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -63,9 +44,9 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
       opacity: 1,
       transition: {
         delayChildren: 0.2,
-        staggerChildren: 0.1,
-      },
-    },
+        staggerChildren: 0.1
+      }
+    }
   };
 
   const itemVariants = {
@@ -75,99 +56,90 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
       opacity: 1,
       transition: {
         duration: 0.5,
-        ease: "easeOut",
-      },
-    },
+        ease: "easeOut"
+      }
+    }
   };
 
   return (
-
-
-
-
-
-
-    
     <motion.aside
       initial="hidden"
       animate="visible"
       variants={containerVariants}
+      className="p-4"
     >
-
-      <div className="md:hidden ">
+      {/* Mobile Menu Button */}
+      <div className="md:hidden">
         <button
-          className="text-cyan-400 transition-all duration-300 focus:outline-none"
+          className="text-white/30 bg-white/10 p-3 rounded-xl transition-all duration-300 hover:text-white focus:outline-none"
           onClick={toggleMenu}
         >
-          {isMenuOpen ? "" : <FaBars className="h-6 w-6" />}
+          {isMenuOpen ? <FaBars className="h-6 w-6" /> : <FaBars className="h-6 w-6" />}
         </button>
       </div>
 
-
-
-
-
       {/* Mobile Menu */}
       <motion.div
-        className={`space-y-8 px-4 py-12 text-center list-none fixed inset-0 z-20 bg-black bg-opacity-80 md:hidden ${
-          isMenuOpen ? "block" : "hidden"
-        }`}
+        className={`fixed inset-0 z-50 bg-black md:hidden ${isMenuOpen ? "block" : "hidden"
+          }`}
         variants={mobileMenuVariants}
         initial="hidden"
         animate={isMenuOpen ? "visible" : "hidden"}
       >
-        {/* Close Button */}
-        <button
-          className="absolute top-24 left-8 text-gray-400 hover:text-white transition-all"
-          onClick={toggleMenu}
-        >
-          <FaXmark className="h-6 w-6" />
-        </button>
-
-
-
-
-        
-
-        {/* Menu Items */}
-        {sidebarItems.map((item) => (
-          <motion.div
-            key={item.section}
-            className={`flex items-center justify-center text-gray-400 font-bold cursor-pointer p-2 rounded-lg transition-all ${activeSection === item.section ? "dActive" : ""}`}
-            onClick={() => {
-              onSectionChange(item.section);
-              toggleMenu();
-            }}
+        <div className="flex flex-col items-center pt-20 px-6 space-y-6">
+          <button
+            className="absolute top-8 right-8 text-cyan-500 hover:text-white transition-all"
+            onClick={toggleMenu}
           >
-            {item.icon}
-            {/* <Icon className="mr-2" /> */}
-            {item.text}
-          </motion.div>
-        ))}
+            <GiCrossMark className="h-8 w-8" />
+          </button>
+
+          {sidebarItems.map((item) => (
+            <motion.div
+              key={item.section}
+              className={`w-full flex items-center justify-center space-x-4 text-lg font-bold p-4 rounded-xl
+                ${activeSection === item.section
+                  ? "bg-cyan-500 text-black"
+                  : "text-cyan-500 hover:bg-cyan-500/20"
+                }
+                transition-all duration-300 cursor-pointer`}
+              onClick={() => {
+                onSectionChange(item.section);
+                toggleMenu();
+              }}
+            >
+              {item.icon}
+              <span>{item.text}</span>
+            </motion.div>
+          ))}
+        </div>
       </motion.div>
 
-
-
-
-
-
-
+      
       {/* Desktop Menu */}
-      <motion.ul className="hidden md:flex flex-col space-y-7">
+      <motion.ul className="hidden md:flex flex-col space-y-4">
         {sidebarItems.map((item) => (
           <motion.li
             key={item.section}
             onClick={() => onSectionChange(item.section)}
-            className={`flex items-center cursor-pointer p-2 rounded-2xl border-2 border-cyan-400 text-cyan-400 font-semibold transition-all text-[1.2rem] ${activeSection === item.section ? "dActive" : ""}`}
+            className={`
+              flex items-center space-x-4 cursor-pointer p-4 rounded-xl
+              text-lg font-bold transition-all duration-300
+              ${activeSection === item.section
+                ? "bg-cyan-500 text-black"
+                : "bg-black text-cyan-500 hover:bg-cyan-500/20"
+              }
+              border-2 border-cyan-500
+            `}
             variants={itemVariants}
             whileHover={{
-              scale: 1.05,
-              transition: { duration: 0.2 },
+              scale: 1.03,
+              transition: { duration: 0.2 }
             }}
-            whileTap={{ scale: 0.95 }}
+            whileTap={{ scale: 0.98 }}
           >
-            {item.icon}
-            {item.text}
+            <span>{item.icon}</span>
+            <span>{item.text}</span>
           </motion.li>
         ))}
       </motion.ul>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Sidebar from "../components/dashboard/Sidebar";
 import DTeam from "../components/dashboard/dTeam";
@@ -9,7 +9,16 @@ import DNotification from "../components/dashboard/dNotification";
 import DSetting from "../components/dashboard/dSetting";
 
 export default function Dashboard() {
-  const [activeSection, setActiveSection] = useState("team");
+  // Initialize state from localStorage or default to "team"
+  const [activeSection, setActiveSection] = useState(() => {
+    const savedSection = localStorage.getItem("dashboardSection");
+    return savedSection || "team";
+  });
+
+  // Update localStorage whenever activeSection changes
+  useEffect(() => {
+    localStorage.setItem("dashboardSection", activeSection);
+  }, [activeSection]);
 
   const renderContent = () => {
     switch (activeSection) {
@@ -45,19 +54,32 @@ export default function Dashboard() {
   };
 
   return (
-    <div className=" w-full min-h-screen px-4 md:px-16 lg:px-32 pb-6 box-border">
-      <motion.h2 className='text-white text-sm md:text-lg font-extrabold tracking-wide mt-6 mb-6 z-[1]'
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        HOME {">"} DASHBOARD
-      </motion.h2>
-      <div className="dMainContainer box-border min-h-[75vh] grid md:grid-cols-[1fr_0.01fr_3.3fr] grid-cols-[1fr_8fr] md:gap-6 gap-0">
-        <Sidebar
-          onSectionChange={setActiveSection}
-          activeSection={activeSection}
-        />
+    <div className="w-full min-h-screen px-4 md:px-16 lg:px-32 pb-6 box-border">
+      <div className="flex justify-between items-center">
+        <motion.h2
+          className='text-white text-sm md:text-lg font-extrabold tracking-wide mt-6 mb-6 z-[1]'
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          HOME {">"} DASHBOARD
+        </motion.h2>
+        <div className="md:hidden">
+          <Sidebar
+            onSectionChange={setActiveSection}
+            activeSection={activeSection}
+          />
+        </div>
+      </div>
+      
+
+      <div className="dMainContainer box-border min-h-[75vh] grid md:grid-cols-[1fr_0.01fr_3.3fr] md:gap-6 gap-0">
+        <div className="hidden md:block">
+          <Sidebar
+            onSectionChange={setActiveSection}
+            activeSection={activeSection}
+          />
+        </div>
 
         <div className="ddivider bg-white"></div>
         <div className="relative bg-white/10 rounded-lg p-4 md:p-8">
@@ -86,4 +108,3 @@ export default function Dashboard() {
     </div>
   );
 }
-

@@ -1,43 +1,101 @@
 // import React from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
-import { useSelector,useDispatch } from "react-redux";
-import { signInSuccess } from "../../redux/User/userSlice";
-import { current } from "@reduxjs/toolkit";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { FaInstagram, FaLinkedin, FaSquareGithub } from "react-icons/fa6";
+import { FaTwitterSquare } from "react-icons/fa";
 
 
 export default function ProfileDash() {
   // const [userDetails, setUserDetails] = useState({});
   const user = useSelector((state) => state.user.currentUser);
-  console.log(user);
+  const [userInterests, setUserInterests] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [projects, setProjects] = useState([]);
 
   const userDetails = user
     ? {
-        name: user.name,
-        qId: user.qId,
-        course: user.course,
-        branch: user.branch,
-        session: user.session,
-        gender: user.gender,
-        points: user.points,
-      }
+      name: user.name,
+      qId: user.qId,
+      course: user.course,
+      branch: user.branch,
+      session: user.session,
+      gender: user.gender,
+      points: user.points,
+    }
     : {};
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/project`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        setProjects(response.data);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      }
+    };
+    fetchProjects();
+  }, []);
 
   // console.log(user.name);
   useEffect(() => {
     document.title = "Profile";
     axios
       .get(`${import.meta.env.VITE_API_URL}/api/v1/user`, user?.userId)
-      .then((res) => {
-        dispatch(signInSuccess(res.data));
-      })
       .catch((err) => {
         console.log(err);
       });
   }, [dispatch, user?.userId]);
+
+  // Update the fetchUserInterests useEffect
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/v1/user/${user?._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+
+        // Update userInterests with populated data
+        if (response.data && response.data.interestId) {
+          setUserInterests(response.data.interestId);
+        }
+
+        // Update projects if they exist in response
+        if (response.data && response.data.projects) {
+          setProjects(response.data.projects);
+        }
+
+        // Debug log
+        console.log('Fetched user details:', response.data);
+
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (user?._id) {
+      fetchUserDetails();
+    }
+  }, [user?._id]);
+
+
+  // debug userInterests
+  console.log(userInterests);
 
   const techStack = [
     { name: "Java", color: "text-orange-400" },
@@ -52,6 +110,26 @@ export default function ProfileDash() {
     { name: "Docker", color: "text-blue-400" },
     { name: "Git", color: "text-orange-500" },
     { name: "SQL", color: "text-blue-300" },
+  ];
+
+  const socialLinks = [
+    {
+      name: "GitHub",
+      icon: <FaSquareGithub />,
+    },
+    {
+      name: "Instagram",
+      icon: <FaInstagram />,
+    },
+    {
+      name: "LinkedIn",
+      icon: <FaLinkedin />,
+    },
+    {
+      name: "Twitter",
+      icon: <FaTwitterSquare />,
+    }
+
   ];
 
   const containerVariants = {
@@ -79,7 +157,7 @@ export default function ProfileDash() {
 
   return (
     <motion.div
-      className="min-h-screen p-4 text-white"
+      className="max-h-[calc(100vh-8rem)] p-4 text-white"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -87,46 +165,51 @@ export default function ProfileDash() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column - Project Cards */}
         <motion.div className="lg:col-span-4 space-y-6" variants={itemVariants}>
-          {/* TeamSync Cards */}
           <motion.div
             className="h-[450px] md:h-[525px] p-2 rounded-2xl overflow-y-auto pr-2 scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-cyan-400"
             variants={itemVariants}
           >
-            {Array.from({ length: 5 }).map((item) => (
+            {projects.map((project) => (
               <motion.div
-                key={item}
+                key={project._id}
                 className="bg-gray-800 rounded-xl p-4 shadow-lg mb-4 last:mb-0"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
               >
                 <div className="flex gap-4">
                   <div className="w-24 h-35 bg-navy-900 rounded-lg flex items-center justify-center text-sm">
                     <img
-                      src="https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?q=80&w=1966&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                      alt="Project"
+                      src={project.projectThumbnail || "default-thumbnail-url"}
+                      alt={project.projectName}
                       className="w-full h-full object-cover rounded-lg"
+                      draggable="false"
                     />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-cyan-400 text-lg font-semibold">
-                      TeamSync
+                      {project.projectName}
                     </h3>
                     <p className="text-gray-400 text-sm">
-                      points : {item === 1 ? "50" : "60"}
+                      {/* points : {item === 1 ? "50" : "60"} */}
                     </p>
                     <div className="flex items-center gap-4 text-sm text-gray-400 mt-2">
-                      <div className="flex items-center gap-1">
-                        <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                        GitHub
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-                        Live
-                      </div>
+                      {project.gitHubLink && (
+                        <div className="flex items-center gap-1">
+                          <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                          <a href={project.gitHubLink} target="_blank" rel="noopener noreferrer">
+                            GitHub
+                          </a>
+                        </div>
+                      )}
+                      {project.liveLink && (
+                        <div className="flex items-center gap-1">
+                          <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                          <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
+                            Live
+                          </a>
+                        </div>
+                      )}
                     </div>
                     <p className="text-sm text-gray-300 mt-2">
-                      TeamSync is an all-in-one project management and team
-                      collaboration platform designed to streamline workflows.
+                      {project.projectDescription}
                     </p>
                   </div>
                 </div>
@@ -164,19 +247,18 @@ export default function ProfileDash() {
                 (color, index) => (
                   <div
                     key={index}
-                    className={`w-16 h-16 rounded-full border-2 ${
-                      color === "gold"
+                    className={`w-16 h-16 rounded-full border-2 ${color === "gold"
                         ? "border-yellow-400 bg-yellow-400/20"
                         : color === "green"
-                        ? "border-green-400 bg-green-400/20"
-                        : color === "purple"
-                        ? "border-purple-500 bg-purple-500/20"
-                        : color === "silver"
-                        ? "border-gray-400 bg-gray-400/20"
-                        : color === "orange"
-                        ? "border-orange-400 bg-orange-400/20"
-                        : "border-cyan-400 bg-cyan-400/20"
-                    } flex items-center justify-center`}
+                          ? "border-green-400 bg-green-400/20"
+                          : color === "purple"
+                            ? "border-purple-500 bg-purple-500/20"
+                            : color === "silver"
+                              ? "border-gray-400 bg-gray-400/20"
+                              : color === "orange"
+                                ? "border-orange-400 bg-orange-400/20"
+                                : "border-cyan-400 bg-cyan-400/20"
+                      } flex items-center justify-center`}
                   >
                     <div className="w-12 h-12 rounded-full bg-gray-700/50"></div>
                   </div>
@@ -192,12 +274,13 @@ export default function ProfileDash() {
               className="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50 backdrop-blur-sm"
               variants={itemVariants}
             >
-              <div className="grid justify-center items-center gap-4 mb-6">
+              <div className="flex flex-col justify-center items-center gap-4 mb-6">
                 <div className="w-32 h-32 rounded-full bg-blue-900 flex items-center justify-center">
                   <img
                     src={user?.profilePicture}
                     alt="Profile"
                     className="w-full h-full rounded-full object-cover"
+                    draggable="false"
                   />
                 </div>
                 <div className="text-center">
@@ -221,22 +304,22 @@ export default function ProfileDash() {
                 )}
               </div>
 
-              {/* Social Links */}
-              <div className="flex justify-center gap-4 mt-4">
-                {["GitHub", "Instagram", "LinkedIn", "Twitter"].map(
-                  (social) => (
-                    <div
-                      key={social}
-                      className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center"
-                    >
-                      <span className="w-4 h-4 bg-gray-500 rounded-full"></span>
-                    </div>
-                  )
-                )}
-              </div>
-            </motion.div>
 
-            {/* Tech Stack Grid */}
+                {/* Social Links */}
+              <div className="flex justify-center gap-4 mt-4">
+                {socialLinks.map((link, index) => (
+                  <a
+                    key={index}
+                    href={`#${link.name}`}
+                    className=" hover:text-brandPrimary hover:scale-110  text-2xl bg-white/10 rounded-full p-2 hover:bg-white/20 duration-500 transition ease-in"
+                  >
+                    <span>{link.icon}</span>
+                  </a>
+                ))}
+              </div>
+              </motion.div>
+
+                {/* Tech Stack */}
             <motion.div
               className="max-h-[595px] overflow-y-auto pr-2 scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-cyan-400"
               variants={itemVariants}
@@ -264,22 +347,30 @@ export default function ProfileDash() {
         </motion.div>
       </div>
 
-      {/* Bottom Categories */}
+      {/* Bottom Categories (Intrests)*/}
       <motion.div
         className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-6"
         variants={itemVariants}
       >
-        {["Frontend", "Backend", "DBMS", "AI / ML", "Security", "DevOps"].map(
-          (category) => (
+        {isLoading ? (
+          <div className="col-span-full flex justify-center items-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400"></div>
+          </div>
+        ) : userInterests && userInterests.length > 0 ? (
+          userInterests.map((interest) => (
             <motion.button
-              key={category}
+              key={interest._id}
               className="bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 rounded-lg py-2 px-4 transition-colors border border-cyan-500/30"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {category}
+              {interest.content}
             </motion.button>
-          )
+          ))
+        ) : (
+          <div className="col-span-full text-center text-gray-400">
+            No interests found
+          </div>
         )}
       </motion.div>
     </motion.div>

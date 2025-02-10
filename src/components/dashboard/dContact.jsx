@@ -92,7 +92,7 @@ const DContact = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           type="submit"
-          className="bg-black text-cyan-400 font-semibold border-2 border-cyan-400 rounded-full px-10 py-2  text-lg uppercase"
+          className="bg-black text-cyan-400 font-semibold border-2 hover:bg-brandPrimary hover:text-black hover:border-black border-cyan-400 rounded-full px-10 py-2  text-lg uppercase transition-all duration-300"
         >
           Send
         </motion.button>

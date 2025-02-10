@@ -82,9 +82,9 @@ const DNotification = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           onClick={()=> handleBackClick()}
-          className="font-extrabold text-cyan-400 mb-4 uppercase text-base absolute left-5 -top-3 dBack"
+          className="font-extrabold text-cyan-400 mb-6 hover:cursor-pointer uppercase text-base absolute left-5 -top-3 dBack"
         >
-          {"<<<"} BACK
+        {"<"}<span className="border-b">BACK</span>
         </motion.h4>
 
 

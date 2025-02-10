@@ -10,6 +10,7 @@ export default defineConfig({
         secure: false,
       },
     },
+    allowedHosts: "*",
   },
   plugins: [react()],
 });

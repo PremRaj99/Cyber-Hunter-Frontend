@@ -127,7 +127,7 @@ export const router = createBrowserRouter([
             element: <PostProject />,
           },
           {
-            path: ":id",
+            path: "view",
             element: <ProjectDetail />,
           },
           {
@@ -145,7 +145,7 @@ export const router = createBrowserRouter([
           {
             path: "setting",
             element: <ProfileSetting />,
-          },
+          }, 
         ],
       },
       {
@@ -168,7 +168,7 @@ export const router = createBrowserRouter([
             element: <AddProject />,
           },
           {
-            path: "viewproject",
+            path: "view",
             element: <ViewProject />,
           },
         ],

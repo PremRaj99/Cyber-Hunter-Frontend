@@ -27,7 +27,7 @@ const NotificationItem = ({ notification, onclick }) => {
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
       viewport={{ once: true }}
-      className="p-4 bg-gray-800 rounded-2xl cursor-pointer bg-white py-2 px-4"
+      className="p-4 bg-gray-800 rounded-2xl cursor-pointer py-2 px-4"
       transition={{
         duration: 0.3,
         type: "spring",
@@ -35,7 +35,7 @@ const NotificationItem = ({ notification, onclick }) => {
       }}
       
     >
-      <p className="text-bold text-black-400 text-base">{notification.message.slice(0, 17)}</p>
+      <p className="text-bold text-white text-base">{notification.message.slice(0, 17)}</p>
     </motion.li>
   );
 };

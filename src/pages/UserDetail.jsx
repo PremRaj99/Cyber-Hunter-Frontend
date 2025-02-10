@@ -34,6 +34,7 @@ export default function UserDetail() {
 
   // Interest
   const [interest, setInterest] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // Profile Picture
   const [profilePicture, setProfilePicture] = useState(null);
@@ -61,19 +62,27 @@ export default function UserDetail() {
     handleCheckboxChange();
   }, [clubAccepted, idCardAccepted, handleCheckboxChange]);
 
-  // Handle image upload
-  // const handleImageUpload = (file) => {
-  //   console.log("hello",file);
-  //   setProfilePicture(file);
-  // };
-
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     // Validate form
     if (!termsAccepted || !clubAccepted || !idCardAccepted) {
       alert("Please accept all required terms and conditions.");
+      return setLoading(false);
+    }
+
+    // validate profile picture
+    if (!profilePicture) {
+      toast.error("Please upload your profile picture.");
+      return setLoading(false);
+    }
+
+    // Validate interest
+    if (interest.length === 0) {
+      toast.error("Please select at least one interest");
+      setLoading(false);
       return;
     }
 
@@ -89,38 +98,51 @@ export default function UserDetail() {
     formData.append("gender", userDetails.gender.toLowerCase());
     formData.append("section", userDetails.section);
 
+    // Correctly format interest IDs
+    const interestIds = interest.map(item => item.tagId);
+    interestIds.forEach((id, index) => {
+      formData.append(`interestId[${index}]`, id);
+    });
+
+    console.log('Interest strings being sent:', interestIds);
+
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
+    }
+
     // Handle profile picture
     if (profilePicture) {
       formData.append("profilePicture", profilePicture);
     }
 
     try {
-      // Send data to backend
-      await axios
-        .post(`${import.meta.env.VITE_API_URL}/api/v1/user`, formData, {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/v1/user`,
+        formData,
+        {
           headers: {
             "Content-Type": "multipart/form-data",
             "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
           },
-        })
-        .then((res) => {
-          console.log(res);
-          if (res.status === 200) {
-            toast.success(res.data.message);
-            resetForm();
-            navigate("/auth/login");
-          }
-        });
+        }
+      );
+
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        resetForm();
+        navigate("/auth/login");
+      }
     } catch (error) {
-      // Handle registration error
       console.error(
         "Registration Error:",
         error.response ? error.response.data : error.message
       );
-      alert(
+      toast.error(
         error.response?.data?.message ||
-          "Registration failed. Please try again."
+        "Registration failed. Please try again."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -569,8 +591,9 @@ export default function UserDetail() {
           <button
             type="submit"
             className="w-full bg-brandPrimary hover:text-brandPrimary hover:bg-black hover:border-2 hover:border-brandPrimary text-black font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out"
+            disabled={loading}
           >
-            Submit and Pay | ₹{totalAmount}
+            {loading?`Loading...`:`Submit and Pay | ₹${totalAmount}`}
           </button>
         </form>
       </div>

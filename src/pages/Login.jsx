@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import banner1 from "../assets/banner1.png";
 import googleIcon from "../assets/google_icon.png";
 import githubIcon from "../assets/github_icon.png";
@@ -30,6 +30,10 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -86,7 +90,7 @@ export default function Login() {
         password: formdata.password,
         confirmPassword: formdata.confirmPassword,
       });
-      console.log(data)
+      console.log("data0",data) 
       setLoading(false);
       if (data.success) {
         dispatch(signInSuccess(data.data));
@@ -99,6 +103,11 @@ export default function Login() {
       dispatch(signInFailure(data.message));
       return toast.error(data.message);
     } catch (error) {
+      if (error.response.status === 409) {
+        dispatch(signInFailure(error.response.data.message));
+        return toast.error(error.response.data.message);
+      }
+      console.log(error);
       dispatch(signInFailure(error.message));
       toast.error(error.message);
       setLoading(false);

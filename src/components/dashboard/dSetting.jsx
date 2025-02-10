@@ -54,7 +54,7 @@ const DSetting = () => {
             text: "Profile Settings",
           },
           {
-            to: "/teamSetting",
+            to: "/dashboard/team/teamsetting",
             icon: <MdGroups />,
             text: "Team Settings",
           },
