@@ -66,8 +66,7 @@ export default function Projectpage() {
         !project.projectName ||
         !project.projectDescription ||
         !project.projectThumbnail ||
-        !project.techStack.length ||  // Added validation for arrays
-        !project.skills.length ||
+        !project.techStack.length ||
         !project.language.length
       ) {
         toast.error("Please fill in all required fields including tech stack, skills, and languages");
@@ -87,22 +86,16 @@ export default function Projectpage() {
       // Format and append arrays similar to interest handling
       const techStackIds = project.techStack.map(item => item.tagId);
       techStackIds.forEach((id, index) => {
-        formData.append(`techStackId[${index}]`, id);
-      });
-
-      const skillIds = project.skills.map(item => item.tagId);
-      skillIds.forEach((id, index) => {
-        formData.append(`skillId[${index}]`, id);
+        formData.append(`techStack[${index}]`, id);
       });
 
       const languageIds = project.language.map(item => item.tagId);
       languageIds.forEach((id, index) => {
-        formData.append(`languageId[${index}]`, id);
+        formData.append(`language[${index}]`, id);
       });
 
       // Debug logging
       console.log('Tech Stack IDs being sent:', techStackIds);
-      console.log('Skill IDs being sent:', skillIds);
       console.log('Language IDs being sent:', languageIds);
 
       // Append files
@@ -146,6 +139,7 @@ export default function Projectpage() {
         navigate("/dashboard");
       }
     } catch (err) {
+      console.log(err)
       toast.error(err.response?.data?.message || "Error submitting project");
     } finally {
       setLoading(false);
@@ -318,35 +312,6 @@ export default function Projectpage() {
                 </div>
               )}
               {error && <p className="mt-1 text-xs text-red-500">{toast.error(error)}</p>}
-            </div>
-          </motion.div>
-
-          {/* Skills Required */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-          >
-            <label
-              htmlFor="skills-required"
-              className="flex items-middle text-l gap-2 font-medium text-white"
-            >
-              <span>
-                <FaSearch className="text-brandPrimary text-2xl items-baseline" />
-              </span>
-              Skills Required
-              <span className="text-sm text-red-600">
-                <FaAsterisk />
-              </span>
-            </label>
-            <div className="relative mt-1 ">
-              <MultiSelectInput
-                placeholder="Search and select Skills"
-                fieldName="skills"
-                apiEndpoint={`${import.meta.env.VITE_API_URL}/api/v1/interest`}
-                onTagsChange={(tags) => setProject({ ...project, skills: tags })}
-                value={project.skills}
-              />
             </div>
           </motion.div>
 
