@@ -10,9 +10,9 @@ export default function CreateTeamPopUp({ newTeamName, setNewTeamName, setIsForm
   };
 
   return (
-    <>
+    <div className="bg-gray-800 relative z-50">
         <div className="mb-4">
-          <label htmlFor="teamName" className="block text-sm font-medium text-gray-300 mb-2">
+          <label htmlFor="teamName" className="gird text-sm font-medium text-gray-300 mb-2">
             Team Name
           </label>
           <input
@@ -67,8 +67,34 @@ export default function CreateTeamPopUp({ newTeamName, setNewTeamName, setIsForm
         </div>
 
         <div className="mb-4">
-          <label htmlFor="member4" className="block text-sm font-medium text-gray-300 mb-2">
+          <label htmlFor="member2" className="block text-sm font-medium text-gray-300 mb-2">
             Member 2
+          </label>
+          <input
+            type="text"
+            id="member2"
+            value={member2}
+            onChange={(e) => setMember4(e.target.value)}
+            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="member3" className="block text-sm font-medium text-gray-300 mb-2">
+            Member 3
+          </label>
+          <input
+            type="text"
+            id="member3"
+            value={member2}
+            onChange={(e) => setMember4(e.target.value)}
+            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="member4" className="block text-sm font-medium text-gray-300 mb-2">
+            Member 4
           </label>
           <input
             type="text"
@@ -85,6 +111,12 @@ export default function CreateTeamPopUp({ newTeamName, setNewTeamName, setIsForm
           className="block text-sm font-medium text-gray-200 mb-2"
         >
           Upload Team Logo <span className="text-gray-400">(Optional)</span>
+          <div>
+            <span>
+              <span className="text-gray-400">File type:</span> .jpg, .png, .jpeg <span className="text-gray-400">Size :</span> (256 x 256) in pixels
+
+            </span>
+          </div>
         </label>
         <div className="relative group">
           <input
@@ -114,6 +146,6 @@ export default function CreateTeamPopUp({ newTeamName, setNewTeamName, setIsForm
             Create Team
           </button>
         </div>
-    </>
+    </div>
   );
 }

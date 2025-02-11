@@ -193,6 +193,10 @@ export const router = createBrowserRouter([
             element: <TeamSetting />,
           },
           {
+            path: "create",
+            element: <CreateTeam />,
+          },
+          {
             path: "createteam",
             element: <CreateTeam />,
           },

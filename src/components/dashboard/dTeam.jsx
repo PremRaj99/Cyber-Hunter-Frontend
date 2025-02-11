@@ -6,6 +6,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { GiTeamIdea } from "react-icons/gi";
 
 const DTeam = () => {
   const containerVariants = {
@@ -68,6 +69,11 @@ const DTeam = () => {
             icon: <ChatBubbleIcon />,
             text: "COMMENT",
             path: "/comment",
+          },
+          {
+            icon: <GiTeamIdea />,
+            text: "CREATE TEAM",
+            path: "/dashboard/team/create",
           },
           {
             icon: <SettingsIcon />,

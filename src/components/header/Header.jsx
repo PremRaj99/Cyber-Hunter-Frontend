@@ -231,7 +231,7 @@ export default function Header() {
 
   return (
     <motion.div
-      className="sticky z-50 top-0 w-full h-20 md:px-10 px-4"
+      className="sticky z-40 top-0 w-full h-20 md:px-10 px-4"
       animate={controls}
       initial={{ backgroundColor: "black" }}
       transition={{ duration: 0.3 }}

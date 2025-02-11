@@ -59,6 +59,12 @@ export default function Projectpage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const gitHubLinkRegex = new RegExp(
+      /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9-]+\/[a-zA-Z0-9-]+/
+    );
+    const liveLinkRegex = new RegExp(
+      /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+/
+    );
 
     try {
       // Validate required fields
@@ -73,8 +79,17 @@ export default function Projectpage() {
         return setLoading(false);
       }
 
-      // github and live link validation... (keep existing validation)
+      // github and live link validationu using regex
+      if (project.gitHubLink && !gitHubLinkRegex.test(project.gitHubLink)) {
+        toast.error("Invalid GitHub link");
+        return setLoading(false);
+      }
 
+      if (project.liveLink && !liveLinkRegex.test(project.liveLink)) {
+        toast.error("Invalid Live link");
+        return setLoading(false);
+      }
+        
       const formData = new FormData();
 
       // Append basic text fields
@@ -226,44 +241,49 @@ export default function Projectpage() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.5 }}
+            className="w-full"
           >
             <label
               htmlFor="thumbnail"
-              className="flex items-middle text-l gap-2 font-medium text-white"
+              className="flex items-center space-x-2 text-base font-medium text-white"
             >
-              <span>
-                <FaImage className="text-brandPrimary text-2xl items-baseline" />
-              </span>
-              Thumbnail
-              <span className="text-sm text-red-600">
-                <FaAsterisk />
-              </span>
+              <FaImage className="text-brandPrimary text-xl" />
+              <span>Thumbnail</span>
+              <FaAsterisk className="text-red-600 text-xs" />
             </label>
-            <div className="mt-1 flex gap-4">
+            <div className="mt-2 flex items-center space-x-4">
               <input
                 type="file"
                 ref={thumbnailInputRef}
-                style={{ display: "none" }}
+                className="hidden"
                 onChange={handleThumbnailChange}
                 accept="image/*"
               />
               <Button
                 type="button"
+                variant="outline"
+                size="sm"
                 onClick={() => thumbnailInputRef.current.click()}
+                className="w-auto px-4"
+                rounded={"lg"}
               >
                 Upload Thumbnail
               </Button>
               {thumbnailPreview && (
-                <div className="mt-2">
+                <div className="relative">
                   <img
                     src={thumbnailPreview}
                     alt="Thumbnail Preview"
-                    className="max-w-[200px] max-h-[200px] rounded-md"
+                    className="h-20 object-cover rounded-md"
                   />
                 </div>
               )}
-              {error && <p className="mt-1 text-xs text-red-500">{toast.error(error)}</p>}
             </div>
+            {error && (
+              <p className="mt-2 text-xs text-red-500">
+                {error}
+              </p>
+            )}
           </motion.div>
 
           {/* Project Screenshots */}
@@ -271,48 +291,53 @@ export default function Projectpage() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.5 }}
+            className="w-full"
           >
             <label
               htmlFor="screenshots"
-              className="flex items-middle text-l gap-2 font-medium text-white"
+              className="flex items-center space-x-2 text-base font-medium text-white"
             >
-              <span>
-                <FaImages className="text-brandPrimary text-2xl items-baseline" />
-              </span>
-              Project Screenshots
-              <span className="text-sm text-red-600">
-                <FaAsterisk />
-              </span>
+              <FaImages className="text-brandPrimary text-xl" />
+              <span>Project Screenshots</span>
+              <FaAsterisk className="text-red-600 text-xs" />
             </label>
-            <div className="mt-1 flex gap-4">
+            <div className="mt-2 flex items-center space-x-4">
               <input
                 type="file"
                 ref={screenshotsInputRef}
-                style={{ display: "none" }}
+                className="hidden"
                 onChange={handleScreenshotsChange}
                 accept="image/*"
                 multiple
               />
               <Button
                 type="button"
+                variant="outline"
+                size="sm"
                 onClick={() => screenshotsInputRef.current.click()}
+                className="w-auto px-4"
+                rounded="lg"
               >
                 Upload Screenshots
               </Button>
               {screenshotPreview.length > 0 && (
-                <div className="mt-2 flex gap-2 flex-wrap">
+                <div className="mt-2 flex flex-wrap items-center gap-2">
                   {screenshotPreview.map((src, index) => (
                     <img
                       key={index}
                       src={src}
                       alt={`Screenshot Preview ${index + 1}`}
-                      className="max-w-[200px] max-h-[200px] rounded-md"
+                      className="h-20 object-cover rounded-md"
                     />
                   ))}
                 </div>
               )}
-              {error && <p className="mt-1 text-xs text-red-500">{toast.error(error)}</p>}
             </div>
+            {error && (
+              <p className="mt-2 text-xs text-red-500">
+                {error}
+              </p>
+            )}
           </motion.div>
 
           {/* Tech Stacks */}
@@ -393,6 +418,14 @@ export default function Projectpage() {
                   <FaAsterisk />
                 </span>
               </label>
+              <div>
+                <div className="text-xs text-white mb-1">
+                  Format :&nbsp;  
+                  <span className="text-gray-400">
+                     https://github.com/username/repo-name
+                  </span>
+                </div>
+              </div>
               <Input
                 onChange={(e) =>
                   setProject({ ...project, gitHubLink: e.target.value })
@@ -418,6 +451,14 @@ export default function Projectpage() {
                 </span>
                 Live Link
               </label>
+              <div>
+                <div className="text-xs text-white mb-1">
+                  Format :&nbsp;  
+                  <span className="text-gray-400">
+                     https://example.com
+                  </span>
+                </div>
+              </div>
               <Input
                 onChange={(e) =>
                   setProject({ ...project, liveLink: e.target.value })

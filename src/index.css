@@ -2,27 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    scroll-behavior: smooth;
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  transition: all 0.5s ease;
+}
+
+body::-webkit-scrollbar-track {
+  width: 0;
+}
+body::-webkit-scrollbar-thumb {
+  width: 5px;
 }
 
 html {
-    background: #000;
+  background: #000;
+}
+
+body::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+body::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+/* Handle */
+body::-webkit-scrollbar-thumb {
+  background: linear-gradient(black, #00f2ff);
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(#00f2ff, black);
+  cursor:grabbing;
+  transition: all 1s ease;
 }
 
 .bg-profile {
-    background: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ), url('./assets/profile-bg.jpg');;
-    background-size: cover;
-    background-repeat: no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url("./assets/profile-bg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .btn-primary {
-    @apply px-7 py-2 my-5 mx-10 bg-[#5CE1E6] text-white rounded hover:bg-[#7E8589] transition-all duration-300 hover:translate-x-3;
+  @apply px-7 py-2 my-5 mx-10 bg-[#5CE1E6] text-white rounded hover:bg-[#7E8589] transition-all duration-300 hover:translate-x-3;
 }
 
-.payButton{
-    @apply bg-[#3d7d12] hover:bg-[#8fff44]  text-white hover:text-black font-bold rounded-3xl px-6 py-3 mt-6 ;
+.payButton {
+  @apply bg-[#3d7d12] hover:bg-[#8fff44]  text-white hover:text-black font-bold rounded-3xl px-6 py-3 mt-6;
 }

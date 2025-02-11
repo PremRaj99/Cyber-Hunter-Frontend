@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const ErrorPage = () => {
   const [glitchText, setGlitchText] = useState('404');
-  const [countdown, setCountdown] = useState(10);
+  const [countdown, setCountdown] = useState(5);
   const navigate = useNavigate();
 
   useEffect(() => {

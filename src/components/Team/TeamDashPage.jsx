@@ -65,7 +65,7 @@ export default function TeamDashPage() {
       transition={{ duration: 0.5 }}
       className="min-h-screen text-white p-4"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="flex flex-col-reverse lg:grid lg:grid-cols-12 gap-6">
         {/* Left Column */}
         <div className="lg:col-span-4 space-y-6">
           {/* Project Cards */}
@@ -139,16 +139,7 @@ export default function TeamDashPage() {
             transition={{ delay: 0.5 }}
             className="bg-gray-800 rounded-xl p-4 shadow-lg"
           >
-            <h3 className="text-cyan-400 text-lg font-semibold mb-3">
-              Field of Excellence
-            </h3>
-            <p className="text-sm text-gray-300">
-              TeamSync is designed to adapt to your workflow, making it easier
-              to manage projects and collaborate with your team, no matter where
-              they are. With a user-friendly interface and powerful features,
-              TeamSync helps you stay organized, meet deadlines, and achieve
-              your goals.
-            </p>
+          <DiscriptionSection />
           </motion.div>
         </div>
 

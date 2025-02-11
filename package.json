@@ -37,7 +37,8 @@
     "react-toastify": "^10.0.5",
     "redux-persist": "^6.0.0",
     "sass": "^1.81.0",
-    "tailwind-scrollbar-hide": "^1.1.7"
+    "tailwind-scrollbar-hide": "^1.1.7",
+    "tech-stack-icons": "^2.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

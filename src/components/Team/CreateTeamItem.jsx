@@ -55,7 +55,7 @@ export default function CreateTeamItem() {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="p-4 md:p-8">
       <div className="mx-auto max-w-4xl">
         {/* Header Section */}
-        <div className="mb-8 flex flex-col sm:flex-row items-center mt-4 justify-between">
+        <div className="mb-8 flex sm:flex-row items-center mt-4 justify-between">
           <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-0">
             <span className="text-cyan-400">Team</span>
             <span className="text-white"> Selection</span>
@@ -125,9 +125,9 @@ export default function CreateTeamItem() {
                     duration: 0.3,
                     ease: "easeInOut",
                   }}
-                  className="flex flex-col sm:flex-row items-center justify-between rounded-lg bg-gray-800 p-4"
+                  className="flex  sm:flex-row items-center justify-between rounded-lg bg-gray-800 p-4"
                   whileHover={{
-                    scale: 1.05,
+                    scale: 1.02,
                     transition: {
                       type: "spring",
                       stiffness: 300,

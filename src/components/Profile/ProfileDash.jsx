@@ -1,10 +1,14 @@
 // import React from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FaInstagram, FaLinkedin, FaSquareGithub } from "react-icons/fa6";
 import { FaTwitterSquare } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import TechStackItem from "../Common/TechStackItem";
+import TechStack from "../Common/TechStackItem";
+import ProfileDiscription from "./ProfileDiscription";
 
 
 export default function ProfileDash() {
@@ -12,7 +16,9 @@ export default function ProfileDash() {
   const user = useSelector((state) => state.user.currentUser);
   const [userInterests, setUserInterests] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [tech, setTech] = useState([]);
   const [projects, setProjects] = useState([]);
+  const navigate = useNavigate();
 
   const userDetails = user
     ? {
@@ -27,6 +33,8 @@ export default function ProfileDash() {
     : {};
 
   const dispatch = useDispatch();
+
+
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -53,6 +61,25 @@ export default function ProfileDash() {
         console.log(err);
       });
   }, [dispatch, user?.userId]);
+
+  // fetch TechStack
+  useEffect(() => {
+    const fetchTechStack = async () => {
+      try {
+        if (projects.length === 0) return;
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/v1/techstack/me/${projects[0]?.userId}`,
+        );
+        setTech(response.data);
+        console.log('Fetched tech stack:', response.data);
+      } catch (error) {
+        console.error('Error fetching tech stack:', error);
+      }
+    };
+    fetchTechStack();
+  }, [
+    projects[0]?.userId,
+  ]);
 
   // Update the fetchUserInterests useEffect
   useEffect(() => {
@@ -92,25 +119,6 @@ export default function ProfileDash() {
       fetchUserDetails();
     }
   }, [user?._id]);
-
-
-  // debug userInterests
-  console.log(userInterests);
-
-  const techStack = [
-    { name: "Java", color: "text-orange-400" },
-    { name: "HTML5", color: "text-red-400" },
-    { name: "JavaScript", color: "text-yellow-400" },
-    { name: "React", color: "text-cyan-400" },
-    { name: "Node.js", color: "text-green-400" },
-    { name: "MongoDB", color: "text-green-500" },
-    { name: "CSS", color: "text-blue-400" },
-    { name: "Next.js", color: "text-white" },
-    { name: "GraphQL", color: "text-pink-400" },
-    { name: "Docker", color: "text-blue-400" },
-    { name: "Git", color: "text-orange-500" },
-    { name: "SQL", color: "text-blue-300" },
-  ];
 
   const socialLinks = [
     {
@@ -162,11 +170,11 @@ export default function ProfileDash() {
       animate="visible"
       variants={containerVariants}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="flex flex-col-reverse lg:grid lg:grid-cols-12 md:gap-4">
         {/* Left Column - Project Cards */}
-        <motion.div className="lg:col-span-4 space-y-6" variants={itemVariants}>
+        <motion.div className="flex flex-col-reverse lg:col-span-4 lg:flex-col space-y-6 gap-4 md:gap-0" variants={itemVariants}>
           <motion.div
-            className="h-[450px] md:h-[525px] p-2 rounded-2xl overflow-y-auto pr-2 scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-cyan-400"
+            className="h-[450px] md:h-[525px] rounded-2xl overflow-y-auto pr-2 "
             variants={itemVariants}
           >
             {projects.map((project) => (
@@ -174,7 +182,7 @@ export default function ProfileDash() {
                 key={project._id}
                 className="bg-gray-800 rounded-xl p-4 shadow-lg mb-4 last:mb-0"
               >
-                <div className="flex gap-4">
+                <div className="flex gap-4 hover:cursor-pointer" onClick={() => navigate(`/dashboard/project/${project._id}`)}>
                   <div className="w-24 h-35 bg-navy-900 rounded-lg flex items-center justify-center text-sm">
                     <img
                       src={project.projectThumbnail || "default-thumbnail-url"}
@@ -185,7 +193,7 @@ export default function ProfileDash() {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-cyan-400 text-lg font-semibold">
-                      {project.projectName}
+                      {project.projectName.toUpperCase()}
                     </h3>
                     <p className="text-gray-400 text-sm">
                       {/* points : {item === 1 ? "50" : "60"} */}
@@ -209,7 +217,7 @@ export default function ProfileDash() {
                       )}
                     </div>
                     <p className="text-sm text-gray-300 mt-2">
-                      {project.projectDescription}
+                      {project.projectDescription.slice(0, 100)}...
                     </p>
                   </div>
                 </div>
@@ -219,19 +227,10 @@ export default function ProfileDash() {
 
           {/* Field of Excellence */}
           <motion.div
-            className="bg-gray-800/60 rounded-xl p-4 border border-gray-700/50 backdrop-blur-sm"
+            className="flex w-full bg-gray-800/60 rounded-xl p-4 gap-4 border border-gray-700/50 backdrop-blur-sm"
             variants={itemVariants}
           >
-            <h3 className="text-cyan-400 text-lg font-semibold mb-3">
-              Field of Excellence
-            </h3>
-            <p className="text-sm text-gray-300">
-              TeamSync is designed to adapt to your workflow, making it easier
-              to manage projects and collaborate with your team, no matter where
-              they are. With a user-friendly interface and powerful features,
-              TeamSync helps you stay organized, meet deadlines, and achieve
-              your goals.
-            </p>
+            <ProfileDiscription />
           </motion.div>
         </motion.div>
 
@@ -248,16 +247,16 @@ export default function ProfileDash() {
                   <div
                     key={index}
                     className={`w-16 h-16 rounded-full border-2 ${color === "gold"
-                        ? "border-yellow-400 bg-yellow-400/20"
-                        : color === "green"
-                          ? "border-green-400 bg-green-400/20"
-                          : color === "purple"
-                            ? "border-purple-500 bg-purple-500/20"
-                            : color === "silver"
-                              ? "border-gray-400 bg-gray-400/20"
-                              : color === "orange"
-                                ? "border-orange-400 bg-orange-400/20"
-                                : "border-cyan-400 bg-cyan-400/20"
+                      ? "border-yellow-400 bg-yellow-400/20"
+                      : color === "green"
+                        ? "border-green-400 bg-green-400/20"
+                        : color === "purple"
+                          ? "border-purple-500 bg-purple-500/20"
+                          : color === "silver"
+                            ? "border-gray-400 bg-gray-400/20"
+                            : color === "orange"
+                              ? "border-orange-400 bg-orange-400/20"
+                              : "border-cyan-400 bg-cyan-400/20"
                       } flex items-center justify-center`}
                   >
                     <div className="w-12 h-12 rounded-full bg-gray-700/50"></div>
@@ -305,7 +304,7 @@ export default function ProfileDash() {
               </div>
 
 
-                {/* Social Links */}
+              {/* Social Links */}
               <div className="flex justify-center gap-4 mt-4">
                 {socialLinks.map((link, index) => (
                   <a
@@ -317,31 +316,48 @@ export default function ProfileDash() {
                   </a>
                 ))}
               </div>
-              </motion.div>
+            </motion.div>
 
-                {/* Tech Stack */}
+            {/* Tech Stack */}
             <motion.div
               className="max-h-[595px] overflow-y-auto pr-2 scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-cyan-400"
               variants={itemVariants}
             >
-              <motion.div
-                className="grid grid-cols-4 gap-4"
-                variants={containerVariants}
-              >
-                {techStack.map((tech, index) => (
-                  <motion.div
-                    key={index}
-                    className="aspect-square bg-gray-800/60 rounded-xl border border-gray-700/50 backdrop-blur-sm flex items-center justify-center p-2"
-                    variants={itemVariants}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
+              {isLoading ? (
+                <div className="flex items-center justify-center h-[200px]">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400"></div>
+                </div>
+              ) : tech && tech.length > 0 ? (
+                <motion.div
+                  className="flex flex-wrap items-start gap-4"
+                  variants={containerVariants}
+                >
+                  <TechStack techstack={tech} />
+                </motion.div>
+              ) : (
+                <motion.div
+                  className="flex flex-col items-center justify-center h-[200px] bg-gray-800/60 rounded-xl border border-gray-700/50 backdrop-blur-sm"
+                  variants={itemVariants}
+                >
+                  <svg
+                    className="w-12 h-12 text-gray-500 mb-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    <span className={`text-xs font-medium ${tech.color}`}>
-                      {tech.name}
-                    </span>
-                  </motion.div>
-                ))}
-              </motion.div>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
+                    />
+                  </svg>
+                  <p className="text-gray-400 text-center mb-2">No technologies found</p>
+                  <p className="text-gray-500 text-sm text-center">
+                    Add some technologies to showcase your skills
+                  </p>
+                </motion.div>
+              )}
             </motion.div>
           </div>
         </motion.div>

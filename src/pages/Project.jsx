@@ -4,7 +4,8 @@ import { FaExternalLinkAlt, FaGithub, FaTags, FaCode } from "react-icons/fa";
 import ImageSlider from "../components/Project/ImageSlider";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { format } from 'date-fns';
+import Preloader from "../components/Common/Preloader";
 
 export default function Project() {
   const { id } = useParams();
@@ -12,25 +13,26 @@ export default function Project() {
   const [projectUser, setProjectUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const user = useSelector((state) => state.user.currentUser);
+  const formatCreatedAt = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      return format(date, 'dd MMM yyyy, hh:mm a');
+    } catch (error) {
+      return dateString;
+    }
+  };
 
   useEffect(() => {
+    document.title = project?.projectName || "Project";
     const fetchProjectAndUser = async () => {
+      document.title = project?.projectName || "Project";
       try {
         const projectRes = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/v1/project/${id}`
         );
-        setProject(projectRes.data);
-
-        if (projectRes.data.userId) {
-          const userRes = await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/v1/user/${projectRes.data.userId}`
-          );
-          setProjectUser(userRes.data);
-          console.log("userRes",userRes.data);
-
-        }
-
+        setProject(projectRes.data.project);
+        setProjectUser(projectRes.data.userDetail);
+        console.log(projectRes.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -41,35 +43,8 @@ export default function Project() {
     fetchProjectAndUser();
   }, [id]);
 
-
-  if (loading) {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="flex justify-center items-center h-screen text-white"
-      >
-        <motion.div
-          animate={{
-            scale: [1, 1.1, 1],
-            rotate: [0, 10, -10, 0]
-          }}
-          transition={{
-            duration: 1,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="text-2xl"
-        >
-          Loading...
-        </motion.div>
-      </motion.div>
-    );
-  }
-
   if (!project) {
-    return <div className="text-white text-center mt-10">Project not found</div>;
+    return <Preloader />;
   }
 
   return (
@@ -119,7 +94,7 @@ export default function Project() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              {project.projectName}
+              {project.projectName.toUpperCase()}
             </motion.h3>
 
             <div className="flex items-center gap-4 mb-4">
@@ -158,8 +133,19 @@ export default function Project() {
                 </motion.a>
               )}
             </div>
+              <div>
+                <motion.p
+                  className="text-gray-300 text-sm"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                >
+                  Created at : {formatCreatedAt(project.createdAt)}
+                </motion.p>
+              </div>
 
-            {user && (
+            {projectUser && (
+              
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -167,17 +153,18 @@ export default function Project() {
                 className="bg-gray-700/50 backdrop-blur-sm rounded-xl p-4 mt-4 flex items-center gap-4"
               >
                 <img
-                  src={user.profilePicture || "default-profile-picture-url"}
+                  src={projectUser.profilePicture || "default-profile-picture-url"}
                   className="w-16 h-16 rounded-full object-cover border-2 border-cyan-400"
-                  alt={user.name}
+                  alt={projectUser.name}
                   draggable={false}
                 />
                 <div>
-                  <h4 className="text-xl font-semibold text-cyan-400">{user.name}</h4>
-                  <p className="text-gray-300 text-sm">{user.username}</p>
+                  <h4 className="text-xl font-semibold text-cyan-400">{projectUser.name}</h4>
+                  <p className="text-gray-300 text-sm">{projectUser.username}</p>
                   <p className="text-gray-400 text-xs">
-                    {`${user.course} ${user.branch} ${user.session}`}
+                    {`${projectUser.course} ${projectUser.branch} ${projectUser.session}`}
                   </p>
+                  <p className="text-gray-400 text-xs">{projectUser.qId}</p>
                 </div>
               </motion.div>
             )}
@@ -212,22 +199,22 @@ export default function Project() {
           <div className="flex flex-wrap gap-2">
             {project.techStack?.map((tech, index) => (
               <motion.div
-                key={index}
-                className="bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-full text-sm"
+                key={tech._id || index}
+                className="bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-lg text-sm"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                #{tech}
+                {tech.content}
               </motion.div>
             ))}
             {project.language?.map((lang, index) => (
               <motion.div
                 key={`lang-${index}`}
-                className="bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-full text-sm"
+                className="bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-lg text-sm"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                #{lang}
+                #{lang.content}
               </motion.div>
             ))}
           </div>
