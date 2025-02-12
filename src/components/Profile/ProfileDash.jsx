@@ -3,18 +3,23 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { use, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { FaBullseye, FaGithub, FaInstagram, FaLinkedin, FaSquareGithub } from "react-icons/fa6";
+import {
+  FaBullseye,
+  FaGithub,
+  FaInstagram,
+  FaLinkedin,
+  FaSquareGithub,
+} from "react-icons/fa6";
 import { FaTwitterSquare } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import TechStackItem from "../Common/TechStackItem";
 import TechStack from "../Common/TechStackItem";
 import ProfileDiscription from "./ProfileDiscription";
 
-
 export default function ProfileDash() {
   // const [userDetails, setUserDetails] = useState({});
   const user = useSelector((state) => state.user.currentUser);
-  const [userInterests, setUserInterests] = useState([]);
+  // const [userInterests, setUserInterests] = useState([]);
   const [interestDetails, setInterestDetails] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [tech, setTech] = useState([]);
@@ -23,33 +28,36 @@ export default function ProfileDash() {
 
   const userDetails = user
     ? {
-      name: user.name,
-      qId: user.qId,
-      course: user.course,
-      branch: user.branch,
-      session: user.session,
-      gender: user.gender,
-      points: user.points,
-    }
+        name: user.name,
+        qId: user.qId,
+        course: user.course,
+        branch: user.branch,
+        session: user.session,
+        gender: user.gender,
+        points: user.points,
+      }
     : {};
 
+  const userInterests = user?.interest || [];
+
   const dispatch = useDispatch();
-
-
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/project`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/v1/project`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
         setProjects(response.data);
 
-        console.log('Fetched projects:', response.data);
+        console.log("Fetched projects:", response.data);
       } catch (error) {
-        console.error('Error fetching projects:', error);
+        console.error("Error fetching projects:", error);
       }
     };
     fetchProjects();
@@ -71,18 +79,18 @@ export default function ProfileDash() {
       try {
         if (projects.length === 0) return;
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/v1/techstack/me/${projects[0]?.userId}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/techstack/me/${
+            projects[0]?.userId
+          }`
         );
         setTech(response.data);
-        console.log('Fetched tech stack:', response.data);
+        console.log("Fetched tech stack:", response.data);
       } catch (error) {
-        console.error('Error fetching tech stack:', error);
+        console.error("Error fetching tech stack:", error);
       }
     };
     fetchTechStack();
-  }, [
-    projects[0]?.userId,
-  ]);
+  }, [projects[0]?.userId]);
 
   // Update the fetchUserInterests useEffect
   useEffect(() => {
@@ -100,7 +108,7 @@ export default function ProfileDash() {
         );
 
         // Log the response to debug
-        console.log('User Response:', userResponse.data);
+        console.log("User Response:", userResponse.data);
 
         // Check if interestId exists and is an array
         // if (userResponse.data && Array.isArray(userResponse.data.interestId)) {
@@ -139,7 +147,6 @@ export default function ProfileDash() {
         // // Log interest data to debug
         // console.log('Interest Details:', interestData);
 
-
         // const userInterests = axios.get(`${import.meta.env.VITE_API_URL}/api/v1/interest/${user?._id}`, {
         //   headers: {
         //     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -147,10 +154,8 @@ export default function ProfileDash() {
         // });
 
         // console.log('Fetched user interests:', userInterests.data);
-
-
       } catch (error) {
-        console.error('Error fetching user details:', error.response || error);
+        console.error("Error fetching user details:", error.response || error);
       } finally {
         setIsLoading(false);
       }
@@ -177,8 +182,7 @@ export default function ProfileDash() {
     {
       name: "Twitter",
       icon: <FaTwitterSquare />,
-    }
-
+    },
   ];
 
   const containerVariants = {
@@ -213,7 +217,10 @@ export default function ProfileDash() {
     >
       <div className="flex flex-col-reverse lg:grid lg:grid-cols-12 md:gap-4">
         {/* Left Column - Project Cards */}
-        <motion.div className="flex flex-col-reverse lg:col-span-4 lg:flex-col space-y-6 gap-4 md:gap-0" variants={itemVariants}>
+        <motion.div
+          className="flex flex-col-reverse lg:col-span-4 lg:flex-col space-y-6 gap-4 md:gap-0"
+          variants={itemVariants}
+        >
           <motion.div
             className="h-[450px] md:h-[525px] rounded-2xl overflow-y-auto pr-2"
             variants={itemVariants}
@@ -226,11 +233,16 @@ export default function ProfileDash() {
                 >
                   <div
                     className="flex gap-4 hover:cursor-pointer"
-                    onClick={() => navigate(`/dashboard/project/${project._id}`)}
+                    onClick={() =>
+                      navigate(`/dashboard/project/${project._id}`)
+                    }
                   >
                     <div className="w-36 h-40 md:w-32 md:h-32 bg-navy-900 rounded-lg overflow-hidden">
                       <img
-                        src={project.projectThumbnail || "/path/to/default-image.png"}
+                        src={
+                          project.projectThumbnail ||
+                          "/path/to/default-image.png"
+                        }
                         alt={project.projectName}
                         className="w-full h-full object-cover rounded-lg transition-transform hover:scale-105"
                         draggable="false"
@@ -252,11 +264,17 @@ export default function ProfileDash() {
 
                       {/* Status Badge */}
                       <div className="mt-1">
-                        <span className={`text-xs px-2 py-1 rounded-full ${project.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
-                          project.status === 'approved' ? 'bg-green-500/20 text-green-400' :
-                            'bg-red-500/20 text-red-400'
-                          }`}>
-                          {project.status?.charAt(0).toUpperCase() + project.status?.slice(1)}
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full ${
+                            project.status === "pending"
+                              ? "bg-yellow-500/20 text-yellow-400"
+                              : project.status === "approved"
+                              ? "bg-green-500/20 text-green-400"
+                              : "bg-red-500/20 text-red-400"
+                          }`}
+                        >
+                          {project.status?.charAt(0).toUpperCase() +
+                            project.status?.slice(1)}
                         </span>
                       </div>
 
@@ -264,7 +282,8 @@ export default function ProfileDash() {
                       <div className="flex items-center justify-center gap-4 text-sm text-gray-400 mt-2">
                         {project.gitHubLink && (
                           <div className="flex items-center gap-2 hover:text-cyan-400 transition-colors">
-                            <FaGithub className="text-lg" /> {/* Adjusted icon size and removed extra span */}
+                            <FaGithub className="text-lg" />{" "}
+                            {/* Adjusted icon size and removed extra span */}
                             <a
                               href={project.gitHubLink}
                               target="_blank"
@@ -317,7 +336,9 @@ export default function ProfileDash() {
                   />
                 </svg>
                 <p className="text-lg font-semibold">No Projects Yet</p>
-                <p className="text-sm text-gray-500">Start adding your projects to showcase your work</p>
+                <p className="text-sm text-gray-500">
+                  Start adding your projects to showcase your work
+                </p>
               </motion.div>
             )}
           </motion.div>
@@ -343,18 +364,19 @@ export default function ProfileDash() {
                 (color, index) => (
                   <div
                     key={index}
-                    className={`w-16 h-16 rounded-full border-2 ${color === "gold"
-                      ? "border-yellow-400 bg-yellow-400/20"
-                      : color === "green"
+                    className={`w-16 h-16 rounded-full border-2 ${
+                      color === "gold"
+                        ? "border-yellow-400 bg-yellow-400/20"
+                        : color === "green"
                         ? "border-green-400 bg-green-400/20"
                         : color === "purple"
-                          ? "border-purple-500 bg-purple-500/20"
-                          : color === "silver"
-                            ? "border-gray-400 bg-gray-400/20"
-                            : color === "orange"
-                              ? "border-orange-400 bg-orange-400/20"
-                              : "border-cyan-400 bg-cyan-400/20"
-                      } flex items-center justify-center`}
+                        ? "border-purple-500 bg-purple-500/20"
+                        : color === "silver"
+                        ? "border-gray-400 bg-gray-400/20"
+                        : color === "orange"
+                        ? "border-orange-400 bg-orange-400/20"
+                        : "border-cyan-400 bg-cyan-400/20"
+                    } flex items-center justify-center`}
                   >
                     <div className="w-12 h-12 rounded-full bg-gray-700/50"></div>
                   </div>
@@ -399,7 +421,6 @@ export default function ProfileDash() {
                     )
                 )}
               </div>
-
 
               {/* Social Links */}
               <div className="flex justify-center gap-4 mt-4">
@@ -449,7 +470,9 @@ export default function ProfileDash() {
                       d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
                     />
                   </svg>
-                  <p className="text-gray-400 text-center mb-2">No technologies found</p>
+                  <p className="text-gray-400 text-center mb-2">
+                    No technologies found
+                  </p>
                   <p className="text-gray-500 text-sm text-center">
                     Add some technologies to showcase your skills
                   </p>
@@ -496,7 +519,9 @@ export default function ProfileDash() {
               />
             </svg>
             <p className="text-lg font-semibold">No interests found</p>
-            <p className="text-sm text-gray-500">Add some interests to showcase your preferences</p>
+            <p className="text-sm text-gray-500">
+              Add some interests to showcase your preferences
+            </p>
           </div>
         )}
       </motion.div>
