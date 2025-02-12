@@ -8,8 +8,8 @@ import { FaAsterisk } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import Button from "../components/Common/Button";
 import { IoCloudUpload } from "react-icons/io5";
-import { useDispatch } from 'react-redux';
-import  updateProfileComplete  from "../../src/redux/User/userSlice";
+import { useDispatch } from "react-redux";
+import updateProfileComplete, { updateSuccess } from "../../src/redux/User/userSlice";
 
 export default function UserDetail() {
   const dispatch = useDispatch();
@@ -74,7 +74,9 @@ export default function UserDetail() {
       // Convert the default leaduserdemo image to a File object
       const response = await fetch(leaduserdemo);
       const blob = await response.blob();
-      const defaultImageFile = new File([blob], 'defaultProfile.png', { type: 'image/png' });
+      const defaultImageFile = new File([blob], "defaultProfile.png", {
+        type: "image/png",
+      });
       setProfilePicture(defaultImageFile);
     }
 
@@ -125,13 +127,15 @@ export default function UserDetail() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
       );
 
-      if (response.status === 200) {
-        dispatch(updateProfileComplete(true)); // Add this line here
+      if (response.data.success) {
+        dispatch(
+          updateSuccess({ ...response.data.data, isProfileComplete: true })
+        ); // Add this line here
         toast.success(response.data.message);
         resetForm();
         navigate("/dashboard/profile");
@@ -140,7 +144,7 @@ export default function UserDetail() {
       console.error("Registration Error:", error);
       toast.error(
         error.response?.data?.message ||
-        "Registration failed. Please try again."
+          "Registration failed. Please try again."
       );
     } finally {
       setLoading(false);
@@ -185,7 +189,7 @@ export default function UserDetail() {
     setImageSrc(leaduserdemo);
     setProfilePicture(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
@@ -212,7 +216,10 @@ export default function UserDetail() {
             )}
             <div className="flex flex-col justify-center items-center md:items-start md:ml-8">
               <h2 className="flex gap-2 text-base md:text-lg text-white">
-                UPLOAD PHOTO <span className="text-red-700 text-xs"><FaAsterisk /></span>
+                UPLOAD PHOTO{" "}
+                <span className="text-red-700 text-xs">
+                  <FaAsterisk />
+                </span>
               </h2>
               <Button
                 type="submit"
@@ -241,7 +248,10 @@ export default function UserDetail() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
             <div className="space-y-1 md:space-y-2">
               <label htmlFor="name" className="flex gap-1 text-sm font-medium">
-                Name <span className="text-red-700 text-xs"><FaAsterisk /></span>
+                Name{" "}
+                <span className="text-red-700 text-xs">
+                  <FaAsterisk />
+                </span>
               </label>
               <div className="relative">
                 <IoIosArrowForward className="absolute left-2 md:left-3 top-1/2 transform -translate-y-1/2 text-cyan-400" />
@@ -249,7 +259,9 @@ export default function UserDetail() {
                   id="name"
                   type="text"
                   value={userDetails.name}
-                  onChange={(e) => setUserDetails({ ...userDetails, name: e.target.value })}
+                  onChange={(e) =>
+                    setUserDetails({ ...userDetails, name: e.target.value })
+                  }
                   placeholder="Enter Your Name"
                   className="w-full pl-8 md:pl-10 pr-2 md:pr-3 py-2 text-sm md:text-base bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
                   required
@@ -258,26 +270,52 @@ export default function UserDetail() {
             </div>
 
             <div className="space-y-1 md:space-y-2">
-              <label htmlFor="section" className="flex gap-1 text-sm font-medium">
-                Section <span className="text-red-700 text-xs"><FaAsterisk /></span>
+              <label
+                htmlFor="section"
+                className="flex gap-1 text-sm font-medium"
+              >
+                Section{" "}
+                <span className="text-red-700 text-xs">
+                  <FaAsterisk />
+                </span>
               </label>
               <select
                 id="section"
                 value={userDetails.section}
-                onChange={(e) => setUserDetails({ ...userDetails, section: e.target.value })}
+                onChange={(e) =>
+                  setUserDetails({ ...userDetails, section: e.target.value })
+                }
                 className="w-full px-2 md:px-3 py-2 text-sm md:text-base bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
                 required
               >
                 <option value="">Select Section</option>
-                {["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "Other"].map((s) => (
-                  <option key={s} value={s}>{s}</option>
+                {[
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G",
+                  "H",
+                  "I",
+                  "J",
+                  "K",
+                  "Other",
+                ].map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
                 ))}
               </select>
             </div>
 
             <div className="space-y-1 md:space-y-2">
               <label htmlFor="qid" className="flex gap-1 text-sm font-medium">
-                Q-Id <span className="text-red-700 text-xs"><FaAsterisk /></span>
+                Q-Id{" "}
+                <span className="text-red-700 text-xs">
+                  <FaAsterisk />
+                </span>
               </label>
               <div className="relative">
                 <IoIosArrowForward className="absolute left-2 md:left-3 top-1/2 transform -translate-y-1/2 text-cyan-400" />
@@ -285,7 +323,9 @@ export default function UserDetail() {
                   id="qid"
                   type="text"
                   value={userDetails.qId}
-                  onChange={(e) => setUserDetails({ ...userDetails, qId: e.target.value })}
+                  onChange={(e) =>
+                    setUserDetails({ ...userDetails, qId: e.target.value })
+                  }
                   placeholder="Q-Id"
                   className="w-full pl-8 md:pl-10 pr-2 md:pr-3 py-2 text-sm md:text-base bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
                   required
@@ -294,80 +334,143 @@ export default function UserDetail() {
             </div>
 
             <div className="space-y-1 md:space-y-2">
-              <label htmlFor="program" className="flex gap-1 text-sm font-medium">
-                Program <span className="text-red-700 text-xs"><FaAsterisk /></span>
+              <label
+                htmlFor="program"
+                className="flex gap-1 text-sm font-medium"
+              >
+                Program{" "}
+                <span className="text-red-700 text-xs">
+                  <FaAsterisk />
+                </span>
               </label>
               <select
                 id="program"
                 value={userDetails.program}
-                onChange={(e) => setUserDetails({ ...userDetails, program: e.target.value })}
+                onChange={(e) =>
+                  setUserDetails({ ...userDetails, program: e.target.value })
+                }
                 className="w-full px-2 md:px-3 py-2 text-sm md:text-base bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
                 required
               >
                 <option value="">Select Program</option>
                 {["Btech", "BCA", "MCA", "Other"].map((p) => (
-                  <option key={p} value={p}>{p}</option>
+                  <option key={p} value={p}>
+                    {p}
+                  </option>
                 ))}
               </select>
             </div>
 
             <div className="space-y-1 md:space-y-2">
-              <label htmlFor="branch" className="flex gap-1 text-sm font-medium">
-                Branch <span className="text-red-700 text-xs"><FaAsterisk /></span>
+              <label
+                htmlFor="branch"
+                className="flex gap-1 text-sm font-medium"
+              >
+                Branch{" "}
+                <span className="text-red-700 text-xs">
+                  <FaAsterisk />
+                </span>
               </label>
               <select
                 id="branch"
                 value={userDetails.branch}
-                onChange={(e) => setUserDetails({ ...userDetails, branch: e.target.value })}
+                onChange={(e) =>
+                  setUserDetails({ ...userDetails, branch: e.target.value })
+                }
                 className="w-full px-2 md:px-3 py-2 text-sm md:text-base bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
                 required
               >
                 <option value="">Select Branch</option>
-                {["CSE", "CSCQ", "AIML", "FSD", "DS", "MAWT", "Computer Application", "Other"].map((b) => (
-                  <option key={b} value={b}>{b}</option>
+                {[
+                  "CSE",
+                  "CSCQ",
+                  "AIML",
+                  "FSD",
+                  "DS",
+                  "MAWT",
+                  "Computer Application",
+                  "Other",
+                ].map((b) => (
+                  <option key={b} value={b}>
+                    {b}
+                  </option>
                 ))}
               </select>
             </div>
 
             <div className="space-y-1 md:space-y-2">
-              <label htmlFor="session" className="flex gap-1 text-sm font-medium">
-                Session <span className="text-red-700 text-xs"><FaAsterisk /></span>
+              <label
+                htmlFor="session"
+                className="flex gap-1 text-sm font-medium"
+              >
+                Session{" "}
+                <span className="text-red-700 text-xs">
+                  <FaAsterisk />
+                </span>
               </label>
               <select
                 id="session"
                 value={userDetails.session}
-                onChange={(e) => setUserDetails({ ...userDetails, session: e.target.value })}
+                onChange={(e) =>
+                  setUserDetails({ ...userDetails, session: e.target.value })
+                }
                 className="w-full px-2 md:px-3 py-2 text-sm md:text-base bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
                 required
               >
                 <option value="">Select Session</option>
-                {["2022-25", "2022-26", "2023-26", "2023-27", "2024-28", "2024-27", "2025-29", "2025-28", "2026-29", "2026-30"].map((s) => (
-                  <option key={s} value={s}>{s}</option>
+                {[
+                  "2022-25",
+                  "2022-26",
+                  "2023-26",
+                  "2023-27",
+                  "2024-28",
+                  "2024-27",
+                  "2025-29",
+                  "2025-28",
+                  "2026-29",
+                  "2026-30",
+                ].map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
                 ))}
               </select>
             </div>
 
             <div className="space-y-1 md:space-y-2">
-              <label htmlFor="gender" className="flex gap-1 text-sm font-medium">
-                Gender <span className="text-red-700 text-xs"><FaAsterisk /></span>
+              <label
+                htmlFor="gender"
+                className="flex gap-1 text-sm font-medium"
+              >
+                Gender{" "}
+                <span className="text-red-700 text-xs">
+                  <FaAsterisk />
+                </span>
               </label>
               <select
                 id="gender"
                 value={userDetails.gender}
-                onChange={(e) => setUserDetails({ ...userDetails, gender: e.target.value })}
+                onChange={(e) =>
+                  setUserDetails({ ...userDetails, gender: e.target.value })
+                }
                 className="w-full px-2 md:px-3 py-2 text-sm md:text-base bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
                 required
               >
                 <option value="">Select Gender</option>
                 {["Male", "Female", "Other"].map((g) => (
-                  <option key={g} value={g}>{g}</option>
+                  <option key={g} value={g}>
+                    {g}
+                  </option>
                 ))}
               </select>
             </div>
 
             <div className="space-y-1 md:space-y-2">
               <label htmlFor="phone" className="flex gap-1 text-sm font-medium">
-                Phone Number <span className="text-red-700 text-xs"><FaAsterisk /></span>
+                Phone Number{" "}
+                <span className="text-red-700 text-xs">
+                  <FaAsterisk />
+                </span>
               </label>
               <div className="relative">
                 <IoIosArrowForward className="absolute left-2 md:left-3 top-1/2 transform -translate-y-1/2 text-cyan-400" />
@@ -375,7 +478,9 @@ export default function UserDetail() {
                   id="phone"
                   type="tel"
                   value={userDetails.phone}
-                  onChange={(e) => setUserDetails({ ...userDetails, phone: e.target.value })}
+                  onChange={(e) =>
+                    setUserDetails({ ...userDetails, phone: e.target.value })
+                  }
                   placeholder="Phone Number"
                   className="w-full pl-8 md:pl-10 pr-2 md:pr-3 py-2 text-sm md:text-base bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
                   required
@@ -385,7 +490,10 @@ export default function UserDetail() {
 
             <div className="space-y-1 md:space-y-2">
               <label htmlFor="dob" className="flex gap-1 text-sm font-medium">
-                Date of Birth <span className="text-red-700 text-xs"><FaAsterisk /></span>
+                Date of Birth{" "}
+                <span className="text-red-700 text-xs">
+                  <FaAsterisk />
+                </span>
               </label>
               <div className="relative">
                 <IoIosArrowForward className="absolute left-2 md:left-3 top-1/2 transform -translate-y-1/2 text-cyan-400" />
@@ -393,7 +501,9 @@ export default function UserDetail() {
                   id="dob"
                   type="date"
                   value={userDetails.dob}
-                  onChange={(e) => setUserDetails({ ...userDetails, dob: e.target.value })}
+                  onChange={(e) =>
+                    setUserDetails({ ...userDetails, dob: e.target.value })
+                  }
                   className="w-full pl-8 md:pl-10 pr-2 md:pr-3 py-2 text-sm md:text-base bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
                   required
                 />
@@ -401,8 +511,14 @@ export default function UserDetail() {
             </div>
 
             <div className="space-y-1 md:space-y-2">
-              <label htmlFor="interest" className="flex gap-1 text-sm font-medium">
-                Interest <span className="text-red-700 text-xs"><FaAsterisk /></span>
+              <label
+                htmlFor="interest"
+                className="flex gap-1 text-sm font-medium"
+              >
+                Interest{" "}
+                <span className="text-red-700 text-xs">
+                  <FaAsterisk />
+                </span>
               </label>
               <MultiSelectInput
                 fieldName="Interest"
@@ -414,14 +530,19 @@ export default function UserDetail() {
 
             <div className="space-y-1 md:space-y-2 col-span-1 md:col-span-2">
               <label htmlFor="bio" className="flex gap-1 text-sm font-medium">
-                About Yourself <span className="text-red-700 text-xs"><FaAsterisk /></span>
+                About Yourself{" "}
+                <span className="text-red-700 text-xs">
+                  <FaAsterisk />
+                </span>
               </label>
               <div className="relative">
                 <IoIosArrowForward className="absolute left-2 md:left-3 top-4 text-cyan-400" />
                 <textarea
                   id="bio"
                   value={userDetails.bio}
-                  onChange={(e) => setUserDetails({ ...userDetails, bio: e.target.value })}
+                  onChange={(e) =>
+                    setUserDetails({ ...userDetails, bio: e.target.value })
+                  }
                   placeholder="Tell us about yourself, your interests, and what you hope to achieve..."
                   className="w-full pl-8 md:pl-10 pr-2 md:pr-3 py-2 text-sm md:text-base bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400 min-h-[100px] md:min-h-[120px] resize-y"
                   required
@@ -455,8 +576,22 @@ export default function UserDetail() {
                 </div>
                 <ul className="list-disc pl-4 md:pl-5 text-xs md:text-sm space-y-1">
                   <li>Be part of cyber hunter club and its activities.</li>
-                  <li>Experience live latest technology classes and practical projects.</li>
-                  <li>Experience the field of <span className="text-cyan-400 font-bold">Cyber Security</span> and <span className="text-cyan-400 font-bold">Fullstack Development</span> with <span className="text-cyan-400 font-bold">BlockChain</span>.</li>
+                  <li>
+                    Experience live latest technology classes and practical
+                    projects.
+                  </li>
+                  <li>
+                    Experience the field of{" "}
+                    <span className="text-cyan-400 font-bold">
+                      Cyber Security
+                    </span>{" "}
+                    and{" "}
+                    <span className="text-cyan-400 font-bold">
+                      Fullstack Development
+                    </span>{" "}
+                    with{" "}
+                    <span className="text-cyan-400 font-bold">BlockChain</span>.
+                  </li>
                 </ul>
               </div>
             </div>
@@ -519,7 +654,3 @@ export default function UserDetail() {
     </div>
   );
 }
-
-
-
-

@@ -11,7 +11,7 @@ import {
   signOutUserSuccess,
   signOutUserFailure,
 } from "../../redux/User/userSlice";
-import DefaultImg from '../../assets/profile.png'
+import DefaultImg from "../../assets/profile.png";
 import { TbLogin, TbLogout, TbSignRight } from "react-icons/tb";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 import { BsGrid3X3Gap, BsPersonCircle } from "react-icons/bs";
@@ -37,8 +37,8 @@ export default function Header() {
       transition: {
         duration: 0.3,
         staggerChildren: 0.1,
-        when: "afterChildren"
-      }
+        when: "afterChildren",
+      },
     },
     visible: {
       opacity: 1,
@@ -48,14 +48,14 @@ export default function Header() {
         stiffness: 120,
         damping: 20,
         staggerChildren: 0.1,
-        when: "beforeChildren"
-      }
-    }
+        when: "beforeChildren",
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, x: 20 },
-    visible: { opacity: 1, x: 0 }
+    visible: { opacity: 1, x: 0 },
   };
 
   // Toggle Menu
@@ -111,14 +111,15 @@ export default function Header() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-
-
   // Logout handler
   const handleLogout = async () => {
     try {
       dispatch(signOutUserStart());
-      const { data } = await axios.post(
-        "/api/v1/auth/logout");
+      const { data } = await axios.post("/api/v1/auth/logout", null, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
       if (data.success) {
         dispatch(signOutUserSuccess());
         navigate("/auth/login");
@@ -130,9 +131,12 @@ export default function Header() {
     } catch (error) {
       dispatch(signOutUserFailure(error.message));
       return toast.error(error.message);
+    } finally {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      dispatch(signOutUserSuccess());
     }
   };
-
 
   // Mobile menu variants
   const mobileMenuVariants = {
@@ -186,7 +190,7 @@ export default function Header() {
     {
       name: "Contact",
       link: "/contact",
-      icon: <FaPhoneAlt/>,
+      icon: <FaPhoneAlt />,
     },
     {
       name: "Leaderboard",
@@ -197,7 +201,7 @@ export default function Header() {
       name: "Event",
       link: "/event",
       icon: <GiTrophy />,
-    }
+    },
   ];
 
   const newNav = [
@@ -213,7 +217,6 @@ export default function Header() {
     },
   ];
 
-
   // mobile image , name , points
   const [profile, setProfile] = useState({
     name: "John Doe",
@@ -227,7 +230,6 @@ export default function Header() {
   const toggleLoginState = () => {
     setIsLoggedIn(!isLoggedIn);
   };
-
 
   return (
     <motion.div
@@ -368,7 +370,6 @@ export default function Header() {
             </div>
           ) : (
             <div className="flex items-center justify-center gap-4">
-
               <button
                 className="px-4 py-1 hidden md:block font-semibold rounded-full text-[#00D8FF] border border-[#00D8FF] bg-transparent hover:bg-[#00D8FF] hover:text-black transition-all duration-300"
                 onClick={() => navigate("/auth/login")}
@@ -401,7 +402,9 @@ export default function Header() {
           {/* Updated Mobile Menu */}
           <motion.div
             className={`fixed top-0 right-0 h-full w-full md:w-1/2 lg:w-1/3 bg-black/95 backdrop-blur-lg 
-            border-l border-[#00D8FF]/20 z-50 ${isMenuOpen ? 'block' : 'hidden'}`}
+            border-l border-[#00D8FF]/20 z-50 ${
+              isMenuOpen ? "block" : "hidden"
+            }`}
             variants={menuVariants}
             initial="hidden"
             animate={isMenuOpen ? "visible" : "hidden"}
@@ -444,7 +447,7 @@ export default function Header() {
 
                 <div className="text-center">
                   <h2 className="text-xl font-bold text-white">
-                    {currentUser ? currentUser.name : 'Guest'}
+                    {currentUser ? currentUser.name : "Guest"}
                   </h2>
                   <div className="inline-flex items-center space-x-2 px-3 py-1 bg-[#00D8FF]/10 rounded-full">
                     <span className="w-2 h-2 rounded-full bg-[#00D8FF] animate-pulse" />
@@ -458,10 +461,7 @@ export default function Header() {
               {/* Navigation Links */}
               <div className="flex-1 space-y-6">
                 {currentUser && (
-                  <motion.div
-                    className="space-y-4"
-                    variants={itemVariants}
-                  >
+                  <motion.div className="space-y-4" variants={itemVariants}>
                     {newNav.map(({ name2, link2, icon }) => (
                       <motion.div
                         key={name2}
@@ -471,11 +471,12 @@ export default function Header() {
                       >
                         <NavLink
                           to={link2}
-                          end={link2 === '/dashboard'} // Add end prop for exact matching
+                          end={link2 === "/dashboard"} // Add end prop for exact matching
                           className={({ isActive }) =>
-                            `block py-2 px-4 rounded-lg transition-colors duration-200 ${isActive
-                              ? 'bg-[#00D8FF]/20 text-[#00D8FF]'
-                              : 'text-gray-400 hover:text-[#00D8FF] hover:bg-[#00D8FF]/10'
+                            `block py-2 px-4 rounded-lg transition-colors duration-200 ${
+                              isActive
+                                ? "bg-[#00D8FF]/20 text-[#00D8FF]"
+                                : "text-gray-400 hover:text-[#00D8FF] hover:bg-[#00D8FF]/10"
                             }`
                           }
                           onClick={toggleMenu}
@@ -492,11 +493,8 @@ export default function Header() {
 
                 <div className="h-px bg-gradient-to-r from-transparent via-[#00D8FF]/20 to-transparent" />
 
-                <motion.div
-                  className="space-y-4"
-                  variants={itemVariants}
-                >
-                  {nav.map(({ name, link,icon }) => (
+                <motion.div className="space-y-4" variants={itemVariants}>
+                  {nav.map(({ name, link, icon }) => (
                     <motion.div
                       key={name}
                       variants={itemVariants}
@@ -505,9 +503,10 @@ export default function Header() {
                       <NavLink
                         to={link}
                         className={({ isActive }) =>
-                          `block py-2 px-4 rounded-lg transition-colors duration-200 ${isActive
-                            ? 'bg-[#00D8FF]/20 text-[#00D8FF]'
-                            : 'text-gray-400 hover:text-[#00D8FF] hover:bg-[#00D8FF]/10'
+                          `block py-2 px-4 rounded-lg transition-colors duration-200 ${
+                            isActive
+                              ? "bg-[#00D8FF]/20 text-[#00D8FF]"
+                              : "text-gray-400 hover:text-[#00D8FF] hover:bg-[#00D8FF]/10"
                           }`
                         }
                         onClick={toggleMenu}
@@ -542,7 +541,7 @@ export default function Header() {
                 ) : (
                   <button
                     onClick={() => {
-                      navigate('/auth/login');
+                      navigate("/auth/login");
                       toggleMenu();
                     }}
                     className="w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-lg
@@ -556,7 +555,7 @@ export default function Header() {
             </div>
           </motion.div>
         </div>
-      </div >
+      </div>
     </motion.div>
   );
 }
