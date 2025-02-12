@@ -5,9 +5,8 @@ const initialState = {
   currentUser: null,
   error: null,
   loading: false,
+  isProfileComplete: false,
 };
-
-
 
 const userSlice = createSlice({
   name: "user",
@@ -19,6 +18,7 @@ const userSlice = createSlice({
     },
     signInSuccess: (state, action) => {
       state.currentUser = action.payload;
+      state.isProfileComplete = action.payload.isProfileComplete || false;
       state.loading = false;
       state.error = null;
     },
@@ -32,6 +32,7 @@ const userSlice = createSlice({
     },
     updateSuccess: (state, action) => {
       state.currentUser = action.payload;
+      state.isProfileComplete = action.payload.isProfileComplete || false;
       state.loading = false;
       state.error = null;
     },

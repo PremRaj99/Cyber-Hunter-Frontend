@@ -12,13 +12,12 @@ import PostProject from "../../src/pages/PostProject";
 import ProjectDetail from "../../src/pages/Project";
 import Team from "../pages/Team";
 import CreateTeam from "../../src/pages/CreateTeam";
-import ProtectedRoute from "../../src/routes/ProtectedRoute";
 import About from "../components/home/About";
-import Service from "../../src/pages/Service"; 
+import Service from "../../src/pages/Service";
 import Contact from "../components/home/Contact";
 import Leaderboard from "../../src/pages/Leaderboard";
 import Event from "../../src/pages/Event";
-import EventDetail from "../../src/pages/EventDetail";  
+import EventDetail from "../../src/pages/EventDetail";
 import DashboardLayout from "../Layout/DashboardLayout";
 import Dashboard from "../../src/pages/Dashboard";
 import UserDetail from "../../src/pages/UserDetail";
@@ -29,7 +28,7 @@ import TeamSetting from "../../src/pages/TeamSetting";
 import ProfileSetting from "../../src/pages/ProfileSetting";
 import FreelancerLayout from "../Layout/VendorLayout";
 import Freelancer from "../pages/Freelancer";
-
+import { AuthGuard, PublicRoute } from '../components/guards/AuthGuard';
 
 export const router = createBrowserRouter([
   {
@@ -65,8 +64,6 @@ export const router = createBrowserRouter([
         path: "eventdetail",
         element: <EventDetail />,
       },
-      
-      // Other public routes...
     ],
   },
   {
@@ -75,29 +72,25 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "login",
-        element: <Login />,
+        element: <PublicRoute><Login /></PublicRoute>,
       },
       {
         path: "forgot-password",
-        element: <ForgotPassword />,
+        element: <PublicRoute><ForgotPassword /></PublicRoute>,
       },
       {
         path: "verify-otp",
-        element: <VerifyOTP />,
+        element: <PublicRoute><VerifyOTP /></PublicRoute>,
       },
       {
-        path: "userdetails/:id?",
-        element: <UserDetail />,
+        path: "userdetails",
+        element: <AuthGuard><UserDetail /></AuthGuard>,
       },
     ],
   },
   {
     path: "/dashboard",
-    element: (
-      <ProtectedRoute>
-        <DashboardLayout />
-      </ProtectedRoute>
-    ),
+    element: <AuthGuard><DashboardLayout /></AuthGuard>,
     children: [
       {
         path: "",
@@ -111,10 +104,6 @@ export const router = createBrowserRouter([
         path: "achievement",
         element: <VerifyAchievement />,
       },
-      // {
-      //   path: "settings",
-      //   element: <Settings />,
-      // },
       {
         path: "profile",
         children: [
@@ -145,7 +134,7 @@ export const router = createBrowserRouter([
           {
             path: "setting",
             element: <ProfileSetting />,
-          }, 
+          },
         ],
       },
       {
@@ -206,11 +195,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/freelancer",
-    element: (
-      <ProtectedRoute>
-        <FreelancerLayout />
-      </ProtectedRoute>
-    ),
+    element: <AuthGuard><FreelancerLayout /></AuthGuard>,
     children: [
       {
         path: "",
@@ -220,18 +205,6 @@ export const router = createBrowserRouter([
         path: "projects",
         element: <ProjectList />,
       },
-      // {
-      //   path: "proposals",
-      //   element: <Proposals />,
-      // },
-      // {
-      //   path: "earnings",
-      //   element: <Earnings />,
-      // },
-      // {
-      //   path: "settings",
-      //   element: <FreelancerSettings />,
-      // }
     ],
   },
 ]);

@@ -90,10 +90,13 @@ export default function Login() {
         password: formdata.password,
         confirmPassword: formdata.confirmPassword,
       });
-      console.log("data0",data) 
+      console.log("data0", data)
       setLoading(false);
       if (data.success) {
-        dispatch(signInSuccess(data.data));
+        dispatch(signInSuccess({
+          ...data.data,
+          isProfileComplete: false
+        }));
         localStorage.setItem("accessToken", data.data.accessToken);
         localStorage.setItem("refreshToken", data.data.refreshToken);
         navigate("/auth/userdetails", { replace: true });
@@ -133,24 +136,21 @@ export default function Login() {
                 <div className="flex justify-between items-center border-2 border-gray-400 rounded-full relative overflow-hidden">
                   <label
                     onClick={() => setIsSignup(false)}
-                    className={`w-1/2  text-center text-lg cursor-pointer transition-all duration-700 z-10 ${
-                      !isSignup ? "text-black" : "text-white"
-                    }`}
+                    className={`w-1/2  text-center text-lg cursor-pointer transition-all duration-700 z-10 ${!isSignup ? "text-black" : "text-white"
+                      }`}
                   >
                     Login
                   </label>
                   <label
                     onClick={() => setIsSignup(true)}
-                    className={`w-1/2 py-2 text-center text-lg cursor-pointer transition-all duration-700 z-10 ${
-                      isSignup ? "text-black" : "text-white"
-                    }`}
+                    className={`w-1/2 py-2 text-center text-lg cursor-pointer transition-all duration-700 z-10 ${isSignup ? "text-black" : "text-white"
+                      }`}
                   >
                     Signup
                   </label>
                   <div
-                    className={`absolute  top-0 h-full w-1/2 bg-brandPrimary  rounded-full transition-all duration-700 ${
-                      isSignup ? "transform translate-x-full" : ""
-                    }`}
+                    className={`absolute  top-0 h-full w-1/2 bg-brandPrimary  rounded-full transition-all duration-700 ${isSignup ? "transform translate-x-full" : ""
+                      }`}
                   ></div>
                 </div>
               </div>

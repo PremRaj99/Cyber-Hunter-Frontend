@@ -3,7 +3,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { use, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { FaInstagram, FaLinkedin, FaSquareGithub } from "react-icons/fa6";
+import { FaBullseye, FaGithub, FaInstagram, FaLinkedin, FaSquareGithub } from "react-icons/fa6";
 import { FaTwitterSquare } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import TechStackItem from "../Common/TechStackItem";
@@ -15,6 +15,7 @@ export default function ProfileDash() {
   // const [userDetails, setUserDetails] = useState({});
   const user = useSelector((state) => state.user.currentUser);
   const [userInterests, setUserInterests] = useState([]);
+  const [interestDetails, setInterestDetails] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [tech, setTech] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -45,6 +46,8 @@ export default function ProfileDash() {
           },
         });
         setProjects(response.data);
+
+        console.log('Fetched projects:', response.data);
       } catch (error) {
         console.error('Error fetching projects:', error);
       }
@@ -86,7 +89,8 @@ export default function ProfileDash() {
     const fetchUserDetails = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(
+        // Fetch user details
+        const userResponse = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/v1/user/${user?._id}`,
           {
             headers: {
@@ -95,21 +99,58 @@ export default function ProfileDash() {
           }
         );
 
-        // Update userInterests with populated data
-        if (response.data && response.data.interestId) {
-          setUserInterests(response.data.interestId);
-        }
+        // Log the response to debug
+        console.log('User Response:', userResponse.data);
 
-        // Update projects if they exist in response
-        if (response.data && response.data.projects) {
-          setProjects(response.data.projects);
-        }
+        // Check if interestId exists and is an array
+        // if (userResponse.data && Array.isArray(userResponse.data.interestId)) {
+        //   setUserInterests(userResponse.data.interestId);
 
-        // Debug log
-        console.log('Fetched user details:', response.data);
+        // Fetch details for each interest
+        // const interestPromises = userResponse.data.interestId.map(_id =>
+        //   axios.get(`${import.meta.env.VITE_API_URL}/api/v1/interest/${_id}`, {
+        //     headers: {
+        //       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        //     },
+        //   })
+        // );
+
+        // const getIntrestDetails = async () => {
+        //   axios.get(`${import.meta.env.VITE_API_URL}/api/v1/interest/${userResponse.data.interestId}`, {
+        //     headers: {
+        //       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        //     },
+        //   }).then((response) => {
+        //     console.log(response.data);
+        //   });
+        // };
+        // getIntrestDetails();
+
+        // const interestResponses = await Promise.all(interestPromises);
+        // const interestData = {};
+        // interestResponses.forEach(response => {
+        //   if (response.data) {
+        //     interestData[response.data._id] = response.data;
+        //     console.log('Interest Response:', response.data);
+        //   }
+        // });
+        // setInterestDetails(interestData);
+
+        // // Log interest data to debug
+        // console.log('Interest Details:', interestData);
+
+
+        // const userInterests = axios.get(`${import.meta.env.VITE_API_URL}/api/v1/interest/${user?._id}`, {
+        //   headers: {
+        //     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        //   },
+        // });
+
+        // console.log('Fetched user interests:', userInterests.data);
+
 
       } catch (error) {
-        console.error('Error fetching user details:', error);
+        console.error('Error fetching user details:', error.response || error);
       } finally {
         setIsLoading(false);
       }
@@ -174,55 +215,111 @@ export default function ProfileDash() {
         {/* Left Column - Project Cards */}
         <motion.div className="flex flex-col-reverse lg:col-span-4 lg:flex-col space-y-6 gap-4 md:gap-0" variants={itemVariants}>
           <motion.div
-            className="h-[450px] md:h-[525px] rounded-2xl overflow-y-auto pr-2 "
+            className="h-[450px] md:h-[525px] rounded-2xl overflow-y-auto pr-2"
             variants={itemVariants}
           >
-            {projects.map((project) => (
-              <motion.div
-                key={project._id}
-                className="bg-gray-800 rounded-xl p-4 shadow-lg mb-4 last:mb-0"
-              >
-                <div className="flex gap-4 hover:cursor-pointer" onClick={() => navigate(`/dashboard/project/${project._id}`)}>
-                  <div className="w-24 h-35 bg-navy-900 rounded-lg flex items-center justify-center text-sm">
-                    <img
-                      src={project.projectThumbnail || "default-thumbnail-url"}
-                      alt={project.projectName}
-                      className="w-full h-full object-cover rounded-lg"
-                      draggable="false"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-cyan-400 text-lg font-semibold">
-                      {project.projectName.toUpperCase()}
-                    </h3>
-                    <p className="text-gray-400 text-sm">
-                      {/* points : {item === 1 ? "50" : "60"} */}
-                    </p>
-                    <div className="flex items-center gap-4 text-sm text-gray-400 mt-2">
-                      {project.gitHubLink && (
-                        <div className="flex items-center gap-1">
-                          <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                          <a href={project.gitHubLink} target="_blank" rel="noopener noreferrer">
-                            GitHub
-                          </a>
-                        </div>
-                      )}
-                      {project.liveLink && (
-                        <div className="flex items-center gap-1">
-                          <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-                          <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
-                            Live
-                          </a>
-                        </div>
-                      )}
+            {projects && projects.length > 0 ? (
+              projects.map((project) => (
+                <motion.div
+                  key={project._id}
+                  className="bg-gray-800 rounded-xl p-4 shadow-lg mb-4 last:mb-0 hover:bg-gray-700/80 transition-all duration-300"
+                >
+                  <div
+                    className="flex gap-4 hover:cursor-pointer"
+                    onClick={() => navigate(`/dashboard/project/${project._id}`)}
+                  >
+                    <div className="w-36 h-40 md:w-32 md:h-32 bg-navy-900 rounded-lg overflow-hidden">
+                      <img
+                        src={project.projectThumbnail || "/path/to/default-image.png"}
+                        alt={project.projectName}
+                        className="w-full h-full object-cover rounded-lg transition-transform hover:scale-105"
+                        draggable="false"
+                        onError={(e) => {
+                          e.target.src = "/path/to/default-image.png";
+                        }}
+                      />
                     </div>
-                    <p className="text-sm text-gray-300 mt-2">
-                      {project.projectDescription.slice(0, 100)}...
-                    </p>
+
+                    <div className="flex-1">
+                      <div className="flex justify-between items-start">
+                        <h3 className="text-cyan-400 text-lg font-semibold">
+                          {project.projectName?.toUpperCase()}
+                        </h3>
+                        <span className="text-xs text-gray-400">
+                          {new Date(project.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+
+                      {/* Status Badge */}
+                      <div className="mt-1">
+                        <span className={`text-xs px-2 py-1 rounded-full ${project.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
+                          project.status === 'approved' ? 'bg-green-500/20 text-green-400' :
+                            'bg-red-500/20 text-red-400'
+                          }`}>
+                          {project.status?.charAt(0).toUpperCase() + project.status?.slice(1)}
+                        </span>
+                      </div>
+
+                      {/* Project Links */}
+                      <div className="flex items-center justify-center gap-4 text-sm text-gray-400 mt-2">
+                        {project.gitHubLink && (
+                          <div className="flex items-center gap-2 hover:text-cyan-400 transition-colors">
+                            <FaGithub className="text-lg" /> {/* Adjusted icon size and removed extra span */}
+                            <a
+                              href={project.gitHubLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              GitHub
+                            </a>
+                          </div>
+                        )}
+                        {project.liveLink && (
+                          <div className="flex items-center gap-2 hover:text-cyan-400 transition-colors">
+                            <FaBullseye />
+                            <a
+                              href={project.liveLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              Live
+                            </a>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Project Description */}
+                      <p className="text-sm text-gray-300 mt-2 line-clamp-2">
+                        {project.projectDescription}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </motion.div>
+              ))
+            ) : (
+              <motion.div
+                className="flex flex-col items-center justify-center h-full text-gray-400"
+                variants={itemVariants}
+              >
+                <svg
+                  className="w-16 h-16 mb-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                  />
+                </svg>
+                <p className="text-lg font-semibold">No Projects Yet</p>
+                <p className="text-sm text-gray-500">Start adding your projects to showcase your work</p>
               </motion.div>
-            ))}
+            )}
           </motion.div>
 
           {/* Field of Excellence */}
@@ -363,29 +460,43 @@ export default function ProfileDash() {
         </motion.div>
       </div>
 
-      {/* Bottom Categories (Intrests)*/}
+      {/* Bottom Categories (Interests) */}
       <motion.div
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-6"
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-6 mb-8"
         variants={itemVariants}
       >
         {isLoading ? (
           <div className="col-span-full flex justify-center items-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400"></div>
           </div>
-        ) : userInterests && userInterests.length > 0 ? (
-          userInterests.map((interest) => (
+        ) : userInterests.length > 0 ? ( // Changed from user?.interestId to userInterests
+          userInterests.map((interestId) => (
             <motion.button
-              key={interest._id}
-              className="bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 rounded-lg py-2 px-4 transition-colors border border-cyan-500/30"
+              key={interestId}
+              className="bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 rounded-lg py-2 px-4 transition-colors border border-cyan-500/30 hover:shadow-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {interest.content}
+              # {interestId}
             </motion.button>
           ))
         ) : (
-          <div className="col-span-full text-center text-gray-400">
-            No interests found
+          <div className="col-span-full text-center text-gray-400 p-4">
+            <svg
+              className="w-12 h-12 mx-auto mb-2 text-gray-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
+              />
+            </svg>
+            <p className="text-lg font-semibold">No interests found</p>
+            <p className="text-sm text-gray-500">Add some interests to showcase your preferences</p>
           </div>
         )}
       </motion.div>
