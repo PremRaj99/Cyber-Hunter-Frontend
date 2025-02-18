@@ -29,6 +29,10 @@ import ProfileSetting from "../../src/pages/ProfileSetting";
 import FreelancerLayout from "../Layout/VendorLayout";
 import Freelancer from "../pages/Freelancer";
 import { AuthGuard, PublicRoute } from '../components/guards/AuthGuard';
+import EditProject from "../pages/EditProject";
+import UpdateProfile from "../pages/UpdateProfile";
+import DAccountSetting from "../components/dashboard/dAccountSetting";
+import TeamChat from "../components/Team/TeamChat";
 
 export const router = createBrowserRouter([
   {
@@ -105,27 +109,15 @@ export const router = createBrowserRouter([
         element: <VerifyAchievement />,
       },
       {
+        path: "account",
+        element: <DAccountSetting />,
+      },
+      {
         path: "profile",
         children: [
           {
             path: "",
             element: <Profile />,
-          },
-          {
-            path: "new",
-            element: <PostProject />,
-          },
-          {
-            path: "view",
-            element: <ProjectDetail />,
-          },
-          {
-            path: "addprojects",
-            element: <AddProject />,
-          },
-          {
-            path: "viewproject",
-            element: <ViewProject />,
           },
           {
             path: "personalachivement",
@@ -135,6 +127,10 @@ export const router = createBrowserRouter([
             path: "setting",
             element: <ProfileSetting />,
           },
+          {
+            path: "update",
+            element: <UpdateProfile />,
+          },
         ],
       },
       {
@@ -142,11 +138,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <ProjectList />,
-          },
-          {
-            path: "new",
-            element: <PostProject />,
+            element: <ViewProject />,
           },
           {
             path: ":id",
@@ -159,6 +151,10 @@ export const router = createBrowserRouter([
           {
             path: "view",
             element: <ViewProject />,
+          },
+          {
+            path: "edit/:id", 
+            element: <EditProject />,
           },
         ],
       },
@@ -189,6 +185,10 @@ export const router = createBrowserRouter([
             path: "createteam",
             element: <CreateTeam />,
           },
+          {
+            path: "chat",
+            element: <TeamChat />,
+          },
         ],
       },
     ],
@@ -204,6 +204,10 @@ export const router = createBrowserRouter([
       {
         path: "projects",
         element: <ProjectList />,
+      },
+      {
+        path: "post",
+        element: <PostProject />,
       },
     ],
   },

@@ -207,7 +207,7 @@ export default function Leaderboard() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-gradient-to-b md:p-8 p-4"
+      className="h-full bg-gradient-to-b md:p-8 p-4"
     >
       <main ref={ref} className="max-w-6xl mx-auto">
         {/* Title */}
@@ -399,7 +399,7 @@ export default function Leaderboard() {
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex-1 h-[500px] overflow-hidden bg-white/5 rounded-lg"
+            className="flex-1 h-[500px] overflow-y-auto bg-white/5 rounded-lg no-scrollbar"
           >
             {activeTab === "INDIVIDUAL" ? (
               <LeaderboardList data={individualData} />

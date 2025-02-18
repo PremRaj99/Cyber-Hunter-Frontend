@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,37 +9,50 @@
   </head>
   <body>
     <style>
-      body{
-        
+      body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+        overflow-x: hidden;
         scroll-behavior: smooth;
         transition: all 0.5s ease;
       }
-      /* width */
-::-webkit-scrollbar {
-  width: 4px;
-}
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: #000000;
-}
+      body::-webkit-scrollbar-track {
+        width: 0;
+      }
+      body::-webkit-scrollbar-thumb {
+        width: 5px;
+      }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(black, #00f2ff);
-  border-radius: 5px;
-}
+      html {
+        background: #000;
+      }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(#00f2ff, black);
-  cursor:grabbing;
-  transition: all 1s ease;
-}
+      body::-webkit-scrollbar {
+        width: 4px;
+      }
 
+      /* Track */
+      body::-webkit-scrollbar-track {
+        background: #000000;
+      }
+
+      /* Handle */
+      body::-webkit-scrollbar-thumb {
+        background: linear-gradient(black, #00f2ff);
+        border-radius: 5px;
+      }
+
+      /* Handle on hover */
+      body::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(#00f2ff, black);
+        cursor: grabbing;
+        transition: all 1s ease;
+      }
     </style>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    
   </body>
 </html>

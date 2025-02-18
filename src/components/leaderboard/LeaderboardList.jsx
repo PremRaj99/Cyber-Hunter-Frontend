@@ -36,14 +36,14 @@ export default function LeaderboardList(data) {
   return (
     <div
       ref={ref}
-      className="flex-1 h-[500px] overflow-hidden bg-white bg-opacity-5 border border-cyan-400/5 rounded-lg"
+      className="flex-1 h-[500px] overflow-hidden bg-white bg-opacity-5 border border-cyan-400/5 rounded-lg p-2 md:p-4 no-scrollbar"
     >
       {/* Scrollable Inner Content */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
-        className="h-full overflow-y-auto space-y-2 py-4 px-2 md:px-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-cyan-400/30 hover:scrollbar-thumb-cyan-400/50"
+        className="h-full overflow-y-auto space-y-2 py-4 px-2 md:px-4 no-scrollbar"
       >
         {data.data.map((entry) => (
           <motion.div

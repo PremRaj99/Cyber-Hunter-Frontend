@@ -3,7 +3,7 @@ import Leaderboard from  '../leaderboard/Leaderboardmain'
 
 const dLeaderBorad = () => {
   return (
-    <div className="dLeaderBoardContainer">
+    <div className="dLeaderBoardContainer max-h-[calc(100vh-15rem)] mb-10 no-scrollbar">
       <Leaderboard />
     </div>
   )

@@ -6,11 +6,12 @@ export default function MultiSelectInput({
   fieldName = "Tag",
   apiEndpoint = "/api/tag",
   onTagsChange,
-  className = ""
+  className = "",
+  defaultValue = [],
 }) {
   const [query, setQuery] = useState("");
   const [tags, setTags] = useState([]);
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState(defaultValue);
   const [showDropdown, setShowDropdown] = useState(false);
   const inputRef = useRef(null);
 
@@ -80,6 +81,7 @@ export default function MultiSelectInput({
       (tag) => tag.tagId !== tagId
     );
     setSelectedTags(updatedSelectedTags);
+    console.log(updatedSelectedTags);
     onTagsChange(updatedSelectedTags);
   };
 

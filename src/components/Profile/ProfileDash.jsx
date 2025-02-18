@@ -1,7 +1,6 @@
-// import React from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { use, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   FaBullseye,
@@ -12,15 +11,11 @@ import {
 } from "react-icons/fa6";
 import { FaTwitterSquare } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import TechStackItem from "../Common/TechStackItem";
 import TechStack from "../Common/TechStackItem";
 import ProfileDiscription from "./ProfileDiscription";
 
 export default function ProfileDash() {
-  // const [userDetails, setUserDetails] = useState({});
   const user = useSelector((state) => state.user.currentUser);
-  // const [userInterests, setUserInterests] = useState([]);
-  const [interestDetails, setInterestDetails] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [tech, setTech] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -28,14 +23,21 @@ export default function ProfileDash() {
 
   const userDetails = user
     ? {
-        name: user.name,
-        qId: user.qId,
-        course: user.course,
-        branch: user.branch,
-        session: user.session,
-        gender: user.gender,
-        points: user.points,
-      }
+      name: user.name,
+      email: user.email,
+      phone: user.phoneNumber,
+      Dob: new Date(user.DOB).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      }),
+      qId: user.qId,
+      course: user.course,
+      branch: user.branch,
+      session: user.session,
+      gender: user.gender,
+      points: user.points,
+    }
     : {};
 
   const userInterests = user?.interest || [];
@@ -79,8 +81,7 @@ export default function ProfileDash() {
       try {
         if (projects.length === 0) return;
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/v1/techstack/me/${
-            projects[0]?.userId
+          `${import.meta.env.VITE_API_URL}/api/v1/techstack/me/${projects[0]?.userId
           }`
         );
         setTech(response.data);
@@ -106,54 +107,6 @@ export default function ProfileDash() {
             },
           }
         );
-
-        // Log the response to debug
-        console.log("User Response:", userResponse.data);
-
-        // Check if interestId exists and is an array
-        // if (userResponse.data && Array.isArray(userResponse.data.interestId)) {
-        //   setUserInterests(userResponse.data.interestId);
-
-        // Fetch details for each interest
-        // const interestPromises = userResponse.data.interestId.map(_id =>
-        //   axios.get(`${import.meta.env.VITE_API_URL}/api/v1/interest/${_id}`, {
-        //     headers: {
-        //       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        //     },
-        //   })
-        // );
-
-        // const getIntrestDetails = async () => {
-        //   axios.get(`${import.meta.env.VITE_API_URL}/api/v1/interest/${userResponse.data.interestId}`, {
-        //     headers: {
-        //       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        //     },
-        //   }).then((response) => {
-        //     console.log(response.data);
-        //   });
-        // };
-        // getIntrestDetails();
-
-        // const interestResponses = await Promise.all(interestPromises);
-        // const interestData = {};
-        // interestResponses.forEach(response => {
-        //   if (response.data) {
-        //     interestData[response.data._id] = response.data;
-        //     console.log('Interest Response:', response.data);
-        //   }
-        // });
-        // setInterestDetails(interestData);
-
-        // // Log interest data to debug
-        // console.log('Interest Details:', interestData);
-
-        // const userInterests = axios.get(`${import.meta.env.VITE_API_URL}/api/v1/interest/${user?._id}`, {
-        //   headers: {
-        //     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        //   },
-        // });
-
-        // console.log('Fetched user interests:', userInterests.data);
       } catch (error) {
         console.error("Error fetching user details:", error.response || error);
       } finally {
@@ -210,7 +163,7 @@ export default function ProfileDash() {
 
   return (
     <motion.div
-      className="max-h-[calc(100vh-8rem)] p-4 text-white"
+      className="max-h-[calc(100vh-8rem)] p-4 text-stone-300"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -222,14 +175,14 @@ export default function ProfileDash() {
           variants={itemVariants}
         >
           <motion.div
-            className="h-[450px] md:h-[525px] rounded-2xl overflow-y-auto pr-2"
+            className="h-[450px] md:h-[525px] rounded-2xl overflow-y-auto pr-2 mt-6 md:mt-0 md:scrollbar-thin md:scrollbar-track-gray-700 md:scrollbar-thumb-cyan-400 scrollbar-none"
             variants={itemVariants}
           >
             {projects && projects.length > 0 ? (
               projects.map((project) => (
                 <motion.div
                   key={project._id}
-                  className="bg-gray-800 rounded-xl p-4 shadow-lg mb-4 last:mb-0 hover:bg-gray-700/80 transition-all duration-300"
+                  className="bg-gray-800/60 rounded-xl p-4 shadow-lg mb-4 last:mb-0 hover:bg-gray-700/80 transition-all duration-300"
                 >
                   <div
                     className="flex gap-4 hover:cursor-pointer"
@@ -265,13 +218,12 @@ export default function ProfileDash() {
                       {/* Status Badge */}
                       <div className="mt-1">
                         <span
-                          className={`text-xs px-2 py-1 rounded-full ${
-                            project.status === "pending"
-                              ? "bg-yellow-500/20 text-yellow-400"
-                              : project.status === "approved"
+                          className={`text-xs px-2 py-1 rounded-full ${project.status === "pending"
+                            ? "bg-yellow-500/20 text-yellow-400"
+                            : project.status === "approved"
                               ? "bg-green-500/20 text-green-400"
                               : "bg-red-500/20 text-red-400"
-                          }`}
+                            }`}
                         >
                           {project.status?.charAt(0).toUpperCase() +
                             project.status?.slice(1)}
@@ -279,7 +231,7 @@ export default function ProfileDash() {
                       </div>
 
                       {/* Project Links */}
-                      <div className="flex items-center justify-center gap-4 text-sm text-gray-400 mt-2">
+                      <div className="flex items-start justify-start gap-4 text-sm text-gray-400 mt-2">
                         {project.gitHubLink && (
                           <div className="flex items-center gap-2 hover:text-cyan-400 transition-colors">
                             <FaGithub className="text-lg" />{" "}
@@ -345,7 +297,7 @@ export default function ProfileDash() {
 
           {/* Field of Excellence */}
           <motion.div
-            className="flex w-full bg-gray-800/60 rounded-xl p-4 gap-4 border border-gray-700/50 backdrop-blur-sm"
+            className="flex w-full bg-gray-800/60 rounded-xl p-4 gap-4 border border-gray-700/50 backdrop-blur-sm "
             variants={itemVariants}
           >
             <ProfileDiscription />
@@ -359,24 +311,27 @@ export default function ProfileDash() {
             className="bg-gray-800/60 rounded-xl p-4 border border-gray-700/50 backdrop-blur-sm"
             variants={itemVariants}
           >
-            <div className="flex flex-wrap justify-start gap-4">
-              {["gold", "green", "purple", "silver", "orange", "cyan"].map(
+            <div className="flex flex-nowrap justify-start overflow-x-auto gap-6 custom-scrollbar"
+              style={{
+                paddingBottom: '10px',
+              }}
+            >
+              {["gold", "green", "purple", "silver", "orange", "cyan", "red", "blue", "cyan", "red", "blue", "cyan", "red", "blue", "cyan", "red", "blue", "cyan", "red", "blue"].map(
                 (color, index) => (
                   <div
                     key={index}
-                    className={`w-16 h-16 rounded-full border-2 ${
-                      color === "gold"
-                        ? "border-yellow-400 bg-yellow-400/20"
-                        : color === "green"
+                    className={`p-2 rounded-full border-2 ${color === "gold"
+                      ? "border-yellow-400 bg-yellow-400/20"
+                      : color === "green"
                         ? "border-green-400 bg-green-400/20"
                         : color === "purple"
-                        ? "border-purple-500 bg-purple-500/20"
-                        : color === "silver"
-                        ? "border-gray-400 bg-gray-400/20"
-                        : color === "orange"
-                        ? "border-orange-400 bg-orange-400/20"
-                        : "border-cyan-400 bg-cyan-400/20"
-                    } flex items-center justify-center`}
+                          ? "border-purple-500 bg-purple-500/20"
+                          : color === "silver"
+                            ? "border-gray-400 bg-gray-400/20"
+                            : color === "orange"
+                              ? "border-orange-400 bg-orange-400/20"
+                              : "border-cyan-400 bg-cyan-400/20"
+                      } flex items-center justify-center`}
                   >
                     <div className="w-12 h-12 rounded-full bg-gray-700/50"></div>
                   </div>
@@ -410,7 +365,7 @@ export default function ProfileDash() {
               <div className="space-y-2">
                 {Object.entries(userDetails).map(
                   ([key, value]) =>
-                    key !== "points" && (
+                    key !== "points" && key !== "name" && (
                       <div
                         key={key}
                         className="grid grid-cols-2 bg-gray-700/30 p-2 rounded-lg"
@@ -438,16 +393,16 @@ export default function ProfileDash() {
 
             {/* Tech Stack */}
             <motion.div
-              className="max-h-[595px] overflow-y-auto pr-2 scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-cyan-400"
+              className="max-h-[700px] overflow-y-auto no-scrollbar rounded-xl bg-gray-800/60 border border-gray-700/50 backdrop-blur-lg"
               variants={itemVariants}
             >
               {isLoading ? (
-                <div className="flex items-center justify-center h-[200px]">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400"></div>
+                <div className="flex items-center justify-center h-[300px]">
+                  <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-cyan-400"></div>
                 </div>
               ) : tech && tech.length > 0 ? (
                 <motion.div
-                  className="flex flex-wrap items-start gap-4"
+                  className="flex flex-wrap items-start gap-8"
                   variants={containerVariants}
                 >
                   <TechStack techstack={tech} />
@@ -485,7 +440,7 @@ export default function ProfileDash() {
 
       {/* Bottom Categories (Interests) */}
       <motion.div
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-6 mb-8"
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-6 mb-8 p-8"
         variants={itemVariants}
       >
         {isLoading ? (

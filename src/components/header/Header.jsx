@@ -446,7 +446,7 @@ export default function Header() {
                 </div>
 
                 <div className="text-center">
-                  <h2 className="text-xl font-bold text-white">
+                  <h2 className="text-xl font-bold text-white mb-4">
                     {currentUser ? currentUser.name : "Guest"}
                   </h2>
                   <div className="inline-flex items-center space-x-2 px-3 py-1 bg-[#00D8FF]/10 rounded-full">

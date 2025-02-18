@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import axios from 'axios'; // Add axios import
 import { format } from 'date-fns';
 import { Link, useNavigate } from "react-router-dom";
+import DeleteProjectPopUp from "./DeleteProjectPopUp";
 
 const formatCreatedAt = (dateString) => {
   try {
@@ -34,10 +35,8 @@ export default function ViewprojectItem() {
     fetchProjects();
   }, []);
 
-
-
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 100 },
     visible: {
       opacity: 1,
       transition: {
@@ -48,7 +47,7 @@ export default function ViewprojectItem() {
   };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: { y: 20, opacity: 20 },
     visible: {
       y: 0,
       opacity: 1,
@@ -96,11 +95,35 @@ function ProjectCard({ project, variants }) {
     offset: ["start end", "end start"],
   });
 
+  const [projects, setProjects] = useState([]);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 1]);
   const y = useTransform(scrollYProgress, [0, 0.5, 1], [50, 0, 0]);
 
+  // api call to delete project
+  const deleteProject = async (projectId) => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/v1/project/${projectId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      window.location.reload();
+    } catch (error) {
+      console.error('Error deleting project:', error);
+    }
+  };
+
   return (
     <div className="">
+      {showDeleteAlert && (
+        <DeleteProjectPopUp
+          isOpen={showDeleteAlert}
+          onClose={() => setShowDeleteAlert(false)}
+          deleteProject={() => deleteProject(project._id)}
+        />
+      )}
       <motion.div
         ref={ref}
         style={{ opacity, y }}
@@ -149,15 +172,25 @@ function ProjectCard({ project, variants }) {
                 </a>
               )}
             </div>
-
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-gray-500 font-bold">Created on:</span>
+              <span className="text-gray-500 font-bold">Status :</span>
+              <span
+                className={`text-xs px-2 py-1 rounded-full ${project.status === "pending"
+                  ? "bg-yellow-500/20 text-yellow-400"
+                  : project.status === "approved"
+                    ? "bg-green-500/20 text-green-400"
+                    : "bg-red-500/20 text-red-400"
+                  }`}
+              >
+                {project.status?.charAt(0).toUpperCase() +
+                  project.status?.slice(1)}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-gray-500 font-bold">Created on :</span>
               <span className="text-gray-400">{formatCreatedAt(project.createdAt)}</span>
             </div>
-            <div className="flex items-center gap-2 text-sm">
-              <span className="text-gray-500 font-bold">Updated on:</span>
-              <span className="text-gray-400">{formatCreatedAt(project.updatedAt)}</span>
-            </div>
+
           </div>
         </div>
         <div className="text-l font-semibold text-green-400">
@@ -166,25 +199,29 @@ function ProjectCard({ project, variants }) {
         </div>
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto justify-between md:justify-end">
           <div className="flex gap-2">
+            <Link to={`/dashboard/project/${project._id}`}>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="rounded bg-cyan-400 py-2 px-4 text-black hover:bg-black transition duration-300 hover:border hover:border-brandPrimary hover:text-brandPrimary"
+              >
+                View
+              </motion.button>
+            </Link>
+            <Link to={`/dashboard/project/edit/${project._id}`}>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="rounded bg-green-400 py-2 px-4 text-black hover:bg-black transition duration-300 hover:border hover:border-green-400 hover:text-green-400"
+              >
+                Edit
+              </motion.button>
+            </Link>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="rounded bg-green-400 px-4 py-2 text-sm font-medium text-black hover:bg-green-500"
-            // onClick={() => navigate(`/project/${project._id}`)}
-            >
-              <Link to={`/dashboard/project/${project._id}`}>View</Link>
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="rounded bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
-            >
-              Edit
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="rounded bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+              onClick={() => setShowDeleteAlert(true)}
+              className="rounded bg-red-600 py-2 px-4  text-white hover:bg-black/50 hover:border hover:border-red-600  transition duration-300 hover:text-red-600"
             >
               Delete
             </motion.button>
