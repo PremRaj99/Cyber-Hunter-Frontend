@@ -21,7 +21,7 @@ const hackathonEvents = [
     id: 3,
     title: 'AI & Robotics Hackathon',
     date: '20 Feb 2025',
-    image: 'https://images.unsplash.com/photo-1580927962941-25a36bbdef9f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGhhY2thdGhvbnxlbnwwfDB8fDB8fHww',
+    image: 'https://www.shutterstock.com/shutterstock/photos/1662606928/display_1500/stock-vector-hackathon-banner-illustration-abstract-futuristic-background-with-glitch-effect-in-neon-colors-1662606928.jpg',
     status: 'COMPLETED'
   }
 ];
@@ -53,13 +53,7 @@ export default function EventCarousel() {
       prevIndex === 0 ? hackathonEvents.length - 1 : prevIndex - 1
     );
   }, []);
-
-  // Filter events
-  // const filteredEvents = hackathonEvents.filter(
-  //   event => activeFilter === 'ALL' || event.status === activeFilter
-  // );
-
-  // Render current event
+  
   const currentEvent = hackathonEvents[currentIndex];
 
   return (
@@ -118,31 +112,6 @@ export default function EventCarousel() {
             ))}
           </div>
         </div>
-
-        {/* Filter Buttons */}
-        <motion.div
-          className="flex justify-center space-x-4 mt-8"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: -0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
-          {["UPCOMING", "ON GOING", "COMPLETED"].map((filter) => (
-            <button
-              key={filter}
-              onClick={() => setActiveFilter(filter)}
-              className={`
-                px-4 py-1 text-sm rounded-full overflow-hidden transition
-                ${
-                  activeFilter === filter
-                    ? "bg-brandPrimary text-black"
-                    : "border border-brandPrimary text-brandPrimary hover:bg-brandPrimary hover:text-black"
-                }
-              `}
-            >
-              {filter}
-            </button>
-          ))}
-        </motion.div>
       </main>
     </div>
   );

@@ -162,7 +162,7 @@ const DSetting = () => {
                   <div className="mt-4 flex justify-end">
                     <motion.span
                       whileHover={{ x: 5 }}
-                      className={`text-sm ${action.textColor.replace('100', '300')}`}
+                      className={`text-sm text-brandPrimary ${action.textColor.replace('100', '300')}`}
                     >
                       Configure →
                     </motion.span>

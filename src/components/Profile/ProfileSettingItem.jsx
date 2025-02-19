@@ -86,41 +86,46 @@ export default function EditProfile() {
     setIsLoading(true);
 
     try {
-      // Upload profile image if changed
-      let profileImageUrl = user?.profilePicture;
+      const formDataToSend = new FormData();
+
+      // Append all form fields
+      Object.keys(formData).forEach(key => {
+        if (key === 'socialLinks') {
+          // Handle nested socialLinks object
+          formDataToSend.append('socialLinks', JSON.stringify(formData.socialLinks));
+        } else if (key === 'interest') {
+          // Handle interest array
+          formDataToSend.append('interest', JSON.stringify(formData.interest));
+        } else {
+          formDataToSend.append(key, formData[key]);
+        }
+      });
+
+      // Append profile picture if selected
       if (selectedFile) {
-        const formData = new FormData();
-        formData.append("image", selectedFile);
-        const imageResponse = await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/v1/upload/profile-image`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        profileImageUrl = imageResponse.data.url;
+        formDataToSend.append('profilePicture', selectedFile);
       }
 
-      // Update profile data
+      // Make sure the URL is correct and matches your backend route
       const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/v1/user/${user?._id}`,
-        { ...formData, profilePicture: profileImageUrl },
+        `${import.meta.env.VITE_API_URL}/api/v1/users/${user?._id}`, // Update this URL to match your backend route
+        formDataToSend,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            'Content-Type': 'multipart/form-data',
           },
         }
       );
 
-      // Update user in redux store
-      dispatch({ type: "UPDATE_USER", payload: response.data });
-      navigate("/dashboard/profile");
+      if (response.data) {
+        dispatch({ type: "UPDATE_USER", payload: response.data });
+        navigate("/dashboard/profile");
+      }
     } catch (error) {
       console.error("Error updating profile:", error);
-      // Handle error state
+      // Add error handling here
+      alert("Failed to update profile. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -177,10 +182,10 @@ export default function EditProfile() {
       >
         <div className="flex justify-between items-center mb-8">
           <span className="border-b border-brandPrimary ">
-          <h1 className="text-2xl md:text-3xl font-bold text-white">Edit Your Profile</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-white">Edit Your Profile</h1>
           </span>
           <button
-            onClick={() => navigate("/dashboard/profile")}
+            onClick={() => navigate(-1)}
             className="p-2 rounded-full bg-gray-700/50 hover:bg-gray-700 transition-colors text-gray-300"
             aria-label="Close"
           >
@@ -245,8 +250,8 @@ export default function EditProfile() {
                       type="button"
                       onClick={() => setActiveTab(tab)}
                       className={`py-3 px-4 text-sm font-medium capitalize transition-all duration-300 ${activeTab === tab
-                          ? "text-cyan-400 border-b-2 border-cyan-400"
-                          : "text-gray-400 hover:text-gray-300"
+                        ? "text-cyan-400 border-b-2 border-cyan-400"
+                        : "text-gray-400 hover:text-gray-300"
                         }`}
                     >
                       {tab}
@@ -526,8 +531,8 @@ export default function EditProfile() {
                       type="button"
                       onClick={() => handleInterestChange(interest)}
                       className={`px-4 py-2 rounded-lg text-sm transition-all duration-300 ${formData.interest.includes(interest)
-                          ? "bg-cyan-500/30 text-cyan-400 border border-cyan-500/50"
-                          : "bg-gray-700/50 text-gray-300 border border-gray-600 hover:bg-gray-700"
+                        ? "bg-cyan-500/30 text-cyan-400 border border-cyan-500/50"
+                        : "bg-gray-700/50 text-gray-300 border border-gray-600 hover:bg-gray-700"
                         }`}
                       disabled={
                         !formData.interest.includes(interest) &&

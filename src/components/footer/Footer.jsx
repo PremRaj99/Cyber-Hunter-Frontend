@@ -174,7 +174,7 @@ const Footer = () => {
           </motion.a>
           <motion.a
             whileHover={{ scale: 1.1 }}
-            href="#"
+            href="/policy"
             className="hover:text-white"
           >
             Policies

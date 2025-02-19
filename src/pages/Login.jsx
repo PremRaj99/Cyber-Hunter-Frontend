@@ -217,7 +217,7 @@ export default function Login() {
                   </div>
                   {!isSignup && (
                     <div className="mb-2 text-right">
-                      <a href="#" className="text-blue-500 hover:underline">
+                      <a href="/auth/forgot" className="text-blue-500 hover:underline">
                         Forgot password?
                       </a>
                     </div>

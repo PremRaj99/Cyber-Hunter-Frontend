@@ -1,76 +1,160 @@
-import React from 'react';
-import ForgotImg from '../assets/login-signup-imgs/forgot-pass-img.png';
-import { FaArrowRight } from "react-icons/fa6";
-import { MdOutlineMail } from "react-icons/md";
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, ArrowRight, Lock, CheckCircle } from 'lucide-react';
 
 const ForgotPassword = () => {
-  const [email, setEmail] = React.useState('');
+  const [email, setEmail] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [step, setStep] = useState(1);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+    setTimeout(() => setStep(2), 2000);
+  };
+
   return (
-    <div>
-      <section className="py-16 px-4 md:px-8 lg:px-16">
-        <div className="max-w-6xl mx-auto">
-          {/* <!-- Header --> */}
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 border-2 text-white border-white p-8 rounded-lg shadow-lg">
-            {/* <!-- image --> */}
-            <div className="space-y-8" data-aos="fade-right">
-              <img src={ForgotImg} alt="banner-img" className="w-fit h-fit md:h-fit  object-cover hover:-translate-y-3 transition-all duration-700" />
-            </div>
-
-            {/* <!-- forgot password --> */}
-            <div
-              className="bg-black border-2 text-white border-white p-8 rounded-lg shadow-lg"
-              data-aos="fade-left"
-            >
-              <form className="space-y-6 flex flex-col">
-
-                <div className="text-center mb-4" data-aos="fade-down">
-                  <div className="text-center mb-10 sm:mb-12 md:mb-16">
-                    <span className="text-4xl font-extrabold text-brandPrimary text-500 text-center  md:m-4  border-b-2   border-brandPrimary">
-                      Forgot Password
-                    </span>
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="flex text-md font-medium text-white">
-                    {/* email images */}
-                    <MdOutlineMail
-                      className='h-8 w-8 mx-2 my-1'
-                    />email
-                  </label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 bg-transparent border border-brandPrimary rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 placeholder:text-stone-400"
-                    placeholder="Email Address"
-                    required
-                  />
-                </div>
-
-                <div className="flex  justify-center">
-
-                  <button
-                    type="submit"
-                    className="lg:w-1/2 md:w-full flex items-center justify-center bg-brandPrimary font-bold py-3 px-6 rounded-lg hover:bg-black hover:text-brandPrimary hover:border hover:border-brandPrimary transform hover:scale-105 transition-all duration-300"
-                    onClick={() => console.log(email)}
-                  >
-                    Send OTP
-                    <span className="ml-2">
-                      <FaArrowRight />
-                    </span>
-                  </button>
-                </div>
-              </form>
-            </div>
-
-          </div>
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          {[...Array(15)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-64 h-64 bg-cyan-500/10 rounded-full"
+              animate={{
+                x: [0, 100, 0],
+                y: [0, 50, 0],
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 15,
+                delay: i * 2,
+                repeat: Infinity,
+                repeatType: "reverse",
+              }}
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                filter: 'blur(80px)',
+              }}
+            />
+          ))}
         </div>
-      </section>
+      </div>
+
+      <motion.div
+        className="w-full max-w-md relative"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <AnimatePresence mode="wait">
+          {step === 1 ? (
+            <motion.div
+              key="form"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="bg-gray-800/40 backdrop-blur-xl rounded-2xl overflow-hidden"
+            >
+              {/* Header Wave */}
+              <div className="relative h-32 bg-cyan-500/20 flex items-center justify-center overflow-hidden">
+                <svg className="absolute bottom-0" viewBox="0 0 1440 320">
+                  <path
+                    fill="#111827"
+                    fillOpacity="1"
+                    d="M0,32L48,53.3C96,75,192,117,288,122.7C384,128,480,96,576,85.3C672,75,768,85,864,106.7C960,128,1056,160,1152,165.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+                  ></path>
+                </svg>
+                <Lock className="text-cyan-500 w-16 h-16 relative z-10" />
+              </div>
+
+              <div className="p-8">
+                <h2 className="text-2xl font-bold text-cyan-400 mb-2 text-center">
+                  Forgot Password?
+                </h2>
+                <p className="text-gray-400 text-center mb-8">
+                  No worries! Enter your email and we'll send you recovery instructions.
+                </p>
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-transparent rounded-lg opacity-25 duration-300" />
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full px-4 py-3 bg-gray-900/50 text-white border border-gray-700 rounded-lg focus:outline-none focus:border-cyan-500 transition-all duration-300 relative z-10"
+                      placeholder="Enter your email"
+                      required
+                    />
+                    <Mail className="absolute top-3.5 right-4 h-5 w-5 text-cyan-500" />
+                  </div>
+
+                  <motion.button
+                    type="submit"
+                    className="w-full bg-cyan-500 text-gray-900 font-semibold py-3 px-6 rounded-lg hover:bg-cyan-400 transition-colors duration-300 flex items-center justify-center gap-2 relative overflow-hidden group"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <span className="relative z-10">Reset Password</span>
+                    <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </motion.button>
+                </form>
+
+                <motion.a
+                  href="/auth/login"
+                  className="block text-center mt-6 text-cyan-400 hover:text-cyan-300 transition-colors duration-200"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  ← Back to Login
+                </motion.a>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="success"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-gray-800/40 backdrop-blur-xl p-8 rounded-2xl text-center"
+            >
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 200, damping: 15 }}
+              >
+                <CheckCircle className="w-16 h-16 text-cyan-500 mx-auto mb-4" />
+              </motion.div>
+              <h2 className="text-2xl font-bold text-cyan-400 mb-4">Check Your Email</h2>
+              <p className="text-gray-400 mb-6">
+                We've sent recovery instructions to<br />
+                <span className="text-cyan-400 font-medium">{email}</span>
+              </p>
+              <motion.button
+                onClick={() => window.location.href = '/auth/login'}
+                className="bg-cyan-500 text-gray-900 font-semibold py-3 px-6 rounded-lg hover:bg-cyan-400 transition-colors duration-300"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Back to Login
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Progress indicator */}
+        {isSubmitted && step === 1 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mt-4 flex justify-center"
+          >
+            <div className="w-8 h-8 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin" />
+          </motion.div>
+        )}
+      </motion.div>
     </div>
-  )
-}
+  );
+};
 
-export default ForgotPassword
-
+export default ForgotPassword;

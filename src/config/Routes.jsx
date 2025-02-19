@@ -30,9 +30,13 @@ import FreelancerLayout from "../Layout/VendorLayout";
 import Freelancer from "../pages/Freelancer";
 import { AuthGuard, PublicRoute } from '../components/guards/AuthGuard';
 import EditProject from "../pages/EditProject";
-import UpdateProfile from "../pages/UpdateProfile";
 import DAccountSetting from "../components/dashboard/dAccountSetting";
 import TeamChat from "../components/Team/TeamChat";
+import TeamManageSettings from "../components/Team/TeamManageSettings";
+import AccountAccessPage from "../pages/AccountAccess";
+import EmailSettings from "../pages/EmailSettings";
+import ChangePassword from "../pages/ChangePassword";
+import Policy from "../pages/Policy";
 
 export const router = createBrowserRouter([
   {
@@ -68,6 +72,10 @@ export const router = createBrowserRouter([
         path: "eventdetail",
         element: <EventDetail />,
       },
+      {
+        path: "policy",
+        element: <Policy />,
+      },
     ],
   },
   {
@@ -79,7 +87,7 @@ export const router = createBrowserRouter([
         element: <PublicRoute><Login /></PublicRoute>,
       },
       {
-        path: "forgot-password",
+        path: "forgot",
         element: <PublicRoute><ForgotPassword /></PublicRoute>,
       },
       {
@@ -90,6 +98,10 @@ export const router = createBrowserRouter([
         path: "userdetails",
         element: <AuthGuard><UserDetail /></AuthGuard>,
       },
+      {
+        path: "userdetails",
+        element: <AuthGuard><UserDetail /></AuthGuard>,
+      }
     ],
   },
   {
@@ -113,6 +125,10 @@ export const router = createBrowserRouter([
         element: <DAccountSetting />,
       },
       {
+        path: "email",
+        element: <EmailSettings />,
+      },
+      {
         path: "profile",
         children: [
           {
@@ -128,9 +144,14 @@ export const router = createBrowserRouter([
             element: <ProfileSetting />,
           },
           {
-            path: "update",
-            element: <UpdateProfile />,
+            path: "account",
+            element: <AccountAccessPage />,
           },
+          {
+            path: "changepassword",
+            element: <ChangePassword />
+          }
+          
         ],
       },
       {
@@ -175,7 +196,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "teamsetting",
-            element: <TeamSetting />,
+            element: <TeamManageSettings />,
           },
           {
             path: "create",

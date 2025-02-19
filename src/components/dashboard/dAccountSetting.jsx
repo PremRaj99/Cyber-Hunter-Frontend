@@ -3,10 +3,16 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, Mail, Lock, User, Shield, CreditCard, Bell, HelpCircle } from "lucide-react";
 import { FiMenu, FiX } from "react-icons/fi";
+import AccountBillingSection from './accountSetting/AccountBillingSection';
+import HelpSupport from './accountSetting/HelpSupport';
+import AccountSecurity from "./accountSetting/AccountSecurity";
+import Notification from "./accountSetting/Notification";
 
 const DAccountSetting = () => {
   const [activeSection, setActiveSection] = useState("profile");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [is2FAModalOpen, setIs2FAModalOpen] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -77,12 +83,12 @@ const DAccountSetting = () => {
   };
 
   // Render content based on active section
-  const renderContent = () => {
+  const renderContent = (is2FAModalOpen, isPasswordModalOpen, setIsPasswordModalOpen, setIs2FAModalOpen) => {
     switch (activeSection) {
       case "profile":
         return <ProfileSection />;
       case "security":
-        return <SecuritySection />;
+        return <SecuritySection accountSecurity={{ is2FAModalOpen, isPasswordModalOpen, setIsPasswordModalOpen, setIs2FAModalOpen }} />;
       case "billing":
         return <BillingSection />;
       case "notifications":
@@ -95,7 +101,7 @@ const DAccountSetting = () => {
   };
 
   return (
-    <div className="min-h-screen text-white">
+    <div className={`text-white`}>
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br z-0"></div>
 
@@ -111,10 +117,10 @@ const DAccountSetting = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.1 }}
         transition={{ duration: 1, delay: 0.3 }}
-        className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500 rounded-full filter blur-3xl z-0 opacity-10"
+        className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500 rounded-full filter blur-3xl z-0 opacity-10"
       ></motion.div>
 
-      <div className="container mx-auto px-4 py-8 relative z-10">
+      <div className="container mx-auto px-4 py-4 relative z-10">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <motion.h1
@@ -123,7 +129,7 @@ const DAccountSetting = () => {
             transition={{ duration: 0.5 }}
             className="text-2xl font-bold text-cyan-400"
           >
-            Account Settings
+            Account <span className="hidden md:inline">Security</span>
           </motion.h1>
 
           <button
@@ -143,16 +149,15 @@ const DAccountSetting = () => {
                 initial="closed"
                 animate="open"
                 exit="closed"
-                className="fixed inset-0 z-50 md:hidden bg-gray-900 bg-opacity-95"
+                className="absolute inset-0 rounded-lg z-50 md:hidden bg-black bg-opacity-100"
               >
                 <div className="flex flex-col h-full p-6">
-                  <div className="flex justify-between items-center mb-8">
-                    <h2 className="text-xl font-semibold text-cyan-400">Navigation</h2>
+                  <div className="flex justify-end items-center mb-8">
                     <button
                       onClick={toggleMenu}
                       className="p-2 rounded-lg bg-gray-800 text-cyan-400 hover:bg-gray-700 transition-colors"
                     >
-                      <FiX size={24} />
+                      <FiX size={12} />
                     </button>
                   </div>
 
@@ -170,8 +175,8 @@ const DAccountSetting = () => {
                               setIsMenuOpen(false);
                             }}
                             className={`w-full flex items-center gap-3 p-3 rounded-lg ${activeSection === section.id
-                                ? "bg-cyan-500 bg-opacity-20 text-cyan-400"
-                                : "hover:bg-gray-800"
+                              ? "bg-cyan-500 bg-opacity-20 text-cyan-400"
+                              : "hover:bg-gray-800"
                               } transition-colors`}
                           >
                             <span className={activeSection === section.id ? "text-cyan-400" : "text-gray-400"}>
@@ -196,7 +201,6 @@ const DAccountSetting = () => {
             className="hidden md:block w-64 shrink-0"
           >
             <div className="sticky top-8 bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-xl p-4 border border-gray-700 shadow-xl">
-              <h2 className="text-lg font-semibold text-cyan-400 mb-4 pl-3">Navigation</h2>
               <nav>
                 <ul className="space-y-2">
                   {sections.map((section) => (
@@ -208,8 +212,8 @@ const DAccountSetting = () => {
                       <button
                         onClick={() => setActiveSection(section.id)}
                         className={`w-full flex items-center gap-3 p-3 rounded-lg ${activeSection === section.id
-                            ? "bg-cyan-500 bg-opacity-20 text-cyan-400"
-                            : "hover:bg-gray-700"
+                          ? "bg-cyan-500 bg-opacity-20 text-cyan-400"
+                          : "hover:bg-gray-700"
                           } transition-colors`}
                       >
                         <span className={activeSection === section.id ? "text-cyan-400" : "text-gray-400"}>
@@ -242,7 +246,7 @@ const DAccountSetting = () => {
                   transition={pageTransition}
                   className="h-full"
                 >
-                  {renderContent()}
+                  {renderContent(is2FAModalOpen, isPasswordModalOpen, setIsPasswordModalOpen, setIs2FAModalOpen)}
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -293,40 +297,13 @@ const ProfileSection = () => {
         Profile Settings
       </motion.h2>
 
-      <div className="mb-8">
-        <motion.div
-          variants={itemVariants}
-          className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8"
-        >
-          <div className="w-20 h-20 bg-gray-700 rounded-full overflow-hidden flex-shrink-0 border-2 border-cyan-500/30">
-            <img
-              src="/api/placeholder/200/200"
-              alt="Profile"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div>
-            <h3 className="text-lg font-medium">John Doe</h3>
-            <p className="text-gray-400 text-sm">john.doe@example.com</p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="mt-2 px-3 py-1 text-xs bg-cyan-500/20 text-cyan-400 rounded hover:bg-cyan-500/30 transition-colors"
-            >
-              Change Photo
-            </motion.button>
-          </div>
-        </motion.div>
-      </div>
-
       <motion.ul
         variants={containerVariants}
         className="flex flex-col gap-4"
       >
         {[
-          { icon: <User size={20} />, text: 'Personal Information', link: '/' },
-          { icon: <Mail size={20} />, text: 'Email Settings', link: '/' },
-          { icon: <Bell size={20} />, text: 'Notification Preferences', link: '/' }
+          { icon: <User size={20} />, text: 'Personal Information', link: '/dashboard/profile/setting' },
+          { icon: <Mail size={20} />, text: 'Email Settings', link: '/dashboard/email' },
         ].map((item, index) => (
           <motion.li
             key={index}
@@ -367,7 +344,8 @@ const ProfileSection = () => {
 };
 
 // Security Section Component
-const SecuritySection = () => {
+const SecuritySection = ({ accountSecurity }) => {
+  const { is2FAModalOpen, isPasswordModalOpen, setIsPasswordModalOpen, setIs2FAModalOpen } = accountSecurity;
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -397,69 +375,9 @@ const SecuritySection = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="h-full flex flex-col"
+      className={`h-full flex flex-col ${isPasswordModalOpen || is2FAModalOpen ? "" : ""}`}
     >
-      <motion.h2
-        variants={itemVariants}
-        className="text-2xl font-bold text-cyan-400 mb-6"
-      >
-        Security Settings
-      </motion.h2>
-
-      <motion.ul
-        variants={containerVariants}
-        className="flex flex-col gap-4"
-      >
-        {[
-          { icon: <Lock size={20} />, text: 'Change Password', link: '/' },
-          { icon: <Shield size={20} />, text: 'Two-Factor Authentication', link: '/' },
-          { icon: <User size={20} />, text: 'Account Access', link: '/' }
-        ].map((item, index) => (
-          <motion.li
-            key={index}
-            variants={itemVariants}
-            whileHover="hover"
-            className="w-full"
-          >
-            <Link
-              to={item.link}
-              className="flex items-center justify-between p-4 bg-gray-900/50 border border-gray-700 rounded-lg text-white hover:text-cyan-400 transition-all duration-300 hover:border-cyan-500/30"
-            >
-              <div className="flex items-center gap-3">
-                <div className="flex items-center justify-center w-10 h-10 bg-cyan-500/10 rounded-full text-cyan-500">
-                  {item.icon}
-                </div>
-                <span className="text-lg font-medium">{item.text}</span>
-              </div>
-              <ChevronRight className="text-cyan-500/50" size={18} />
-            </Link>
-          </motion.li>
-        ))}
-      </motion.ul>
-
-      <motion.div
-        variants={itemVariants}
-        className="mt-8 p-4 bg-gray-900/50 border border-yellow-500/20 rounded-lg"
-      >
-        <h3 className="text-yellow-400 text-lg font-medium mb-2">Security Status</h3>
-        <p className="text-gray-300 text-sm mb-4">Your account security is good, but we recommend enabling two-factor authentication for improved protection.</p>
-        <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
-          <div className="bg-yellow-500 h-full rounded-full" style={{ width: '70%' }}></div>
-        </div>
-      </motion.div>
-
-      <motion.div
-        variants={itemVariants}
-        className="mt-auto pt-6 flex justify-end"
-      >
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="px-6 py-2 bg-cyan-500 text-black font-medium rounded-lg shadow-lg hover:bg-cyan-400 transition-colors"
-        >
-          Save Changes
-        </motion.button>
-      </motion.div>
+      <AccountSecurity accountSecurity={accountSecurity} />
     </motion.div>
   );
 };
@@ -468,8 +386,7 @@ const SecuritySection = () => {
 const BillingSection = () => {
   return (
     <div className="h-full flex flex-col">
-      <h2 className="text-2xl font-bold text-cyan-400 mb-6">Billing Settings</h2>
-      <p className="text-gray-400">Your billing information and subscription details will appear here.</p>
+      <AccountBillingSection />
     </div>
   );
 };
@@ -478,8 +395,7 @@ const BillingSection = () => {
 const NotificationsSection = () => {
   return (
     <div className="h-full flex flex-col">
-      <h2 className="text-2xl font-bold text-cyan-400 mb-6">Notification Settings</h2>
-      <p className="text-gray-400">Your notification preferences will appear here.</p>
+      <Notification />
     </div>
   );
 };
@@ -488,8 +404,7 @@ const NotificationsSection = () => {
 const HelpSection = () => {
   return (
     <div className="h-full flex flex-col">
-      <h2 className="text-2xl font-bold text-cyan-400 mb-6">Help & Support</h2>
-      <p className="text-gray-400">Support resources and documentation will appear here.</p>
+      <HelpSupport />
     </div>
   );
 };

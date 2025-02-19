@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import Button from "../components/Common/Button";
 import { IoCloudUpload } from "react-icons/io5";
 import { useDispatch } from "react-redux";
-import updateProfileComplete, { updateSuccess } from "../../src/redux/User/userSlice";
+import { updateSuccess } from "../../src/redux/User/userSlice";
 
 export default function UserDetail() {
   const dispatch = useDispatch();
@@ -138,7 +138,7 @@ export default function UserDetail() {
         ); // Add this line here
         toast.success(response.data.message);
         resetForm();
-        navigate("/dashboard/profile");
+        navigate("/auth/login");
       }
     } catch (error) {
       console.error("Registration Error:", error);

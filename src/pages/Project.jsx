@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { FaExternalLinkAlt, FaGithub, FaTags, FaCode } from "react-icons/fa";
-import ImageSlider from "../components/Project/ImageSlider";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { format } from 'date-fns';
-import Preloader from "../components/Common/Preloader";
+import { format } from "date-fns";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FaExternalLinkAlt,
+  FaGithub,
+  FaTags,
+  FaCode,
+  FaCalendarAlt,
+  FaArrowLeft,
+  FaArrowRight
+} from "react-icons/fa";
+import ImageSlider from "../components/Project/ImageSlider";
+import Preloader from "../components//Common/Preloader";
 
 export default function Project() {
   const { id } = useParams();
@@ -23,16 +31,14 @@ export default function Project() {
   };
 
   useEffect(() => {
-    document.title = project?.projectName || "Project";
     const fetchProjectAndUser = async () => {
-      document.title = project?.projectName || "Project";
       try {
         const projectRes = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/v1/project/${id}`
         );
         setProject(projectRes.data.project);
         setProjectUser(projectRes.data.userDetail);
-        console.log(projectRes.data);
+        document.title = projectRes.data.project?.projectName || "Project";
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -43,193 +49,213 @@ export default function Project() {
     fetchProjectAndUser();
   }, [id]);
 
-  if (!project) {
+  if (loading) {
     return <Preloader />;
   }
 
+  if (!project) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-900">
+        <div className="text-white text-center p-6 rounded-lg bg-gray-800/50 backdrop-blur-md max-w-md">
+          <h2 className="text-2xl font-bold mb-4">Project Not Found</h2>
+          <p className="mb-6">The project you're looking for doesn't exist or has been removed.</p>
+          <a href="/" className="px-6 py-3 bg-cyan-600 hover:bg-cyan-700 rounded-lg transition-colors">
+            Back to Home
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="container mx-auto px-4 py-8 bg-gradient-to-br to-gray-800 min-h-screen"
-    >
-      <div className="grid md:grid-cols-2 gap-8">
+    <div className="min-h-screen  bg-[radial-gradient(ellipse_at_top_right,_rgba(4,77,100,0.3),transparent_70%),radial-gradient(ellipse_at_bottom_left,_rgba(14,165,233,0.15),transparent_70%)]">
+      <div className="container mx-auto px-4 py-8 lg:py-16">
         <motion.div
-          initial={{ x: -50, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="relative"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7 }}
+          className="mb-12"
         >
-          <img
-            src={project.projectThumbnail}
-            className="w-full h-96 object-cover rounded-2xl shadow-2xl"
-            alt={project.projectName}
-          />
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-2xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          />
-        </motion.div>
-
-        <motion.div
-          initial={{ x: 50, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="bg-gray-800/50 backdrop-blur-md rounded-2xl p-6 relative overflow-hidden"
-        >
-          <motion.div
-            className="absolute -top-20 -right-20 w-64 h-64 bg-cyan-500/20 rounded-full blur-3xl"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.5 }}
-          />
-
-          <div className="relative z-10">
-            <motion.h3
-              className="text-4xl font-bold text-cyan-400 mb-4"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              {project.projectName.toUpperCase()}
-            </motion.h3>
-
-            <div className="flex items-center gap-4 mb-4">
-              <FaTags className="text-cyan-400" />
-              <p className="text-gray-300">
-                Points: <span className="text-green-500 font-semibold text-xl">{project.point}</span>
-              </p>
-            </div>
-
-            <div className="flex gap-4 mb-4">
-              {project.gitHubLink && (
-                <motion.a
-                  href={project.gitHubLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-gray-300 hover:text-cyan-400 transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <FaGithub className="text-xl" />
-                  GitHub
-                </motion.a>
-              )}
-
-              {project.liveLink && (
-                <motion.a
-                  href={project.liveLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <FaExternalLinkAlt className="text-xl text-red-500" />
-                  Live
-                </motion.a>
-              )}
-            </div>
-              <div>
-                <motion.p
-                  className="text-gray-300 text-sm"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.5 }}
-                >
-                  Created at : {formatCreatedAt(project.createdAt)}
-                </motion.p>
-              </div>
-
-            {projectUser && (
-              
+          {/* Hero section */}
+          <div className="relative rounded-3xl overflow-hidden mb-16">
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 to-transparent z-10" />
+            <img
+              src={project.projectThumbnail}
+              alt={project.projectName}
+              className="w-full h-[60vh] object-cover object-center"
+            />
+            <div className="absolute inset-0 z-20 flex flex-col justify-end p-8 md:p-16">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                className="bg-gray-700/50 backdrop-blur-sm rounded-xl p-4 mt-4 flex items-center gap-4"
+                initial={{ y: 50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
               >
-                <img
-                  src={projectUser.profilePicture || "default-profile-picture-url"}
-                  className="w-16 h-16 rounded-full object-cover border-2 border-cyan-400"
-                  alt={projectUser.name}
-                  draggable={false}
-                />
-                <div>
-                  <h4 className="text-xl font-semibold text-cyan-400">{projectUser.name}</h4>
-                  <p className="text-gray-300 text-sm">{projectUser.username}</p>
-                  <p className="text-gray-400 text-xs">
-                    {`${projectUser.course} ${projectUser.branch} ${projectUser.session}`}
-                  </p>
-                  <p className="text-gray-400 text-xs">{projectUser.qId}</p>
+                <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4 tracking-tight">
+                  {project.projectName}
+                </h1>
+                <div className="flex flex-wrap items-center gap-6 mb-8">
+                  <div className="flex items-center gap-2 bg-gray-800/70 backdrop-blur-sm px-4 py-2 rounded-full">
+                    <FaTags className="text-cyan-400" />
+                    <span className="text-white">
+                      Points: <span className="text-cyan-400 font-semibold">{project.point}</span>
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-gray-800/70 backdrop-blur-sm px-4 py-2 rounded-full">
+                    <FaCalendarAlt className="text-cyan-400" />
+                    <span className="text-white text-sm">{formatCreatedAt(project.createdAt)}</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-4">
+                  {project.gitHubLink && (
+                    <motion.a
+                      href={project.gitHubLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 bg-gray-800/70 hover:bg-gray-700/90 backdrop-blur-sm px-6 py-3 rounded-full text-white transition-colors"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <FaGithub className="text-xl" />
+                      View on GitHub
+                    </motion.a>
+                  )}
+
+                  {project.liveLink && (
+                    <motion.a
+                      href={project.liveLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 bg-cyan-600/90 hover:bg-cyan-700 backdrop-blur-sm px-6 py-3 rounded-full text-white transition-colors"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <FaExternalLinkAlt />
+                      Live Demo
+                    </motion.a>
+                  )}
                 </div>
               </motion.div>
-            )}
+            </div>
+          </div>
+
+          {/* Main content */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left column - Project description */}
+            <motion.div
+              initial={{ x: -30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              className="lg:col-span-2"
+            >
+              <div className="bg-gray-800/40 backdrop-blur-md rounded-2xl p-6 mb-8 border border-gray-700/50 shadow-xl">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="bg-cyan-500/20 rounded-full p-3">
+                    <FaCode className="text-cyan-400 text-xl" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-white">Project Description</h2>
+                </div>
+                <p className="text-gray-300 leading-relaxed">
+                  {project.projectDescription}
+                </p>
+              </div>
+
+              <div className="bg-gray-800/40 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50 shadow-xl">
+                <h2 className="text-2xl font-bold text-white mb-6">Project Screenshots</h2>
+                <ImageSlider images={project.projectImage || []} />
+              </div>
+            </motion.div>
+
+            {/* Right column - Info cards */}
+            <motion.div
+              initial={{ x: 30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              className="flex flex-col gap-8"
+            >
+              {/* Creator card */}
+              {projectUser && (
+                <div className="bg-gray-800/40 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50 shadow-xl">
+                  <h2 className="text-2xl font-bold text-white mb-6">Creator</h2>
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={projectUser.profilePicture || "/default-avatar.png"}
+                      className="w-20 h-20 rounded-full object-cover border-2 border-cyan-400 shadow-lg"
+                      alt={projectUser.name}
+                      draggable={false}
+                    />
+                    <div>
+                      <h3 className="text-xl font-semibold text-white mb-1">{projectUser.name}</h3>
+                      <p className="text-cyan-400">@{projectUser.username}</p>
+                      <p className="text-gray-400 text-sm mt-2">
+                        {`${projectUser.course} ${projectUser.branch}`}
+                      </p>
+                      <p className="text-gray-400 text-sm">
+                        {`${projectUser.session} • ${projectUser.qId}`}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tech stack card */}
+              <div className="bg-gray-800/40 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50 shadow-xl">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="bg-cyan-500/20 rounded-full p-3">
+                    <FaTags className="text-cyan-400 text-xl" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-white">Tech Stack</h2>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {project.techStack?.map((tech, index) => (
+                    <motion.div
+                      key={tech._id || `tech-${index}`}
+                      className="bg-gray-700/70 text-cyan-400 px-4 py-2 rounded-full text-sm"
+                      whileHover={{ scale: 1.05, backgroundColor: "rgba(8, 145, 178, 0.2)" }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      {tech.content}
+                    </motion.div>
+                  ))}
+                </div>
+
+                <h3 className="text-xl font-semibold text-white mt-6 mb-4">Languages</h3>
+                <div className="flex flex-wrap gap-2">
+                  {project.language?.map((lang, index) => (
+                    <motion.div
+                      key={`lang-${index}`}
+                      className="bg-gray-700/70 text-cyan-400 px-4 py-2 rounded-full text-sm"
+                      whileHover={{ scale: 1.05, backgroundColor: "rgba(8, 145, 178, 0.2)" }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      #{lang.content}
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Stats card (can add more project stats here) */}
+              <div className="bg-gray-800/40 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50 shadow-xl">
+                <h2 className="text-2xl font-bold text-white mb-6">Project Stats</h2>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-gray-700/60 rounded-xl p-4">
+                    <p className="text-gray-400 text-sm mb-1">Points</p>
+                    <p className="text-2xl font-bold text-cyan-400">{project.point}</p>
+                  </div>
+                  <div className="bg-gray-700/60 rounded-xl p-4">
+                    <p className="text-gray-400 text-sm mb-1">Screenshots</p>
+                    <p className="text-2xl font-bold text-cyan-400">{project.projectImage?.length || 0}</p>
+                  </div>
+                  <div className="bg-gray-700/60 rounded-xl p-4 col-span-2">
+                    <p className="text-gray-400 text-sm mb-1">Created</p>
+                    <p className="text-xl font-semibold text-white">{formatCreatedAt(project.createdAt)}</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </motion.div>
       </div>
-
-      <div className="grid md:grid-cols-2 gap-8 mt-8">
-        <motion.div
-          initial={{ x: -50, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="bg-gray-800/50 backdrop-blur-md rounded-2xl p-6"
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <FaCode className="text-cyan-400" />
-            <h4 className="text-xl font-semibold text-cyan-400">Project Description</h4>
-          </div>
-          <p className="text-gray-300">{project.projectDescription}</p>
-        </motion.div>
-
-        <motion.div
-          initial={{ x: 50, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.7 }}
-          className="bg-gray-800/50 backdrop-blur-md rounded-2xl p-6"
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <FaTags className="text-cyan-400" />
-            <h4 className="text-xl font-semibold text-cyan-400">Tech Stack</h4>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {project.techStack?.map((tech, index) => (
-              <motion.div
-                key={tech._id || index}
-                className="bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-lg text-sm"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {tech.content}
-              </motion.div>
-            ))}
-            {project.language?.map((lang, index) => (
-              <motion.div
-                key={`lang-${index}`}
-                className="bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-lg text-sm"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                #{lang.content}
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.8 }}
-        className="mt-8"
-      >
-        <h2 className="text-2xl font-semibold text-cyan-400 mb-4">Project Screenshots</h2>
-        <ImageSlider images={project.projectImage || []} />
-      </motion.div>
-    </motion.div>
+    </div>
   );
 }

@@ -1,12 +1,10 @@
 // import React from 'react';
 import TeamManageSetting from "../components/Team/TeamManageSettings";
-import TeamSettingFeild from "../components/Team/TeamSettingFeild";
 
 export default function TeamSetting() {
   return (
-    <div>
+    <div className="max-h-[calc(100vh-14rem)]">
       <TeamManageSetting />
-      <TeamSettingFeild />
     </div>
   );
 }
