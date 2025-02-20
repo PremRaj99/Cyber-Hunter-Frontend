@@ -256,9 +256,21 @@ const TeamChat = () => {
           >
             {/* Enhanced Sidebar */}
             <motion.div
-              variants={sidebarVariants}
-              animate={isSidebarOpen ? "open" : "closed"}
-              className="border-r border-gray-700 overflow-hidden "
+                initial={false}
+                animate={{
+                  width: isSidebarOpen ? (windowWidth < 768 ? "100%" : "16rem") : "0",
+                  opacity: isSidebarOpen ? 1 : 0,
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className={`
+                fixed md:relative
+                h-full
+                bg-gray-900
+                border-r border-gray-700
+                overflow-hidden
+                z-40
+                ${windowWidth < 768 ? (isSidebarOpen ? 'w-full' : 'w-0') : ''}
+              `}
             >
               <div className="p-4">
                 <div className="flex items-center justify-between mb-6">

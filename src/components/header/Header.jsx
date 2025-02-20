@@ -217,13 +217,6 @@ export default function Header() {
     },
   ];
 
-  // mobile image , name , points
-  const [profile, setProfile] = useState({
-    name: "John Doe",
-    points: 120,
-    profileImg: "https://your-new-image-url.com/image.jpg",
-  });
-
   // mobile login /logout
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -254,19 +247,33 @@ export default function Header() {
         </div>
 
         {/* Desktop Menu */}
-        <div className="md:flex items-center hidden text-stone-400 font-bold justify-center gap-4">
-          {nav.map(({ name, link }) => (
+        <nav className="hidden md:flex items-center space-x-1">
+          {nav.map((item) => (
             <NavLink
-              key={name}
-              to={link}
+              key={item.name}
+              to={item.link}
+              end={item.link === "/dashboard"} // Add end prop for exact matching
               className={({ isActive }) =>
-                isActive ? "text-[#00D8FF]" : "hover:text-brandPrimary"
+                `group relative px-4 py-2 rounded-lg transition-all duration-300 ${isActive
+                  ? "text-[#00D8FF]"
+                  : "text-gray-400 hover:text-white"
+                }`
               }
             >
-              {name}
+              <div className="flex items-center space-x-2">
+                {item.icon}
+                <span className="relative">
+                  {item.name}
+                  <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#00D8FF] group-hover:w-full transition-all duration-300" />
+                </span>
+              </div>
+              {/* Hover effect */}
+              <div className="absolute inset-0 bg-[#00D8FF]/0 group-hover:bg-[#00D8FF]/5 rounded-lg transition-all duration-300" />
             </NavLink>
           ))}
-        </div>
+        </nav>
+
+
         <div className="flex gap-6 items-center relative">
           {/* User Profile / Buttons */}
           {currentUser ? (
@@ -402,9 +409,8 @@ export default function Header() {
           {/* Updated Mobile Menu */}
           <motion.div
             className={`fixed top-0 right-0 h-full w-full md:w-1/2 lg:w-1/3 bg-black/95 backdrop-blur-lg 
-            border-l border-[#00D8FF]/20 z-50 ${
-              isMenuOpen ? "block" : "hidden"
-            }`}
+            border-l border-[#00D8FF]/20 z-50 ${isMenuOpen ? "block" : "hidden"
+              }`}
             variants={menuVariants}
             initial="hidden"
             animate={isMenuOpen ? "visible" : "hidden"}
@@ -473,10 +479,9 @@ export default function Header() {
                           to={link2}
                           end={link2 === "/dashboard"} // Add end prop for exact matching
                           className={({ isActive }) =>
-                            `block py-2 px-4 rounded-lg transition-colors duration-200 ${
-                              isActive
-                                ? "bg-[#00D8FF]/20 text-[#00D8FF]"
-                                : "text-gray-400 hover:text-[#00D8FF] hover:bg-[#00D8FF]/10"
+                            `block py-2 px-4 rounded-lg transition-colors duration-200 ${isActive
+                              ? "bg-[#00D8FF]/20 text-[#00D8FF]"
+                              : "text-gray-400 hover:text-[#00D8FF] hover:bg-[#00D8FF]/10"
                             }`
                           }
                           onClick={toggleMenu}
@@ -503,10 +508,9 @@ export default function Header() {
                       <NavLink
                         to={link}
                         className={({ isActive }) =>
-                          `block py-2 px-4 rounded-lg transition-colors duration-200 ${
-                            isActive
-                              ? "bg-[#00D8FF]/20 text-[#00D8FF]"
-                              : "text-gray-400 hover:text-[#00D8FF] hover:bg-[#00D8FF]/10"
+                          `block py-2 px-4 rounded-lg transition-colors duration-200 ${isActive
+                            ? "bg-[#00D8FF]/20 text-[#00D8FF]"
+                            : "text-gray-400 hover:text-[#00D8FF] hover:bg-[#00D8FF]/10"
                           }`
                         }
                         onClick={toggleMenu}

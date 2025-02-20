@@ -108,7 +108,7 @@ const AddPaymentMethod = ({ isOpen, onClose }) => {
             {/* Close button */}
             <button
               onClick={onClose}
-              className="absolute right-4 top-4 p-2 text-gray-400 hover:text-white transition-colors"
+              className="absolute right-4 top-4 p-2 rounded-full bg-gray-800 text-gray-400 hover:text-brandPrimary transition-colors hover:bg-gray-800 "
             >
               <X size={20} />
             </button>

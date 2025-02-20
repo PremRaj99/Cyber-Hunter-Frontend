@@ -5,6 +5,7 @@ import {
   FileText, ExternalLink, HelpCircle, PlusCircle,
   MinusCircle, Clock, CheckCircle
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const HelpSection = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -13,6 +14,7 @@ const HelpSection = () => {
   const [ticketTitle, setTicketTitle] = useState('');
   const [ticketDescription, setTicketDescription] = useState('');
   const [showTicketSuccess, setShowTicketSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const categories = [
     { id: 'all', name: 'All Articles' },
@@ -60,7 +62,6 @@ const HelpSection = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-screen"
     >
       {/* Header Section */}
       <div className="bg-gray-900/50 border border-cyan-500/20 rounded-xl p-6 mb-8">
@@ -80,14 +81,15 @@ const HelpSection = () => {
       {/* Quick Actions Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {[
-          { icon: <MessageCircle size={24} />, title: "Live Chat", description: "Chat with our support team" },
-          { icon: <Book size={24} />, title: "Documentation", description: "Browse our guides" },
-          { icon: <Phone size={24} />, title: "Contact Us", description: "Get in touch" }
-        ].map((action, index) => (
+          { icon: <Mail size={24} />, title: "Mail", description: "Send Email to our support team", link: ""},
+          { icon: <Book size={24} />, title: "Documentation", description: "Browse our guides", link: "/docs" },
+          { icon: <Phone size={24} />, title: "Contact Us", description: "Get in touch", link : "/contact" }
+        ].map((action, index,link) => (
           <motion.div
             key={index}
             whileHover={{ scale: 1.02 }}
             className="p-6 bg-gray-900/50 border border-gray-700 rounded-xl hover:border-cyan-500/30 transition-all cursor-pointer"
+            onClick={() => navigate(action.link)}
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-cyan-500/10 rounded-lg flex items-center justify-center text-cyan-500">

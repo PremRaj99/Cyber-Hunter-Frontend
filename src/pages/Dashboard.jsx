@@ -7,8 +7,6 @@ import DContact from "../components/dashboard/dContact";
 import DLeaderBoard from "../components/dashboard/dLeaderBorad";
 import DNotification from "../components/dashboard/dNotification";
 import DSetting from "../components/dashboard/dSetting";
-import { ChevronRight, Menu, X, Moon, Sun, Bell, Search } from "lucide-react";
-import { SearchCheck } from "lucide-react";
 
 export default function Dashboard() {
   // States
@@ -18,8 +16,12 @@ export default function Dashboard() {
   });
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const searchInputRef = useRef(null);
+
+  // Effect for document title
+  useEffect(() => {
+    const sectionTitle = getSectionTitle();
+    document.title = `Cyber Hunter | ${sectionTitle}`;
+  }, [activeSection]);
 
   // Effect for local storage
   useEffect(() => {
@@ -37,23 +39,10 @@ export default function Dashboard() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Effect for focusing search input when opened
-  useEffect(() => {
-    if (isSearchOpen && searchInputRef.current) {
-      searchInputRef.current.focus();
-    }
-  }, [isSearchOpen]);
-
   // Handle section change
   const handleSectionChange = (section) => {
     setActiveSection(section);
     setIsMobileSidebarOpen(false);
-  };
-
-  // Toggle theme
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    // Additional theme logic could be implemented here
   };
 
   // Render content based on active section
