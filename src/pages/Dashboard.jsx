@@ -17,6 +17,10 @@ export default function Dashboard() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
 
+  useEffect(() => {
+    document.title = "Cyber Hunter | Dashboard";
+  }, []);
+
   // Effect for document title
   useEffect(() => {
     const sectionTitle = getSectionTitle();
@@ -132,7 +136,7 @@ export default function Dashboard() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 0.15, scale: 1 }}
               transition={{ duration: 8, repeat: Infinity, repeatType: "reverse" }}
-              className="absolute top-20 -left-40 w-96 h-96 bg-cyan-500 rounded-full blur-3xl opacity-10"
+              className="absolute top-20 -left-40 w-96 h-96 bg-brandPrimary rounded-full blur-3xl opacity-10"
             ></motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -226,7 +230,7 @@ export default function Dashboard() {
                 className={`mt-6 p-4 rounded-xl ${isDarkMode ? 'bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700' : 'bg-gradient-to-br from-indigo-50 to-sky-50 border border-indigo-100'}`}
               >
                 <div className="flex justify-between items-center mb-3">
-                  <h3 className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  <h3 className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-gray-700'}`}>
                     Weekly Progress
                   </h3>
                   <span className={`text-xs font-medium px-2 py-1 rounded-full ${isDarkMode ? 'bg-cyan-900 bg-opacity-50 text-cyan-300' : 'bg-indigo-100 text-indigo-600'}`}>
@@ -241,7 +245,7 @@ export default function Dashboard() {
                       <span className={isDarkMode ? 'text-cyan-400' : 'text-indigo-600'}>78%</span>
                     </div>
                     <div className={`h-1.5 w-full rounded-full overflow-hidden ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`}>
-                      <div className={`h-full rounded-full ${isDarkMode ? 'bg-cyan-500' : 'bg-indigo-500'}`} style={{ width: '78%' }}></div>
+                      <div className={`h-full rounded-full ${isDarkMode ? 'bg-brandPrimary' : 'bg-indigo-500'}`} style={{ width: '78%' }}></div>
                     </div>
                   </div>
 
@@ -273,7 +277,7 @@ export default function Dashboard() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 0.1, scale: 1 }}
                   transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
-                  className="absolute -bottom-20 -right-20 w-80 h-80 bg-cyan-500 rounded-full blur-3xl opacity-15 pointer-events-none"
+                  className="absolute -bottom-20 -right-20 w-80 h-80 bg-brandPrimary rounded-full blur-3xl opacity-15 pointer-events-none"
                 ></motion.div>
               )}
 
@@ -290,12 +294,12 @@ export default function Dashboard() {
                       key={section}
                       onClick={() => handleSectionChange(section)}
                       className={`whitespace-nowrap px-3 py-1.5 text-sm font-medium rounded-full transition-colors ${activeSection === section
-                          ? isDarkMode
-                            ? 'bg-cyan-500 bg-opacity-20 text-cyan-400 border border-cyan-500 border-opacity-30'
-                            : 'bg-indigo-100 text-indigo-600 border border-indigo-200'
-                          : isDarkMode
-                            ? 'text-gray-400 border border-gray-700 hover:bg-gray-700 hover:text-gray-200'
-                            : 'text-gray-600 border border-gray-200 hover:bg-gray-100 hover:text-gray-900'
+                        ? isDarkMode
+                          ? 'bg-brandPrimary bg-opacity-20 text-cyan-400 border border-brandPrimary border-opacity-30'
+                          : 'bg-indigo-100 text-indigo-600 border border-indigo-200'
+                        : isDarkMode
+                          ? 'text-gray-400 border border-gray-700 hover:bg-gray-700 hover:text-gray-200'
+                          : 'text-gray-600 border border-gray-200 hover:bg-gray-100 hover:text-gray-900'
                         }`}
                     >
                       {section.charAt(0).toUpperCase() + section.slice(1)}

@@ -69,7 +69,7 @@ const BillingSection = () => {
       {/* Current Plan Section */}
       <motion.div
         variants={itemVariants}
-        className="bg-gray-900/50 border border-cyan-500/20 rounded-xl p-6"
+        className="bg-gray-900/50 border border-brandPrimary/20 rounded-xl p-6"
       >
         <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
           <div>
@@ -80,7 +80,7 @@ const BillingSection = () => {
             <button className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
               Cancel Plan
             </button>
-            <button className="px-4 py-2 bg-cyan-500 text-black font-medium rounded-lg hover:bg-cyan-400 transition-colors">
+            <button className="px-4 py-2 bg-brandPrimary text-black font-medium rounded-lg hover:bg-cyan-400 transition-colors">
               Upgrade Plan
             </button>
           </div>
@@ -92,11 +92,10 @@ const BillingSection = () => {
         {plans.map((plan) => (
           <div
             key={plan.id}
-            className={`p-6 rounded-xl border transition-all duration-300 ${
-              selectedPlan === plan.id
-                ? 'border-cyan-500 bg-cyan-500/10'
-                : 'border-gray-700 bg-gray-900/50 hover:border-cyan-500/30'
-            }`}
+            className={`p-6 rounded-xl border transition-all duration-300 ${selectedPlan === plan.id
+              ? 'border-brandPrimary bg-brandPrimary/10'
+              : 'border-gray-700 bg-gray-900/50 hover:border-brandPrimary/30'
+              }`}
           >
             <h3 className="text-xl font-bold text-white mb-2">{plan.name}</h3>
             <div className="flex items-baseline mb-4">
@@ -105,19 +104,18 @@ const BillingSection = () => {
             </div>
             <ul className="space-y-3 mb-6">
               {plan.features.map((feature, index) => (
-                <li key={index} className="flex items-center text-gray-300">
-                  <CheckCircle2 className="w-5 h-5 text-cyan-500 mr-2" />
+                <li key={index} className="flex items-center text-white">
+                  <CheckCircle2 className="w-5 h-5 text-brandPrimary mr-2" />
                   {feature}
                 </li>
               ))}
             </ul>
             <button
               onClick={() => setSelectedPlan(plan.id)}
-              className={`w-full py-2 rounded-lg transition-colors ${
-                selectedPlan === plan.id
-                  ? 'bg-cyan-500 text-black font-medium hover:bg-cyan-400'
-                  : 'bg-gray-800 text-white hover:bg-gray-700'
-              }`}
+              className={`w-full py-2 rounded-lg transition-colors ${selectedPlan === plan.id
+                ? 'bg-brandPrimary text-black font-medium hover:bg-cyan-400'
+                : 'bg-gray-800 text-white hover:bg-gray-700'
+                }`}
             >
               {selectedPlan === plan.id ? 'Current Plan' : 'Select Plan'}
             </button>
@@ -129,7 +127,7 @@ const BillingSection = () => {
       <motion.div variants={itemVariants} className="bg-gray-900/50 border border-gray-700 rounded-xl p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-white">Payment Methods</h3>
-          <button 
+          <button
             onClick={() => setIsModalOpen(true)}
             className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
           >
@@ -137,18 +135,18 @@ const BillingSection = () => {
             Add Method
           </button>
         </div>
-        
+
         <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-cyan-500/10 rounded-lg flex items-center justify-center">
-              <CreditCard className="w-6 h-6 text-cyan-500" />
+            <div className="w-10 h-10 bg-brandPrimary/10 rounded-lg flex items-center justify-center">
+              <CreditCard className="w-6 h-6 text-brandPrimary" />
             </div>
             <div>
               <p className="text-white font-medium">•••• •••• •••• 4242</p>
               <p className="text-sm text-gray-400">Expires 12/25</p>
             </div>
           </div>
-          <span className="px-3 py-1 bg-cyan-500/10 text-cyan-400 text-sm rounded-full">Default</span>
+          <span className="px-3 py-1 bg-brandPrimary/10 text-cyan-400 text-sm rounded-full">Default</span>
         </div>
       </motion.div>
 
@@ -189,7 +187,7 @@ const BillingSection = () => {
       </motion.div>
 
       {/* Add Payment Method Modal */}
-      <AddPaymentMethodModal 
+      <AddPaymentMethodModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />

@@ -133,7 +133,7 @@ const Members = () => {
               <h3 className="text-lg font-semibold text-brandPrimary">
                 {member.name}
               </h3>
-              <p className="text-sm text-stone-400 mb-2">{member.role}</p>
+              <p className="text-sm text-white mb-2">{member.role}</p>
               <p className="text-sm text-white mb-4">{member.description}</p>
               <div className="flex space-x-3">
                 {member.social.twitter && (

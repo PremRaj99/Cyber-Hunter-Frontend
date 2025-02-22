@@ -24,7 +24,6 @@ import UserDetail from "../../src/pages/UserDetail";
 import AddProject from "../../src/pages/Addproject";
 import ViewProject from "../../src/pages/Viewproject";
 import VerifyAchievement from "../../src/pages/VerifyAchievement";
-import TeamSetting from "../../src/pages/TeamSetting";
 import ProfileSetting from "../../src/pages/ProfileSetting";
 import FreelancerLayout from "../Layout/VendorLayout";
 import Freelancer from "../pages/Freelancer";
@@ -37,6 +36,7 @@ import AccountAccessPage from "../pages/AccountAccess";
 import EmailSettings from "../pages/EmailSettings";
 import ChangePassword from "../pages/ChangePassword";
 import Policy from "../pages/Policy";
+import VendorLogin from "../pages/VendorLogin";
 
 export const router = createBrowserRouter([
   {
@@ -229,6 +229,10 @@ export const router = createBrowserRouter([
       {
         path: "post",
         element: <PostProject />,
+      },
+      {
+        path: "login",
+        element: <VendorLogin />,
       },
     ],
   },

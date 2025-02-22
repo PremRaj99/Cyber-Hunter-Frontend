@@ -60,13 +60,13 @@ function Notification() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.15 }}
           transition={{ duration: 1 }}
-          className="absolute top-20 -left-20 sm:top-40 sm:-left-40 w-60 sm:w-80 h-60 sm:h-80 bg-cyan-500 rounded-full filter blur-3xl"
+          className="absolute top-20 -left-20 sm:top-40 sm:-left-40 w-60 sm:w-80 h-60 sm:h-80 bg-brandPrimary rounded-full filter blur-3xl"
         />
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.1 }}
           transition={{ duration: 1, delay: 0.3 }}
-          className="absolute bottom-10 right-5 sm:bottom-20 sm:right-10 w-72 sm:w-96 h-72 sm:h-96 bg-cyan-500 rounded-full filter blur-3xl"
+          className="absolute bottom-10 right-5 sm:bottom-20 sm:right-10 w-72 sm:w-96 h-72 sm:h-96 bg-brandPrimary rounded-full filter blur-3xl"
         />
       </div>
 
@@ -123,7 +123,7 @@ function Notification() {
                 ].map((item, index) => (
                   <div key={index} className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-cyan-500/10 rounded-lg shrink-0">
+                      <div className="p-2 bg-brandPrimary/10 rounded-lg shrink-0">
                         {React.cloneElement(item.icon, { className: "w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" })}
                       </div>
                       <div>
@@ -133,7 +133,7 @@ function Notification() {
                     </div>
                     <button
                       onClick={() => item.setState(!item.state)}
-                      className={`w-10 sm:w-12 h-5 sm:h-6 rounded-full transition-colors duration-200 ease-in-out relative ${item.state ? 'bg-cyan-500' : 'bg-gray-600'
+                      className={`w-10 sm:w-12 h-5 sm:h-6 rounded-full transition-colors duration-200 ease-in-out relative ${item.state ? 'bg-brandPrimary' : 'bg-gray-600'
                         }`}
                     >
                       <div
@@ -183,7 +183,7 @@ function Notification() {
                   className="flex items-center justify-between p-3 sm:p-4 bg-opacity-50 rounded-lg"
                 >
                   <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="p-2 bg-cyan-500/10 rounded-lg shrink-0">
+                    <div className="p-2 bg-brandPrimary/10 rounded-lg shrink-0">
                       {React.cloneElement(type.icon, { className: "w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" })}
                     </div>
                     <div>
@@ -192,7 +192,7 @@ function Notification() {
                     </div>
                   </div>
                   <button
-                    className={`w-10 sm:w-12 h-5 sm:h-6 rounded-full transition-colors duration-200 ease-in-out relative ${type.enabled ? 'bg-cyan-500' : 'bg-gray-600'
+                    className={`w-10 sm:w-12 h-5 sm:h-6 rounded-full transition-colors duration-200 ease-in-out relative ${type.enabled ? 'bg-brandPrimary' : 'bg-gray-600'
                       }`}
                   >
                     <div

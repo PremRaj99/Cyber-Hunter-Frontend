@@ -4,6 +4,7 @@ import { FaCalendar, FaUsers, FaTrophy, FaArrowRight } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import EventCarousel from "../components/Event/EventCarousel";
 
+
 const hackathonEvents = [
   {
     id: 1,
@@ -43,7 +44,10 @@ const hackathonEvents = [
 export default function EventPage() {
   const [activeTab, setActiveTab] = useState("upcoming");
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    document.title = "Cyber Hunter | Events";
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -85,13 +89,12 @@ export default function EventPage() {
       <div className="p-6 space-y-4">
         <div className="flex items-center justify-between">
           <span
-            className={`px-3 py-1 text-sm font-medium rounded-full ${
-              event.status === "UPCOMING"
-                ? "bg-cyan-400/20 text-cyan-400"
-                : event.status === "ON GOING"
+            className={`px-3 py-1 text-sm font-medium rounded-full ${event.status === "UPCOMING"
+              ? "bg-cyan-400/20 text-cyan-400"
+              : event.status === "ON GOING"
                 ? "bg-green-400/20 text-green-400"
                 : "bg-gray-400/20 text-gray-400"
-            }`}
+              }`}
           >
             {event.status}
           </span>
@@ -158,11 +161,10 @@ export default function EventPage() {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`py-3 px-4 text-sm font-medium capitalize transition-all duration-300 ${
-                  activeTab === tab
-                    ? "text-cyan-400 border-b-2 border-cyan-400"
-                  : "text-gray-400 hover:text-cyan-500"
-                }`}
+                className={`py-3 px-4 text-sm font-medium capitalize transition-all duration-300 ${activeTab === tab
+                  ? "text-cyan-400 border-b-2 border-cyan-400"
+                  : "text-gray-400 hover:text-brandPrimary"
+                  }`}
               >
                 {tab}
               </button>
@@ -216,19 +218,19 @@ export default function EventPage() {
               <div className="grid grid-cols-3 gap-4">
                 <div className="bg-gray-700/30 p-4 rounded-lg text-center">
                   <FaCalendar className="w-5 h-5 mx-auto mb-2 text-cyan-400" />
-                  <span className="text-sm text-gray-300">
+                  <span className="text-sm text-white">
                     {selectedEvent.date}
                   </span>
                 </div>
                 <div className="bg-gray-700/30 p-4 rounded-lg text-center">
                   <FaUsers className="w-5 h-5 mx-auto mb-2 text-cyan-400" />
-                  <span className="text-sm text-gray-300">
+                  <span className="text-sm text-white">
                     {selectedEvent.participants}
                   </span>
                 </div>
                 <div className="bg-gray-700/30 p-4 rounded-lg text-center">
                   <FaTrophy className="w-5 h-5 mx-auto mb-2 text-cyan-400" />
-                  <span className="text-sm text-gray-300">
+                  <span className="text-sm text-white">
                     {selectedEvent.prize}
                   </span>
                 </div>
@@ -241,7 +243,7 @@ export default function EventPage() {
                 <p className="text-gray-400">{selectedEvent.description}</p>
               </div>
 
-              <button className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+              <button className="w-full py-3 bg-gradient-to-r from-brandPrimary to-blue-500 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
                 Register Now
               </button>
             </div>

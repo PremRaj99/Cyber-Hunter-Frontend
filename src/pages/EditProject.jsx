@@ -17,6 +17,7 @@ import {
 } from "react-icons/fa";
 import Preloader from "../components/Common/Preloader";
 import { IoMdClose } from "react-icons/io";
+import { toast } from "react-toastify";
 
 export default function EditProject() {
   const { id } = useParams();
@@ -176,7 +177,9 @@ export default function EditProject() {
         { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } }
       );
 
-      navigate(`/project/${id}`);
+      toast.success("Project updated successfully!");
+
+      navigate(`/dashboard/project/${id}`);
     } catch (error) {
       console.error("Error saving project:", error);
       setSaving(false);
@@ -203,7 +206,7 @@ export default function EditProject() {
       >
         <button
           onClick={() => navigate(`/dashboard/project/view`)}
-          className="p-2 rounded-full bg-gray-700/50 hover:bg-gray-600 transition-colors text-gray-300"
+          className="p-2 rounded-full bg-gray-700/50 hover:bg-gray-600 transition-colors text-white"
           aria-label="Go back"
         >
           <FaChevronLeft size={20} />
@@ -227,8 +230,8 @@ export default function EditProject() {
                   key={section}
                   onClick={() => setActiveSection(section)}
                   className={`w-full text-left p-3 rounded-lg transition-all duration-300 flex items-center gap-3 ${activeSection === section
-                      ? "bg-cyan-500/30 text-cyan-400 border-l-4 border-cyan-400 pl-2"
-                      : "hover:bg-gray-700/50 text-gray-300"
+                    ? "bg-brandPrimary/30 text-cyan-400 border-l-4 border-cyan-400 pl-2"
+                    : "hover:bg-gray-700/50 text-white"
                     }`}
                 >
                   {section === "main" && <FaCode />}
@@ -245,7 +248,7 @@ export default function EditProject() {
               <motion.button
                 onClick={handleSave}
                 disabled={saving}
-                className={`w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium ${saving ? "opacity-70" : "hover:shadow-lg hover:scale-105"
+                className={`w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-gradient-to-r from-brandPrimary to-blue-500 text-white font-medium ${saving ? "opacity-70" : "hover:shadow-lg hover:scale-105"
                   } transition-all duration-300`}
                 whileHover={{ scale: saving ? 1 : 1.05 }}
                 whileTap={{ scale: saving ? 1 : 0.95 }}
@@ -265,7 +268,7 @@ export default function EditProject() {
 
               <button
                 onClick={() => navigate(`/dashboard/project/view/${id}`)}
-                className="w-full mt-4 flex items-center justify-center gap-2 py-3 rounded-lg border border-gray-600 text-gray-300 hover:bg-gray-700 transition-all duration-300"
+                className="w-full mt-4 flex items-center justify-center gap-2 py-3 rounded-lg border border-gray-600 text-white hover:bg-gray-700 transition-all duration-300"
               >
                 <span>Cancel</span>
               </button>
@@ -310,16 +313,15 @@ export default function EditProject() {
                     <label className="block text-sm font-medium text-gray-400 mb-2 group-hover:text-cyan-400 transition-colors duration-300">
                       Project Points
                     </label>
-                    <input
-                      type="number"
-                      value={project.point}
-                      onChange={(e) => handleInputChange(e, "point")}
+                    <div
                       className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300 text-green-500 font-semibold"
-                    />
+                    >
+                      {project.point || 0}
+                    </div>
                   </div>
 
                   <div>
-                    <p className="text-gray-300 text-sm">
+                    <p className="text-white text-sm">
                       Created at: {formatCreatedAt(project.createdAt)}
                     </p>
                   </div>
@@ -334,7 +336,7 @@ export default function EditProject() {
                       />
                       <div>
                         <h4 className="text-xl font-semibold text-cyan-400">{projectUser.name}</h4>
-                        <p className="text-gray-300 text-sm">{projectUser.username}</p>
+                        <p className="text-white text-sm">{projectUser.username}</p>
                         <p className="text-gray-400 text-xs">
                           {`${projectUser.course} ${projectUser.branch} ${projectUser.session}`}
                         </p>
@@ -365,7 +367,7 @@ export default function EditProject() {
                     value={project.projectDescription}
                     onChange={(e) => handleInputChange(e, "projectDescription")}
                     rows="8"
-                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300 text-gray-300 resize-none"
+                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300 text-white resize-none no-scrollbar"
                     placeholder="Describe your project in detail..."
                   ></textarea>
                 </div>
@@ -403,7 +405,7 @@ export default function EditProject() {
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                         <label
                           htmlFor="thumbnail-upload"
-                          className="cursor-pointer bg-cyan-500 hover:bg-cyan-600 text-white p-3 rounded-full transition-all duration-300 transform group-hover:scale-110"
+                          className="cursor-pointer bg-brandPrimary hover:bg-cyan-600 text-white p-3 rounded-full transition-all duration-300 transform group-hover:scale-110"
                         >
                           <FaCamera size={20} />
                         </label>
@@ -503,7 +505,7 @@ export default function EditProject() {
                     {project.techStack?.map((tech, index) => (
                       <motion.div
                         key={tech._id || index}
-                        className="bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-lg text-sm flex items-center gap-2 group"
+                        className="bg-brandPrimary/20 text-cyan-400 px-3 py-1 rounded-lg text-sm flex items-center gap-2 group"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -525,11 +527,11 @@ export default function EditProject() {
                       onChange={(e) => setTechInput(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && handleAddTech()}
                       placeholder="Add technology..."
-                      className="flex-1 px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300 text-gray-300"
+                      className="flex-1 px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300 text-white"
                     />
                     <button
                       onClick={handleAddTech}
-                      className="bg-cyan-500 hover:bg-cyan-600 text-white p-2 rounded-lg transition-all duration-300"
+                      className="bg-brandPrimary hover:bg-cyan-600 text-white p-2 rounded-lg transition-all duration-300"
                     >
                       <FaPlusCircle size={20} />
                     </button>
@@ -544,7 +546,7 @@ export default function EditProject() {
                     {project.language?.map((lang, index) => (
                       <motion.div
                         key={`lang-${index}`}
-                        className="bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-lg text-sm flex items-center gap-2 group"
+                        className="bg-brandPrimary/20 text-cyan-400 px-3 py-1 rounded-lg text-sm flex items-center gap-2 group"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -566,11 +568,11 @@ export default function EditProject() {
                       onChange={(e) => setLanguageInput(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && handleAddLanguage()}
                       placeholder="Add language..."
-                      className="flex-1 px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300 text-gray-300"
+                      className="flex-1 px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300 text-white"
                     />
                     <button
                       onClick={handleAddLanguage}
-                      className="bg-cyan-500 hover:bg-cyan-600 text-white p-2 rounded-lg transition-all duration-300"
+                      className="bg-brandPrimary hover:bg-cyan-600 text-white p-2 rounded-lg transition-all duration-300"
                     >
                       <FaPlusCircle size={20} />
                     </button>
@@ -602,7 +604,7 @@ export default function EditProject() {
                       value={project.gitHubLink || ""}
                       onChange={(e) => handleInputChange(e, "gitHubLink")}
                       placeholder="https://github.com/username/repo"
-                      className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300 text-gray-300"
+                      className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300 text-white"
                     />
                   </div>
 
@@ -616,7 +618,7 @@ export default function EditProject() {
                       value={project.liveLink || ""}
                       onChange={(e) => handleInputChange(e, "liveLink")}
                       placeholder="https://your-project-url.com"
-                      className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300 text-gray-300"
+                      className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300 text-white"
                     />
                   </div>
                 </div>

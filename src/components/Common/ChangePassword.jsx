@@ -38,7 +38,7 @@ const ForgotPasswordPage = () => {
             duration: 4,
             repeat: Infinity,
           }}
-          className="absolute top-1/4 -right-20 w-80 h-80 bg-cyan-500 rounded-full blur-[100px] opacity-30"
+          className="absolute top-1/4 -right-20 w-80 h-80 bg-brandPrimary rounded-full blur-[100px] opacity-30"
         />
 
         {/* Digital Rain Effect */}
@@ -53,7 +53,7 @@ const ForgotPasswordPage = () => {
                 repeat: Infinity,
                 delay: Math.random() * 2,
               }}
-              className="absolute text-cyan-500 text-xs"
+              className="absolute text-brandPrimary text-xs"
               style={{ left: `${Math.random() * 100}%` }}
             >
               {Array.from({ length: 10 }).map((_, j) => (
@@ -72,7 +72,7 @@ const ForgotPasswordPage = () => {
           className="w-full max-w-md"
         >
           {!isSubmitted ? (
-            <div className="backdrop-blur-lg bg-gray-900/50 p-8 rounded-3xl border border-cyan-500/20 shadow-2xl">
+            <div className="backdrop-blur-lg bg-gray-900/50 p-8 rounded-3xl border border-brandPrimary/20 shadow-2xl">
               {/* Floating Icons */}
               <div className="relative h-32 mb-6">
                 <motion.div
@@ -91,7 +91,7 @@ const ForgotPasswordPage = () => {
                         duration: 2,
                         repeat: Infinity,
                       }}
-                      className="absolute inset-0 bg-cyan-500 rounded-full blur-xl opacity-30"
+                      className="absolute inset-0 bg-brandPrimary rounded-full blur-xl opacity-30"
                     />
                   </div>
                 </motion.div>
@@ -146,14 +146,14 @@ const ForgotPasswordPage = () => {
                       duration: 2,
                       repeat: Infinity,
                     }}
-                    className="absolute inset-0 bg-cyan-500 rounded-xl opacity-20 group-hover:opacity-30 blur transition-opacity"
+                    className="absolute inset-0 bg-brandPrimary rounded-xl opacity-20 group-hover:opacity-30 blur transition-opacity"
                   />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
-                    className="w-full px-4 py-4 bg-gray-800/50 text-white border border-gray-700 rounded-xl focus:outline-none focus:border-cyan-500 transition-all relative"
+                    className="w-full px-4 py-4 bg-gray-800/50 text-white border border-gray-700 rounded-xl focus:outline-none focus:border-brandPrimary transition-all relative"
                     required
                   />
                 </div>
@@ -163,7 +163,7 @@ const ForgotPasswordPage = () => {
                   whileTap={{ scale: 0.98 }}
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-4 bg-cyan-500 text-gray-900 rounded-xl font-semibold relative overflow-hidden group"
+                  className="w-full py-4 bg-brandPrimary text-gray-900 rounded-xl font-semibold relative overflow-hidden group"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     {isLoading ? (

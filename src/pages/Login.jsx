@@ -1,313 +1,365 @@
-import { use, useEffect, useState } from "react";
-import banner1 from "../assets/banner1.png";
-import googleIcon from "../assets/google_icon.png";
-import githubIcon from "../assets/github_icon.png";
-import xIcon from "../assets/x_icon.png";
-import eyeIcon from "../assets/eye_icon.png";
-import { MdEmail } from "react-icons/md";
-import { RiLockPasswordFill } from "react-icons/ri";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import {
-  signInStart,
-  signInSuccess,
-  signInFailure,
-} from "../redux/User/userSlice";
-import axios from "../utils/Axios";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { signInStart, signInSuccess, signInFailure } from '../redux/User/userSlice';
+import { Mail, Lock, Eye, EyeOff, Github, Twitter, AppleIcon } from 'lucide-react';
+import axios from '../utils/Axios';
+import { BsGoogle } from 'react-icons/bs';
+import login from '../assets/loginSignUp/login.svg';
+import signup from '../assets/loginSignUp/signup.svg';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaApple } from 'react-icons/fa6';
 
-export default function Login() {
+const sanitizeInput = (input) => {
+  return input.trim().replace(/[<>]/g, '');
+};
+
+const isValidEmail = (email) => {
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const commonFakeDomains = [
+    'tempmail.com', 'throwaway.com', 'tempmail.net',
+    'fakeinbox.com', 'trash-mail.com', '10minutemail.com'
+  ];
+
+  if (!emailRegex.test(email)) return false;
+
+  const domain = email.split('@')[1].toLowerCase();
+  if (commonFakeDomains.includes(domain)) return false;
+
+  return true;
+};
+
+const validatePassword = (password) => {
+  return {
+    minLength: password.length >= 8,
+    hasUppercase: /[A-Z]/.test(password),
+    hasLowercase: /[a-z]/.test(password),
+    hasNumber: /\d/.test(password),
+    hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    noSpaces: !/\s/.test(password)
+  };
+};
+
+const ModernAuthForm = () => {
   const [isSignup, setIsSignup] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // add state to show/hide password
-
-  // fetch API
-
-  const [formdata, setFormdata] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const [errors, setErrors] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
 
   useEffect(() => {
-    document.title = "Login";
-  }, []);
+    document.title = isSignup ? 'Create Account' : 'Welcome Back';
+  }, [isSignup]);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    if (!formdata.email || !formdata.password) {
-      toast.error("Please fill out all the fields.");
-      return dispatch(signInFailure("Please fill out all the fields."));
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Email validation
+    const sanitizedEmail = sanitizeInput(formData.email);
+    if (!sanitizedEmail) {
+      newErrors.email = 'Email is required';
+    } else if (!isValidEmail(sanitizedEmail)) {
+      newErrors.email = 'Please enter a valid email address. Temporary email providers are not allowed.';
     }
-    try {
-      dispatch(signInStart());
-      setLoading(true);
-      const { data } = await axios.post("/api/v1/auth/login", {
-        email: formdata.email,
-        password: formdata.password,
-      });
-      if (data.success) {
-        if (data.data.profilePicture)
-          dispatch(signInSuccess({ ...data.data, isProfileComplete: true }));
-        else
-          dispatch(signInSuccess({ ...data.data, isProfileComplete: false }));
-        navigate("/dashboard/profile", { replace: true });
-        localStorage.setItem("accessToken", data.data.accessToken);
-        localStorage.setItem("refreshToken", data.data.refreshToken);
-        setLoading(false);
-        return toast.success(data.message);
-      } else {
-        setLoading(false);
-        dispatch(signInFailure(data.message));
-        return toast.error(data.message);
+
+    // Password validation
+    const sanitizedPassword = sanitizeInput(formData.password);
+    const passwordRequirements = validatePassword(sanitizedPassword);
+
+    if (!sanitizedPassword) {
+      newErrors.password = 'Password is required';
+    } else {
+      const passwordErrors = [];
+      if (!passwordRequirements.minLength) passwordErrors.push('at least 8 characters');
+      if (!passwordRequirements.hasUppercase) passwordErrors.push('an uppercase letter');
+      if (!passwordRequirements.hasLowercase) passwordErrors.push('a lowercase letter');
+      if (!passwordRequirements.hasNumber) passwordErrors.push('a number');
+      if (!passwordRequirements.hasSpecialChar) passwordErrors.push('a special character');
+      if (!passwordRequirements.noSpaces) passwordErrors.push('no spaces');
+
+      if (passwordErrors.length > 0) {
+        newErrors.password = `Password must contain ${passwordErrors.join(', ')}`;
       }
-    } catch (error) {
-      dispatch(signInFailure(error.message));
-      toast.error(error.message);
-      setLoading(false);
     }
+
+    // Signup-specific validations
+    if (isSignup) {
+      const sanitizedConfirmPassword = sanitizeInput(formData.confirmPassword);
+      if (!sanitizedConfirmPassword) {
+        newErrors.confirmPassword = 'Please confirm your password';
+      } else if (sanitizedPassword !== sanitizedConfirmPassword) {
+        newErrors.confirmPassword = 'Passwords do not match';
+      }
+
+      if (sanitizedPassword === sanitizedEmail) {
+        newErrors.password = 'Password cannot be the same as email';
+      }
+    }
+
+    // Common password check
+    const commonPasswords = ['password123', 'admin123', '12345678', 'qwerty123'];
+    if (commonPasswords.includes(sanitizedPassword.toLowerCase())) {
+      newErrors.password = 'Please use a stronger password. This password is too common.';
+    }
+
+    // Update form with sanitized values
+    setFormData({
+      ...formData,
+      email: sanitizedEmail,
+      password: sanitizedPassword,
+      confirmPassword: isSignup ? sanitizeInput(formData.confirmPassword) : ''
+    });
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  const handleSignup = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      !formdata.email ||
-      !formdata.password ||
-      !formdata.confirmPassword ||
-      formdata.confirmPassword !== formdata.password
-    ) {
-      const errorMsg =
-        formdata.confirmPassword !== formdata.password
-          ? "Passwords do not match!"
-          : "Please fill out all the fields.";
-      toast.error(errorMsg);
-      return dispatch(signInFailure(errorMsg));
-    }
+    if (!validateForm()) return;
+
     try {
       dispatch(signInStart());
       setLoading(true);
-      const { data } = await axios.post("/api/v1/auth/signup", {
-        email: formdata.email,
-        password: formdata.password,
-        confirmPassword: formdata.confirmPassword,
-      });
-      console.log("data0", data);
-      setLoading(false);
+
+      const endpoint = isSignup ? '/api/v1/auth/signup' : '/api/v1/auth/login';
+      const { data } = await axios.post(endpoint, formData);
+
       if (data.success) {
-        dispatch(
-          signInSuccess({
-            ...data.data,
-            isProfileComplete: false,
-          })
-        );
-        localStorage.setItem("accessToken", data.data.accessToken);
-        localStorage.setItem("refreshToken", data.data.refreshToken);
-        navigate("/auth/userdetails", { replace: true });
-        return toast.success(data.message);
+        dispatch(signInSuccess({
+          ...data.data,
+          isProfileComplete: isSignup ? false : Boolean(data.data.profilePicture)
+        }));
+
+        localStorage.setItem('accessToken', data.data.accessToken);
+        localStorage.setItem('refreshToken', data.data.refreshToken);
+
+        navigate(isSignup ? '/auth/userdetails' : '/dashboard/profile', { replace: true });
       }
-      setLoading(false);
-      dispatch(signInFailure(data.message));
-      return toast.error(data.message);
     } catch (error) {
-      if (error.response.status === 409) {
-        dispatch(signInFailure(error.response.data.message));
-        return toast.error(error.response.data.message);
-      }
-      console.log(error);
-      dispatch(signInFailure(error.message));
-      toast.error(error.message);
+      const errorMessage = error.response?.data?.message || error.message;
+      dispatch(signInFailure(errorMessage));
+      setErrors({ ...errors, general: errorMessage });
+    } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-[calc(100vh-64px)] h-[calc(100vh-64px)] bg-black">
-      <div className="circlePosition w-[250px] h-[200px] bg-brandPrimary rounded-[100%] absolute z-1 top-[25%] left-[15%] blur-[90px] transition-all duration-300"></div>
-      <div className="px-4 max-w-screen-2xl mx-auto min-h-full h-full">
-        <div className="w-full h-full flex justify-center items-center">
-          <div className="md:w-4/5 w-full h-fit md:my-28 my-10 flex flex-col md:flex-row rounded-2xl items-center justify-between bg-gray-800 bg-opacity-40 backdrop-blur-lg ">
-            <div className="flex-1 md:block hidden">
-              <img
-                src={banner1}
-                alt="banner-img"
-                className="w-fit md:h-full  object-cover hover:-translate-y-3 transition-all duration-700"
-              />
-            </div>
-            {/* login page */}
-            <div className="flex-1 flex justify-center flex-col md:px-16 px-8 py-10 w-full items-center rounded-2xl h-full bg-gray-800 bg-opacity-50 backdrop-blur-lg border border-gray-400">
-              <div className="relative w-full max-w-96 mb-4">
-                <div className="flex justify-between items-center border-2 border-gray-400 rounded-full relative overflow-hidden">
-                  <label
-                    onClick={() => setIsSignup(false)}
-                    className={`w-1/2  text-center text-lg cursor-pointer transition-all duration-700 z-10 ${
-                      !isSignup ? "text-black" : "text-white"
-                    }`}
-                  >
-                    Login
-                  </label>
-                  <label
-                    onClick={() => setIsSignup(true)}
-                    className={`w-1/2 py-2 text-center text-lg cursor-pointer transition-all duration-700 z-10 ${
-                      isSignup ? "text-black" : "text-white"
-                    }`}
-                  >
-                    Signup
-                  </label>
-                  <div
-                    className={`absolute  top-0 h-full w-1/2 bg-brandPrimary  rounded-full transition-all duration-700 ${
-                      isSignup ? "transform translate-x-full" : ""
-                    }`}
-                  ></div>
-                </div>
-              </div>
+    <div className="min-h-screen w-full flex items-center justify-start p-12 md:p-4 gap-96">
+      <motion.div
+        className="hidden lg:flex w-[1000px] h-screen items-center justify-center relative"
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="relative w-[800px] h-[800px]">
 
-              <div
-                className="flex w-full md:px-8 transition-transform duration-700"
-                style={{
-                  transform: isSignup ? "translateX(0)" : "translateX(0)",
+          {/* Main image container */}
+          <motion.div
+            className="relative w-full h-full rounded-3xl overflow-hidden shadow-4xl "
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.3 }}
+          >
+            <AnimatePresence mode="">
+              <motion.img
+                key={isSignup ? "signup" : "login"}
+                src={isSignup ? signup : login}
+                alt="form image"
+                className="w-full h-full object-cover"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.1 }}
+                transition={{
+                  duration: 0.7,
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 20
                 }}
-              >
-                <form
-                  className="w-full flex flex-col items-center justify-center"
-                  onSubmit={(e) => {
-                    isSignup ? handleSignup(e) : handleLogin(e);
-                  }}
-                >
-                  <div className="mb-2">
-                    <label htmlFor="email" className="flex text-gray-300">
-                      <MdEmail className="h-6 mx-2" />
-                      Email Address
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="example@gmail.com"
-                      value={formdata.email}
-                      onChange={(e) => {
-                        setFormdata({ ...formdata, email: e.target.value });
-                      }}
-                      required
-                      className="min-w-72 md:w-96 w-full px-4 py-2 my-2 border bg-gray-300 rounded-lg"
-                    />
-                  </div>
-                  <div className={`${isSignup ? "mb-4" : "mb-2"} relative`}>
-                    <label htmlFor="password" className="flex text-gray-300">
-                      <RiLockPasswordFill className="h-6 mx-2" />
-                      Password
-                    </label>
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="✯✯✯✯✯✯"
-                      value={formdata.password}
-                      onChange={(e) => {
-                        setFormdata({ ...formdata, password: e.target.value });
-                      }}
-                      required
-                      className="min-w-72 md:w-96 w-full px-4 py-2 my-2 border bg-gray-300 rounded-lg"
-                    />
-                    <span className="absolute right-3 top-[65%] transform -translate-y-[50%]">
-                      <img
-                        src={eyeIcon}
-                        alt="eye icon"
-                        className="h-6 cursor-pointer"
-                        onClick={() => setShowPassword(!showPassword)}
-                      />
-                    </span>
-                  </div>
-                  {!isSignup && (
-                    <div className="mb-2 text-right">
-                      <a href="/auth/forgot" className="text-blue-500 hover:underline">
-                        Forgot password?
-                      </a>
-                    </div>
-                  )}
+              />
+            </AnimatePresence>
 
-                  {isSignup && (
-                    <div className="mb-6 relative">
-                      <label
-                        htmlFor="confirmPassword"
-                        className="flex text-gray-300"
-                      >
-                        <RiLockPasswordFill className="h-6 mx-2" />
-                        Confirm Password
-                      </label>
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        placeholder="✯✯✯✯✯✯"
-                        value={formdata.confirmPassword}
-                        onChange={(e) => {
-                          setFormdata({
-                            ...formdata,
-                            confirmPassword: e.target.value,
-                          });
-                        }}
-                        required
-                        className="min-w-72 md:w-96 w-full px-4 py-2 my-2 border bg-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                      <span className="absolute right-3 top-[65%] transform -translate-y-[50%]">
-                        <img
-                          src={eyeIcon}
-                          alt="eye icon"
-                          className="h-6 cursor-pointer"
-                          onClick={() => setShowPassword(!showPassword)}
-                        />
-                      </span>
-                    </div>
-                  )}
+            {/* Overlay gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+          </motion.div>
 
-                  <div className="mb-4 ">
-                    <button
-                      type="submit"
-                      className="min-w-72 md:w-96 w-full py-2 text-white bg-brandPrimary rounded-lg hover:from-blue-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      {isSignup ? "Signup" : "Login"}
-                    </button>
-                    <p className="flex justify-center mt-2 text-gray-300 py-1">
-                      or
-                    </p>
-                  </div>
-                  <div className="social-container flex m-2 space-x-5 justify-center">
-                    <a
-                      href="#"
-                      className="social transparent p-2 bg-gray-300 hover:bg-brandPrimary border-2 h-12 w-12 rounded-full"
-                    >
-                      <img src={googleIcon} alt="" />
-                    </a>
-                    <a
-                      href="#"
-                      className="social transparent p-2 bg-gray-300  hover:bg-brandPrimary border-2 h-12 w-12 rounded-full"
-                    >
-                      <img src={githubIcon} alt="" />
-                    </a>
-                    <a
-                      href="#"
-                      className="social transparent p-2 bg-gray-300  hover:bg-brandPrimary border-2 h-12 w-12 rounded-full"
-                    >
-                      <img src={xIcon} alt="" />
-                    </a>
-                  </div>
-                </form>
+          {/* Decorative elements */}
+          <div className="absolute -z-10 w-[800px] h-[800px] bg-brandPrimary/30 rounded-full blur-3xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse" />
+          <div className="absolute -z-10 w-60 h-60 bg-blue-500/20 rounded-full blur-3xl -bottom-10 -right-10 animate-pulse delay-1000" />
+        </div>
+      </motion.div>
+      <div className="w-full max-w-lg relative">
+        {/* Animated background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-r from-brandPrimary/50 to-brandPrimary/50 rounded-2xl blur-2xl animate-pulse" />
+
+        <div className="relative bg-gray-900 rounded-2xl p-8 shadow-xl backdrop-blur-sm border border-brandPrimary">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-brandPrimary mb-2">
+              {isSignup ? 'Create Account' : 'Welcome Back'}
+            </h1>
+            <p className="text-white text-md">
+              {isSignup
+                ? 'Join us for an amazing experience'
+                : 'Sign in to continue your journey'}
+            </p>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Email Input */}
+            <div className="space-y-2">
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <input
+                  type="email"
+                  className={`w-full bg-gray-800 text-white pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-brandPrimary transition-all duration-300 ${errors.email ? 'border-red-500' : 'border-gray-700'
+                    }`}
+                  placeholder="Email address"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
               </div>
-              {!isSignup && (
-                <div className="text-center text-sm my-2 text-gray-300">
-                  <span>Not a member? </span>
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsSignup(true);
-                    }}
-                    className="text-brandPrimary hover:underline"
-                  >
-                    Signup now
-                  </a>
-                </div>
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email}
+                </p>
               )}
             </div>
+
+            {/* Password Input */}
+            <div className="space-y-2">
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  className={`w-full bg-gray-800 text-white pl-10 pr-12 py-3 rounded-lg focus:ring-2 focus:ring-brandPrimary transition-all duration-300 ${errors.password ? 'border-red-500' : 'border-gray-700'
+                    }`}
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                >
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
+              </div>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1 whitespace-pre-line">
+                  {errors.password}
+                </p>
+              )}
+            </div>
+
+            {/* Confirm Password (Sign Up only) */}
+            {isSignup && (
+              <div className="space-y-2">
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    className={`w-full bg-gray-800 text-white pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-brandPrimary transition-all duration-300 ${errors.confirmPassword ? 'border-red-500' : 'border-gray-700'
+                      }`}
+                    placeholder="Confirm password"
+                    value={formData.confirmPassword}
+                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                  />
+                </div>
+                {errors.confirmPassword && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.confirmPassword}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Forgot Password Link */}
+            {!isSignup && (
+              <div className="flex justify-end">
+                <a
+                  href="/auth/forgot"
+                  className="text-sm text-brandPrimary hover:text-cyan-400 transition-colors"
+                >
+                  Forgot password?
+                </a>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-brandPrimary text-black py-3 rounded-lg font-semibold hover:bg-black hover:text-brandPrimary
+              hover:border hover:border-brandPrimary flex items-center justify-center space-x-2 disabled:opacity-50 transition-all duration-500"
+            >
+              {loading ? (
+                <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : (
+                isSignup ? 'Create Account' : 'Sign In'
+              )}
+            </button>
+          </form>
+
+          {/* Social Login */}
+          <div className="mt-8">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-800" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-gray-900 text-gray-400">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-center gap-4 hover:text-black">
+              <button className="flex items-center justify-center px-4 py-3 bg-gray-800 rounded-lg hover:bg-cyan-700  transition-colors">
+                <BsGoogle className="h-5 w-5 text-white hover:text-black" />
+              </button>
+              <button className="flex items-center justify-center px-4 py-3 bg-gray-800 rounded-lg hover:bg-cyan-700   transition-colors">
+                <Github className="h-5 w-5 text-white hover:text-black" />
+              </button>
+              <button className="flex items-center justify-center px-4 py-3 bg-gray-800 rounded-lg hover:bg-cyan-700  transition-colors">
+                <FaApple className="h-5 w-5 text-white hover:text-black" />
+              </button>
+            </div>
           </div>
+
+          {/* Toggle Auth Mode */}
+          <p className="mt-8 text-center text-gray-400">
+            {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
+            <button
+              type="button"
+              onClick={() => {
+                setIsSignup(!isSignup);
+                setFormData({ email: '', password: '', confirmPassword: '' });
+                setErrors({});
+              }}
+              className="text-brandPrimary hover:text-cyan-400 font-medium transition-colors"
+            >
+              {isSignup ? 'Sign in' : 'Sign up'}
+            </button>
+          </p>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default ModernAuthForm;

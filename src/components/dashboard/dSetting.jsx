@@ -99,7 +99,7 @@ const DSetting = () => {
         {/* Settings Stats Summary */}
         <motion.div
           variants={itemVariants}
-          className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8 text-gray-300"
+          className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8 text-white"
         >
           {[
             { label: "Last Updated", value: "2 days ago" },

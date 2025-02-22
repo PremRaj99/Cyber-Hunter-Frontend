@@ -138,7 +138,7 @@ const AddTeamMember = () => {
           </div>
           <button
             onClick={() => setDrawerOpen(true)}
-            className="flex items-center gap-2 bg-cyan-500 text-black px-4 py-2 rounded-lg hover:bg-cyan-400 transition-colors group"
+            className="flex items-center gap-2 bg-brandPrimary text-black px-4 py-2 rounded-lg hover:bg-cyan-400 transition-colors group"
           >
             <span className="font-medium">Add Member</span>
             <div className="bg-black/20 rounded-full p-1">
@@ -158,7 +158,7 @@ const AddTeamMember = () => {
             <motion.div
               key={member.id}
               variants={itemVariants}
-              className="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 group transform transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/20"
+              className="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 group transform transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-brandPrimary/20"
             >
               <div className="h-48 overflow-hidden relative">
                 <img
@@ -167,7 +167,7 @@ const AddTeamMember = () => {
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-start p-4">
-                  <button className="p-2 bg-cyan-500 rounded-full text-black hover:bg-cyan-400 transition-colors">
+                  <button className="p-2 bg-brandPrimary rounded-full text-black hover:bg-cyan-400 transition-colors">
                     <Camera size={16} />
                   </button>
                 </div>
@@ -213,14 +213,14 @@ const AddTeamMember = () => {
                 {[1, 2, 3].map((number) => (
                   <React.Fragment key={number}>
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= number ? 'bg-cyan-500 text-black' : 'bg-gray-800 text-gray-400'
-                        } ${step === number ? 'ring-4 ring-cyan-500/20' : ''}`}
+                      className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= number ? 'bg-brandPrimary text-black' : 'bg-gray-800 text-gray-400'
+                        } ${step === number ? 'ring-4 ring-brandPrimary/20' : ''}`}
                     >
                       {step > number ? <Check size={16} /> : number}
                     </div>
                     {number < 3 && (
                       <div
-                        className={`flex-1 h-1 mx-2 rounded ${step > number ? 'bg-cyan-500' : 'bg-gray-800'
+                        className={`flex-1 h-1 mx-2 rounded ${step > number ? 'bg-brandPrimary' : 'bg-gray-800'
                           }`}
                       />
                     )}
@@ -250,7 +250,7 @@ const AddTeamMember = () => {
                           type="text"
                           value={newMember.name}
                           onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
-                          className="w-full bg-gray-800 border-b-2 border-gray-700 focus:border-cyan-500 px-4 py-3 rounded text-white focus:outline-none transition-colors"
+                          className="w-full bg-gray-800 border-b-2 border-gray-700 focus:border-brandPrimary px-4 py-3 rounded text-white focus:outline-none transition-colors"
                           placeholder="Enter team member name"
                         />
                       </div>
@@ -261,7 +261,7 @@ const AddTeamMember = () => {
                           type="text"
                           value={newMember.role}
                           onChange={(e) => setNewMember({ ...newMember, role: e.target.value })}
-                          className="w-full bg-gray-800 border-b-2 border-gray-700 focus:border-cyan-500 px-4 py-3 rounded text-white focus:outline-none transition-colors"
+                          className="w-full bg-gray-800 border-b-2 border-gray-700 focus:border-brandPrimary px-4 py-3 rounded text-white focus:outline-none transition-colors"
                           placeholder="Enter team member role"
                         />
                       </div>
@@ -282,14 +282,14 @@ const AddTeamMember = () => {
                     <h4 className="text-xl text-white font-medium mb-4">Profile Picture</h4>
                     <div className="flex flex-col items-center space-y-6">
                       <div className="relative group">
-                        <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-gray-800 group-hover:border-cyan-500/50 transition-colors">
+                        <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-gray-800 group-hover:border-brandPrimary/50 transition-colors">
                           <img
                             src={newMember.image}
                             alt="Profile preview"
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <button className="absolute bottom-1 right-1 p-3 bg-cyan-500 rounded-full text-black hover:bg-cyan-400 transition-colors">
+                        <button className="absolute bottom-1 right-1 p-3 bg-brandPrimary rounded-full text-black hover:bg-cyan-400 transition-colors">
                           <Upload size={20} />
                         </button>
                       </div>
@@ -358,7 +358,7 @@ const AddTeamMember = () => {
               {step < 3 ? (
                 <button
                   onClick={nextStep}
-                  className="px-6 py-3 bg-cyan-500 text-black rounded-lg hover:bg-cyan-400 transition-colors flex items-center gap-2"
+                  className="px-6 py-3 bg-brandPrimary text-black rounded-lg hover:bg-cyan-400 transition-colors flex items-center gap-2"
                 >
                   <span>Next Step</span>
                   <ChevronRight size={18} />
@@ -366,7 +366,7 @@ const AddTeamMember = () => {
               ) : (
                 <button
                   onClick={handleAddMember}
-                  className="px-8 py-3 bg-cyan-500 text-black rounded-lg hover:bg-cyan-400 transition-colors font-medium"
+                  className="px-8 py-3 bg-brandPrimary text-black rounded-lg hover:bg-cyan-400 transition-colors font-medium"
                 >
                   Add to Team
                 </button>

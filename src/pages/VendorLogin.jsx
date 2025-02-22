@@ -1,13 +1,13 @@
 // import React from 'react';
 
-import VendorLogin from "../components/Freelancer/VendorLoginMain";
+import VendorLoginMain from "../components/Freelancer/VendorLoginMain";
 
-const VendorLoginMain = () => {
+const VendorLogin = () => {
   return (
     <div> 
-      <VendorLogin />
+      <VendorLoginMain />
     </div>
   );
 }
 
-export default VendorLoginMain;
+export default VendorLogin;

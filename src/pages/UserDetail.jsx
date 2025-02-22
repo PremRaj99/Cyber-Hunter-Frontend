@@ -544,7 +544,7 @@ export default function UserDetail() {
                     setUserDetails({ ...userDetails, bio: e.target.value })
                   }
                   placeholder="Tell us about yourself, your interests, and what you hope to achieve..."
-                  className="w-full pl-8 md:pl-10 pr-2 md:pr-3 py-2 text-sm md:text-base bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400 min-h-[100px] md:min-h-[120px] resize-y"
+                  className="w-full pl-8 md:pl-10 pr-2 md:pr-3 py-2 text-sm md:text-base bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400 min-h-[100px] md:min-h-[120px] resize-y no-scrollbar"
                   required
                 />
               </div>

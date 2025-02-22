@@ -157,28 +157,28 @@ const AccountSecurity = ({ accountSecurity }) => {
               {item.isLink ? (
                 <Link
                   to={item.link}
-                  className="flex items-center justify-between p-4 bg-gray-900/50 border border-gray-700 rounded-lg text-white hover:text-cyan-400 transition-all duration-300 hover:border-cyan-500/30"
+                  className="flex items-center justify-between p-4 bg-gray-900/50 border border-gray-700 rounded-lg text-white hover:text-cyan-400 transition-all duration-300 hover:border-brandPrimary/30"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-10 h-10 bg-cyan-500/10 rounded-full text-cyan-500">
+                    <div className="flex items-center justify-center w-10 h-10 bg-brandPrimary/10 rounded-full text-brandPrimary">
                       {item.icon}
                     </div>
                     <span className="text-lg font-medium">{item.text}</span>
                   </div>
-                  <ChevronRight className="text-cyan-500/50" size={18} />
+                  <ChevronRight className="text-brandPrimary/50" size={18} />
                 </Link>
               ) : (
                 <button
                   onClick={item.action}
-                  className="w-full flex items-center justify-between p-4 bg-gray-900/50 border border-gray-700 rounded-lg text-white hover:text-cyan-400 transition-all duration-300 hover:border-cyan-500/30"
+                  className="w-full flex items-center justify-between p-4 bg-gray-900/50 border border-gray-700 rounded-lg text-white hover:text-cyan-400 transition-all duration-300 hover:border-brandPrimary/30"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-10 h-10 bg-cyan-500/10 rounded-full text-cyan-500">
+                    <div className="flex items-center justify-center w-10 h-10 bg-brandPrimary/10 rounded-full text-brandPrimary">
                       {item.icon}
                     </div>
                     <span className="text-lg font-medium">{item.text}</span>
                   </div>
-                  <ChevronRight className="text-cyan-500/50" size={18} />
+                  <ChevronRight className="text-brandPrimary/50" size={18} />
                 </button>
               )}
             </motion.li>
@@ -199,7 +199,7 @@ const AccountSecurity = ({ accountSecurity }) => {
           </div>
 
           {messages.length > 0 && (
-            <p className="text-gray-300 text-sm mb-4">
+            <p className="text-white text-sm mb-4">
               Recommendations:
               <ul className="list-disc ml-5 mt-2 space-y-1">
                 {messages.map((message, index) => (
@@ -228,7 +228,7 @@ const AccountSecurity = ({ accountSecurity }) => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-6 py-2 bg-cyan-500 text-black font-medium rounded-lg shadow-lg hover:bg-cyan-400 transition-colors"
+            className="px-6 py-2 bg-brandPrimary text-black font-medium rounded-lg shadow-lg hover:bg-cyan-400 transition-colors"
           >
             Save Changes
           </motion.button>

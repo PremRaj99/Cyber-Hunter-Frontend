@@ -68,7 +68,7 @@ export default function Project() {
   }
 
   return (
-    <div className="min-h-screen  bg-[radial-gradient(ellipse_at_top_right,_rgba(4,77,100,0.3),transparent_70%),radial-gradient(ellipse_at_bottom_left,_rgba(14,165,233,0.15),transparent_70%)]">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8 lg:py-16">
         <motion.div
           initial={{ opacity: 0 }}
@@ -77,8 +77,8 @@ export default function Project() {
           className="mb-12"
         >
           {/* Hero section */}
-          <div className="relative rounded-3xl overflow-hidden mb-16">
-            <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 to-transparent z-10" />
+          <div className="relative rounded-3xl overflow-hidden mb-6">
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-800/100 to-transparent z-10" />
             <img
               src={project.projectThumbnail}
               alt={project.projectName}
@@ -150,12 +150,12 @@ export default function Project() {
             >
               <div className="bg-gray-800/40 backdrop-blur-md rounded-2xl p-6 mb-8 border border-gray-700/50 shadow-xl">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="bg-cyan-500/20 rounded-full p-3">
+                  <div className="bg-brandPrimary/20 rounded-full p-3">
                     <FaCode className="text-cyan-400 text-xl" />
                   </div>
                   <h2 className="text-2xl font-bold text-white">Project Description</h2>
                 </div>
-                <p className="text-gray-300 leading-relaxed">
+                <p className="text-white leading-relaxed">
                   {project.projectDescription}
                 </p>
               </div>
@@ -201,7 +201,7 @@ export default function Project() {
               {/* Tech stack card */}
               <div className="bg-gray-800/40 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50 shadow-xl">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="bg-cyan-500/20 rounded-full p-3">
+                  <div className="bg-brandPrimary/20 rounded-full p-3">
                     <FaTags className="text-cyan-400 text-xl" />
                   </div>
                   <h2 className="text-2xl font-bold text-white">Tech Stack</h2>

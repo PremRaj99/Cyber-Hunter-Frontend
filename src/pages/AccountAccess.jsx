@@ -76,7 +76,7 @@ const AccountAccessPage = () => {
           <span>Back</span>
         </motion.button>
         <div>
-        <h1 className="text-2xl md:text-3xl text-center font-bold text-cyan-400 mb-2">Account Access</h1>
+          <h1 className="text-2xl md:text-3xl text-center font-bold text-cyan-400 mb-2">Account Access</h1>
           <p className="text-gray-400 text-center">Manage your devices and login security</p>
         </div>
       </motion.div>
@@ -88,8 +88,8 @@ const AccountAccessPage = () => {
         className=" rounded-xl p-6 mb-8 border border-gray-700"
       >
         <div className="flex items-center gap-4 mb-4">
-          <div className="bg-cyan-500/10 p-3 rounded-full">
-            <Shield className="w-6 h-6 text-cyan-500" />
+          <div className="bg-brandPrimary/10 p-3 rounded-full">
+            <Shield className="w-6 h-6 text-brandPrimary" />
           </div>
           <div>
             <h2 className="text-xl font-semibold">Security Status</h2>
@@ -134,7 +134,7 @@ const AccountAccessPage = () => {
               <div className="flex justify-between items-start mb-3">
                 <h3 className="font-medium">{device.name}</h3>
                 {device.trusted && (
-                  <span className="text-xs bg-cyan-500/10 text-cyan-400 px-2 py-1 rounded-full">
+                  <span className="text-xs bg-brandPrimary/10 text-cyan-400 px-2 py-1 rounded-full">
                     Trusted
                   </span>
                 )}
@@ -185,7 +185,7 @@ const AccountAccessPage = () => {
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="fixed bottom-6 right-6 md:hidden bg-cyan-500 text-black p-4 rounded-full shadow-lg"
+        className="fixed bottom-6 right-6 md:hidden bg-brandPrimary text-black p-4 rounded-full shadow-lg"
       >
         <Shield className="w-6 h-6" />
       </motion.button>

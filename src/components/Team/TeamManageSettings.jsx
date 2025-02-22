@@ -113,7 +113,7 @@ const TeamManageSettings = () => {
                             animate={{ opacity: formData.isHoveringImage ? 1 : 0 }}
                           >
                             <div className="flex gap-3">
-                              <button className="p-2 bg-cyan-500 rounded-full text-black hover:bg-cyan-400 transition-colors">
+                              <button className="p-2 bg-brandPrimary rounded-full text-black hover:bg-cyan-400 transition-colors">
                                 <Edit size={18} />
                               </button>
                               <button
@@ -127,8 +127,8 @@ const TeamManageSettings = () => {
                           </motion.div>
                         </>
                       ) : (
-                        <div className="bg-gray-800 border-2 border-dashed border-gray-700 rounded-xl w-full aspect-square flex flex-col items-center justify-center hover:border-cyan-500/50 hover:bg-gray-800/70 transition-colors group">
-                          <div className="bg-gray-700 p-4 rounded-full mb-3 group-hover:bg-cyan-500/20 transition-colors">
+                        <div className="bg-gray-800 border-2 border-dashed border-gray-700 rounded-xl w-full aspect-square flex flex-col items-center justify-center hover:border-brandPrimary/50 hover:bg-gray-800/70 transition-colors group">
+                          <div className="bg-gray-700 p-4 rounded-full mb-3 group-hover:bg-brandPrimary/20 transition-colors">
                             <Upload size={24} className="text-gray-400 group-hover:text-cyan-400 transition-colors" />
                           </div>
                           <p className="text-gray-400 text-sm font-medium group-hover:text-cyan-400 transition-colors">
@@ -143,7 +143,7 @@ const TeamManageSettings = () => {
 
                     <div>
                       <label htmlFor="file-upload" className="cursor-pointer w-full">
-                        <div className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-center text-gray-400 hover:text-cyan-400 hover:border-cyan-500/30 transition-colors flex items-center justify-center gap-2">
+                        <div className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-center text-gray-400 hover:text-cyan-400 hover:border-brandPrimary/30 transition-colors flex items-center justify-center gap-2">
                           <RefreshCw size={16} className="group-hover:rotate-180 transition-transform" />
                           <span>{formData.teamImage ? 'Change Image' : 'Select Image'}</span>
                         </div>
@@ -168,7 +168,7 @@ const TeamManageSettings = () => {
                       type="text"
                       value={formData.teamName}
                       onChange={(e) => setFormData({ ...formData, teamName: e.target.value })}
-                      className="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 text-white"
+                      className="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brandPrimary/50 focus:border-brandPrimary/50 text-white"
                       placeholder="Enter team name..."
                     />
                   </div>
@@ -180,7 +180,7 @@ const TeamManageSettings = () => {
                       rows="5"
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      className="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 resize-none text-white"
+                      className="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brandPrimary/50 focus:border-brandPrimary/50 resize-none text-white"
                       placeholder="Describe your team..."
                     />
                   </div>
@@ -260,7 +260,7 @@ const TeamManageSettings = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-colors flex items-center gap-2"
+                className="px-4 py-2 bg-gradient-to-r from-brandPrimary to-blue-500 rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-colors flex items-center gap-2"
                 onClick={() => setIsLoading(!isLoading)}
               >
                 {isLoading ? (
@@ -285,8 +285,8 @@ const TeamManageSettings = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${activeTab === tab.id
-                    ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/50'
-                    : 'bg-gray-700/50 text-gray-400 border border-gray-700 hover:bg-gray-700'
+                  ? 'bg-brandPrimary/20 text-cyan-400 border border-brandPrimary/50'
+                  : 'bg-gray-700/50 text-gray-400 border border-gray-700 hover:bg-gray-700'
                   }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

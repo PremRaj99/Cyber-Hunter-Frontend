@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import {  X } from "lucide-react";
+import { X } from "lucide-react";
 import { motion } from "framer-motion";
 import {
   MdDriveFileRenameOutline,
@@ -50,7 +50,7 @@ export default function PostProject() {
     addFiles(droppedFiles);
   };
 
- 
+
 
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8">
@@ -77,7 +77,7 @@ export default function PostProject() {
                 type="text"
                 id="title"
                 name="title"
-                className="mt-1 block w-full border border-brandPrimary placeholder:text-stone-400 text-white bg-black rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary"
+                className="mt-1 block w-full border border-brandPrimary placeholder:text-white text-white bg-black rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary"
                 placeholder="Enter project title"
                 required
               />
@@ -95,7 +95,7 @@ export default function PostProject() {
                 id="description"
                 name="description"
                 rows={4}
-                className="mt-1 block w-full border border-brandPrimary placeholder:text-stone-400 text-white bg-black rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary "
+                className="mt-1 block w-full border border-brandPrimary placeholder:text-white text-white bg-black rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary "
                 placeholder="Describe your project"
                 required
               ></textarea>
@@ -113,7 +113,7 @@ export default function PostProject() {
                 type="number"
                 id="budget"
                 name="budget"
-                className="mt-1 block w-full border border-brandPrimary placeholder:text-stone-400 text-white bg-black rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary "
+                className="mt-1 block w-full border border-brandPrimary placeholder:text-white text-white bg-black rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary "
                 placeholder="Enter your budget"
                 required
               />
@@ -131,7 +131,7 @@ export default function PostProject() {
                 type="date"
                 id="deadline"
                 name="deadline"
-                className="mt-1 block w-full border border-brandPrimary placeholder:text-stone-400 text-white bg-black rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary "
+                className="mt-1 block w-full border border-brandPrimary placeholder:text-white text-white bg-black rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary "
                 required
               />
             </div>
@@ -156,7 +156,7 @@ export default function PostProject() {
               >
                 <div className="space-y-1 text-center">
                   <MdCloudUpload className="mx-auto h-12 w-12 text-brandPrimary" />
-                  <div className="flex text-sm text-stone-400">
+                  <div className="flex text-sm text-white">
                     <label
                       htmlFor="file-upload"
                       className="relative cursor-pointer rounded-md font-medium text-brandPrimary hover:text-indigo-500 focus-within:outline-none"

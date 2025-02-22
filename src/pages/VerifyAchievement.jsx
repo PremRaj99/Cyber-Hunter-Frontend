@@ -58,7 +58,7 @@ export default function VerifyAchievement() {
 
           <form onSubmit={handleVerify} className="space-y-6">
             <div>
-              <label htmlFor="achievementId" className="block text-sm font-medium text-gray-300 mb-2">
+              <label htmlFor="achievementId" className="block text-sm font-medium text-white mb-2">
                 Achievement ID
               </label>
               <div className="relative">
@@ -81,7 +81,7 @@ export default function VerifyAchievement() {
               type="submit"
               disabled={isLoading}
               className={`w-full flex items-center justify-center px-4 py-3 border border-transparent rounded-lg shadow-sm text-sm   font-bold  text-black hover:text-brandPrimary
-                ${isLoading ? 'bg-gray-600' : 'bg-gradient-to-r from-cyan-500 to-cyan-500 hover:from-black hover:to-black hover:border hover:border-brandPrimary duration-800'}
+                ${isLoading ? 'bg-gray-600' : 'bg-gradient-to-r from-brandPrimary to-brandPrimary hover:from-black hover:to-black hover:border hover:border-brandPrimary duration-800'}
                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300`}
             >
               {isLoading ? (
@@ -162,7 +162,7 @@ export default function VerifyAchievement() {
                   <div className="flex flex-col sm:flex-row gap-3 mt-6">
                     <button
                       onClick={handleDownload}
-                      className="flex-1 flex items-center justify-center px-4 py-3 border border-transparent rounded-lg shadow-sm text-sm font-bold text-black bg-cyan-500 hover:bg-black hover:text-brandPrimary hover:border hover:border-brandPrimary focus:outline-none focus:ring-0 focus:ring-offset-0  transition-all duration-300"
+                      className="flex-1 flex items-center justify-center px-4 py-3 border border-transparent rounded-lg shadow-sm text-sm font-bold text-black bg-brandPrimary hover:bg-black hover:text-brandPrimary hover:border hover:border-brandPrimary focus:outline-none focus:ring-0 focus:ring-offset-0  transition-all duration-300"
                     >
                       <Download className="w-5 h-5 mr-2" />
                       Download Certificate
@@ -180,7 +180,7 @@ export default function VerifyAchievement() {
               )}
 
               {verificationResult === "failure" && (
-                <p className="text-gray-300">
+                <p className="text-white">
                   We couldn't verify this achievement ID. Please double-check your ID and try again.
                 </p>
               )}
@@ -197,7 +197,7 @@ export default function VerifyAchievement() {
       {showPreview && verificationResult === "success" && achievementDetails && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-80 backdrop-blur-sm">
           <div className="relative w-full max-w-4xl max-h-full bg-black rounded-lg shadow-2xl overflow-auto">
-            <div className="sticky top-0 z-10 flex justify-between items-center p-4 bg-gradient-to-r from-cyan-500 to-black text-white">
+            <div className="sticky top-0 z-10 flex justify-between items-center p-4 bg-gradient-to-r from-brandPrimary to-black text-white">
               <h3 className="text-xl font-bold">Certificate Preview</h3>
               <button
                 onClick={togglePreview}
@@ -228,12 +228,12 @@ export default function VerifyAchievement() {
                 <div className="grid grid-cols-2 gap-12 w-full max-w-md mb-6">
                   <div className="text-center">
                     <img src="/api/placeholder/120/40" alt="Signature" className="mx-auto mb-2" />
-                    <div className="w-full h-px bg-gray-300 mb-1"></div>
+                    <div className="w-full h-px bg-white mb-1"></div>
                     <p className="text-sm text-stone-300">Program Director</p>
                   </div>
                   <div className="text-center">
                     <img src="/api/placeholder/120/40" alt="Signature" className="mx-auto mb-2" />
-                    <div className="w-full h-px bg-gray-300 mb-1"></div>
+                    <div className="w-full h-px bg-white mb-1"></div>
                     <p className="text-sm text-stone-300">Issuing Authority</p>
                   </div>
                 </div>
@@ -250,7 +250,7 @@ export default function VerifyAchievement() {
               <div className="flex justify-end mt-6">
                 <button
                   onClick={handleDownload}
-                  className="flex items-center px-4 py-2 bg-cyan-500 text-black rounded-lg hover:bg-black hover:border hover:border-brandPrimary hover:text-brandPrimary transition-colors"
+                  className="flex items-center px-4 py-2 bg-brandPrimary text-black rounded-lg hover:bg-black hover:border hover:border-brandPrimary hover:text-brandPrimary transition-colors"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Download Certificate

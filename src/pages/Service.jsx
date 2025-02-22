@@ -1,10 +1,17 @@
 // import React from 'react';
 import { Link } from "react-router-dom";
 import ServiceCard from "../components/Service/ServiceCard";
+import { useEffect, useState } from "react";
 
 
 export default function Service() {
   // const [data, setdata] = useState([]);
+
+  useEffect(() => {
+    document.title = "Cyber Hunter | Services";
+
+  }, []);
+
   const data = [
     {
       id: 1,
@@ -65,7 +72,7 @@ export default function Service() {
             <h1 className="text-4xl md:text-5xl font-bold text-brandPrimary mb-4">
               Our Services
             </h1>
-            <p className="text-l text-stone-400 max-w-2xl mx-auto">
+            <p className="text-l text-white max-w-2xl mx-auto">
               We provide cutting-edge solutions to help your business grow and
               succeed in the digital age.
             </p>

@@ -38,7 +38,7 @@ export default function VendorDetailsForm() {
       console.log("Form submitted:", formData);
       // Reset form after submission
       setFormData({
-        Name : "",
+        Name: "",
         companyName: "",
         contactName: "",
         email: "",
@@ -75,7 +75,7 @@ export default function VendorDetailsForm() {
               name="Name"
               value={formData.companyName}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter your full name"
             />
             {errors.companyName && (
@@ -95,7 +95,7 @@ export default function VendorDetailsForm() {
               name="companyName"
               value={formData.companyName}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter your company name"
             />
             {errors.companyName && (
@@ -116,7 +116,7 @@ export default function VendorDetailsForm() {
               name="contactName"
               value={formData.contactName}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter contact person's name"
             />
           </div>
@@ -134,7 +134,7 @@ export default function VendorDetailsForm() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter your email address"
             />
             {errors.email && (
@@ -155,7 +155,7 @@ export default function VendorDetailsForm() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter your phone number"
             />
           </div>
@@ -173,7 +173,7 @@ export default function VendorDetailsForm() {
               name="website"
               value={formData.website}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter your website URL"
             />
           </div>
@@ -191,7 +191,7 @@ export default function VendorDetailsForm() {
               value={formData.services}
               onChange={handleChange}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Describe your services"
             ></textarea>
           </div>
@@ -209,7 +209,7 @@ export default function VendorDetailsForm() {
               name="verificationCode"
               value={formData.verificationCode}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter verification code"
             />
             {errors.verificationCode && (

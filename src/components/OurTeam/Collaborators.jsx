@@ -98,7 +98,7 @@ const Collaborators = () => {
               <h3 className="text-sm font-semibold text-brandPrimary">
                 {collaborator.name}
               </h3>
-              <p className="text-xs text-stone-400 mb-2">{collaborator.role}</p>
+              <p className="text-xs text-white mb-2">{collaborator.role}</p>
               <p className="text-xs text-white mb-2">
                 {collaborator.description}
               </p>

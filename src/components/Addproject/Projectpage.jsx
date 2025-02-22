@@ -1,49 +1,48 @@
 import { useState, useRef } from "react";
-import { motion } from "framer-motion";
-import MultiSelectInput from "../Input/MultiSelectInput";
-import axios from "axios";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  MdOutlineDriveFileRenameOutline,
-  MdOutlineDescription,
-} from "react-icons/md";
-import { FaGithub, FaImage, FaImages, FaAsterisk } from "react-icons/fa6";
-import { FaEye, FaSearch } from "react-icons/fa";
-import Input from "../Common/Input";
-import Button from "../Common/Button";
+  Rocket,
+  Github,
+  Globe,
+  Upload,
+  Code2,
+  FileCode2,
+  Camera,
+  X,
+  Plus,
+  ChevronRight,
+  Images
+} from "lucide-react";
+import axios from "axios";
 import { toast } from "react-toastify";
-import LoadingButton from "../Common/LoadingButton";
 import { useNavigate } from "react-router-dom";
+import MultiSelectInput from "../Input/MultiSelectInput";
 
-export default function Projectpage() {
-  const [error, setError] = useState("");
-  const [interest, setInterest] = useState([]);
+const ProjectUpload = () => {
   const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [thumbnailPreview, setThumbnailPreview] = useState("");
-  const [screenshotPreview, setScreenshotPreview] = useState([]);
+  const [screenshotPreviews, setScreenshotPreviews] = useState([]);
+  const thumbnailRef = useRef(null);
+  const screenshotsRef = useRef(null);
+
   const [project, setProject] = useState({
     projectName: "",
     projectDescription: "",
     techStack: [],
     projectThumbnail: null,
     projectImage: [],
-    skills: [],
     language: [],
     gitHubLink: "",
     liveLink: "",
   });
 
-  const thumbnailInputRef = useRef(null);
-  const screenshotsInputRef = useRef(null);
-
-  const [loading, setLoading] = useState(false);
-
   const handleThumbnailChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setThumbnailPreview(reader.result);
-      };
+      reader.onloadend = () => setThumbnailPreview(reader.result);
       reader.readAsDataURL(file);
       setProject({ ...project, projectThumbnail: file });
     }
@@ -51,9 +50,21 @@ export default function Projectpage() {
 
   const handleScreenshotsChange = (event) => {
     const files = Array.from(event.target.files);
-    const previews = files.map((file) => URL.createObjectURL(file));
-    setScreenshotPreview(previews);
+    const previews = files.map(file => URL.createObjectURL(file));
+    setScreenshotPreviews(previews);
     setProject({ ...project, projectImage: files });
+  };
+
+  const handleTechStackChange = (tech) => {
+    if (!project.techStack.includes(tech)) {
+      setProject({ ...project, techStack: [...project.techStack, tech] });
+    }
+  };
+
+  const handleLanguageChange = (lang) => {
+    if (!project.language.includes(lang)) {
+      setProject({ ...project, language: [...project.language, lang] });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -89,7 +100,7 @@ export default function Projectpage() {
         toast.error("Invalid Live link");
         return setLoading(false);
       }
-        
+
       const formData = new FormData();
 
       // Append basic text fields
@@ -145,11 +156,12 @@ export default function Projectpage() {
           techStack: [],
           projectThumbnail: null,
           projectImage: [],
-          skills: [],
           language: [],
           gitHubLink: "",
           liveLink: "",
         });
+        setThumbnailPreview("");
+        setScreenshotPreviews([]);
         toast.success("Project added successfully!");
         navigate("/dashboard");
       }
@@ -161,204 +173,106 @@ export default function Projectpage() {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-black bg-gradient-to-br from-black via-black to-cyan-950">
-      <main className="mx-auto max-w-4xl px-4 py-8">
-        <motion.h2
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-2xl md:text-4xl font-bold text-cyan-400 text-center mb-20 md:mb-24"
-        >
-          <span className="border-b-2 border-cyan-400">ADD PROJECT </span>
-        </motion.h2>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Project Name */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-          >
-            <div className="flex ">
-              <label
-                htmlFor="project-name"
-                className="flex items-middle text-l gap-2 font-medium text-white "
-              >
-                <span>
-                  <MdOutlineDriveFileRenameOutline className="text-brandPrimary text-2xl items-baseline" />
-                </span>
-                Project Name
-                <span className="text-sm text-red-600">
-                  <FaAsterisk />
-                </span>
-              </label>
-            </div>
-            <Input
-              placeholder={"Project Name"}
+  const steps = [
+    {
+      title: "Project Info",
+      icon: <Rocket className="w-6 h-6" />,
+      content: (
+        <div className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-200 mb-2">Project Name</label>
+            <input
+              type="text"
               value={project.projectName}
-              type={"text"}
-              width={"full"}
-              onChange={(e) =>
-                setProject({ ...project, projectName: e.target.value })
-              }
+              onChange={(e) => setProject({ ...project, projectName: e.target.value })}
+              className="w-full px-4 py-3 bg-gray-800/50 rounded-lg border border-gray-700 focus:ring-2 focus:ring-brandPrimary text-white "
+              placeholder="Enter project name"
             />
-          </motion.div>
-
-          {/* Description */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-          >
-            <label
-              htmlFor="description"
-              className="flex items-middle text-l gap-2 font-medium text-white"
-            >
-              <span>
-                <MdOutlineDescription className="text-brandPrimary text-2xl items-baseline" />
-              </span>
-              Description{" "}
-              <span className="text-sm text-red-600">
-                <FaAsterisk />
-              </span>
-            </label>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-200 mb-2">Description</label>
             <textarea
-              id="description"
-              rows={6}
               value={project.projectDescription}
-              onChange={(e) =>
-                setProject({ ...project, projectDescription: e.target.value })
-              }
-              className="mt-1 block w-full rounded-md border border-cyan-400/50 bg-black/50 px-4 py-2 text-white shadow-sm focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400 transition duration-300 hover:border-cyan-300"
-              placeholder="Project Description"
-              required
+              onChange={(e) => setProject({ ...project, projectDescription: e.target.value })}
+              className="w-full px-4 py-3 bg-gray-800/50 rounded-lg border border-gray-700 focus:ring-2 focus:ring-brandPrimary text-white h-52 no-scrollbar"
+              placeholder="Describe your project"
             />
-          </motion.div>
-
-          {/* Thumbnail */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className="w-full"
-          >
-            <label
-              htmlFor="thumbnail"
-              className="flex items-center space-x-2 text-base font-medium text-white"
-            >
-              <FaImage className="text-brandPrimary text-xl" />
-              <span>Thumbnail</span>
-              <FaAsterisk className="text-red-600 text-xs" />
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Media Upload",
+      icon: <Camera className="w-6 h-6" />,
+      content: (
+        <div className="space-y-8">
+          <div>
+            <label className="block text-sm font-medium text-gray-200 mb-4">
+              Thumbnail <span className="text-yellow-400"> {"( Maximum Size 4mb. Jpg, jpeg, png )"}</span>
             </label>
-            <div className="mt-2 flex items-center space-x-4">
-              <input
-                type="file"
-                ref={thumbnailInputRef}
-                className="hidden"
-                onChange={handleThumbnailChange}
-                accept="image/*"
-              />
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => thumbnailInputRef.current.click()}
-                className="w-auto px-4"
-                rounded={"lg"}
-              >
-                Upload Thumbnail
-              </Button>
-              {thumbnailPreview && (
-                <div className="relative">
-                  <img
-                    src={thumbnailPreview}
-                    alt="Thumbnail Preview"
-                    className="h-20 object-cover rounded-md"
-                  />
+            <div
+              onClick={() => thumbnailRef.current?.click()}
+              className="border-2 border-dashed border-gray-700 rounded-lg p-8 text-center cursor-pointer hover:border-brandPrimary transition-colors"
+            >
+              {thumbnailPreview ? (
+                <img src={thumbnailPreview} alt="Thumbnail" className="max-h-48 mx-auto rounded-lg" />
+              ) : (
+                <div className="flex flex-col items-center">
+                  <Upload className="w-8 h-8 text-gray-400" />
+                  <p className="mt-2 text-sm text-gray-400">Click to upload thumbnail</p>
                 </div>
               )}
-            </div>
-            {error && (
-              <p className="mt-2 text-xs text-red-500">
-                {error}
-              </p>
-            )}
-          </motion.div>
-
-          {/* Project Screenshots */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className="w-full"
-          >
-            <label
-              htmlFor="screenshots"
-              className="flex items-center space-x-2 text-base font-medium text-white"
-            >
-              <FaImages className="text-brandPrimary text-xl" />
-              <span>Project Screenshots</span>
-              <FaAsterisk className="text-red-600 text-xs" />
-            </label>
-            <div className="mt-2 flex items-center space-x-4">
               <input
                 type="file"
-                ref={screenshotsInputRef}
+                ref={thumbnailRef}
+                onChange={handleThumbnailChange}
+                accept="image/*"
                 className="hidden"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-200 mb-4">
+              Screenshots&nbsp; <span className="text-yellow-400"> {"( you Can only Upload 5 Screenshots. Jpg, jpeg, png )"}</span>
+            </label>
+
+            <div
+              onClick={() => screenshotsRef.current?.click()}
+              className="border-2 border-dashed border-gray-700 rounded-lg p-8 text-center cursor-pointer hover:border-brandPrimary transition-colors"
+            >
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {screenshotPreviews.map((preview, index) => (
+                  <img key={index} src={preview} alt={`Screenshot ${index + 1}`} className="rounded-lg" />
+                ))}
+                <div className="flex flex-col items-center justify-center min-h-[100px] bg-gray-800/50 rounded-lg">
+                  <Plus className="w-8 h-8 text-gray-400" />
+                  <p className="mt-2 text-sm text-gray-400">Add more</p>
+                </div>
+              </div>
+              <input
+                type="file"
+                ref={screenshotsRef}
                 onChange={handleScreenshotsChange}
                 accept="image/*"
                 multiple
+                className="hidden"
               />
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => screenshotsInputRef.current.click()}
-                className="w-auto px-4"
-                rounded="lg"
-              >
-                Upload Screenshots
-              </Button>
-              {screenshotPreview.length > 0 && (
-                <div className="mt-2 flex flex-wrap items-center gap-2">
-                  {screenshotPreview.map((src, index) => (
-                    <img
-                      key={index}
-                      src={src}
-                      alt={`Screenshot Preview ${index + 1}`}
-                      className="h-20 object-cover rounded-md"
-                    />
-                  ))}
-                </div>
-              )}
             </div>
-            {error && (
-              <p className="mt-2 text-xs text-red-500">
-                {error}
-              </p>
-            )}
-          </motion.div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Tech Stack",
+      icon: <Code2 className="w-6 h-6" />,
+      content: (
+        <div className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-200 mb-4">Technologies</label>
+            <div className="flex flex-wrap gap-2">
 
-          {/* Tech Stacks */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-          >
-            <label
-              htmlFor="Tech-Stack"
-              className="flex items-middle text-l gap-2 font-medium text-white"
-            >
-              <span>
-                <FaSearch className="text-brandPrimary text-2xl items-baseline" />
-              </span>
-              Tech Stack
-              <span className="text-sm text-red-600">
-                <FaAsterisk />
-              </span>
-            </label>
-            <div className="relative mt-1">
               <MultiSelectInput
                 placeholder="Search and select Tech Stack"
                 fieldName="techStack"
@@ -367,28 +281,11 @@ export default function Projectpage() {
                 value={project.techStack}
               />
             </div>
-          </motion.div>
+          </div>
 
-          {/* Languages */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-            className="space-y-2"
-          >
-            <label
-              htmlFor="languages"
-              className="flex items-middle text-l gap-2 font-medium text-white"
-            >
-              <span>
-                <FaSearch className="text-brandPrimary text-2xl items-baseline" />
-              </span>
-              Languages
-              <span className="text-sm text-red-600">
-                <FaAsterisk />
-              </span>
-            </label>
-            <div className="relative">
+          <div>
+            <label className="block text-sm font-medium text-gray-200 mb-4">Languages</label>
+            <div className="flex flex-wrap gap-2">
               <MultiSelectInput
                 placeholder="Search and select Languages"
                 fieldName="language"
@@ -397,103 +294,151 @@ export default function Projectpage() {
                 value={project.language}
               />
             </div>
-          </motion.div>
-
-          {/* Github Link */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-          >
-            <div className="space-y-2">
-              <label
-                htmlFor="github-link"
-                className="flex items-middle text-l gap-2 font-medium text-white"
-              >
-                <span>
-                  <FaGithub className="text-brandPrimary text-2xl items-baseline" />
-                </span>
-                Github Link{" "}
-                <span className="text-sm text-red-600">
-                  <FaAsterisk />
-                </span>
-              </label>
-              <div>
-                <div className="text-xs text-white mb-1">
-                  Format :&nbsp;  
-                  <span className="text-gray-400">
-                     https://github.com/username/repo-name
-                  </span>
-                </div>
-              </div>
-              <Input
-                onChange={(e) =>
-                  setProject({ ...project, gitHubLink: e.target.value })
-                }
-                width={"full"}
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Links",
+      icon: <Globe className="w-6 h-6" />,
+      content: (
+        <div className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-200 mb-2">GitHub Repository</label>
+            <div className="relative">
+              <Github className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="url"
+                value={project.gitHubLink}
+                onChange={(e) => setProject({ ...project, gitHubLink: e.target.value })}
+                className="w-full pl-10 pr-4 py-3 bg-gray-800/50 rounded-lg border border-gray-700 focus:ring-2 focus:ring-brandPrimary text-white"
+                placeholder="https://github.com/username/repo"
               />
             </div>
-          </motion.div>
-
-          {/* Live Link */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-          >
-            <div className="space-y-2">
-              <label
-                htmlFor="live-link"
-                className="flex items-middle text-l gap-2 font-medium text-white"
-              >
-                <span>
-                  <FaEye className="text-brandPrimary text-2xl items-baseline" />
-                </span>
-                Live Link
-              </label>
-              <div>
-                <div className="text-xs text-white mb-1">
-                  Format :&nbsp;  
-                  <span className="text-gray-400">
-                     https://example.com
-                  </span>
-                </div>
-              </div>
-              <Input
-                onChange={(e) =>
-                  setProject({ ...project, liveLink: e.target.value })
-                }
-                width={"full"}
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-200 mb-2">Live Demo</label>
+            <div className="relative">
+              <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="url"
+                value={project.liveLink}
+                onChange={(e) => setProject({ ...project, liveLink: e.target.value })}
+                className="w-full pl-10 pr-4 py-3 bg-gray-800/50 rounded-lg border border-gray-700 focus:ring-2 focus:ring-brandPrimary text-white"
+                placeholder="https://your-project.com"
               />
             </div>
-          </motion.div>
+          </div>
+        </div>
+      )
+    }
+  ];
 
-          {/* Note Section */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-          >
-            <div className="bg-gray-900 p-4 rounded-lg">
-              <h3 className="text-cyber mb-2 text-brandPrimary">NOTE :</h3>
-              <ul className="text-white space-y-1 list-disc list-inside">
-                <li>Your Project will be Approved Within 24 hrs</li>
-                <li>Copied projects can lead you to getting banned.</li>
-              </ul>
+  return (
+    <div className=" bg-gradient-to-br  p-4 md:p-8">
+      <div className="max-w-4xl mx-auto">
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-3xl md:text-4xl font-bold text-white text-center mb-20"
+        >
+          <div className="border-b-4 border-brandPrimary w-max mx-auto pb-2">
+            <span className="text-brandPrimary">Add </span>
+            Project
+          </div>
+          <div className="text-lg text-gray-400 mt-2">
+            <h5>
+              Showcase your Experience and Skills by adding a new project
+            </h5>
+          </div>
+        </motion.h1>
+        <div className="relative">
+
+          <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-6 md:p-12 relative">
+            <div className="flex justify-between mb-12 relative ">
+              {steps.map((step, index) => (
+                <motion.button
+                  key={index}
+                  initial={{ scale: 0.8 }}
+                  animate={{ scale: currentStep === index + 1 ? 1.1 : 1 }}
+                  className={`flex flex-col items-center space-y-2 ${currentStep === index + 1 ? "text-cyan-400" :
+                    currentStep > index + 1 ? "text-green-400" : "text-gray-500"
+                    }`}
+                  onClick={() => setCurrentStep(index + 1)}
+                >
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center ${currentStep === index + 1 ? "bg-brandPrimary/20 ring-2 ring-cyan-400" :
+                    currentStep > index + 1 ? "bg-green-500/20 ring-2 ring-green-400" : "bg-gray-800"
+                    }`}>
+                    {step.icon}
+                  </div>
+                  <span className="text-sm font-medium hidden md:block">{step.title}</span>
+                </motion.button>
+              ))}
             </div>
-          </motion.div>
 
-          {/* Submit Button */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.5 }}
-            className="flex justify-center w-full "
-          >
-            <LoadingButton loading={loading} onClick={handleSubmit} />
-          </motion.div>
-        </form>
-      </main>
+            {/* Content */}
+            <AnimatePresence mode="wait" >
+              <motion.div
+                key={currentStep}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-6 md:p-8 shadow-xl"
+              >
+                {steps[currentStep - 1].content}
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Navigation */}
+            <div className="flex justify-between mt-8 ">
+              <button
+                onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
+                className="px-6 py-3 text-white hover:text-brandPrimary hover:border-brandPrimary transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 rounded-lg border border-gray-700 "
+                disabled={currentStep === 1}
+              >
+                <ChevronRight className="w-5 h-5 rotate-180" />
+                Back
+              </button>
+
+              {currentStep < steps.length ? (
+                <button
+                  onClick={() => setCurrentStep(currentStep + 1)}
+                  className="px-6 py-3 font-semibold bg-brandPrimary hover:bg-black hover:border hover:border-brandPrimary hover:text-brandPrimary text-black rounded-lg flex items-center gap-2 transition-colors"
+                >
+                  Next Step
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              ) : (
+                <button
+                  onClick={handleSubmit}
+                  disabled={loading}
+                  className="px-6 py-3 bg-brandPrimary text-black hover:text-brandPrimary hover:border hover:border-brandPrimary hover:bg-black font-semibold rounded-lg flex items-center gap-2 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                >
+                  {loading ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-black hover:border-brandPrimary border-t-transparent rounded-full animate-spin"></div>
+                      Uploading...
+                    </>
+                  ) : (
+                    <>
+                      Upload Project
+                      <Upload className="w-5 h-5" />
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Progress indicator */}
+        <div className="mt-6 text-center text-sm text-gray-400">
+          Step {currentStep} of {steps.length}
+        </div>
+
+      </div>
     </div>
   );
-}
+};
+
+export default ProjectUpload;

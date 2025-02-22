@@ -1,10 +1,15 @@
 // import React from "react";
 // import banner2 from "../assets/bannerCarousel1.png";
+import { useNavigate } from "react-router-dom";
 import banner3 from "../../assets/bannerCarousel2.gif";
 import banner4 from "../../assets/bannerCarousel3.gif";
 import { Carousel } from "flowbite-react";
 
+
 export default function Hero() {
+
+  const navigate = useNavigate();
+
   return (
     <div>
       <div className=" lg:px-16 max-w-screen-2xl mx-auto h-[700px] md:h-screen overflow-hidden">
@@ -28,7 +33,9 @@ export default function Hero() {
                 success.
               </p>
               <div className="w-full flex justify-center md:w-1/2 text-black">
-                <button className="btn-primary text-sm  font-bold hover:bg-black hover:text-brandPrimary hover:border-2 hover:border-brandPrimary  transition-all duration-300">
+                <button className="btn-primary text-sm  font-bold hover:bg-black hover:text-brandPrimary hover:border-2 hover:border-brandPrimary  transition-all duration-300"
+                  onClick={() => navigate("/auth/login") }
+                >
                   Register Now
                 </button>
               </div>
@@ -62,7 +69,9 @@ export default function Hero() {
                 tutorials, and real-world projects.
               </p>
               <div className="w-full flex justify-center md:w-1/2">
-                <button className="btn-primary font-bold text-sm hover:bg-black hover:text-brandPrimary hover:border-2 hover:border-brandPrimary transition-all duration-300">
+                <button className="btn-primary font-bold text-sm hover:bg-black hover:text-brandPrimary hover:border-2 hover:border-brandPrimary transition-all duration-300"
+                  onClick={() => navigate("/auth/login")}
+                >
                   Register Now
                 </button>
               </div>

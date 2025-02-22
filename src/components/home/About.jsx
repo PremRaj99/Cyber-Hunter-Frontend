@@ -1,7 +1,13 @@
 // import React from 'react';
 import aboutImg from '../../assets/aboutImg.png';
+import { useEffect } from 'react';
+
+
 
 export default function About() {
+  useEffect(() => {
+    document.title = 'Cyber Hunter | About';
+  }, []);
   return (
     <div>
       <div className="overflow-hidden">

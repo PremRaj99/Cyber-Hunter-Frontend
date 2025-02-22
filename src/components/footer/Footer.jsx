@@ -158,7 +158,7 @@ const Footer = () => {
         transition={{ duration: 0.5, delay: 0.5 }}
         className="h-auto w-full bg-black p-4 "
       >
-        <div className="flex justify-center gap-8  text-gray-300 md:text-base text-xs">
+        <div className="flex justify-center gap-8  text-white md:text-base text-xs">
           <p>
             <span className="text-brandPrimary ">&#169;</span> Copyrights 2024 |{" "}
             <span className="text-brandPrimary hover:underline cursor-pointer">

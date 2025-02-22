@@ -12,7 +12,7 @@ export default function TeamSettingFeild() {
           <h3 className="mb-4 text-lg font-medium text-cyan-400">
             Field of Excellence
           </h3>
-          <p className="text-gray-300">
+          <p className="text-white">
             TeamSync is designed to adapt to your workflow, making it easier to
             manage projects and collaborate with your team, no matter where they
             are. With a user-friendly interface and powerful features, TeamSync
@@ -42,7 +42,7 @@ export default function TeamSettingFeild() {
             {frontendSkills.map((skill, index) => (
               <span
                 key={index}
-                className="rounded bg-gray-700/50 px-3 py-1 text-sm text-gray-300"
+                className="rounded bg-gray-700/50 px-3 py-1 text-sm text-white"
               >
                 {skill}
               </span>

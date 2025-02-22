@@ -1,6 +1,6 @@
 import React from 'react';
 // import ForgotImg from '../assets/login-signup-imgs/otp-img.png';
-import Verifyotp from "../assets/login-signup-imgs/verifyotp.gif"
+import Verifyotp from "../assets/loginSignUp/verifyotp.gif"
 import { FaArrowRight, FaLock } from "react-icons/fa6";
 
 const VerifyOTP = () => {
@@ -41,7 +41,7 @@ const VerifyOTP = () => {
                     type="number"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
-                    className="w-full px-4 py-3 bg-transparent border border-brandPrimary rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 placeholder:text-stone-400"
+                    className="w-full px-4 py-3 bg-transparent border border-brandPrimary rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 placeholder:text-white"
                     placeholder="Enter OTP"
                     required
                   />

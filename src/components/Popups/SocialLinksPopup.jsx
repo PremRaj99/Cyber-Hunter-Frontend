@@ -84,7 +84,7 @@ const SocialLinksPopup = ({ isOpen, onClose, initialLinks, onSave }) => {
               </motion.button>
               <motion.button
                 onClick={handleSave}
-                className="px-4 py-2 bg-cyan-400 text-black rounded hover:bg-cyan-500"
+                className="px-4 py-2 bg-cyan-400 text-black rounded hover:bg-brandPrimary"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.9, duration: 0.3 }}

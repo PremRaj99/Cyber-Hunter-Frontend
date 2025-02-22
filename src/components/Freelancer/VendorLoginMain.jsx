@@ -179,25 +179,22 @@ export default function VendorLoginMain() {
                   <label
                     htmlFor="login"
                     onClick={() => setIsSignup(false)}
-                    className={`w-1/2 text-center text-lg cursor-pointer transition-all duration-700 z-10 ${
-                      !isSignup ? "text-black font-bold" : "text-white"
-                    }`}
+                    className={`w-1/2 text-center text-lg cursor-pointer transition-all duration-700 z-10 ${!isSignup ? "text-black font-bold" : "text-white"
+                      }`}
                   >
                     Login
                   </label>
                   <label
                     htmlFor="signup"
                     onClick={() => setIsSignup(true)}
-                    className={`w-1/2 text-center text-lg cursor-pointer transition-all duration-700 z-10 ${
-                      isSignup ? "text-black font-bold" : "text-white"
-                    }`}
+                    className={`w-1/2 text-center text-lg cursor-pointer transition-all duration-700 z-10 ${isSignup ? "text-black font-bold" : "text-white"
+                      }`}
                   >
                     Signup
                   </label>
                   <div
-                    className={`absolute top-0 h-full w-1/2 bg-brandPrimary rounded-full transition-all duration-700 ${
-                      isSignup ? "transform translate-x-full" : ""
-                    }`}
+                    className={`absolute top-0 h-full w-1/2 bg-brandPrimary rounded-full transition-all duration-700 ${isSignup ? "transform translate-x-full" : ""
+                      }`}
                   ></div>
                 </div>
               </motion.div>
@@ -210,7 +207,7 @@ export default function VendorLoginMain() {
                   }}
                 >
                   <div className="mb-2">
-                    <label htmlFor="email" className="flex text-gray-300">
+                    <label htmlFor="email" className="flex text-white">
                       <MdEmail className="h-6 mx-2" />
                       Email Address
                     </label>
@@ -222,11 +219,11 @@ export default function VendorLoginMain() {
                         setFormdata({ ...formdata, email: e.target.value });
                       }}
                       required
-                      className="min-w-72 md:w-96 w-full px-4 py-2 my-2 border bg-gray-300 rounded-lg"
+                      className="min-w-72 md:w-96 w-full px-4 py-2 my-2 border bg-white rounded-lg"
                     />
                   </div>
                   <div className={`${isSignup ? "mb-4" : "mb-2"} relative`}>
-                    <label htmlFor="password" className="flex text-gray-300">
+                    <label htmlFor="password" className="flex text-white">
                       <RiLockPasswordFill className="h-6 mx-2" />
                       Password
                     </label>
@@ -238,7 +235,7 @@ export default function VendorLoginMain() {
                         setFormdata({ ...formdata, password: e.target.value });
                       }}
                       required
-                      className="min-w-72 md:w-96 w-full px-4 py-2 my-2 border bg-gray-300 rounded-lg"
+                      className="min-w-72 md:w-96 w-full px-4 py-2 my-2 border bg-white rounded-lg"
                     />
                     <span className="absolute right-3 top-[65%] transform -translate-y-[50%]">
                       <img
@@ -261,7 +258,7 @@ export default function VendorLoginMain() {
                     <div className="mb-6 relative">
                       <label
                         htmlFor="confirmPassword"
-                        className="flex text-gray-300"
+                        className="flex text-white"
                       >
                         <RiLockPasswordFill className="h-6 mx-2" />
                         Confirm Password
@@ -277,7 +274,7 @@ export default function VendorLoginMain() {
                           });
                         }}
                         required
-                        className="min-w-72 md:w-96 w-full px-4 py-2 my-2 border bg-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="min-w-72 md:w-96 w-full px-4 py-2 my-2 border bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                       <span className="absolute right-3 top-[65%] transform -translate-y-[50%]">
                         <img
@@ -297,33 +294,33 @@ export default function VendorLoginMain() {
                     >
                       {isSignup ? "Signup" : "Login"}
                     </button>
-                    <p className="flex justify-center mt-2 text-gray-300 py-1">
+                    <p className="flex justify-center mt-2 text-white py-1">
                       or
                     </p>
                   </div>
                   <div className="social-container flex m-2 space-x-5 justify-center">
                     <a
                       href="#"
-                      className="social transparent p-2 bg-gray-300 hover:bg-brandPrimary border-2 h-12 w-12 rounded-full"
+                      className="social transparent p-2 bg-white hover:bg-brandPrimary border-2 h-12 w-12 rounded-full"
                     >
                       <img src={googleIcon} alt="" />
                     </a>
                     <a
                       href="#"
-                      className="social transparent p-2 bg-gray-300  hover:bg-brandPrimary border-2 h-12 w-12 rounded-full"
+                      className="social transparent p-2 bg-white  hover:bg-brandPrimary border-2 h-12 w-12 rounded-full"
                     >
                       <img src={githubIcon} alt="" />
                     </a>
                     <a
                       href="#"
-                      className="social transparent p-2 bg-gray-300  hover:bg-brandPrimary border-2 h-12 w-12 rounded-full"
+                      className="social transparent p-2 bg-white  hover:bg-brandPrimary border-2 h-12 w-12 rounded-full"
                     >
                       <img src={xIcon} alt="" />
                     </a>
                   </div>
                 </form>
                 {!isSignup && (
-                  <div className="text-center text-sm my-2 text-gray-300">
+                  <div className="text-center text-sm my-2 text-white">
                     <span>Not a member? </span>
                     <a
                       href="#"

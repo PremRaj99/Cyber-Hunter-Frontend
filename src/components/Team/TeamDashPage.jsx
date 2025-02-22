@@ -154,7 +154,7 @@ export default function TeamDashPage() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.4 }}
-                        className="text-sm text-gray-300 mt-2 line-clamp-2"
+                        className="text-sm text-white mt-2 line-clamp-2"
                       >
                         TeamSync is an all-in-one project management and team
                         collaboration platform designed to streamline workflows.
@@ -284,9 +284,9 @@ export default function TeamDashPage() {
                       whileHover={hoverScale}
                       className="aspect-square bg-gray-700/30 rounded-xl flex items-center justify-center text-sm relative group overflow-hidden"
                     >
-                      <div className="absolute inset-0 bg-cyan-500/0 group-hover:bg-cyan-500/10 transition-all duration-300"></div>
+                      <div className="absolute inset-0 bg-brandPrimary/0 group-hover:bg-brandPrimary/10 transition-all duration-300"></div>
                       <span className="relative z-10 font-medium">{tech}</span>
-                      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-brandPrimary to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
                     </motion.div>
                   ))}
                 </motion.div>
@@ -342,7 +342,7 @@ export default function TeamDashPage() {
                 whileHover={hoverScale}
                 whileTap={{ scale: 0.95 }}
                 className={`bg-gray-800/40 hover:bg-gray-700/60 
-                          ${category === activeCategory ? 'text-cyan-400 border-cyan-400' : 'text-gray-300 border-gray-700/50'} 
+                          ${category === activeCategory ? 'text-cyan-400 border-cyan-400' : 'text-white border-gray-700/50'} 
                           rounded-lg py-3 px-4 transition-all duration-300 border backdrop-blur-sm`}
                 onClick={() => setActiveCategory(category)}
               >

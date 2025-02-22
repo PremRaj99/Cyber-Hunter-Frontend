@@ -76,7 +76,7 @@ const EmailSettings = () => {
           repeat: Infinity,
           repeatType: "reverse"
         }}
-        className="absolute top-20 right-20 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl"
+        className="absolute top-20 right-20 w-32 h-32 bg-brandPrimary/10 rounded-full blur-3xl"
       />
       <motion.div
         animate={{
@@ -101,13 +101,13 @@ const EmailSettings = () => {
         {/* Header Section */}
         <motion.div variants={cardVariants} className=" flex text-center mb-12">
           <div className="my-auto">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => navigate(-1)}
-            className="p-4 rounded-full bg-gray-800/50 text-gray-400 hover:bg-gray-800/30 hover:text-brandPrimary transition-colors"
-          >
-            <ArrowLeft size={20} />
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => navigate(-1)}
+              className="p-4 rounded-full bg-gray-800/50 text-gray-400 hover:bg-gray-800/30 hover:text-brandPrimary transition-colors"
+            >
+              <ArrowLeft size={20} />
             </motion.button>
           </div>
           <div className="flex-1">
@@ -133,7 +133,7 @@ const EmailSettings = () => {
                 >
                   {/* Background Pattern */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-cyan-700" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-brandPrimary to-cyan-700" />
                   </div>
 
                   <div className="relative flex items-start justify-between">
@@ -147,21 +147,21 @@ const EmailSettings = () => {
                           {card.status}
                         </span>
                       </div>
-                      <p className="text-lg text-gray-300 mb-2">{card.email}</p>
+                      <p className="text-lg text-white mb-2">{card.email}</p>
                       <p className="text-sm text-gray-500">Last used: {card.lastUsed}</p>
                     </div>
                     <div className="flex gap-2">
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
-                        className="p-2 rounded-lg bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/30 transition-colors"
+                        className="p-2 rounded-lg bg-brandPrimary/20 text-cyan-400 hover:bg-brandPrimary/30 transition-colors"
                       >
                         <Settings size={20} />
                       </motion.button>
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
-                        className="p-2 rounded-lg bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/30 transition-colors"
+                        className="p-2 rounded-lg bg-brandPrimary/20 text-cyan-400 hover:bg-brandPrimary/30 transition-colors"
                       >
                         <Send size={20} />
                       </motion.button>
@@ -209,7 +209,7 @@ const EmailSettings = () => {
                 <motion.button
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setEmailPreferences(prev => ({ ...prev, [key]: !prev[key] }))}
-                  className={`w-12 h-6 rounded-full transition-colors duration-200 ${value ? 'bg-cyan-500' : 'bg-gray-600'
+                  className={`w-12 h-6 rounded-full transition-colors duration-200 ${value ? 'bg-brandPrimary' : 'bg-gray-600'
                     }`}
                 >
                   <motion.span
@@ -229,7 +229,7 @@ const EmailSettings = () => {
           className="mt-6 bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700"
         >
           <div className="flex items-center gap-4">
-            <div className="p-3 bg-cyan-500/20 rounded-full">
+            <div className="p-3 bg-brandPrimary/20 rounded-full">
               <Shield className="h-6 w-6 text-cyan-400" />
             </div>
             <div>

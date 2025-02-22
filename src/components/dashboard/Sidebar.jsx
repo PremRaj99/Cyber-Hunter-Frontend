@@ -88,7 +88,7 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
       >
         <div className="flex flex-col items-center pt-20 px-6 space-y-6">
           <button
-            className="absolute top-8 right-8 text-cyan-500 hover:text-white transition-all"
+            className="absolute top-8 right-8 text-brandPrimary hover:text-white transition-all"
             onClick={toggleMenu}
           >
             <GiCrossMark className="h-8 w-8" />
@@ -99,8 +99,8 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
               key={item.section}
               className={`w-full flex items-center justify-center space-x-4 text-lg font-bold p-4 rounded-xl
                 ${activeSection === item.section
-                  ? "bg-cyan-500 text-black"
-                  : "text-cyan-500 hover:bg-cyan-500/20"
+                  ? "bg-brandPrimary text-black"
+                  : "text-brandPrimary hover:bg-brandPrimary/20"
                 }
                 transition-all duration-300 cursor-pointer`}
               onClick={() => {
@@ -115,7 +115,7 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
         </div>
       </motion.div>
 
-      
+
       {/* Desktop Menu */}
       <motion.ul className="hidden md:flex flex-col space-y-4">
         {sidebarItems.map((item) => (
@@ -126,10 +126,10 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
               flex items-center space-x-4 cursor-pointer p-4 rounded-xl
               text-lg font-bold transition-all duration-300
               ${activeSection === item.section
-                ? "bg-cyan-500 text-black"
-                : "bg-black text-cyan-500 hover:bg-cyan-500/20"
+                ? "bg-brandPrimary text-black"
+                : "bg-black text-brandPrimary hover:bg-brandPrimary/20"
               }
-              border-2 border-cyan-500
+              border-2 border-brandPrimary
             `}
             variants={itemVariants}
             whileHover={{

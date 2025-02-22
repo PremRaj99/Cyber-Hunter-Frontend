@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
@@ -8,6 +8,10 @@ import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 const DPersonal = () => {
+
+  const [projects, setProjects] = useState([]);
+  const [projectCount, setProjectCount] = useState(0);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -42,6 +46,23 @@ const DPersonal = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/project`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        setProjects(response.data);
+        setProjectCount(response.data.length); // Set the project count
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      }
+    };
+    fetchProjects();
+  }, []);
 
   // Personal action cards data
   const personalActions = [
@@ -120,10 +141,10 @@ const DPersonal = () => {
         {/* Personal Stats Summary */}
         <motion.div
           variants={itemVariants}
-          className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 text-gray-300"
+          className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 text-white"
         >
           {[
-            { label: "Active Projects", value: "8" },
+            { label: "Active Projects", value: projectCount.toString() },
             { label: "Completed Tasks", value: "47" },
             { label: "Achievements", value: "16" },
             { label: "Pending Tasks", value: "12" }

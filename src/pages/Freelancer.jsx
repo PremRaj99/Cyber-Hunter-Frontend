@@ -5,6 +5,7 @@ import FreelanceHow from "../components/Freelancer/FreelanceHow";
 import FreelancerHero from "../components/Freelancer/FreelancerHero";
 import FreelanceTestimonial from "../components/Freelancer/FreelanceTestimonial";
 import FreelanceGetStart from "../components/Freelancer/FreelanceGetStart";
+import { useEffect } from "react";
 
 export default function Freelancer() {
   // Scroll-triggered animation variants
@@ -26,7 +27,10 @@ export default function Freelancer() {
   };
 
   // Parallax scroll effect
- 
+  useEffect(() => {
+    document.title = "Cyber Hunter | Freelancer";
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <motion.div>

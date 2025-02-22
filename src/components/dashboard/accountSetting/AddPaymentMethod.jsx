@@ -115,8 +115,8 @@ const AddPaymentMethod = ({ isOpen, onClose }) => {
 
             <div className="p-6">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-cyan-500/10 rounded-lg flex items-center justify-center">
-                  <CreditCard className="w-6 h-6 text-cyan-500" />
+                <div className="w-10 h-10 bg-brandPrimary/10 rounded-lg flex items-center justify-center">
+                  <CreditCard className="w-6 h-6 text-brandPrimary" />
                 </div>
                 <h2 className="text-xl font-bold text-white">Add Payment Method</h2>
               </div>
@@ -131,7 +131,7 @@ const AddPaymentMethod = ({ isOpen, onClose }) => {
                       value={cardNumber}
                       onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
                       maxLength="19"
-                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-brandPrimary focus:ring-1 focus:ring-brandPrimary transition-all"
                       placeholder="1234 5678 9012 3456"
                       required
                     />
@@ -146,7 +146,7 @@ const AddPaymentMethod = ({ isOpen, onClose }) => {
                         value={expiryDate}
                         onChange={(e) => setExpiryDate(formatExpiryDate(e.target.value))}
                         maxLength="5"
-                        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
+                        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-brandPrimary focus:ring-1 focus:ring-brandPrimary transition-all"
                         placeholder="MM/YY"
                         required
                       />
@@ -160,7 +160,7 @@ const AddPaymentMethod = ({ isOpen, onClose }) => {
                         value={cvv}
                         onChange={(e) => setCvv(e.target.value.replace(/\D/g, ''))}
                         maxLength="4"
-                        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
+                        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-brandPrimary focus:ring-1 focus:ring-brandPrimary transition-all"
                         placeholder="123"
                         required
                       />
@@ -174,7 +174,7 @@ const AddPaymentMethod = ({ isOpen, onClose }) => {
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-brandPrimary focus:ring-1 focus:ring-brandPrimary transition-all"
                       placeholder="John Doe"
                       required
                     />
@@ -183,7 +183,7 @@ const AddPaymentMethod = ({ isOpen, onClose }) => {
                   {/* Submit Button */}
                   <motion.button
                     type="submit"
-                    className="w-full py-3 bg-cyan-500 text-black font-medium rounded-lg hover:bg-cyan-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-3 bg-brandPrimary text-black font-medium rounded-lg hover:bg-cyan-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={isSubmitting}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}

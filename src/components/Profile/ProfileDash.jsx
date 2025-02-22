@@ -171,11 +171,11 @@ export default function ProfileDash() {
       <div className="flex flex-col-reverse lg:grid lg:grid-cols-12 md:gap-4">
         {/* Left Column - Project Cards */}
         <motion.div
-          className="flex flex-col-reverse lg:col-span-4 lg:flex-col space-y-6 gap-4 md:gap-0"
+          className="flex flex-col-reverse lg:col-span-4 lg:flex-col space-y-6 gap-4 md:gap-0 no-scrollbar"
           variants={itemVariants}
         >
           <motion.div
-            className="h-[450px] md:h-[525px] rounded-2xl overflow-y-auto pr-2 mt-6 md:mt-0 md:scrollbar-thin md:scrollbar-track-gray-700 md:scrollbar-thumb-cyan-400 scrollbar-none"
+            className="h-[450px] md:h-[525px] rounded-2xl overflow-y-auto pr-2 mt-6 md:mt-0 no-scrollbar"
             variants={itemVariants}
           >
             {projects && projects.length > 0 ? (
@@ -262,7 +262,7 @@ export default function ProfileDash() {
                       </div>
 
                       {/* Project Description */}
-                      <p className="text-sm text-gray-300 mt-2 line-clamp-2">
+                      <p className="text-sm text-white mt-2 line-clamp-2">
                         {project.projectDescription}
                       </p>
                     </div>
@@ -451,7 +451,7 @@ export default function ProfileDash() {
           userInterests.map((interestId) => (
             <motion.button
               key={interestId}
-              className="bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 rounded-lg py-2 px-4 transition-colors border border-cyan-500/30 hover:shadow-lg"
+              className="bg-brandPrimary/20 hover:bg-brandPrimary/30 text-cyan-400 rounded-lg py-2 px-4 transition-colors border border-brandPrimary/30 hover:shadow-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 
-export default function AnimatedSuccess ({ show }) {
+export default function AnimatedSuccess({ show }) {
   return (
     <motion.div
       initial="hidden"
@@ -14,7 +14,7 @@ export default function AnimatedSuccess ({ show }) {
       className="absolute top-0 left-0 w-full h-full flex items-center justify-center"
       style={{ display: show ? 'flex' : 'none' }}
     >
-      <div className="bg-black/80 backdrop-blur-sm border border-cyan-400/30 p-4 rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/20">
+      <div className="bg-black/80 backdrop-blur-sm border border-cyan-400/30 p-4 rounded-xl flex items-center gap-2 shadow-lg shadow-brandPrimary/20">
         <Sparkles className="text-cyan-400 w-5 h-5" />
         <span className="text-cyan-400 font-medium">Message sent successfully!</span>
       </div>

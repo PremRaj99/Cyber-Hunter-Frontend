@@ -186,7 +186,7 @@ export default function EditProfile() {
           </span>
           <button
             onClick={() => navigate(-1)}
-            className="p-2 rounded-full bg-gray-700/50 hover:bg-gray-700 transition-colors text-gray-300"
+            className="p-2 rounded-full bg-gray-700/50 hover:bg-gray-700 transition-colors text-white"
             aria-label="Close"
           >
             <IoMdClose size={24} />
@@ -227,7 +227,7 @@ export default function EditProfile() {
                 />
                 <label
                   htmlFor="profilePicture"
-                  className="absolute bottom-2 right-2 p-3 bg-cyan-500 hover:bg-cyan-600 rounded-full cursor-pointer shadow-lg transition-all duration-300 transform group-hover:scale-110"
+                  className="absolute bottom-2 right-2 p-3 bg-brandPrimary hover:bg-cyan-600 rounded-full cursor-pointer shadow-lg transition-all duration-300 transform group-hover:scale-110"
                 >
                   <FaCamera size={18} className="text-white" />
                 </label>
@@ -251,7 +251,7 @@ export default function EditProfile() {
                       onClick={() => setActiveTab(tab)}
                       className={`py-3 px-4 text-sm font-medium capitalize transition-all duration-300 ${activeTab === tab
                         ? "text-cyan-400 border-b-2 border-cyan-400"
-                        : "text-gray-400 hover:text-gray-300"
+                        : "text-gray-400 hover:text-white"
                         }`}
                     >
                       {tab}
@@ -323,7 +323,7 @@ export default function EditProfile() {
                       showMonthDropdown
                       placeholderText="Select your date of birth"
                       className="w-full px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300"
-                      calendarClassName="bg-gray-800 border border-gray-700 text-gray-300"
+                      calendarClassName="bg-gray-800 border border-gray-700 text-white"
                       wrapperClassName="w-full"
                       maxDate={new Date()} // Prevents selection of future dates
                       minDate={new Date('1900-01-01')} // Sets minimum date
@@ -341,10 +341,10 @@ export default function EditProfile() {
                         className="w-full px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300 appearance-none cursor-pointer hover:bg-gray-700/70"
                       >
                         <option value="" className="bg-gray-800 text-gray-400">Select Gender</option>
-                        <option value="male" className="bg-gray-800 text-gray-300 hover:bg-gray-700">Male</option>
-                        <option value="female" className="bg-gray-800 text-gray-300 hover:bg-gray-700">Female</option>
-                        <option value="other" className="bg-gray-800 text-gray-300 hover:bg-gray-700">Other</option>
-                        <option value="prefer-not-to-say" className="bg-gray-800 text-gray-300 hover:bg-gray-700">Prefer not to say</option>
+                        <option value="male" className="bg-gray-800 text-white hover:bg-gray-700">Male</option>
+                        <option value="female" className="bg-gray-800 text-white hover:bg-gray-700">Female</option>
+                        <option value="other" className="bg-gray-800 text-white hover:bg-gray-700">Other</option>
+                        <option value="prefer-not-to-say" className="bg-gray-800 text-white hover:bg-gray-700">Prefer not to say</option>
                       </select>
                       <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                         <motion.svg
@@ -445,7 +445,7 @@ export default function EditProfile() {
               >
                 <div className="space-y-6">
                   <motion.div className="group flex items-center gap-3" variants={itemVariants}>
-                    <FaGithub size={24} className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300" />
+                    <FaGithub size={24} className="text-gray-400 group-hover:text-white transition-colors duration-300" />
                     <div className="flex-1">
                       <label className="block text-sm font-medium text-gray-400 mb-1 group-hover:text-cyan-400 transition-colors duration-300">
                         GitHub Profile
@@ -462,7 +462,7 @@ export default function EditProfile() {
                   </motion.div>
 
                   <motion.div className="group flex items-center gap-3" variants={itemVariants}>
-                    <FaLinkedin size={24} className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300" />
+                    <FaLinkedin size={24} className="text-gray-400 group-hover:text-white transition-colors duration-300" />
                     <div className="flex-1">
                       <label className="block text-sm font-medium text-gray-400 mb-1 group-hover:text-cyan-400 transition-colors duration-300">
                         LinkedIn Profile
@@ -479,7 +479,7 @@ export default function EditProfile() {
                   </motion.div>
 
                   <motion.div className="group flex items-center gap-3" variants={itemVariants}>
-                    <FaTwitter size={24} className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300" />
+                    <FaTwitter size={24} className="text-gray-400 group-hover:text-white transition-colors duration-300" />
                     <div className="flex-1">
                       <label className="block text-sm font-medium text-gray-400 mb-1 group-hover:text-cyan-400 transition-colors duration-300">
                         Twitter Profile
@@ -496,7 +496,7 @@ export default function EditProfile() {
                   </motion.div>
 
                   <motion.div className="group flex items-center gap-3" variants={itemVariants}>
-                    <FaInstagram size={24} className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300" />
+                    <FaInstagram size={24} className="text-gray-400 group-hover:text-white transition-colors duration-300" />
                     <div className="flex-1">
                       <label className="block text-sm font-medium text-gray-400 mb-1 group-hover:text-cyan-400 transition-colors duration-300">
                         Instagram Profile
@@ -531,8 +531,8 @@ export default function EditProfile() {
                       type="button"
                       onClick={() => handleInterestChange(interest)}
                       className={`px-4 py-2 rounded-lg text-sm transition-all duration-300 ${formData.interest.includes(interest)
-                        ? "bg-cyan-500/30 text-cyan-400 border border-cyan-500/50"
-                        : "bg-gray-700/50 text-gray-300 border border-gray-600 hover:bg-gray-700"
+                        ? "bg-brandPrimary/30 text-cyan-400 border border-brandPrimary/50"
+                        : "bg-gray-700/50 text-white border border-gray-600 hover:bg-gray-700"
                         }`}
                       disabled={
                         !formData.interest.includes(interest) &&
@@ -563,7 +563,7 @@ export default function EditProfile() {
             <motion.button
               type="submit"
               disabled={isLoading}
-              className={`flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ${isLoading ? "opacity-70 cursor-not-allowed" : "hover:scale-105"
+              className={`flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-brandPrimary to-blue-500 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ${isLoading ? "opacity-70 cursor-not-allowed" : "hover:scale-105"
                 }`}
               whileHover={{ scale: isLoading ? 1 : 1.05 }}
               whileTap={{ scale: isLoading ? 1 : 0.95 }}

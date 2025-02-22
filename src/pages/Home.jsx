@@ -20,6 +20,10 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    document.title = "Cyber Hunter | Home";
+  }, []);
+
+  useEffect(() => {
     // Simulate content loading
     const timer = setTimeout(() => {
       setLoading(false);
@@ -36,15 +40,8 @@ const Home = () => {
   return (
     <>
       <div className="bg-black m-0 p-0 w-dvw">
-        <motion.section
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ amount: 0.2 }} // Trigger when 20% of the section is visible
-          transition={{ duration: 0.5 }}
-        >
+        
           <Hero />
-        </motion.section>
         <hr className="mt-11" />
         <motion.section
           variants={sectionVariants}

@@ -51,11 +51,10 @@ export default function Payment() {
               <div className="grid grid-cols-3 gap-3">
                 <button
                   type="button"
-                  className={`flex items-center justify-center px-4 py-3 border ${
-                    paymentMethod === "card"
+                  className={`flex items-center justify-center px-4 py-3 border ${paymentMethod === "card"
                       ? "border-brandPrimary  text-brandPrimary"
-                      : "border-gray-300 text-gray-700"
-                  } rounded-md shadow-sm text-sm font-medium focus:outline-none`}
+                      : "border-white text-gray-700"
+                    } rounded-md shadow-sm text-sm font-medium focus:outline-none`}
                   onClick={() => setPaymentMethod("card")}
                 >
                   <CreditCard className="h-5 w-5 mr-2" />
@@ -63,11 +62,10 @@ export default function Payment() {
                 </button>
                 <button
                   type="button"
-                  className={`flex items-center justify-center px-4 py-3 border ${
-                    paymentMethod === "upi"
+                  className={`flex items-center justify-center px-4 py-3 border ${paymentMethod === "upi"
                       ? "border-brandPrimary  text-brandPrimary"
-                      : "border-gray-300 text-gray-700"
-                  } rounded-md shadow-sm text-sm font-medium focus:outline-none `}
+                      : "border-white text-gray-700"
+                    } rounded-md shadow-sm text-sm font-medium focus:outline-none `}
                   onClick={() => setPaymentMethod("upi")}
                 >
                   <Smartphone className="h-5 w-5 mr-2" />
@@ -75,11 +73,10 @@ export default function Payment() {
                 </button>
                 <button
                   type="button"
-                  className={`flex items-center justify-center px-4 py-3 border ${
-                    paymentMethod === "netbanking"
+                  className={`flex items-center justify-center px-4 py-3 border ${paymentMethod === "netbanking"
                       ? "border-brandPrimary  text-brandPrimary"
-                      : "border-gray-300 text-gray-700"
-                  } rounded-md shadow-sm text-sm font-medium focus:outline-none`}
+                      : "border-white text-gray-700"
+                    } rounded-md shadow-sm text-sm font-medium focus:outline-none`}
                   onClick={() => setPaymentMethod("netbanking")}
                 >
                   <Building className="h-5 w-5 mr-2" />
@@ -105,7 +102,7 @@ export default function Payment() {
                       setCardNumber(formatCardNumber(e.target.value))
                     }
                     placeholder="1234 5678 9012 3456"
-                    className="mt-1 block w-full bg-black text-white placeholder:text-stone-400 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary sm:text-sm"
+                    className="mt-1 block w-full bg-black text-white placeholder:text-white border border-white rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary sm:text-sm"
                     maxLength={19}
                     required
                   />
@@ -124,7 +121,7 @@ export default function Payment() {
                       value={expiryDate}
                       onChange={(e) => setExpiryDate(e.target.value)}
                       placeholder="MM / YY"
-                      className="mt-1 block w-full bg-black text-white placeholder:text-stone-400 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary sm:text-sm"
+                      className="mt-1 block w-full bg-black text-white placeholder:text-white border border-white rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary sm:text-sm"
                       maxLength={5}
                       required
                     />
@@ -142,7 +139,7 @@ export default function Payment() {
                       value={cvv}
                       onChange={(e) => setCvv(e.target.value)}
                       placeholder="123"
-                      className="mt-1 block w-full bg-black text-white placeholder:text-stone-400 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary sm:text-sm"
+                      className="mt-1 block w-full bg-black text-white placeholder:text-white border border-white rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary sm:text-sm"
                       maxLength={3}
                       required
                     />
@@ -165,7 +162,7 @@ export default function Payment() {
                   value={upiId}
                   onChange={(e) => setUpiId(e.target.value)}
                   placeholder="yourname@upi"
-                  className="mt-1 block w-full bg-black text-white placeholder:text-stone-400 border border-brandPrimary rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary focus:border-brandPrimary sm:text-sm"
+                  className="mt-1 block w-full bg-black text-white placeholder:text-white border border-brandPrimary rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary focus:border-brandPrimary sm:text-sm"
                   required
                 />
               </div>
@@ -175,7 +172,7 @@ export default function Payment() {
               <div>
                 <label
                   htmlFor="bank-select"
-                  className="block text-sm font-medium text-gray-300 mb-1"
+                  className="block text-sm font-medium text-white mb-1"
                 >
                   Select Bank
                 </label>
@@ -184,7 +181,7 @@ export default function Payment() {
                     id="bank-select"
                     value={selectedBank}
                     onChange={(e) => setSelectedBank(e.target.value)}
-                    className="block appearance-none w-full bg-black text-white placeholder:text-stone-400 border border-brandPrimary rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary focus:border-blue-500 sm:text-sm"
+                    className="block appearance-none w-full bg-black text-white placeholder:text-white border border-brandPrimary rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brandPrimary focus:border-blue-500 sm:text-sm"
                     required
                   >
                     <option value="">Choose a bank</option>

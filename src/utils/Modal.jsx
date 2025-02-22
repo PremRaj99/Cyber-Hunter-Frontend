@@ -34,7 +34,7 @@ const Modal = ({ isOpen, onClose, onConfirm, title, children }) => {
           )}
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+            className="px-4 py-2 bg-white text-gray-700 rounded-md hover:bg-gray-400"
           >
             Cancel
           </button>

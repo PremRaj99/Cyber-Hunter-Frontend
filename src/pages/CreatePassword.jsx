@@ -35,7 +35,7 @@ const CreatePassword = () => {
                             <form className="w-full">
                                 <div className="mb-4">
                                     <span className="flex justify-between">
-                                    <label htmlFor="password" className="flex text-md font-medium text-white">
+                                        <label htmlFor="password" className="flex text-md font-medium text-white">
                                             {/* lock images */}
                                             <FaLock className='h-6 w-6 mx-2 my-2' />New Password
                                         </label>
@@ -49,7 +49,7 @@ const CreatePassword = () => {
                                         type={showPassword ? 'text' : 'password'}
                                         // value={password}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full px-4 py-3 bg-transparent border border-brandPrimary rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 placeholder:text-stone-400"
+                                        className="w-full px-4 py-3 bg-transparent border border-brandPrimary rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 placeholder:text-white"
                                         placeholder="new password"
                                         required
                                     />
@@ -72,7 +72,7 @@ const CreatePassword = () => {
                                         type={showPassword ? 'text' : 'password'}
                                         // value={confirmPassword}
                                         // onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full px-4 py-3 bg-transparent border border-brandPrimary rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 placeholder:text-stone-400"
+                                        className="w-full px-4 py-3 bg-transparent border border-brandPrimary rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 placeholder:text-white"
                                         placeholder="confirm password"
                                         required
                                     />

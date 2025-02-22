@@ -113,7 +113,7 @@ const TwoFactor = ({ isOpen, onClose }) => {
                     </div>
                     <button
                       onClick={() => setIsEnabled(!isEnabled)}
-                      className="w-full sm:w-auto px-4 py-2 bg-cyan-500 text-black font-medium rounded-lg hover:bg-cyan-400 transition-colors"
+                      className="w-full sm:w-auto px-4 py-2 bg-brandPrimary text-black font-medium rounded-lg hover:bg-cyan-400 transition-colors"
                     >
                       {isEnabled ? 'Disable 2FA' : 'Enable 2FA'}
                     </button>
@@ -127,12 +127,12 @@ const TwoFactor = ({ isOpen, onClose }) => {
                     <div className="grid sm:grid-cols-2 gap-4">
                       {[
                         {
-                          icon: <Smartphone className="w-6 h-6 text-cyan-500" />,
+                          icon: <Smartphone className="w-6 h-6 text-brandPrimary" />,
                           title: "Authenticator App",
                           desc: "Use an authentication app"
                         },
                         {
-                          icon: <Mail className="w-6 h-6 text-cyan-500" />,
+                          icon: <Mail className="w-6 h-6 text-brandPrimary" />,
                           title: "Email Authentication",
                           desc: "Receive codes via email"
                         }
@@ -140,7 +140,7 @@ const TwoFactor = ({ isOpen, onClose }) => {
                         <button
                           key={index}
                           onClick={() => setActiveStep(2)}
-                          className="p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:border-cyan-500/30 transition-all group"
+                          className="p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:border-brandPrimary/30 transition-all group"
                         >
                           <div className="flex flex-col items-center text-center">
                             <div className="mb-2 group-hover:text-cyan-400">{method.icon}</div>
@@ -169,14 +169,14 @@ const TwoFactor = ({ isOpen, onClose }) => {
                             value={digit}
                             onChange={(e) => handleCodeChange(index, e.target.value)}
                             onKeyDown={(e) => handleKeyDown(index, e)}
-                            className="w-12 h-12 text-center bg-gray-800 border border-gray-700 rounded-lg text-xl font-bold text-cyan-400 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
+                            className="w-12 h-12 text-center bg-gray-800 border border-gray-700 rounded-lg text-xl font-bold text-cyan-400 focus:border-brandPrimary focus:ring-1 focus:ring-brandPrimary"
                           />
                         ))}
                       </div>
                       <div className="mt-6 flex justify-end">
                         <button
                           onClick={() => setActiveStep(3)}
-                          className="px-6 py-2 bg-cyan-500 text-black font-medium rounded-lg hover:bg-cyan-400 transition-colors"
+                          className="px-6 py-2 bg-brandPrimary text-black font-medium rounded-lg hover:bg-cyan-400 transition-colors"
                         >
                           Verify
                         </button>
@@ -193,7 +193,7 @@ const TwoFactor = ({ isOpen, onClose }) => {
                     <p className="text-gray-400 mb-6">Your account is now more secure.</p>
                     <button
                       onClick={handleClose}
-                      className="px-6 py-2 bg-cyan-500 text-black font-medium rounded-lg hover:bg-cyan-400 transition-colors"
+                      className="px-6 py-2 bg-brandPrimary text-black font-medium rounded-lg hover:bg-cyan-400 transition-colors"
                     >
                       Done
                     </button>

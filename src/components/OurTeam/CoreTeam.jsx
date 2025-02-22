@@ -128,7 +128,7 @@ const CoreTeam = () => {
               <h3 className="text-xl font-semibold text-brandPrimary ">
                 {member.name}
               </h3>
-              <p className="text-stone-400 mb-4">{member.role}</p>
+              <p className="text-white mb-4">{member.role}</p>
               <p className="text-white mb-4">{member.description}</p>
               <div className="flex space-x-4">
                 {member.social.facebook && (

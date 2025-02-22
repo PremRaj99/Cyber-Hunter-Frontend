@@ -75,7 +75,7 @@ const Policy = () => {
 
   return (
     <motion.div
-      className=" text-gray-300"
+      className=" text-white"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -114,7 +114,7 @@ const Policy = () => {
           {sections.map((section, index) => (
             <motion.div
               key={index}
-              className="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50 backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300"
+              className="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50 backdrop-blur-sm hover:border-brandPrimary/30 transition-all duration-300"
               variants={itemVariants}
               whileHover={{ scale: 1.02 }}
             >
@@ -147,7 +147,7 @@ const Policy = () => {
             <p className="text-gray-400 mb-6">
               If you have any questions about our privacy policy, please don't hesitate to contact us.
             </p>
-            <button className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+            <button className="px-8 py-3 bg-gradient-to-r from-brandPrimary to-blue-500 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
               onClick={() => navigate("/contact")}
             >
               Contact Us

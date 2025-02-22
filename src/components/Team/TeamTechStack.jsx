@@ -79,7 +79,7 @@ const TeamTechStack = () => {
     <div className="flex items-start justify-start p-8">
       <div className="rounded-2xl  p-8 w-full max-w-3xl">
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 bg-cyan-500/20 rounded-lg">
+          <div className="p-2 bg-brandPrimary/20 rounded-lg">
             <Code size={22} className="text-cyan-400" />
           </div>
           <h2 className="text-2xl font-bold text-white">Technology Stack</h2>
@@ -106,7 +106,7 @@ const TeamTechStack = () => {
                       initial="hidden"
                       animate="visible"
                       exit="exit"
-                      className="group flex items-center gap-2 bg-gray-800/80 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-700 hover:border-cyan-500/30 hover:bg-gray-800 transition-colors shadow-sm hover:shadow-cyan-500/10"
+                      className="group flex items-center gap-2 bg-gray-800/80 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-700 hover:border-brandPrimary/30 hover:bg-gray-800 transition-colors shadow-sm hover:shadow-brandPrimary/10"
                       whileHover={{ scale: 1.05 }}
                     >
                       <span className="text-gray-200">{tech}</span>
@@ -140,7 +140,7 @@ const TeamTechStack = () => {
                     animate="visible"
                     className="relative"
                   >
-                    <div className="flex items-center bg-gray-800 rounded-full border border-gray-700 focus-within:border-cyan-500/50 transition-colors overflow-hidden pr-1">
+                    <div className="flex items-center bg-gray-800 rounded-full border border-gray-700 focus-within:border-brandPrimary/50 transition-colors overflow-hidden pr-1">
                       <div className="pl-4 pr-2 text-gray-400">
                         <Search size={16} />
                       </div>
@@ -164,8 +164,8 @@ const TeamTechStack = () => {
                           onClick={handleAddTech}
                           disabled={!newTech.trim()}
                           className={`${newTech.trim()
-                              ? 'bg-cyan-500 text-gray-900 hover:bg-cyan-400'
-                              : 'bg-gray-700 text-gray-500'
+                            ? 'bg-brandPrimary text-gray-900 hover:bg-cyan-400'
+                            : 'bg-gray-700 text-gray-500'
                             } transition-colors py-1 px-3 rounded-full ml-1`}
                         >
                           Add
@@ -186,7 +186,7 @@ const TeamTechStack = () => {
                           {suggestions.map((suggestion) => (
                             <button
                               key={suggestion}
-                              className="w-full text-left px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-cyan-400 transition-colors"
+                              className="w-full text-left px-4 py-2 text-white hover:bg-gray-700 hover:text-cyan-400 transition-colors"
                               onClick={() => {
                                 setNewTech(suggestion);
                                 setSuggestions([]);
@@ -221,7 +221,7 @@ const TeamTechStack = () => {
                       });
                     }
                   }}
-                  className="px-3 py-1 text-sm bg-gray-800/60 text-gray-400 rounded-full border border-gray-700 hover:border-cyan-500/30 hover:text-cyan-400 transition-colors"
+                  className="px-3 py-1 text-sm bg-gray-800/60 text-gray-400 rounded-full border border-gray-700 hover:border-brandPrimary/30 hover:text-cyan-400 transition-colors"
                 >
                   + {tech}
                 </button>

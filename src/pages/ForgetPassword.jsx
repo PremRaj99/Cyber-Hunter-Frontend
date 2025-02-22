@@ -21,7 +21,7 @@ const ForgotPassword = () => {
           {[...Array(15)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-64 h-64 bg-cyan-500/10 rounded-full"
+              className="absolute w-64 h-64 bg-brandPrimary/10 rounded-full"
               animate={{
                 x: [0, 100, 0],
                 y: [0, 50, 0],
@@ -58,7 +58,7 @@ const ForgotPassword = () => {
               className="bg-gray-800/40 backdrop-blur-xl rounded-2xl overflow-hidden"
             >
               {/* Header Wave */}
-              <div className="relative h-32 bg-cyan-500/20 flex items-center justify-center overflow-hidden">
+              <div className="relative h-32 bg-brandPrimary/20 flex items-center justify-center overflow-hidden">
                 <svg className="absolute bottom-0" viewBox="0 0 1440 320">
                   <path
                     fill="#111827"
@@ -66,7 +66,7 @@ const ForgotPassword = () => {
                     d="M0,32L48,53.3C96,75,192,117,288,122.7C384,128,480,96,576,85.3C672,75,768,85,864,106.7C960,128,1056,160,1152,165.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
                   ></path>
                 </svg>
-                <Lock className="text-cyan-500 w-16 h-16 relative z-10" />
+                <Lock className="text-brandPrimary w-16 h-16 relative z-10" />
               </div>
 
               <div className="p-8">
@@ -84,16 +84,16 @@ const ForgotPassword = () => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-900/50 text-white border border-gray-700 rounded-lg focus:outline-none focus:border-cyan-500 transition-all duration-300 relative z-10"
+                      className="w-full px-4 py-3 bg-gray-900/50 text-white border border-gray-700 rounded-lg focus:outline-none focus:border-brandPrimary transition-all duration-300 relative z-10"
                       placeholder="Enter your email"
                       required
                     />
-                    <Mail className="absolute top-3.5 right-4 h-5 w-5 text-cyan-500" />
+                    <Mail className="absolute top-3.5 right-4 h-5 w-5 text-brandPrimary" />
                   </div>
 
                   <motion.button
                     type="submit"
-                    className="w-full bg-cyan-500 text-gray-900 font-semibold py-3 px-6 rounded-lg hover:bg-cyan-400 transition-colors duration-300 flex items-center justify-center gap-2 relative overflow-hidden group"
+                    className="w-full bg-brandPrimary text-gray-900 font-semibold py-3 px-6 rounded-lg hover:bg-cyan-400 transition-colors duration-300 flex items-center justify-center gap-2 relative overflow-hidden group"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -123,7 +123,7 @@ const ForgotPassword = () => {
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", stiffness: 200, damping: 15 }}
               >
-                <CheckCircle className="w-16 h-16 text-cyan-500 mx-auto mb-4" />
+                <CheckCircle className="w-16 h-16 text-brandPrimary mx-auto mb-4" />
               </motion.div>
               <h2 className="text-2xl font-bold text-cyan-400 mb-4">Check Your Email</h2>
               <p className="text-gray-400 mb-6">
@@ -132,7 +132,7 @@ const ForgotPassword = () => {
               </p>
               <motion.button
                 onClick={() => window.location.href = '/auth/login'}
-                className="bg-cyan-500 text-gray-900 font-semibold py-3 px-6 rounded-lg hover:bg-cyan-400 transition-colors duration-300"
+                className="bg-brandPrimary text-gray-900 font-semibold py-3 px-6 rounded-lg hover:bg-cyan-400 transition-colors duration-300"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -149,7 +149,7 @@ const ForgotPassword = () => {
             animate={{ opacity: 1 }}
             className="mt-4 flex justify-center"
           >
-            <div className="w-8 h-8 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-8 h-8 border-4 border-brandPrimary border-t-transparent rounded-full animate-spin" />
           </motion.div>
         )}
       </motion.div>

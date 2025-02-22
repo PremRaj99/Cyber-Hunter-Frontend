@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { FaBars, FaHome, FaPhoneAlt } from "react-icons/fa";
-import { FaXmark } from "react-icons/fa6";
+import { FaAngleDown, FaXmark } from "react-icons/fa6";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "../../utils/Axios";
@@ -13,12 +13,13 @@ import {
 } from "../../redux/User/userSlice";
 import DefaultImg from "../../assets/profile.png";
 import { TbLogin, TbLogout, TbSignRight } from "react-icons/tb";
-import { icon } from "@fortawesome/fontawesome-svg-core";
 import { BsGrid3X3Gap, BsPersonCircle } from "react-icons/bs";
 import { IoIosAlert } from "react-icons/io";
 import { MdMiscellaneousServices } from "react-icons/md";
 import { PiRankingFill } from "react-icons/pi";
 import { GiTrophy } from "react-icons/gi";
+import { SiFreelancer } from "react-icons/si";
+
 
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
@@ -176,31 +177,37 @@ export default function Header() {
       name: "Home",
       link: "/",
       icon: <FaHome />,
+      guestOnly: true,
     },
     {
       name: "About",
       link: "/about",
       icon: <IoIosAlert />,
+      guestOnly: true,
     },
     {
       name: "Services",
       link: "/service",
       icon: <MdMiscellaneousServices />,
-    },
-    {
-      name: "Contact",
-      link: "/contact",
-      icon: <FaPhoneAlt />,
+      guestOnly: true,
     },
     {
       name: "Leaderboard",
       link: "/leaderboard",
       icon: <PiRankingFill />,
+      guestOnly: false,
     },
     {
       name: "Event",
       link: "/event",
       icon: <GiTrophy />,
+      guestOnly: false,
+    },
+    {
+      name: "Contact",
+      link: "/contact",
+      icon: <FaPhoneAlt />,
+      guestOnly: false,
     },
   ];
 
@@ -248,108 +255,181 @@ export default function Header() {
 
         {/* Desktop Menu */}
         <nav className="hidden md:flex items-center space-x-1">
-          {nav.map((item) => (
-            <NavLink
-              key={item.name}
-              to={item.link}
-              end={item.link === "/dashboard"} // Add end prop for exact matching
-              className={({ isActive }) =>
-                `group relative px-4 py-2 rounded-lg transition-all duration-300 ${isActive
-                  ? "text-[#00D8FF]"
-                  : "text-gray-400 hover:text-white"
-                }`
-              }
-            >
-              <div className="flex items-center space-x-2">
-                {item.icon}
-                <span className="relative">
-                  {item.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#00D8FF] group-hover:w-full transition-all duration-300" />
-                </span>
-              </div>
-              {/* Hover effect */}
-              <div className="absolute inset-0 bg-[#00D8FF]/0 group-hover:bg-[#00D8FF]/5 rounded-lg transition-all duration-300" />
-            </NavLink>
-          ))}
+          {currentUser ? (
+            <>
+              {/* Profile Link */}
+              <NavLink
+                to="/dashboard/profile"
+                className={({ isActive }) =>
+                  `group relative px-4 py-2 rounded-lg transition-all duration-300 ${isActive
+                    ? "text-[#00D8FF]"
+                    : "text-gray-400 hover:text-white"
+                  }`
+                }
+              >
+                <div className="flex items-center space-x-3">
+                  <BsPersonCircle size={24} />
+                  <span className="relative">
+                    Profile
+                    <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#00D8FF] group-hover:w-full transition-all duration-300" />
+                  </span>
+                </div>
+                <div className="absolute inset-0 bg-[#00D8FF]/0 group-hover:bg-[#00D8FF]/10 rounded-lg transition-all duration-300" />
+              </NavLink>
+
+              {/* Dashboard Link */}
+              <NavLink
+                to="/dashboard"
+                end
+                className={({ isActive }) =>
+                  `group relative px-4 py-2 rounded-lg transition-all duration-300 ${isActive
+                    ? "text-[#00D8FF]"
+                    : "text-gray-400 hover:text-white"
+                  }`
+                }
+              >
+                <div className="flex items-center space-x-3">
+                  <BsGrid3X3Gap size={24} />
+                  <span className="relative ">
+                    Dashboard
+                    <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#00D8FF] group-hover:w-full transition-all duration-300" />
+                  </span>
+                </div>
+                <div className="absolute inset-0 bg-[#00D8FF]/0 group-hover:bg-[#00D8FF]/10 rounded-lg transition-all duration-300" />
+              </NavLink>
+              <NavLink
+                to="/freelancer"
+                end
+                className={({ isActive }) =>
+                  `group relative px-4 py-2 rounded-lg transition-all duration-300 ${isActive
+                    ? "text-[#00D8FF]"
+                    : "text-gray-400 hover:text-white"
+                  }`
+                }
+              >
+                <div className="flex items-center space-x-3">
+                  <SiFreelancer size={26} />
+                  <span className="relative">
+                    Freelance
+                    <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#00D8FF] group-hover:w-full transition-all duration-300" />
+                  </span>
+                </div>
+                <div className="absolute inset-0 bg-[#00D8FF]/0 group-hover:bg-[#00D8FF]/10 rounded-lg transition-all duration-300" />
+              </NavLink>
+
+              {/* Filtered nav items (Leaderboard, Event, Contact) */}
+              {nav
+                .filter((item) => !item.guestOnly)
+                .map((item) => (
+                  <NavLink
+                    key={item.name}
+                    to={item.link}
+                    className={({ isActive }) =>
+                      `group relative px-4 py-2 rounded-lg transition-all duration-300 ${isActive
+                        ? "text-[#00D8FF]"
+                        : "text-gray-400 hover:text-white"
+                      }`
+                    }
+                  >
+                    <div className="flex items-center space-x-3">
+                      <span className="flex items-center justify-center">
+                        {React.cloneElement(item.icon, { size: 24 })}  {/* Explicitly set icon size to 24px */}
+                      </span>
+                      <span className="relative">
+                        {item.name}
+                        <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#00D8FF] group-hover:w-full transition-all duration-300" />
+                      </span>
+                    </div>
+                    <div className="absolute inset-0 bg-[#00D8FF]/0 group-hover:bg-[#00D8FF]/10 rounded-lg transition-all duration-300" />
+                  </NavLink>
+                ))}
+            </>
+          ) : (
+            // Guest navigation
+            nav.map((item) => (
+              <NavLink
+                key={item.name}
+                to={item.link}
+                className={({ isActive }) =>
+                  `group relative px-4 py-2 rounded-lg transition-all duration-300 ${isActive
+                    ? "text-[#00D8FF]"
+                    : "text-gray-400 hover:text-white"
+                  }`
+                }
+              >
+                <div className="flex items-center space-x-2">
+                  {item.icon}
+                  <span className="relative">
+                    {item.name}
+                    <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#00D8FF] group-hover:w-full transition-all duration-300" />
+                  </span>
+                </div>
+                <div className="absolute inset-0 bg-[#00D8FF]/0 group-hover:bg-[#00D8FF]/5 rounded-lg transition-all duration-300" />
+              </NavLink>
+            ))
+          )}
         </nav>
 
-
-        <div className="flex gap-6 items-center relative">
+        <div className="flex items-center relative">
           {/* User Profile / Buttons */}
           {currentUser ? (
             <div id="user-dropdown" className="relative">
               <div
                 onClick={toggleUserDropdown}
-                className="md:flex hidden items-center gap-3 border rounded-full p-1 pr-2 text-gray-300 cursor-pointer hover:text-[#00D8FF] hover:border-[#00D8FF]"
+                className="md:flex hidden items-center gap-3 border border-[#00D8FF]/30 rounded-full p-1 pr-4 text-white cursor-pointer backdrop-blur-sm bg-black/30 hover:text-[#00D8FF] hover:border-[#00D8FF] hover:bg-[#00D8FF]/5 transform transition-all duration-300 ease-out hover:shadow-[0_0_15px_rgba(0,216,255,0.3)] group relative overflow-hidden"
                 title="User Menu"
               >
-                <img
-                  src={
-                    currentUser.profilePicture ||
-                    "https://plus.unsplash.com/premium_photo-1661757403301-ae68e1f1b827?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  }
-                  alt="Profile"
-                  className="w-6 h-6 rounded-full"
+                {/* Glow effect behind image */}
+                <div
+                  className="absolute inset-0 bg-gradient-to-r from-[#00D8FF]/0 via-[#00D8FF]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 />
-                <span className="font-semibold">
-                  {currentUser.name || "Anonymous"}
+
+                {/* Profile Image Container */}
+                <div className="relative">
+                  <div
+                    className="absolute inset-0 bg-[#00D8FF] rounded-full blur-md opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                  />
+                  <img
+                    src={
+                      currentUser.profilePicture ||
+                      "https://plus.unsplash.com/premium_photo-1661757403301-ae68e1f1b827?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    }
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full object-cover border-2 border-transparent group-hover:border-[#00D8FF]/50 transform transition-all duration-300 group-hover:scale-105 relative z-10"
+                  />
+                </div>
+
+                {/* Username */}
+                <span className="font-semibold relative">
+                  <span className="relative z-10 group-hover:text-[#00D8FF] transition-colors duration-300">
+                    {currentUser.name || "Anonymous"}
+                  </span>
+                  <span
+                    className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#00D8FF] group-hover:w-full transition-all duration-300"
+                  />
                 </span>
+
+                {/* Dropdown Icon with Animation */}
+                <span
+                  className="w-4 h-4 transform transition-transform duration-300 group-hover:translate-y-[2px] relative z-10"
+                >
+                  <FaAngleDown className="text-[#00D8FF]/70 group-hover:text-[#00D8FF]" />
+                </span>
+
+                {/* Hover Animation Border */}
+                <div
+                  className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#00D8FF]/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"
+                />
               </div>
 
               {/* Dropdown Menu */}
               {isUserDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-56 bg-black border border-[#00D8FF] rounded-lg shadow-lg z-50">
                   <div className="px-4 py-2 font-bold text-[#00D8FF] border-b border-[#00D8FF]">
-                    My Account
+                    Log Out Account
                   </div>
 
                   <ul className="py-1">
-                    <li
-                      onClick={() => {
-                        navigate("/dashboard/profile");
-                        setIsUserDropdownOpen(false);
-                      }}
-                      className="px-4 py-2 hover:bg-[#00D8FF]/10 cursor-pointer text-gray-300 hover:text-[#00D8FF] flex items-center"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 mr-2"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        />
-                      </svg>
-                      Profile
-                    </li>
-                    <li
-                      onClick={() => {
-                        navigate("/dashboard");
-                        setIsUserDropdownOpen(false);
-                      }}
-                      className="px-4 py-2 hover:bg-[#00D8FF]/10 cursor-pointer text-gray-300 hover:text-[#00D8FF] flex items-center"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 mr-2"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"
-                        />
-                      </svg>
-                      Dashboard
-                    </li>
                     <div className="border-t border-[#00D8FF]/20 my-1"></div>
                     <li
                       onClick={handleLogout}
@@ -377,18 +457,70 @@ export default function Header() {
             </div>
           ) : (
             <div className="flex items-center justify-center gap-4">
-              <button
-                className="px-4 py-1 hidden md:block font-semibold rounded-full text-[#00D8FF] border border-[#00D8FF] bg-transparent hover:bg-[#00D8FF] hover:text-black transition-all duration-300"
+              <motion.button
+                className="group relative hidden md:flex items-center gap-2 px-6 py-2 rounded-full overflow-hidden border border-[#00D8FF]-4/30 hover:border-[#00D8FF] transition-colors duration-300"
                 onClick={() => navigate("/auth/login")}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <span className="flex">Signup</span>
-              </button>
-              <button
-                className="px-4 py-1 font-semibold rounded-full  text-[#00D8FF] border border-[#00D8FF] bg-transparent hover:bg-[#00D8FF] hover:text-black"
+                {/* Background gradient effect */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-[#00D8FF]/0 via-[#00D8FF]/10 to-[#00D8FF]/0"
+                  animate={{
+                    x: ["100%", "-100%"],
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 2,
+                    ease: "linear",
+                  }}
+                />
+
+                {/* Icon and text */}
+                <TbSignRight className="text-[#00D8FF] group-hover:scale-110 transition-transform duration-300" />
+                <span className="text-white font-medium relative">
+                  Sign Up
+                  <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#00D8FF] group-hover:w-full transition-all duration-300" />
+                </span>
+
+                {/* Glow effect */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute inset-0 bg-[#00D8FF]/10 blur-md" />
+                </div>
+              </motion.button>
+
+              <motion.button
+                className="group relative flex items-center gap-2 px-6 py-2 rounded-full overflow-hidden mr-4  transition-colors duration-300 border border-[#00D8FF]-4/30 hover:border-[#00D8FF]"
                 onClick={() => navigate("/auth/login")}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <span className="flex">Login</span>
-              </button>
+                {/* Animated background particles */}
+                <motion.div
+                  className="absolute inset-0"
+                  animate={{
+                    background: [
+                      "radial-gradient(circle at 20% 20%, rgba(0,216,255,0.4) 0%, transparent 10%)",
+                      "radial-gradient(circle at 80% 80%, rgba(0,216,255,0.4) 0%, transparent 50%)",
+                    ],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                  }}
+                />
+
+                {/* Icon and text */}
+                <TbLogin className="text-brandPrimary group-hover:rotate-12 transition-transform duration-300" />
+                <span className="text-white font-bold relative">
+                  Login
+                  <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-brandPrimary group-hover:w-full transition-all duration-300" />
+                </span>
+
+                {/* Shine effect */}
+                <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover:animate-shine" />
+              </motion.button>
             </div>
           )}
 

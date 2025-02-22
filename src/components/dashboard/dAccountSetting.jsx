@@ -110,14 +110,14 @@ const DAccountSetting = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.15 }}
         transition={{ duration: 1 }}
-        className="absolute top-40 -left-40 w-80 h-80 bg-cyan-500 rounded-full filter blur-3xl z-0 opacity-15"
+        className="absolute top-40 -left-40 w-80 h-80 bg-brandPrimary rounded-full filter blur-3xl z-0 opacity-15"
       ></motion.div>
 
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.1 }}
         transition={{ duration: 1, delay: 0.3 }}
-        className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500 rounded-full filter blur-3xl z-0 opacity-10"
+        className="absolute bottom-20 right-10 w-96 h-96 bg-brandPrimary rounded-full filter blur-3xl z-0 opacity-10"
       ></motion.div>
 
       <div className="container mx-auto px-4 py-4 relative z-10">
@@ -175,7 +175,7 @@ const DAccountSetting = () => {
                               setIsMenuOpen(false);
                             }}
                             className={`w-full flex items-center gap-3 p-3 rounded-lg ${activeSection === section.id
-                              ? "bg-cyan-500 bg-opacity-20 text-cyan-400"
+                              ? "bg-brandPrimary bg-opacity-20 text-cyan-400"
                               : "hover:bg-gray-800"
                               } transition-colors`}
                           >
@@ -212,7 +212,7 @@ const DAccountSetting = () => {
                       <button
                         onClick={() => setActiveSection(section.id)}
                         className={`w-full flex items-center gap-3 p-3 rounded-lg ${activeSection === section.id
-                          ? "bg-cyan-500 bg-opacity-20 text-cyan-400"
+                          ? "bg-brandPrimary bg-opacity-20 text-cyan-400"
                           : "hover:bg-gray-700"
                           } transition-colors`}
                       >
@@ -313,15 +313,15 @@ const ProfileSection = () => {
           >
             <Link
               to={item.link}
-              className="flex items-center justify-between p-4 bg-gray-900/50 border border-gray-700 rounded-lg text-white hover:text-cyan-400 transition-all duration-300 hover:border-cyan-500/30"
+              className="flex items-center justify-between p-4 bg-gray-900/50 border border-gray-700 rounded-lg text-white hover:text-cyan-400 transition-all duration-300 hover:border-brandPrimary/30"
             >
               <div className="flex items-center gap-3">
-                <div className="flex items-center justify-center w-10 h-10 bg-cyan-500/10 rounded-full text-cyan-500">
+                <div className="flex items-center justify-center w-10 h-10 bg-brandPrimary/10 rounded-full text-brandPrimary">
                   {item.icon}
                 </div>
                 <span className="text-lg font-medium">{item.text}</span>
               </div>
-              <ChevronRight className="text-cyan-500/50" size={18} />
+              <ChevronRight className="text-brandPrimary/50" size={18} />
             </Link>
           </motion.li>
         ))}
@@ -334,7 +334,7 @@ const ProfileSection = () => {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="px-6 py-2 bg-cyan-500 text-black font-medium rounded-lg shadow-lg hover:bg-cyan-400 transition-colors"
+          className="px-6 py-2 bg-brandPrimary text-black font-medium rounded-lg shadow-lg hover:bg-cyan-400 transition-colors"
         >
           Save Changes
         </motion.button>

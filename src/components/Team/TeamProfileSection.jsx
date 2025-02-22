@@ -119,7 +119,7 @@ const TeamProfileSection = () => {
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-24 h-24 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg">
+            <div className="w-24 h-24 bg-gradient-to-br from-brandPrimary to-blue-600 rounded-full flex items-center justify-center shadow-lg">
               <span className="text-white font-bold text-xl">TS</span>
             </div>
             <div>
@@ -144,8 +144,8 @@ const TeamProfileSection = () => {
         <button
           onClick={() => setActiveTab("members")}
           className={`flex-1 py-3 font-medium text-sm transition-colors duration-300 ${activeTab === "members"
-              ? "text-cyan-400 border-b-2 border-cyan-400"
-              : "text-gray-400 hover:text-gray-200"
+            ? "text-cyan-400 border-b-2 border-cyan-400"
+            : "text-gray-400 hover:text-gray-200"
             }`}
         >
           Team Members
@@ -153,8 +153,8 @@ const TeamProfileSection = () => {
         <button
           onClick={() => setActiveTab("stats")}
           className={`flex-1 py-3 font-medium text-sm transition-colors duration-300 ${activeTab === "stats"
-              ? "text-cyan-400 border-b-2 border-cyan-400"
-              : "text-gray-400 hover:text-gray-200"
+            ? "text-cyan-400 border-b-2 border-cyan-400"
+            : "text-gray-400 hover:text-gray-200"
             }`}
         >
           Team Stats
@@ -194,8 +194,8 @@ const TeamProfileSection = () => {
                       <div className="flex flex-col items-end">
                         <span className="text-cyan-400 font-semibold">{member.points} pts</span>
                         <span className={`text-xs px-2 py-0.5 rounded-full ${member.status === "Active"
-                            ? "bg-green-400/10 text-green-400"
-                            : "bg-yellow-400/10 text-yellow-400"
+                          ? "bg-green-400/10 text-green-400"
+                          : "bg-yellow-400/10 text-yellow-400"
                           }`}>
                           {member.status}
                         </span>
@@ -246,7 +246,7 @@ const TeamProfileSection = () => {
                 {['Commit Frequency', 'Code Reviews', 'Task Completion', 'Meeting Attendance'].map((metric, index) => (
                   <div key={index} className="bg-gray-700/30 p-3 rounded-lg">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm text-gray-300">{metric}</span>
+                      <span className="text-sm text-white">{metric}</span>
                       <span className="text-sm text-cyan-400 font-medium">{90 - index * 8}%</span>
                     </div>
                     <div className="w-full bg-gray-600 h-2 rounded-full overflow-hidden">
@@ -296,7 +296,7 @@ const TeamProfileSection = () => {
         transition={{ duration: 0.5, delay: 0.5 }}
         className="p-4 border-t border-gray-700/50 flex justify-end items-center"
       >
-        <button className="px-4 py-1.5 bg-cyan-500 hover:bg-cyan-600 text-black  text-sm rounded-lg transition-colors duration-300">
+        <button className="px-4 py-1.5 bg-brandPrimary hover:bg-cyan-600 text-black  text-sm rounded-lg transition-colors duration-300">
           Message Team
         </button>
       </motion.div>

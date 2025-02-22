@@ -90,13 +90,13 @@ export default function FreelancerHero() {
   });
 
   return (
-    <div className="flex flex-col">
+    <div className=" lg:min-h-screen flex flex-col p-6">
       <AnimatePresence>
-        <main className="flex-grow">
-          <section className="text-center">
-            <div className="container px-4 flex flex-col md:flex-row items-center">
+        <main className="">
+          <section className="">
+            <div className="container flex flex-col md:flex-row items-center justify-end">
               <motion.div
-                className="md:w-[45%] w-[90%] md:mr-4 flex items-center md:mt-10 mt-6"
+                className="md:w-[90%] w-[90%] md:mr-4 flex items-center md:mt-10 mt-6"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.5 }}
@@ -138,7 +138,7 @@ export default function FreelancerHero() {
                   FreelanceHub
                 </motion.h1>
                 <motion.p
-                  className="text-lg text-stone-400 mb-8"
+                  className="text-lg text-white mb-8"
                   initial={{ opacity: 0, x: -50 }}
                   whileInView={{
                     opacity: 1,
@@ -165,7 +165,7 @@ export default function FreelancerHero() {
                     whileTap="tap"
                   >
                     <Link
-                      to="/clientlogin"
+                      to="/freelancer/login"
                       className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-black bg-brandPrimary hover:bg-black hover:text-white hover:border-brandPrimary hover:border md:py-4 md:text-lg md:px-10 hover:transition-all hover:duration-500"
                     >
                       Get started

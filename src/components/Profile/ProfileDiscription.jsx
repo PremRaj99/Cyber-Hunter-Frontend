@@ -45,7 +45,7 @@ export default function ProfileDiscription() {
       <h3 className="text-cyan-400 text-lg font-semibold mb-3">
         Field of Excellence
       </h3>
-      <p className="text-sm text-gray-300">
+      <p className="text-l text-white font-semibold font-sans">
         {description || 'No description available'}
       </p>
     </div>

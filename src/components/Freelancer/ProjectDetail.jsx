@@ -136,7 +136,7 @@ The successful candidate will be responsible for the entire development lifecycl
               <button className="w-full sm:w-auto bg-brandPrimary text-black hover:bg-black hover:text-brandPrimary hover:border hover:border-brandPrimary font-bold py-3 px-6 rounded-lg mb-3 sm:mb-0 transition duration-300">
                 Submit Proposal
               </button>
-              <button className="w-full sm:w-auto border border-gray-300 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-100 hover:text-black transition duration-300">
+              <button className="w-full sm:w-auto border border-white text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-100 hover:text-black transition duration-300">
                 Save Project
               </button>
             </div>

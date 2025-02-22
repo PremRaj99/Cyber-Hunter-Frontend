@@ -64,7 +64,7 @@ const HelpSection = () => {
       animate={{ opacity: 1 }}
     >
       {/* Header Section */}
-      <div className="bg-gray-900/50 border border-cyan-500/20 rounded-xl p-6 mb-8">
+      <div className="bg-gray-900/50 border border-brandPrimary/20 rounded-xl p-6 mb-8">
         <h2 className="text-2xl font-bold text-cyan-400 mb-4">Help & Support</h2>
         <div className="relative">
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -73,7 +73,7 @@ const HelpSection = () => {
             placeholder="Search for help..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
+            className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-brandPrimary focus:ring-1 focus:ring-brandPrimary transition-all"
           />
         </div>
       </div>
@@ -81,18 +81,18 @@ const HelpSection = () => {
       {/* Quick Actions Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {[
-          { icon: <Mail size={24} />, title: "Mail", description: "Send Email to our support team", link: ""},
+          { icon: <Mail size={24} />, title: "Mail", description: "Send Email to our support team", link: "" },
           { icon: <Book size={24} />, title: "Documentation", description: "Browse our guides", link: "/docs" },
-          { icon: <Phone size={24} />, title: "Contact Us", description: "Get in touch", link : "/contact" }
-        ].map((action, index,link) => (
+          { icon: <Phone size={24} />, title: "Contact Us", description: "Get in touch", link: "/contact" }
+        ].map((action, index, link) => (
           <motion.div
             key={index}
             whileHover={{ scale: 1.02 }}
-            className="p-6 bg-gray-900/50 border border-gray-700 rounded-xl hover:border-cyan-500/30 transition-all cursor-pointer"
+            className="p-6 bg-gray-900/50 border border-gray-700 rounded-xl hover:border-brandPrimary/30 transition-all cursor-pointer"
             onClick={() => navigate(action.link)}
           >
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-cyan-500/10 rounded-lg flex items-center justify-center text-cyan-500">
+              <div className="w-12 h-12 bg-brandPrimary/10 rounded-lg flex items-center justify-center text-brandPrimary">
                 {action.icon}
               </div>
               <div>
@@ -117,8 +117,8 @@ const HelpSection = () => {
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
                   className={`px-4 py-2 rounded-lg text-sm transition-colors ${selectedCategory === category.id
-                      ? 'bg-cyan-500 text-black font-medium'
-                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    ? 'bg-brandPrimary text-black font-medium'
+                    : 'bg-gray-800 text-white hover:bg-gray-700'
                     }`}
                 >
                   {category.name}
@@ -154,7 +154,7 @@ const HelpSection = () => {
                         transition={{ duration: 0.2 }}
                         className="border-t border-gray-700"
                       >
-                        <div className="p-4 text-gray-300">
+                        <div className="p-4 text-white">
                           {faq.answer}
                         </div>
                       </motion.div>
@@ -191,7 +191,7 @@ const HelpSection = () => {
                     type="text"
                     value={ticketTitle}
                     onChange={(e) => setTicketTitle(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-brandPrimary focus:ring-1 focus:ring-brandPrimary transition-all"
                     placeholder="Brief description of your issue"
                     required
                   />
@@ -202,7 +202,7 @@ const HelpSection = () => {
                   <textarea
                     value={ticketDescription}
                     onChange={(e) => setTicketDescription(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all h-32"
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-brandPrimary focus:ring-1 focus:ring-brandPrimary transition-all h-32"
                     placeholder="Provide more details about your issue..."
                     required
                   />
@@ -210,7 +210,7 @@ const HelpSection = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-3 bg-cyan-500 text-black font-medium rounded-lg hover:bg-cyan-400 transition-colors"
+                  className="w-full py-3 bg-brandPrimary text-black font-medium rounded-lg hover:bg-cyan-400 transition-colors"
                 >
                   Submit Ticket
                 </button>

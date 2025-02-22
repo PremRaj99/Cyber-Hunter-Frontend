@@ -73,7 +73,7 @@ const ErrorPage = () => {
         <div className="flex items-center justify-center">
           <div className="relative flex items-center justify-center m-4">
             <svg
-              className="animate-spin h-28 w-h-28 text-cyan-400 p-2" 
+              className="animate-spin h-28 w-h-28 text-cyan-400 p-2"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -82,9 +82,9 @@ const ErrorPage = () => {
                 className="opacity-25"
                 cx="12"
                 cy="12"
-                r="10"              
+                r="10"
                 stroke="currentColor"
-                strokeWidth="4"    
+                strokeWidth="4"
               />
               <path
                 className="opacity-75 rounded-full"
@@ -92,7 +92,7 @@ const ErrorPage = () => {
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               />
             </svg>
-            <span className="absolute text-3xl font-bold text-cyan-500">{countdown}</span>
+            <span className="absolute text-3xl font-bold text-brandPrimary">{countdown}</span>
           </div>
         </div>
         <p className="text-lg mt-4 text-cyan-300">
@@ -100,9 +100,9 @@ const ErrorPage = () => {
         </p>
         <button
           onClick={() => navigate(-1)}
-          className="px-6 py-3 bg-cyan-500 text-black font-bold rounded-lg
+          className="px-6 py-3 bg-brandPrimary text-black font-bold rounded-lg
                      hover:bg-cyan-400 transition-all duration-300
-                     hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/50 mt-6"
+                     hover:scale-105 hover:shadow-lg hover:shadow-brandPrimary/50 mt-6"
         >
           <span className="flex items-center gap-2 text-lg"><IoMdArrowRoundBack />Go Back</span>
         </button>
@@ -112,7 +112,7 @@ const ErrorPage = () => {
         {[...Array(20)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-2 h-2 bg-cyan-500 rounded-full opacity-30"
+            className="absolute w-2 h-2 bg-brandPrimary rounded-full opacity-30"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,

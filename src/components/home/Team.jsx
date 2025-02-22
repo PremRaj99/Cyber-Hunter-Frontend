@@ -80,7 +80,7 @@ export default function Team() {
             Our Team
           </span>
           <div className="mt-8">
-            <p className="text-sm sm:text-base text-white max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base text-white max-w-2xl mx-auto px-8">
               Meet With our Team Members who are passionate about their work and
               dedicated to delivering exceptional results.
             </p>

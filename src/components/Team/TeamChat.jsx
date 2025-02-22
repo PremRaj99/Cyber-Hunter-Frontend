@@ -212,7 +212,7 @@ const TeamChat = () => {
               className={`p-2 rounded-lg mb-1 ${!notification.read ? "bg-gray-600 bg-opacity-30" : ""}`}
             >
               <div className="flex items-start">
-                <UserCircle size={16} className="text-cyan-500 mt-1 mr-2" />
+                <UserCircle size={16} className="text-brandPrimary mt-1 mr-2" />
                 <div>
                   <p className="text-sm text-white">
                     <span className="font-medium">{notification.user}</span> {notification.action}
@@ -223,7 +223,7 @@ const TeamChat = () => {
             </motion.div>
           ))}
         </div>
-        <button className="w-full text-center text-cyan-500 text-sm p-2 hover:underline">
+        <button className="w-full text-center text-brandPrimary text-sm p-2 hover:underline">
           See all notifications
         </button>
       </motion.div>
@@ -244,7 +244,7 @@ const TeamChat = () => {
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
             >
-              <Loader className="w-8 h-8 text-cyan-500" />
+              <Loader className="w-8 h-8 text-brandPrimary" />
             </motion.div>
           </motion.div>
         ) : (
@@ -256,13 +256,13 @@ const TeamChat = () => {
           >
             {/* Enhanced Sidebar */}
             <motion.div
-                initial={false}
-                animate={{
-                  width: isSidebarOpen ? (windowWidth < 768 ? "100%" : "16rem") : "0",
-                  opacity: isSidebarOpen ? 1 : 0,
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className={`
+              initial={false}
+              animate={{
+                width: isSidebarOpen ? (windowWidth < 768 ? "100%" : "16rem") : "0",
+                opacity: isSidebarOpen ? 1 : 0,
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className={`
                 fixed md:relative
                 h-full
                 bg-gray-900
@@ -284,7 +284,7 @@ const TeamChat = () => {
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
-                      className="text-gray-400 hover:text-cyan-500"
+                      className="text-gray-400 hover:text-brandPrimary"
                       onClick={() => setNotifications(prev => !prev)}
                     >
                       <Bell size={20} />
@@ -292,7 +292,7 @@ const TeamChat = () => {
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
-                      className="text-gray-400 hover:text-cyan-500"
+                      className="text-gray-400 hover:text-brandPrimary"
                     >
                       <Plus size={20} />
                     </motion.button>
@@ -313,7 +313,7 @@ const TeamChat = () => {
                       variants={messageVariants}
                       whileHover={{ x: 5 }}
                       className={`flex items-center p-2 rounded-lg cursor-pointer group
-                        ${selectedChannel === channel.name ? 'bg-cyan-500 bg-opacity-20' : 'hover:bg-gray-700'}`}
+                        ${selectedChannel === channel.name ? 'bg-brandPrimary bg-opacity-20' : 'hover:bg-gray-700'}`}
                       onClick={() => handleChannelSelect(channel.name)}
                     >
                       <Hash
@@ -321,7 +321,7 @@ const TeamChat = () => {
                         className={`${selectedChannel === channel.name ? 'text-cyan-400' : 'text-gray-400'} 
                           group-hover:text-cyan-400`}
                       />
-                      <span className={`ml-2 ${selectedChannel === channel.name ? 'text-cyan-400' : 'text-gray-300'} 
+                      <span className={`ml-2 ${selectedChannel === channel.name ? 'text-cyan-400' : 'text-white'} 
                         group-hover:text-white`}>
                         {channel.name}
                       </span>
@@ -329,7 +329,7 @@ const TeamChat = () => {
                         <motion.span
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
-                          className="ml-auto bg-cyan-500 text-xs px-2 py-1 rounded-full"
+                          className="ml-auto bg-brandPrimary text-xs px-2 py-1 rounded-full"
                         >
                           {channel.unread}
                         </motion.span>
@@ -353,7 +353,7 @@ const TeamChat = () => {
                           <UserCircle size={20} className="text-gray-400 group-hover:text-cyan-400" />
                           <div className="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full"></div>
                         </div>
-                        <span className="ml-2 text-gray-300 group-hover:text-white">{name}</span>
+                        <span className="ml-2 text-white group-hover:text-white">{name}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -370,12 +370,12 @@ const TeamChat = () => {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setSidebarOpen(!isSidebarOpen)}
-                    className="mr-4 text-gray-400 hover:text-cyan-500"
+                    className="mr-4 text-gray-400 hover:text-brandPrimary"
                   >
                     <Menu size={20} />
                   </motion.button>
                   <div className="flex items-center">
-                    <h2 className="text-cyan-500 font-medium">#{selectedChannel}</h2>
+                    <h2 className="text-brandPrimary font-medium">#{selectedChannel}</h2>
                     <span className="ml-2 text-gray-400 text-sm">3 online</span>
                   </div>
                 </div>
@@ -386,9 +386,9 @@ const TeamChat = () => {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Search messages..."
-                      className="bg-transparent border border-brandPrimary text-gray-200 px-4 py-2 placeholder:text-stone-400 rounded-lg pl-10 focus:outline-none focus:ring-2 focus:ring-cyan-500 w-64"
+                      className="bg-transparent border border-brandPrimary text-gray-200 px-4 py-2 placeholder:text-white rounded-lg pl-10 focus:outline-none focus:ring-2 focus:ring-brandPrimary w-64"
                     />
-                    <Search size={16} className="absolute left-3 top-3 text-stone-400" />
+                    <Search size={16} className="absolute left-3 top-3 text-white" />
                     {searchQuery && (
                       <X
                         size={16}
@@ -397,7 +397,7 @@ const TeamChat = () => {
                       />
                     )}
                   </div>
-                  <button className="text-gray-400 hover:text-cyan-500 md:hidden">
+                  <button className="text-gray-400 hover:text-brandPrimary md:hidden">
                     <Search size={20} />
                   </button>
                 </div>
@@ -422,11 +422,11 @@ const TeamChat = () => {
                         <span className="font-medium text-white">{msg.user}</span>
                         <span className="ml-2 text-xs text-gray-400">{msg.time}</span>
                       </div>
-                      <p className="text-gray-300">{msg.message}</p>
+                      <p className="text-white">{msg.message}</p>
                       {msg.hasAttachment && (
                         <div className="mt-2 p-2 bg-gray-800 rounded-lg flex items-center gap-2">
-                          <Image size={16} className="text-cyan-500" />
-                          <span className="text-sm text-gray-300">{msg.attachment.name}</span>
+                          <Image size={16} className="text-brandPrimary" />
+                          <span className="text-sm text-white">{msg.attachment.name}</span>
                         </div>
                       )}
                       {msg.reactions.length > 0 && (
@@ -444,10 +444,10 @@ const TeamChat = () => {
                       whileHover={{ opacity: 1 }}
                       className="flex gap-2"
                     >
-                      <button className="text-gray-400 hover:text-cyan-500">
+                      <button className="text-gray-400 hover:text-brandPrimary">
                         <MessageSquare size={16} />
                       </button>
-                      <button className="text-gray-400 hover:text-cyan-500">
+                      <button className="text-gray-400 hover:text-brandPrimary">
                         <MoreHorizontal size={16} />
                       </button>
                     </motion.div>
@@ -463,7 +463,7 @@ const TeamChat = () => {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={handleFileUpload}
-                    className="text-brandPrimary hover:text-cyan-500"
+                    className="text-brandPrimary hover:text-brandPrimary"
                   >
                     <Paperclip size={20} />
                   </motion.button>
@@ -479,7 +479,7 @@ const TeamChat = () => {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                    className="text-gray-400 hover:text-cyan-500"
+                    className="text-gray-400 hover:text-brandPrimary"
                   >
                     <Smile size={20} />
                   </motion.button>
@@ -487,7 +487,7 @@ const TeamChat = () => {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={handleSendMessage}
-                    className="bg-cyan-500 text-white p-2 rounded-lg hover:bg-cyan-600 transition-colors"
+                    className="bg-brandPrimary text-white p-2 rounded-lg hover:bg-cyan-600 transition-colors"
                   >
                     <Send size={20} />
                   </motion.button>

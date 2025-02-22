@@ -93,7 +93,7 @@ const ViewPersonItem = () => {
       initial={{ opacity: 0.5 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      
+
     >
       <div className="mx-auto max-w-4xl">
         <h1 className="mb-8 text-center text-2xl font-bold">
@@ -104,8 +104,8 @@ const ViewPersonItem = () => {
         <div className="relative mb-8">
           <input
             type="text"
-            placeholder="Search For Person by Entering Person name" 
-            className="w-full rounded-lg border-2 border-cyan-400 bg-gray-800 px-4 py-3 pl-10 text-white placeholder-gray-400 focus:border-cyan-500 focus:outline-none focus:ring-0"
+            placeholder="Search For Person by Entering Person name"
+            className="w-full rounded-lg border-2 border-cyan-400 bg-gray-800 px-4 py-3 pl-10 text-white placeholder-gray-400 focus:border-brandPrimary focus:outline-none focus:ring-0"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -152,10 +152,10 @@ const ViewPersonItem = () => {
               <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
                 <div className="flex space-x-2">
                   <button className="rounded-md bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-600 focus:outline-none">
-                    <span className="flex items-center text-l gap-1"><FaCheck/>Accept</span>
+                    <span className="flex items-center text-l gap-1"><FaCheck />Accept</span>
                   </button>
                   <button className="rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600 focus:outline-none">
-                    <span className="flex items-center text-l gap-1"><FaXmark/>Reject</span>
+                    <span className="flex items-center text-l gap-1"><FaXmark />Reject</span>
                   </button>
                 </div>
               </div>

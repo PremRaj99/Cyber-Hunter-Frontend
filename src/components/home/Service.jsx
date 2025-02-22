@@ -1,5 +1,6 @@
 // import React from 'react';
 import { IoLayers } from "react-icons/io5";
+import { useEffect } from "react";
 import {
   BsDatabaseFillCheck,
   BsCloudsFill,
@@ -8,7 +9,13 @@ import {
 import { TbHeartRateMonitor } from "react-icons/tb";
 import { FaArrowRight, FaCode } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+
 export default function service() {
+  
+  useEffect(() => {
+    document.title = "Cyber Hunter | Services";
+  }, []);
+
   return (
     <div>
       <div className="service overflow-hidden">

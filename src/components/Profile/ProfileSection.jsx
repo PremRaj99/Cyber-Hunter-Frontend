@@ -9,7 +9,7 @@ export default function ProfileSection() {
       </div>
       <div className="absolute right-2 top-4">
         <div
-          className="text-gray-300 text-xs cursor-pointer"
+          className="text-white text-xs cursor-pointer"
           title="3000 points"
         >
           <span className="text-green-500 text-lg font-semibold">3000</span> Pts
@@ -21,7 +21,7 @@ export default function ProfileSection() {
         alt=""
       />
       <h2 className="text-2xl text-[#00D8FF] font-semibold">Prem Raj</h2>
-      <div className="flex justify-between gap-8 text-gray-300">
+      <div className="flex justify-between gap-8 text-white">
         <div className="">
           <p>Username</p>
           <p>Course</p>
@@ -51,7 +51,7 @@ export default function ProfileSection() {
           alt=""
         />
         <img
-          className="w-8 h-8 object-cover hover:scale-105 cursor-pointer bg-gray-300 rounded-full"
+          className="w-8 h-8 object-cover hover:scale-105 cursor-pointer bg-white rounded-full"
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/1200px-GitHub_Invertocat_Logo.svg.png"
           alt=""
         />

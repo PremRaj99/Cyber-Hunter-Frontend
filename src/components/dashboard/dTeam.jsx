@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
@@ -10,6 +10,10 @@ import { GiTeamIdea } from "react-icons/gi";
 
 // You can create a theme context in your app, or pass isDarkMode as a prop
 const DTeam = ({ isDarkMode = true }) => {
+
+  const [projects, setProjects] = useState([]);
+  const [projectCount, setProjectCount] = useState(0);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -103,6 +107,24 @@ const DTeam = ({ isDarkMode = true }) => {
     },
   ];
 
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/project`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        setProjects(response.data);
+        setProjectCount(response.data.length); // Set the project count
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      }
+    };
+    fetchProjects();
+  }, []);
+
+
   return (
     <div className="p-1  sm:p-4 md:p-8">
       <motion.div
@@ -131,11 +153,11 @@ const DTeam = ({ isDarkMode = true }) => {
         {/* Team Stats Summary */}
         <motion.div
           variants={itemVariants}
-          className={`grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'
+          className={`grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 ${isDarkMode ? 'text-white' : 'text-gray-600'
             }`}
         >
           {[
-            { label: "Active Projects", value: "12" },
+            { label: "Active Projects", value: projectCount.toString() }, // Use the dynamic count
             { label: "Team Members", value: "34" },
             { label: "Achievements", value: "28" },
             { label: "Pending Tasks", value: "18" }

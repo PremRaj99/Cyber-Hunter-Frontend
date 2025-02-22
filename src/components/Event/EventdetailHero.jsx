@@ -57,7 +57,7 @@ export default function Eventdetails() {
                 </motion.div>
 
                 {/* Event Rules */}
-                <ul className="space-y-2 text-gray-300">
+                <ul className="space-y-2 text-white">
                   {[
                     "Upto 5 Members can Participate",
                     "2000/- cash Prize",
@@ -91,15 +91,15 @@ export default function Eventdetails() {
 
                 {/* Register Button */}
                 <Link to="/eventdetail">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.8 }}
-                  className="w-full md:w-auto px-4 py-2 bg-transparent border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-colors rounded"
-                >
-                  Register
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.8 }}
+                    className="w-full md:w-auto px-4 py-2 bg-transparent border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-colors rounded"
+                  >
+                    Register
                   </motion.button>
                 </Link>
               </div>

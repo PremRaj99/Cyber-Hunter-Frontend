@@ -47,7 +47,7 @@ export default function TechStackSection() {
 
   return <div className="w-full h-full p-6 flex gap-4 flex-wrap">
     {techStackIcons.map((Icon, index) => (
-        < img src={Icon.icon} key={index} className="md:h-12 h-20 text-gray-300" title={Icon.name} />
+      < img src={Icon.icon} key={index} className="md:h-12 h-20 text-white" title={Icon.name} />
     ))}
   </div>;
 }

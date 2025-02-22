@@ -98,8 +98,8 @@ const NotificationDashboard = () => {
               <div className="flex items-center justify-between">
                 <h2 className="text-xl font-semibold text-brandPrimary">Notifications</h2>
                 <div className="relative">
-                  <Bell className="w-5 h-5 text-cyan-500" />
-                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-cyan-500 rounded-full"></span>
+                  <Bell className="w-5 h-5 text-brandPrimary" />
+                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-brandPrimary rounded-full"></span>
                 </div>
               </div>
             </div>
@@ -120,14 +120,14 @@ const NotificationDashboard = () => {
                 >
                   <div className="flex items-start gap-3">
                     {!notification.read && (
-                      <Circle className="w-2 h-2 mt-2 fill-cyan-500 text-cyan-500 flex-shrink-0" />
+                      <Circle className="w-2 h-2 mt-2 fill-brandPrimary text-brandPrimary flex-shrink-0" />
                     )}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-4">
                         <h3 className="font-medium text-brandPrimary truncate">{notification.title}</h3>
-                        <span className="text-sm text-stone-400 flex-shrink-0">{notification.time}</span>
+                        <span className="text-sm text-white flex-shrink-0">{notification.time}</span>
                       </div>
-                      <p className="mt-1 text-sm text-stone-400 line-clamp-2">{notification.message}</p>
+                      <p className="mt-1 text-sm text-white line-clamp-2">{notification.message}</p>
                       <div className={`inline-block px-3 py-1 mt-2 rounded-full text-xs font-medium border ${getTypeStyles(notification.type)}`}>
                         {notification.type}
                       </div>
@@ -176,17 +176,17 @@ const NotificationDashboard = () => {
                       <h2 className="text-2xl font-semibold text-brandPrimary">
                         {selectedNotification.title}
                       </h2>
-                      <p className="text-stone-400 leading-relaxed">
+                      <p className="text-white leading-relaxed">
                         {selectedNotification.message}
                       </p>
-                      <div className="pt-4 text-sm text-stone-400 flex items-center gap-2">
+                      <div className="pt-4 text-sm text-white flex items-center gap-2">
                         <Bell className="w-4 h-4" />
                         Received at {selectedNotification.time}
                       </div>
                     </motion.div>
                   ) : (
                     <div className="flex flex-col items-center justify-center h-full text-gray-400">
-                      <Bell className="w-12 h-12 mb-4 text-cyan-500" />
+                      <Bell className="w-12 h-12 mb-4 text-brandPrimary" />
                       <p className="text-lg">Select a notification to view details</p>
                     </div>
                   )}

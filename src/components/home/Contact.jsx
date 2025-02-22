@@ -1,5 +1,5 @@
 // import React from 'react';
-
+import { useEffect } from "react";
 import {
   FaLocationDot,
   FaPhone,
@@ -8,6 +8,11 @@ import {
 } from "react-icons/fa6";
 
 export default function Contact() {
+
+  useEffect(() => {
+    document.title = "Cyber Hunter | Contact";
+  }, []);
+
   return (
     <div className="overflow-hidden">
       <section className="py-16 px-4 md:px-8 lg:px-16">
@@ -82,7 +87,7 @@ export default function Contact() {
                   <div className="group">
                     <input
                       type="text"
-                      className="w-full px-4 py-3  border bg-transparent border-brandPrimary rounded-lg focus:outline-none focus:border-brandPrimary transition-colors duration-300 placeholder:text-stone-400"
+                      className="w-full px-4 py-3  border bg-transparent border-brandPrimary rounded-lg focus:outline-none focus:border-brandPrimary transition-colors duration-300 placeholder:text-white"
                       placeholder="First Name"
                       required
                     />
@@ -90,7 +95,7 @@ export default function Contact() {
                   <div>
                     <input
                       type="text"
-                      className="w-full px-4 py-3 bg-transparent border border-brandPrimary rounded-lg focus:outline-none focus:border-brandPrimary transition-colors duration-300 placeholder:text-stone-400"
+                      className="w-full px-4 py-3 bg-transparent border border-brandPrimary rounded-lg focus:outline-none focus:border-brandPrimary transition-colors duration-300 placeholder:text-white"
                       placeholder="Last Name"
                       required
                     />
@@ -100,7 +105,7 @@ export default function Contact() {
                 <div>
                   <input
                     type="email"
-                    className="w-full px-4 py-3 bg-transparent border border-brandPrimary rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 placeholder:text-stone-400"
+                    className="w-full px-4 py-3 bg-transparent border border-brandPrimary rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 placeholder:text-white"
                     placeholder="Email Address"
                     required
                   />
@@ -109,7 +114,7 @@ export default function Contact() {
                 <div>
                   <input
                     type="tel"
-                    className="w-full px-4 py-3 bg-transparent border border-brandPrimary rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 placeholder:text-stone-400"
+                    className="w-full px-4 py-3 bg-transparent border border-brandPrimary rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 placeholder:text-white"
                     placeholder="Phone Number"
                   />
                 </div>
@@ -117,7 +122,7 @@ export default function Contact() {
                 <div>
                   <textarea
                     rows="4"
-                    className="w-full px-4 py-3 bg-transparent border border-brandPrimary rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 placeholder:text-stone-400"
+                    className="w-full px-4 py-3 bg-transparent border border-brandPrimary rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 placeholder:text-white"
                     placeholder="Your Message "
                     required
                   ></textarea>
