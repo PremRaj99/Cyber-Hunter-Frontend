@@ -161,7 +161,7 @@ export default function EventPage() {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`py-3 px-4 text-sm font-medium capitalize transition-all duration-300 ${activeTab === tab
+                className={`py-3 px-4 text-xl font-medium capitalize transition-all duration-300 ${activeTab === tab
                   ? "text-cyan-400 border-b-2 border-cyan-400"
                   : "text-gray-400 hover:text-brandPrimary"
                   }`}

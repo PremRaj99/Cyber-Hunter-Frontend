@@ -53,7 +53,7 @@ function Notification() {
   };
 
   return (
-    <div className="text-white max-h-[calc(100vh-10rem)]">
+    <div className="text-white max-h-[calc(100vh-4rem)] overflow-y-auto no-scrollbar">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div

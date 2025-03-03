@@ -207,7 +207,7 @@ export default function Leaderboard() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="h-full bg-gradient-to-b md:p-8 p-4"
+      className="h-full p-4"
     >
       <main ref={ref} className="max-w-6xl mx-auto">
         {/* Title */}

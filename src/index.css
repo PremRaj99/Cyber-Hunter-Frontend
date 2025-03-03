@@ -156,3 +156,8 @@ body::-webkit-scrollbar-thumb:hover {
 .payButton {
   @apply bg-[#3d7d12] hover:bg-[#8fff44]  text-white hover:text-black font-bold rounded-3xl px-6 py-3 mt-6;
 }
+
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
+}

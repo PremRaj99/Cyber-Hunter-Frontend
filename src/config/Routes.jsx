@@ -76,6 +76,10 @@ export const router = createBrowserRouter([
         path: "policy",
         element: <Policy />,
       },
+      {
+        path: "Verify",
+        element: <VerifyAchievement />,
+      },
     ],
   },
   {

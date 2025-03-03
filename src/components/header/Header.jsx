@@ -69,6 +69,11 @@ export default function Header() {
     setIsUserDropdownOpen(!isUserDropdownOpen);
   };
 
+  // useeffect to change document title
+  useEffect(() => {
+    document.title = "Login || Sign Up";
+  }, []);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -478,7 +483,7 @@ export default function Header() {
 
                 {/* Icon and text */}
                 <TbSignRight className="text-[#00D8FF] group-hover:scale-110 transition-transform duration-300" />
-                <span className="text-white font-medium relative">
+                <span className="text-white font-bold relative">
                   Sign Up
                   <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#00D8FF] group-hover:w-full transition-all duration-300" />
                 </span>

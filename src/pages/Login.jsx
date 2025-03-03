@@ -60,7 +60,7 @@ const ModernAuthForm = () => {
   });
 
   useEffect(() => {
-    document.title = isSignup ? 'Create Account' : 'Welcome Back';
+    document.title = isSignup ? 'Sign Up' : 'Login';
   }, [isSignup]);
 
   const validateForm = () => {
@@ -158,14 +158,14 @@ const ModernAuthForm = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-start p-12 md:p-4 gap-96">
+    <div className="min-h-screen w-full flex items-center justify-center p-8 md:p-2 gap-48 ">
       <motion.div
-        className="hidden lg:flex w-[1000px] h-screen items-center justify-center relative"
+        className="hidden lg:flex h-screen items-center justify-center relative"
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="relative w-[800px] h-[800px]">
+        <div className="relative w-[600px] h-[600px]">
 
           {/* Main image container */}
           <motion.div
@@ -192,7 +192,6 @@ const ModernAuthForm = () => {
             </AnimatePresence>
 
             {/* Overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           </motion.div>
 
           {/* Decorative elements */}

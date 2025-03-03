@@ -196,7 +196,7 @@ export default function VerifyAchievement() {
       {/* Certificate Preview Modal */}
       {showPreview && verificationResult === "success" && achievementDetails && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-80 backdrop-blur-sm">
-          <div className="relative w-full max-w-4xl max-h-full bg-black rounded-lg shadow-2xl overflow-auto">
+          <div className="relative w-full max-w-4xl max-h-full bg-black rounded-lg shadow-2xl overflow-auto no-scrollbar">
             <div className="sticky top-0 z-10 flex justify-between items-center p-4 bg-gradient-to-r from-brandPrimary to-black text-white">
               <h3 className="text-xl font-bold">Certificate Preview</h3>
               <button

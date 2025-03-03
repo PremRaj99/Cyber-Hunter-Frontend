@@ -95,7 +95,7 @@ const ModernContact = () => {
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
       variants={containerVariants}
-      className="w-full max-w-3xl mx-auto px-6 py-12"
+      className="w-full max-w-3xl mx-auto px-6 py-12 max-h-[calc(100vh-6rem)] overflow-auto no-scrollbar"
     >
       <motion.div
         variants={itemVariants}
@@ -111,10 +111,10 @@ const ModernContact = () => {
           <Sparkles className="w-8 h-8 text-cyan-400 mb-2 mx-auto" />
         </motion.div>
         <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text mb-3">
-          GET IN TOUCH
+          PUT YOUR QUERY
         </h2>
         <p className="text-gray-400 max-w-md mx-auto">
-          Have a question or project in mind? We'd love to hear from you!
+          Have a question or project in mind? <br/> We'd love to hear from you!
         </p>
       </motion.div>
 

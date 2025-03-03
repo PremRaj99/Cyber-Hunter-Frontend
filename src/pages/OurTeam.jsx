@@ -16,10 +16,8 @@ const sectionVariants = {
 };
 
 const OurTeam = () => {
-
   return (
     <>
-
       <motion.div
         initial="hidden"
         animate="visible"
