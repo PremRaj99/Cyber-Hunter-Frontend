@@ -19,13 +19,13 @@ import { MdMiscellaneousServices } from "react-icons/md";
 import { PiRankingFill } from "react-icons/pi";
 import { GiTrophy } from "react-icons/gi";
 import { SiFreelancer } from "react-icons/si";
+import leaduserdemo from "../../assets/leaduserdemo.png";
 
 
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileView, setIsMobileView] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const controls = useAnimation();
   const navigate = useNavigate();
@@ -104,10 +104,9 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [controls]);
-
   useEffect(() => {
     const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 768);
+      // Remove setIsMobileView since the state is unused
       if (window.innerWidth > 768) {
         setIsUserDropdownOpen(false); // Close dropdown on resize if it's not mobile view
       }
@@ -142,39 +141,6 @@ export default function Header() {
       localStorage.removeItem("refreshToken");
       dispatch(signOutUserSuccess());
     }
-  };
-
-  // Mobile menu variants
-  const mobileMenuVariants = {
-    hidden: {
-      opacity: 0,
-      x: 0,
-      transition: {
-        duration: 0.3,
-      },
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 120,
-        damping: 20,
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  // Mobile menu item variants
-  const mobileMenuItemVariants = {
-    hidden: {
-      opacity: 0,
-      y: 20,
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-    },
   };
 
   const nav = [
@@ -229,16 +195,10 @@ export default function Header() {
     },
   ];
 
-  // mobile login /logout
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const toggleLoginState = () => {
-    setIsLoggedIn(!isLoggedIn);
-  };
-
   return (
     <motion.div
-      className="sticky z-40 top-0 w-full h-20 md:px-10 px-4"
+      className={`sticky z-40 top-0 w-full h-20 md:px-10 px-4 ${isScrolled ? "bg-black" : "bg-transparent"
+        }`}
       animate={controls}
       initial={{ backgroundColor: "black" }}
       transition={{ duration: 0.3 }}
@@ -246,15 +206,16 @@ export default function Header() {
       <div className="w-full h-full flex justify-between items-center border-b-2 border-[#00D8FF]">
         {/* Logo */}
         <div className="text-2xl flex items-center gap-2 font-bold relative">
-          <div
-            className="z-10 cursor-pointer"
+          <button
+            className="z-10 cursor-pointer bg-transparent border-none p-0 font-inherit"
             onClick={() => {
               navigate("/");
             }}
+            aria-label="Navigate to home page"
           >
             <span className="text-[#00D8FF]">Cyber</span>{" "}
             <span className="drop-shadow-[0px_0px_5px_#00D8FF]">Hunter</span>
-          </div>
+          </button>
           <div className="h-40 w-40 bg-[#00D8FF] overflow-hidden absolute top-0 -translate-y-1/2 right-0 translate-x-1/4 rounded-full opacity-45 blur-2xl"></div>
         </div>
 
@@ -396,8 +357,7 @@ export default function Header() {
                   />
                   <img
                     src={
-                      currentUser.profilePicture ||
-                      "https://plus.unsplash.com/premium_photo-1661757403301-ae68e1f1b827?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                      currentUser.profilePicture || leaduserdemo
                     }
                     alt="Profile"
                     className="w-10 h-10 rounded-full object-cover border-2 border-transparent group-hover:border-[#00D8FF]/50 transform transition-all duration-300 group-hover:scale-105 relative z-10"
@@ -405,9 +365,9 @@ export default function Header() {
                 </div>
 
                 {/* Username */}
-                <span className="font-semibold relative">
+                <span className="font-semibold relative"> 
                   <span className="relative z-10 group-hover:text-[#00D8FF] transition-colors duration-300">
-                    {currentUser.name || "Anonymous"}
+                    {currentUser.name || " "}
                   </span>
                   <span
                     className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#00D8FF] group-hover:w-full transition-all duration-300"
@@ -495,7 +455,7 @@ export default function Header() {
               </motion.button>
 
               <motion.button
-                className="group relative flex items-center gap-2 px-6 py-2 rounded-full overflow-hidden mr-4  transition-colors duration-300 border border-[#00D8FF]-4/30 hover:border-[#00D8FF]"
+                className="group relative  items-center gap-2 md:px-6 md:py-2 hidden md:flex rounded-full overflow-hidden mr-4  transition-colors duration-300 border border-[#00D8FF]-4/30 hover:border-[#00D8FF]"
                 onClick={() => navigate("/auth/login")}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

@@ -76,7 +76,7 @@ export default function Team() {
     <div>
       <div className="mt-10 mb-3 overflow-hidden">
         <div className="text-center ">
-          <span className="text-3xl font-semibold text-brandPrimary text-500 text-center  md:m-4  border-b-2 md:p-4 border-brandPrimary">
+          <span className="text-3xl font-bold text-brandPrimary text-500 text-center  md:m-4  border-b-2 md:p-4 border-brandPrimary">
             Our Team
           </span>
           <div className="mt-8">

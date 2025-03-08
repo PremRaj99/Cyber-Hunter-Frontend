@@ -1,16 +1,14 @@
-import React, { useState, useEffect, use } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { format } from "date-fns";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   FaExternalLinkAlt,
   FaGithub,
   FaTags,
   FaCode,
   FaCalendarAlt,
-  FaArrowLeft,
-  FaArrowRight
 } from "react-icons/fa";
 import ImageSlider from "../components/Project/ImageSlider";
 import Preloader from "../components//Common/Preloader";
@@ -89,7 +87,7 @@ export default function Project() {
               <div className="h-1 w-20 bg-cyan-500 rounded-full mt-2 mb-6"></div>
 
               <p className="text-gray-400 mb-8">
-                The project you're looking for doesn't exist or has been moved to another dimension.
+                The project you&apos;re looking for doesn&apos;t exist or has been moved to another dimension.
               </p>
 
               {/* Back button with cyan hover effect */}

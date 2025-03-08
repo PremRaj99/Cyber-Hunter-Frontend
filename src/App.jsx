@@ -16,9 +16,14 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
+  // The Cursor might be a React component, not a utility object with methods
   if (loading) {
     return <Preloader />;
   }
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+    </>
+  );
 }

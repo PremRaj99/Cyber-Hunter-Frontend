@@ -59,6 +59,11 @@ export default function UserDetail() {
     setTotalAmount(newAmount);
   }, [clubAccepted, idCardAccepted]);
 
+  // useEffect for document title
+  useEffect(() => {
+    document.title = "User Registration | Cyber Hunter Club";
+  }, []);
+
   // Use useEffect to trigger total amount calculation whenever checkboxes change
   useEffect(() => {
     handleCheckboxChange();
@@ -181,15 +186,6 @@ export default function UserDetail() {
       // If no file is selected, revert to default image
       setImageSrc(leaduserdemo);
       setProfilePicture(null);
-    }
-  };
-
-  // Add a function to handle image removal if needed
-  const handleRemoveImage = () => {
-    setImageSrc(leaduserdemo);
-    setProfilePicture(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
     }
   };
 
@@ -388,7 +384,7 @@ export default function UserDetail() {
                   "FSD",
                   "DS",
                   "MAWT",
-                  "Computer Application",
+                  "CA",
                   "Other",
                 ].map((b) => (
                   <option key={b} value={b}>

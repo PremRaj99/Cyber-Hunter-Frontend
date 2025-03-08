@@ -1,6 +1,6 @@
 import axios from "axios";
 import { motion } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   FaBullseye,
@@ -21,7 +21,7 @@ export default function ProfileDash() {
   const [projects, setProjects] = useState([]);
   const navigate = useNavigate();
 
-  const userDetails = user
+  const userDetails = useMemo(() => user
     ? {
       name: user.name,
       email: user.email,
@@ -38,7 +38,7 @@ export default function ProfileDash() {
       gender: user.gender,
       points: user.points,
     }
-    : {};
+    : {}, [user]);
 
   const userInterests = user?.interest || [];
 
@@ -67,13 +67,19 @@ export default function ProfileDash() {
 
   // console.log(user.name);
   useEffect(() => {
-    document.title = "Profile";
     axios
       .get(`${import.meta.env.VITE_API_URL}/api/v1/user`, user?.userId)
       .catch((err) => {
         console.log(err);
       });
   }, [dispatch, user?.userId]);
+
+  // useeffect for document title
+  useEffect(() => {
+    if (userDetails.name) {
+      document.title = `${userDetails.name}'s Profile`;
+    }
+  }, [userDetails.name]);
 
   // fetch TechStack
   useEffect(() => {
@@ -91,6 +97,7 @@ export default function ProfileDash() {
       }
     };
     fetchTechStack();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projects[0]?.userId]);
 
   // Update the fetchUserInterests useEffect
@@ -99,6 +106,7 @@ export default function ProfileDash() {
       setIsLoading(true);
       try {
         // Fetch user details
+        // eslint-disable-next-line no-unused-vars
         const userResponse = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/v1/user/${user?._id}`,
           {
@@ -170,153 +178,169 @@ export default function ProfileDash() {
     >
       <div className="flex flex-col-reverse lg:grid lg:grid-cols-12 md:gap-4">
         {/* Left Column - Project Cards */}
+
         <motion.div
-          className="flex flex-col-reverse lg:col-span-4 lg:flex-col space-y-6 gap-4 md:gap-0 no-scrollbar"
+          className="flex flex-col-reverse lg:col-span-4 lg:flex-col space-y-2 gap-4 md:gap-0 no-scrollbar"
           variants={itemVariants}
         >
-          <motion.div
-            className="h-[450px] md:h-[525px] rounded-2xl overflow-y-auto pr-2 mt-6 md:mt-0 no-scrollbar"
-            variants={itemVariants}
-          >
-            {projects && projects.length > 0 ? (
-              projects.map((project) => (
-                <motion.div
-                  key={project._id}
-                  className="bg-gray-800/60 rounded-xl p-4 shadow-lg mb-4 last:mb-0 hover:bg-gray-700/80 transition-all duration-300"
-                >
-                  <div
-                    className="flex gap-4 hover:cursor-pointer"
-                    onClick={() =>
-                      navigate(`/dashboard/project/${project._id}`)
-                    }
+          <div className="flex flex-col md:space-y-0  bg-gray-800/60 rounded-xl p-4 border border-gray-700/50 backdrop-blur-sm">
+            <div>
+              <h2 className="text-lg font-semibold text-brandPrimary ml-4">Projects</h2>
+            </div>
+            <motion.div
+              className="h-[450px] md:h-[525px] rounded-2xl overflow-y-auto pr-2 mt-6 md:mt-0 no-scrollbar"
+              variants={itemVariants}
+            >
+              {projects && projects.length > 0 ? (
+                projects.map((project) => (
+                  <motion.div
+                    key={project._id}
+                    className="bg-gray-800/60 rounded-xl p-4 shadow-lg mb-4 last:mb-0 hover:bg-gray-700/80 transition-all duration-300"
                   >
-                    <div className="w-36 h-40 md:w-32 md:h-32 bg-navy-900 rounded-lg overflow-hidden">
-                      <img
-                        src={
-                          project.projectThumbnail ||
-                          "/path/to/default-image.png"
-                        }
-                        alt={project.projectName}
-                        className="w-full h-full object-cover rounded-lg transition-transform hover:scale-105"
-                        draggable="false"
-                        onError={(e) => {
-                          e.target.src = "/path/to/default-image.png";
-                        }}
-                      />
+                    <div
+                      className="flex gap-4 hover:cursor-pointer"
+                      onClick={() =>
+                        navigate(`/dashboard/project/${project._id}`)
+                      }
+                    >
+                      <div className="w-36 h-40 md:w-32 md:h-32 bg-navy-900 rounded-lg overflow-hidden">
+                        <img
+                          src={
+                            project.projectThumbnail ||
+                            "/path/to/default-image.png"
+                          }
+                          alt={project.projectName}
+                          className="w-full h-full object-cover rounded-lg transition-transform hover:scale-105"
+                          draggable="false"
+                          onError={(e) => {
+                            e.target.src = "/path/to/default-image.png";
+                          }}
+                        />
+                      </div>
+
+                      <div className="flex-1">
+                        <div className="flex justify-between items-start">
+                          <h3 className="text-cyan-400 text-lg font-semibold">
+                            {project.projectName?.toUpperCase()}
+                          </h3>
+                          <span className="text-xs text-gray-400">
+                            {new Date(project.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+
+                        {/* Status Badge */}
+                        <div className="mt-1">
+                          <span
+                            className={`text-xs px-2 py-1 rounded-full ${project.status === "pending"
+                              ? "bg-yellow-500/20 text-yellow-400"
+                              : project.status === "approved"
+                                ? "bg-green-500/20 text-green-400"
+                                : "bg-red-500/20 text-red-400"
+                              }`}
+                          >
+                            {project.status?.charAt(0).toUpperCase() +
+                              project.status?.slice(1)}
+                          </span>
+                        </div>
+
+                        {/* Project Links */}
+                        <div className="flex items-start justify-start gap-4 text-sm text-gray-400 mt-2">
+                          {project.gitHubLink && (
+                            <div className="flex items-center gap-2 hover:text-cyan-400 transition-colors">
+                              <FaGithub className="text-lg" />{" "}
+                              {/* Adjusted icon size and removed extra span */}
+                              <a
+                                href={project.gitHubLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                GitHub
+                              </a>
+                            </div>
+                          )}
+                          {project.liveLink && (
+                            <div className="flex items-center gap-2 hover:text-cyan-400 transition-colors">
+                              <FaBullseye />
+                              <a
+                                href={project.liveLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                Live
+                              </a>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Project Description */}
+                        <p className="text-sm text-white mt-2 line-clamp-2">
+                          {project.projectDescription}
+                        </p>
+                      </div>
                     </div>
-
-                    <div className="flex-1">
-                      <div className="flex justify-between items-start">
-                        <h3 className="text-cyan-400 text-lg font-semibold">
-                          {project.projectName?.toUpperCase()}
-                        </h3>
-                        <span className="text-xs text-gray-400">
-                          {new Date(project.createdAt).toLocaleDateString()}
-                        </span>
-                      </div>
-
-                      {/* Status Badge */}
-                      <div className="mt-1">
-                        <span
-                          className={`text-xs px-2 py-1 rounded-full ${project.status === "pending"
-                            ? "bg-yellow-500/20 text-yellow-400"
-                            : project.status === "approved"
-                              ? "bg-green-500/20 text-green-400"
-                              : "bg-red-500/20 text-red-400"
-                            }`}
-                        >
-                          {project.status?.charAt(0).toUpperCase() +
-                            project.status?.slice(1)}
-                        </span>
-                      </div>
-
-                      {/* Project Links */}
-                      <div className="flex items-start justify-start gap-4 text-sm text-gray-400 mt-2">
-                        {project.gitHubLink && (
-                          <div className="flex items-center gap-2 hover:text-cyan-400 transition-colors">
-                            <FaGithub className="text-lg" />{" "}
-                            {/* Adjusted icon size and removed extra span */}
-                            <a
-                              href={project.gitHubLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              GitHub
-                            </a>
-                          </div>
-                        )}
-                        {project.liveLink && (
-                          <div className="flex items-center gap-2 hover:text-cyan-400 transition-colors">
-                            <FaBullseye />
-                            <a
-                              href={project.liveLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              Live
-                            </a>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Project Description */}
-                      <p className="text-sm text-white mt-2 line-clamp-2">
-                        {project.projectDescription}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))
-            ) : (
-              <motion.div
-                className="flex flex-col items-center justify-center h-full text-gray-400"
-                variants={itemVariants}
-              >
-                <svg
-                  className="w-16 h-16 mb-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  </motion.div>
+                ))
+              ) : (
+                <motion.div
+                  className="flex flex-col items-center justify-center h-full text-gray-400"
+                  variants={itemVariants}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                  />
-                </svg>
-                <p className="text-lg font-semibold">No Projects Yet</p>
-                <p className="text-sm text-gray-500">
-                  Start adding your projects to showcase your work
-                </p>
-              </motion.div>
-            )}
-          </motion.div>
+                  <svg
+                    className="w-16 h-16 mb-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                    />
+                  </svg>
+                  <p className="text-lg font-semibold">No Projects Yet</p>
+                  <p className="text-sm text-gray-500">
+                    Start adding your projects to showcase your work
+                  </p>
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
 
           {/* Field of Excellence */}
+            <h2 className="text-lg font-semibold text-brandPrimary">
+              Field of Excellence
+            </h2>
           <motion.div
-            className="flex w-full bg-gray-800/60 rounded-xl p-4 gap-4 border border-gray-700/50 backdrop-blur-sm "
+            className="flex w-full bg-gray-800/60 rounded-xl h-[210px] p-4 gap-4 border border-gray-700/50 backdrop-blur-sm "
             variants={itemVariants}
           >
-            <ProfileDiscription />
+            <div className="overflow-y-auto no-scrollbar">
+              <ProfileDiscription />
+            </div>
           </motion.div>
         </motion.div>
 
         {/* Right Column */}
-        <motion.div className="lg:col-span-8 space-y-6" variants={itemVariants}>
+        <motion.div className="lg:col-span-8 space-y-4" variants={itemVariants}>
+
           {/* Badges Section */}
           <motion.div
-            className="bg-gray-800/60 rounded-xl p-4 border border-gray-700/50 backdrop-blur-sm"
+            className="bg-gray-800/60 rounded-xl px-4 border border-gray-700/50 backdrop-blur-sm"
             variants={itemVariants}
           >
-            <div className="flex flex-nowrap justify-start overflow-x-auto gap-6 custom-scrollbar"
+            <h2 className="text-lg font-semibold items-start text-cyan-400 p-2">
+              Badges & Achievements
+            </h2>
+            <div className="flex flex-nowrap justify-start overflow-x-auto gap-2 custom-scrollbar"
               style={{
                 paddingBottom: '10px',
               }}
             >
-              {["gold", "green", "purple", "silver", "orange", "cyan", "red", "blue", "cyan", "red", "blue", "cyan", "red", "blue", "cyan", "red", "blue", "cyan", "red", "blue"].map(
+
+              {["gold", "green", "purple", "silver", "orange", "cyan"].map(
                 (color, index) => (
                   <div
                     key={index}
@@ -344,7 +368,7 @@ export default function ProfileDash() {
           <div className="grid md:grid-cols-2 gap-6">
             {/* Profile Section */}
             <motion.div
-              className="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50 backdrop-blur-sm"
+              className="bg-gray-800/60 rounded-xl md:p-6 p-4 border border-gray-700/50 backdrop-blur-sm"
               variants={itemVariants}
             >
               <div className="flex flex-col justify-center items-center gap-4 mb-6">
@@ -368,10 +392,12 @@ export default function ProfileDash() {
                     key !== "points" && key !== "name" && (
                       <div
                         key={key}
-                        className="grid grid-cols-2 bg-gray-700/30 p-2 rounded-lg"
+                        className="grid grid-cols-2 bg-gray-700/30 p-2 rounded-lg overflow-x-hidden md:overflow-x-visible"
                       >
                         <span className="text-gray-400 capitalize">{key}</span>
-                        <span className="text-right">{value}</span>
+                        <span className="text-right">
+                          {key === "email" ? value.substring(0, 13) + (value.length > 10 ? "..." : "") : value}
+                        </span>
                       </div>
                     )
                 )}
@@ -402,14 +428,14 @@ export default function ProfileDash() {
                 </div>
               ) : tech && tech.length > 0 ? (
                 <motion.div
-                  className="flex flex-wrap items-start gap-8"
+                  className="flex items-center gap-8"
                   variants={containerVariants}
                 >
                   <TechStack techstack={tech} />
                 </motion.div>
               ) : (
                 <motion.div
-                  className="flex flex-col items-center justify-center h-[200px] bg-gray-800/60 rounded-xl border border-gray-700/50 backdrop-blur-sm"
+                  className="flex flex-col items-center justify-center h-[200px] "
                   variants={itemVariants}
                 >
                   <svg

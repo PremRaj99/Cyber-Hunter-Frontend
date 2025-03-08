@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 export default function ProfileDiscription() {
@@ -42,9 +42,6 @@ export default function ProfileDiscription() {
 
   return (
     <div>
-      <h3 className="text-cyan-400 text-lg font-semibold mb-3">
-        Field of Excellence
-      </h3>
       <p className="text-l text-white font-semibold font-sans">
         {description || 'No description available'}
       </p>
