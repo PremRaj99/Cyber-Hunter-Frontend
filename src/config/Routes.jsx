@@ -37,6 +37,7 @@ import EmailSettings from "../pages/EmailSettings";
 import ChangePassword from "../pages/ChangePassword";
 import Policy from "../pages/Policy";
 import VendorLogin from "../pages/VendorLogin";
+import OurTeam from "../pages/OurTeam";
 
 export const router = createBrowserRouter([
   {
@@ -79,6 +80,10 @@ export const router = createBrowserRouter([
       {
         path: "Verify",
         element: <VerifyAchievement />,
+      },
+      {
+        path: "ourteam",
+        element: <OurTeam />,
       },
     ],
   },

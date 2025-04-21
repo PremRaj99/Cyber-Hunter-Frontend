@@ -6,11 +6,10 @@ import premPic from "../../assets/team/premrajpic.png";
 import manikPic from "../../assets/team/manikdutt.png";
 // Internal Import
 import MemberCard from "../Team/MemberCard";
-import { Link } from "react-router-dom";
-import { FaArrowRight } from "react-icons/fa6";
-import Button from "../Common/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function Team() {
+  const navigate = useNavigate();
   const memberData = [
     {
       id: 1,
@@ -32,7 +31,7 @@ export default function Team() {
       name: "Naman Kumar",
       role: "Founder & CEO",
       description:
-        "BLOCKCHAIN ISN’T JUST TECH, IT’S A REVOLUTION WAITING TO BE BUILT",
+        "BLOCKCHAIN ISN'T JUST TECH, IT'S A REVOLUTION WAITING TO BE BUILT",
       photo: namanPic,
       portfolio: "https://www.namankumar.live/",
       socialMedia: {
@@ -89,22 +88,20 @@ export default function Team() {
         <div className=" lg:px-16 max-w-screen-2xl mx-auto h-[700px]">
           <Carousel indicators={false} className="w-full my-auto mb-[80px]">
             {memberData.map((member) => (
-              <div className="w-3/4  flex flex-col-reverse md:flex-row rounded-2xl md:mb-4 items-center  md:gap-12 bg-transparent border">
-                <MemberCard key={member.id} memberData={member} />
+              <div key={member.id} className="w-3/4 flex flex-col-reverse md:flex-row rounded-2xl md:mb-4 items-center md:gap-12 bg-transparent border">
+                <MemberCard memberData={member} />
               </div>
             ))}
           </Carousel>
         </div>
       </div>
-      <div className="flex items-center justify-center">
-        <Link to="/ourteam">
-          <Button type="submit" rounded="md">
-            <span className="flex items-center">
-              <p>Our Team</p>
-              <FaArrowRight className="h-6 w-6 m-1 " />
-            </span>
-          </Button>
-        </Link>
+      <div className="text-center mt-8">
+        <button
+          onClick={() => navigate("/ourteam")}
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300"
+        >
+          Our Team
+        </button>
       </div>
     </div>
   );
