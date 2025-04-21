@@ -424,7 +424,7 @@ export default function Header() {
             <div className="flex items-center justify-center gap-4">
               <motion.button
                 className="group relative hidden md:flex items-center gap-2 px-6 py-2 rounded-full overflow-hidden border border-[#00D8FF]-4/30 hover:border-[#00D8FF] transition-colors duration-300"
-                onClick={() => navigate("/auth/login")}
+                onClick={() => navigate("/auth/login?mode=signup")}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -642,14 +642,14 @@ export default function Header() {
                 ) : (
                   <button
                     onClick={() => {
-                      navigate("/auth/login");
+                      navigate("/auth/login?mode=signup");
                       toggleMenu();
                     }}
                     className="w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-lg
                     bg-[#00D8FF]/10 text-[#00D8FF] hover:bg-[#00D8FF]/20 transition-colors duration-200"
                   >
                     <TbLogin className="w-5 h-5" />
-                    <span>Login</span>
+                    <span>Sign Up</span>
                   </button>
                 )}
               </motion.div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signInStart, signInSuccess, signInFailure } from '../redux/User/userSlice';
 import { Mail, Lock, Eye, EyeOff, Github, Twitter, AppleIcon } from 'lucide-react';
@@ -41,7 +41,8 @@ const validatePassword = (password) => {
 };
 
 const ModernAuthForm = () => {
-  const [isSignup, setIsSignup] = useState(false);
+  const location = useLocation();
+  const [isSignup, setIsSignup] = useState(location.search.includes('mode=signup'));
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -61,7 +62,24 @@ const ModernAuthForm = () => {
 
   useEffect(() => {
     document.title = isSignup ? 'Sign Up' : 'Login';
+    // Update URL when isSignup changes
+    const newUrl = isSignup ? '/auth/login?mode=signup' : '/auth/login';
+    window.history.replaceState({}, '', newUrl);
   }, [isSignup]);
+
+  useEffect(() => {
+    setFormData({
+      email: '',
+      password: '',
+      confirmPassword: '',
+    });
+    setErrors({});
+  }, [isSignup]);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    setIsSignup(searchParams.get('mode') === 'signup');
+  }, [location.search]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -259,9 +277,34 @@ const ModernAuthForm = () => {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-red-500 text-sm mt-1 whitespace-pre-line">
+                <p className="text-red-500 text-sm mt-1">
                   {errors.password}
                 </p>
+              )}
+              {isSignup && (
+                <div className="mt-2 space-y-1">
+                  <p className="text-sm text-gray-400">Password must contain:</p>
+                  <ul className="text-sm space-y-1">
+                    <li className={`flex items-center ${formData.password.length >= 8 ? 'text-green-500' : 'text-gray-400'}`}>
+                      <span className="mr-2">✓</span> At least 8 characters
+                    </li>
+                    <li className={`flex items-center ${/[A-Z]/.test(formData.password) ? 'text-green-500' : 'text-gray-400'}`}>
+                      <span className="mr-2">✓</span> At least one uppercase letter
+                    </li>
+                    <li className={`flex items-center ${/[a-z]/.test(formData.password) ? 'text-green-500' : 'text-gray-400'}`}>
+                      <span className="mr-2">✓</span> At least one lowercase letter
+                    </li>
+                    <li className={`flex items-center ${/\d/.test(formData.password) ? 'text-green-500' : 'text-gray-400'}`}>
+                      <span className="mr-2">✓</span> At least one number
+                    </li>
+                    <li className={`flex items-center ${/[!@#$%^&*(),.?":{}|<>]/.test(formData.password) ? 'text-green-500' : 'text-gray-400'}`}>
+                      <span className="mr-2">✓</span> At least one special character
+                    </li>
+                    <li className={`flex items-center ${!/\s/.test(formData.password) ? 'text-green-500' : 'text-gray-400'}`}>
+                      <span className="mr-2">✓</span> No spaces
+                    </li>
+                  </ul>
+                </div>
               )}
             </div>
 
