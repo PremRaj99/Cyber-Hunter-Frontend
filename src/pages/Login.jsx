@@ -1,29 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { signInStart, signInSuccess, signInFailure } from '../redux/User/userSlice';
-import { Mail, Lock, Eye, EyeOff, Github, Twitter, AppleIcon } from 'lucide-react';
-import axios from '../utils/Axios';
-import { BsGoogle } from 'react-icons/bs';
-import login from '../assets/loginSignUp/login.svg';
-import signup from '../assets/loginSignUp/signup.svg';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaApple } from 'react-icons/fa6';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../redux/User/userSlice";
+import {
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  Github,
+  Twitter,
+  AppleIcon,
+} from "lucide-react";
+import axios from "../utils/Axios";
+import { BsGoogle } from "react-icons/bs";
+import login from "../assets/loginSignUp/login.svg";
+import signup from "../assets/loginSignUp/signup.svg";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaApple } from "react-icons/fa6";
+import GoogleLogin from "../components/google/GoogleLogin";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const sanitizeInput = (input) => {
-  return input.trim().replace(/[<>]/g, '');
+  return input.trim().replace(/[<>]/g, "");
 };
 
 const isValidEmail = (email) => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const commonFakeDomains = [
-    'tempmail.com', 'throwaway.com', 'tempmail.net',
-    'fakeinbox.com', 'trash-mail.com', '10minutemail.com'
+    "tempmail.com",
+    "throwaway.com",
+    "tempmail.net",
+    "fakeinbox.com",
+    "trash-mail.com",
+    "10minutemail.com",
   ];
 
   if (!emailRegex.test(email)) return false;
 
-  const domain = email.split('@')[1].toLowerCase();
+  const domain = email.split("@")[1].toLowerCase();
   if (commonFakeDomains.includes(domain)) return false;
 
   return true;
@@ -36,49 +54,51 @@ const validatePassword = (password) => {
     hasLowercase: /[a-z]/.test(password),
     hasNumber: /\d/.test(password),
     hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
-    noSpaces: !/\s/.test(password)
+    noSpaces: !/\s/.test(password),
   };
 };
 
 const ModernAuthForm = () => {
   const location = useLocation();
-  const [isSignup, setIsSignup] = useState(location.search.includes('mode=signup'));
+  const [isSignup, setIsSignup] = useState(
+    location.search.includes("mode=signup")
+  );
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
   useEffect(() => {
-    document.title = isSignup ? 'Sign Up' : 'Login';
+    document.title = isSignup ? "Sign Up" : "Login";
     // Update URL when isSignup changes
-    const newUrl = isSignup ? '/auth/login?mode=signup' : '/auth/login';
-    window.history.replaceState({}, '', newUrl);
+    const newUrl = isSignup ? "/auth/login?mode=signup" : "/auth/login";
+    window.history.replaceState({}, "", newUrl);
   }, [isSignup]);
 
   useEffect(() => {
     setFormData({
-      email: '',
-      password: '',
-      confirmPassword: '',
+      email: "",
+      password: "",
+      confirmPassword: "",
     });
     setErrors({});
   }, [isSignup]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    setIsSignup(searchParams.get('mode') === 'signup');
+    setIsSignup(searchParams.get("mode") === "signup");
   }, [location.search]);
 
   const validateForm = () => {
@@ -87,9 +107,10 @@ const ModernAuthForm = () => {
     // Email validation
     const sanitizedEmail = sanitizeInput(formData.email);
     if (!sanitizedEmail) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!isValidEmail(sanitizedEmail)) {
-      newErrors.email = 'Please enter a valid email address. Temporary email providers are not allowed.';
+      newErrors.email =
+        "Please enter a valid email address. Temporary email providers are not allowed.";
     }
 
     // Password validation
@@ -97,18 +118,24 @@ const ModernAuthForm = () => {
     const passwordRequirements = validatePassword(sanitizedPassword);
 
     if (!sanitizedPassword) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
     } else {
       const passwordErrors = [];
-      if (!passwordRequirements.minLength) passwordErrors.push('at least 8 characters');
-      if (!passwordRequirements.hasUppercase) passwordErrors.push('an uppercase letter');
-      if (!passwordRequirements.hasLowercase) passwordErrors.push('a lowercase letter');
-      if (!passwordRequirements.hasNumber) passwordErrors.push('a number');
-      if (!passwordRequirements.hasSpecialChar) passwordErrors.push('a special character');
-      if (!passwordRequirements.noSpaces) passwordErrors.push('no spaces');
+      if (!passwordRequirements.minLength)
+        passwordErrors.push("at least 8 characters");
+      if (!passwordRequirements.hasUppercase)
+        passwordErrors.push("an uppercase letter");
+      if (!passwordRequirements.hasLowercase)
+        passwordErrors.push("a lowercase letter");
+      if (!passwordRequirements.hasNumber) passwordErrors.push("a number");
+      if (!passwordRequirements.hasSpecialChar)
+        passwordErrors.push("a special character");
+      if (!passwordRequirements.noSpaces) passwordErrors.push("no spaces");
 
       if (passwordErrors.length > 0) {
-        newErrors.password = `Password must contain ${passwordErrors.join(', ')}`;
+        newErrors.password = `Password must contain ${passwordErrors.join(
+          ", "
+        )}`;
       }
     }
 
@@ -116,20 +143,26 @@ const ModernAuthForm = () => {
     if (isSignup) {
       const sanitizedConfirmPassword = sanitizeInput(formData.confirmPassword);
       if (!sanitizedConfirmPassword) {
-        newErrors.confirmPassword = 'Please confirm your password';
+        newErrors.confirmPassword = "Please confirm your password";
       } else if (sanitizedPassword !== sanitizedConfirmPassword) {
-        newErrors.confirmPassword = 'Passwords do not match';
+        newErrors.confirmPassword = "Passwords do not match";
       }
 
       if (sanitizedPassword === sanitizedEmail) {
-        newErrors.password = 'Password cannot be the same as email';
+        newErrors.password = "Password cannot be the same as email";
       }
     }
 
     // Common password check
-    const commonPasswords = ['password123', 'admin123', '12345678', 'qwerty123'];
+    const commonPasswords = [
+      "password123",
+      "admin123",
+      "12345678",
+      "qwerty123",
+    ];
     if (commonPasswords.includes(sanitizedPassword.toLowerCase())) {
-      newErrors.password = 'Please use a stronger password. This password is too common.';
+      newErrors.password =
+        "Please use a stronger password. This password is too common.";
     }
 
     // Update form with sanitized values
@@ -137,7 +170,7 @@ const ModernAuthForm = () => {
       ...formData,
       email: sanitizedEmail,
       password: sanitizedPassword,
-      confirmPassword: isSignup ? sanitizeInput(formData.confirmPassword) : ''
+      confirmPassword: isSignup ? sanitizeInput(formData.confirmPassword) : "",
     });
 
     setErrors(newErrors);
@@ -152,19 +185,25 @@ const ModernAuthForm = () => {
       dispatch(signInStart());
       setLoading(true);
 
-      const endpoint = isSignup ? '/api/v1/auth/signup' : '/api/v1/auth/login';
+      const endpoint = isSignup ? "/api/v1/auth/signup" : "/api/v1/auth/login";
       const { data } = await axios.post(endpoint, formData);
 
       if (data.success) {
-        dispatch(signInSuccess({
-          ...data.data,
-          isProfileComplete: isSignup ? false : Boolean(data.data.profilePicture)
-        }));
+        dispatch(
+          signInSuccess({
+            ...data.data,
+            isProfileComplete: isSignup
+              ? false
+              : Boolean(data.data.profilePicture),
+          })
+        );
 
-        localStorage.setItem('accessToken', data.data.accessToken);
-        localStorage.setItem('refreshToken', data.data.refreshToken);
+        localStorage.setItem("accessToken", data.data.accessToken);
+        localStorage.setItem("refreshToken", data.data.refreshToken);
 
-        navigate(isSignup ? '/auth/userdetails' : '/dashboard/profile', { replace: true });
+        navigate(isSignup ? "/auth/userdetails" : "/dashboard/profile", {
+          replace: true,
+        });
       }
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
@@ -184,7 +223,6 @@ const ModernAuthForm = () => {
         transition={{ duration: 0.5 }}
       >
         <div className="relative w-[600px] h-[600px]">
-
           {/* Main image container */}
           <motion.div
             className="relative w-full h-full rounded-3xl overflow-hidden shadow-4xl "
@@ -204,7 +242,7 @@ const ModernAuthForm = () => {
                   duration: 0.7,
                   type: "spring",
                   stiffness: 100,
-                  damping: 20
+                  damping: 20,
                 }}
               />
             </AnimatePresence>
@@ -225,12 +263,12 @@ const ModernAuthForm = () => {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-brandPrimary mb-2">
-              {isSignup ? 'Create Account' : 'Welcome Back'}
+              {isSignup ? "Create Account" : "Welcome Back"}
             </h1>
             <p className="text-white text-md">
               {isSignup
-                ? 'Join us for an amazing experience'
-                : 'Sign in to continue your journey'}
+                ? "Join us for an amazing experience"
+                : "Sign in to continue your journey"}
             </p>
           </div>
 
@@ -242,17 +280,18 @@ const ModernAuthForm = () => {
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <input
                   type="email"
-                  className={`w-full bg-gray-800 text-white pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-brandPrimary transition-all duration-300 ${errors.email ? 'border-red-500' : 'border-gray-700'
-                    }`}
+                  className={`w-full bg-gray-800 text-white pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-brandPrimary transition-all duration-300 ${
+                    errors.email ? "border-red-500" : "border-gray-700"
+                  }`}
                   placeholder="Email address"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                 />
               </div>
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.email}
-                </p>
+                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
               )}
             </div>
 
@@ -261,46 +300,92 @@ const ModernAuthForm = () => {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <input
-                  type={showPassword ? 'text' : 'password'}
-                  className={`w-full bg-gray-800 text-white pl-10 pr-12 py-3 rounded-lg focus:ring-2 focus:ring-brandPrimary transition-all duration-300 ${errors.password ? 'border-red-500' : 'border-gray-700'
-                    }`}
+                  type={showPassword ? "text" : "password"}
+                  className={`w-full bg-gray-800 text-white pl-10 pr-12 py-3 rounded-lg focus:ring-2 focus:ring-brandPrimary transition-all duration-300 ${
+                    errors.password ? "border-red-500" : "border-gray-700"
+                  }`}
                   placeholder="Password"
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
                 >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
                 </button>
               </div>
               {errors.password && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.password}
-                </p>
+                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
               )}
               {isSignup && (
                 <div className="mt-2 space-y-1">
-                  <p className="text-sm text-gray-400">Password must contain:</p>
+                  <p className="text-sm text-gray-400">
+                    Password must contain:
+                  </p>
                   <ul className="text-sm space-y-1">
-                    <li className={`flex items-center ${formData.password.length >= 8 ? 'text-green-500' : 'text-gray-400'}`}>
+                    <li
+                      className={`flex items-center ${
+                        formData.password.length >= 8
+                          ? "text-green-500"
+                          : "text-gray-400"
+                      }`}
+                    >
                       <span className="mr-2">✓</span> At least 8 characters
                     </li>
-                    <li className={`flex items-center ${/[A-Z]/.test(formData.password) ? 'text-green-500' : 'text-gray-400'}`}>
-                      <span className="mr-2">✓</span> At least one uppercase letter
+                    <li
+                      className={`flex items-center ${
+                        /[A-Z]/.test(formData.password)
+                          ? "text-green-500"
+                          : "text-gray-400"
+                      }`}
+                    >
+                      <span className="mr-2">✓</span> At least one uppercase
+                      letter
                     </li>
-                    <li className={`flex items-center ${/[a-z]/.test(formData.password) ? 'text-green-500' : 'text-gray-400'}`}>
-                      <span className="mr-2">✓</span> At least one lowercase letter
+                    <li
+                      className={`flex items-center ${
+                        /[a-z]/.test(formData.password)
+                          ? "text-green-500"
+                          : "text-gray-400"
+                      }`}
+                    >
+                      <span className="mr-2">✓</span> At least one lowercase
+                      letter
                     </li>
-                    <li className={`flex items-center ${/\d/.test(formData.password) ? 'text-green-500' : 'text-gray-400'}`}>
+                    <li
+                      className={`flex items-center ${
+                        /\d/.test(formData.password)
+                          ? "text-green-500"
+                          : "text-gray-400"
+                      }`}
+                    >
                       <span className="mr-2">✓</span> At least one number
                     </li>
-                    <li className={`flex items-center ${/[!@#$%^&*(),.?":{}|<>]/.test(formData.password) ? 'text-green-500' : 'text-gray-400'}`}>
-                      <span className="mr-2">✓</span> At least one special character
+                    <li
+                      className={`flex items-center ${
+                        /[!@#$%^&*(),.?":{}|<>]/.test(formData.password)
+                          ? "text-green-500"
+                          : "text-gray-400"
+                      }`}
+                    >
+                      <span className="mr-2">✓</span> At least one special
+                      character
                     </li>
-                    <li className={`flex items-center ${!/\s/.test(formData.password) ? 'text-green-500' : 'text-gray-400'}`}>
+                    <li
+                      className={`flex items-center ${
+                        !/\s/.test(formData.password)
+                          ? "text-green-500"
+                          : "text-gray-400"
+                      }`}
+                    >
                       <span className="mr-2">✓</span> No spaces
                     </li>
                   </ul>
@@ -314,12 +399,20 @@ const ModernAuthForm = () => {
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
                   <input
-                    type={showPassword ? 'text' : 'password'}
-                    className={`w-full bg-gray-800 text-white pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-brandPrimary transition-all duration-300 ${errors.confirmPassword ? 'border-red-500' : 'border-gray-700'
-                      }`}
+                    type={showPassword ? "text" : "password"}
+                    className={`w-full bg-gray-800 text-white pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-brandPrimary transition-all duration-300 ${
+                      errors.confirmPassword
+                        ? "border-red-500"
+                        : "border-gray-700"
+                    }`}
                     placeholder="Confirm password"
                     value={formData.confirmPassword}
-                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        confirmPassword: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 {errors.confirmPassword && (
@@ -351,8 +444,10 @@ const ModernAuthForm = () => {
             >
               {loading ? (
                 <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : isSignup ? (
+                "Create Account"
               ) : (
-                isSignup ? 'Create Account' : 'Sign In'
+                "Sign In"
               )}
             </button>
           </form>
@@ -372,7 +467,11 @@ const ModernAuthForm = () => {
 
             <div className="mt-6 flex justify-center gap-4 hover:text-black">
               <button className="flex items-center justify-center px-4 py-3 bg-gray-800 rounded-lg hover:bg-cyan-700  transition-colors">
-                <BsGoogle className="h-5 w-5 text-white hover:text-black" />
+              <GoogleOAuthProvider clientId={import.meta.env.VITE_APP_GOOGLE_CLIENT_ID}>
+                <GoogleLogin>
+                  <BsGoogle className="h-5 w-5 text-white hover:text-black" />
+                </GoogleLogin>
+                </GoogleOAuthProvider>
               </button>
               <button className="flex items-center justify-center px-4 py-3 bg-gray-800 rounded-lg hover:bg-cyan-700   transition-colors">
                 <Github className="h-5 w-5 text-white hover:text-black" />
@@ -385,17 +484,17 @@ const ModernAuthForm = () => {
 
           {/* Toggle Auth Mode */}
           <p className="mt-8 text-center text-gray-400">
-            {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
+            {isSignup ? "Already have an account?" : "Don't have an account?"}{" "}
             <button
               type="button"
               onClick={() => {
                 setIsSignup(!isSignup);
-                setFormData({ email: '', password: '', confirmPassword: '' });
+                setFormData({ email: "", password: "", confirmPassword: "" });
                 setErrors({});
               }}
               className="text-brandPrimary hover:text-cyan-400 font-medium transition-colors"
             >
-              {isSignup ? 'Sign in' : 'Sign up'}
+              {isSignup ? "Sign in" : "Sign up"}
             </button>
           </p>
         </div>
