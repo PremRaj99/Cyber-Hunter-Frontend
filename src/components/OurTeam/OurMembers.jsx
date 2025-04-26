@@ -5,68 +5,28 @@ import { Twitter, Linkedin, Github } from "lucide-react";
 
 const teamMembers = [
   {
-    name: "Alice Williams",
+    name: "Kanika Tiwari",
     role: "Frontend Developer",
-    image: "https://picsum.photos/200/300",
+    image: "https://i.ibb.co/F43KjNM9/IMG-20250426-004309.png",
     description: "Crafting beautiful and responsive user interfaces.",
     social: {
       twitter: "https://twitter.com/alicewilliams",
-      linkedin: "https://linkedin.com/in/alicewilliams",
-      github: "https://github.com/alicewilliams",
+      linkedin: "https://www.linkedin.com/in/kanika-tiwari-04730a291/",
+      github: "https://github.com/kanikatiwari06",
     },
   },
   {
-    name: "Bob Brown",
-    role: "Backend Developer",
-    image: "https://picsum.photos/200/300",
-    description: "Building robust and scalable server-side solutions.",
+    name: "Rahul Gupta",
+    role: "MERN Developer",
+    image: "https://i.ibb.co/C3VW51wF/1000084343-removebg.png",
+    description: "Creating Tech That Impacpts Masses",
     social: {
-      twitter: "https://twitter.com/bobbrown",
-      linkedin: "https://linkedin.com/in/bobbrown",
-      github: "https://github.com/bobbrown",
+      twitter: "https://x.com/Rahul0470?t=ir1doj910zZFGwnH9QpJbQ&s=09",
+      linkedin: "https://www.linkedin.com/in/rahul-gupta-0407t?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+      github: "http://github.com/rahul-0407",
     },
   },
-  {
-    name: "Charlie Davis",
-    role: "UI/UX Designer",
-    image: "https://picsum.photos/200/300",
-    description: "Creating intuitive and delightful user experiences.",
-    social: {
-      twitter: "https://twitter.com/charliedavis",
-      linkedin: "https://linkedin.com/in/charliedavis",
-      github: "https://github.com/charliedavis",
-    },
-  },
-  {
-    name: "Diana Evans",
-    role: "Project Manager",
-    image: "https://picsum.photos/200/300",
-    description: "Ensuring smooth project execution and client satisfaction.",
-    social: {
-      twitter: "https://twitter.com/dianaevans",
-      linkedin: "https://linkedin.com/in/dianaevans",
-    },
-  },
-  {
-    name: "Diana Evans",
-    role: "Project Manager",
-    image: "https://picsum.photos/200/300",
-    description: "Ensuring smooth project execution and client satisfaction.",
-    social: {
-      twitter: "https://twitter.com/dianaevans",
-      linkedin: "https://linkedin.com/in/dianaevans",
-    },
-  },
-  {
-    name: "Diana Evans",
-    role: "Project Manager",
-    image: "https://picsum.photos/200/300",
-    description: "Ensuring smooth project execution and client satisfaction.",
-    social: {
-      twitter: "https://twitter.com/dianaevans",
-      linkedin: "https://linkedin.com/in/dianaevans",
-    },
-  },
+ 
 ];
 
 const Members = () => {

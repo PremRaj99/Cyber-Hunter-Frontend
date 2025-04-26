@@ -3,63 +3,13 @@ import { Twitter, Linkedin } from "lucide-react";
 
 const collaborators = [
   {
-    name: "Eva Green",
+    name: "Sonam Jaiswal",
     role: "Content Writer",
     image: "https://picsum.photos/200/300",
     description: "Crafting compelling narratives and engaging content.",
     social: {
       twitter: "https://twitter.com/evagreen",
       linkedin: "https://linkedin.com/in/evagreen",
-    },
-  },
-  {
-    name: "Frank White",
-    role: "SEO Specialist",
-    image: "https://unsplash.it/300/300",
-    description: "Optimizing digital presence for maximum visibility.",
-    social: {
-      twitter: "https://twitter.com/frankwhite",
-      linkedin: "https://linkedin.com/in/frankwhite",
-    },
-  },
-  {
-    name: "Grace Lee",
-    role: "Illustrator",
-    image: "https://picsum.photos/200/300",
-    description: "Bringing ideas to life through vibrant illustrations.",
-    social: {
-      twitter: "https://twitter.com/gracelee",
-      linkedin: "https://linkedin.com/in/gracelee",
-    },
-  },
-  {
-    name: "Henry Clark",
-    role: "Marketing Consultant",
-    image: "https://unsplash.it/200/300",
-    description: "Developing strategies for brand growth and engagement.",
-    social: {
-      twitter: "https://twitter.com/henryclark",
-      linkedin: "https://linkedin.com/in/henryclark",
-    },
-  },
-  {
-    name: "Ivy Taylor",
-    role: "Data Analyst",
-    image: "https://picsum.photos/200/300",
-    description: "Uncovering insights from complex datasets.",
-    social: {
-      twitter: "https://twitter.com/ivytaylor",
-      linkedin: "https://linkedin.com/in/ivytaylor",
-    },
-  },
-  {
-    name: "Jack Wilson",
-    role: "DevOps Engineer",
-    image: "https://unsplash.it/200/300",
-    description: "Streamlining development and operations processes.",
-    social: {
-      twitter: "https://twitter.com/jackwilson",
-      linkedin: "https://linkedin.com/in/jackwilson",
     },
   },
 ];
