@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { CreditCard, Clock, Download, Plus, CheckCircle2 } from 'lucide-react';
+import { CreditCard, Download, Plus, CheckCircle2 } from 'lucide-react';
 import AddPaymentMethodModal from './AddPaymentMethod';
 
 const BillingSection = () => {

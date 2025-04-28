@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Lock, User, ChevronRight } from 'lucide-react';

@@ -52,18 +52,6 @@ const ProjectUpload = () => {
     setProject({ ...project, projectImage: files });
   };
 
-  const handleTechStackChange = (tech) => {
-    if (!project.techStack.includes(tech)) {
-      setProject({ ...project, techStack: [...project.techStack, tech] });
-    }
-  };
-
-  const handleLanguageChange = (lang) => {
-    if (!project.language.includes(lang)) {
-      setProject({ ...project, language: [...project.language, lang] });
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
