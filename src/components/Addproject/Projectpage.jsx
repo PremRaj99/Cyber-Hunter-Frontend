@@ -6,12 +6,9 @@ import {
   Globe,
   Upload,
   Code2,
-  FileCode2,
   Camera,
-  X,
   Plus,
   ChevronRight,
-  Images
 } from "lucide-react";
 import axios from "axios";
 import { toast } from "react-toastify";

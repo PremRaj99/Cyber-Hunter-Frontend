@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
@@ -16,8 +17,8 @@ import {
   FaChevronLeft,
 } from "react-icons/fa";
 import Preloader from "../components/Common/Preloader";
-import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
+import MultiSelectInput from "../components/Input/MultiSelectInput";
 
 export default function EditProject() {
   const { id } = useParams();
@@ -31,6 +32,8 @@ export default function EditProject() {
   const [newImages, setNewImages] = useState([]);
   const [techInput, setTechInput] = useState("");
   const [languageInput, setLanguageInput] = useState("");
+  const [selectedTechStack, setSelectedTechStack] = useState([]);
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
 
   const formatCreatedAt = (dateString) => {
     try {
@@ -51,6 +54,17 @@ export default function EditProject() {
         setProject(projectRes.data.project);
         setProjectUser(projectRes.data.userDetail);
         setThumbnailPreview(projectRes.data.project.projectThumbnail);
+        // Set selected tech stack and languages for MultiSelectInput
+        setSelectedTechStack(
+          (projectRes.data.project.techStack || []).map(t =>
+            t.tagId ? t : { tagId: t._id || t, content: t.content || t }
+          )
+        );
+        setSelectedLanguages(
+          (projectRes.data.project.language || []).map(l =>
+            l.tagId ? l : { tagId: l._id || l, content: l.content || l }
+          )
+        );
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -163,14 +177,25 @@ export default function EditProject() {
         allProjectImages = [...allProjectImages, ...uploadedImageUrls.map(url => ({ url }))];
       }
 
-      // Update project
-      const updatedProject = {
-        ...project,
-        projectThumbnail: thumbnailUrl,
-        projectImage: allProjectImages,
-      };
-      delete updatedProject.newThumbnail;
+      // get project id in console 
+      console.log("Project ID:", id);
+      console.log("Project Data:", project);
 
+      // Prepare clean project object for update
+      const updatedProject = {
+        _id: id, // REMOVE this line
+        projectName: project.projectName,
+        projectDescription: project.projectDescription,
+        projectThumbnail: thumbnailUrl,
+        projectImage: allProjectImages.map(img => typeof img === "string" ? img : img.url),
+        techStack: selectedTechStack.map(t => t.tagId),
+        language: selectedLanguages.map(l => l.tagId),
+        gitHubLink: project.gitHubLink,
+        liveLink: project.liveLink,
+        // add other fields your backend expects here
+      };
+
+      // Try PATCH instead of PUT
       await axios.put(
         `${import.meta.env.VITE_API_URL}/api/v1/project/${id}`,
         updatedProject,
@@ -500,83 +525,23 @@ export default function EditProject() {
                 {/* Tech Stack */}
                 <div className="mb-8">
                   <h3 className="text-xl font-semibold text-cyan-400 mb-4">Technologies Used</h3>
-
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.techStack?.map((tech, index) => (
-                      <motion.div
-                        key={tech._id || index}
-                        className="bg-brandPrimary/20 text-cyan-400 px-3 py-1 rounded-lg text-sm flex items-center gap-2 group"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        {tech.content}
-                        <button
-                          onClick={() => handleRemoveTech(index)}
-                          className="text-cyan-400 hover:text-red-400 transition-colors duration-300"
-                        >
-                          <IoMdClose size={16} />
-                        </button>
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      value={techInput}
-                      onChange={(e) => setTechInput(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handleAddTech()}
-                      placeholder="Add technology..."
-                      className="flex-1 px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300 text-white"
-                    />
-                    <button
-                      onClick={handleAddTech}
-                      className="bg-brandPrimary hover:bg-cyan-600 text-white p-2 rounded-lg transition-all duration-300"
-                    >
-                      <FaPlusCircle size={20} />
-                    </button>
-                  </div>
+                  <MultiSelectInput
+                    fieldName="Technology"
+                    apiEndpoint={`${import.meta.env.VITE_API_URL}/api/v1/tag/tech`}
+                    onTagsChange={setSelectedTechStack}
+                    defaultValue={selectedTechStack}
+                  />
                 </div>
 
                 {/* Languages */}
                 <div>
                   <h3 className="text-xl font-semibold text-cyan-400 mb-4">Programming Languages</h3>
-
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.language?.map((lang, index) => (
-                      <motion.div
-                        key={`lang-${index}`}
-                        className="bg-brandPrimary/20 text-cyan-400 px-3 py-1 rounded-lg text-sm flex items-center gap-2 group"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        #{lang.content}
-                        <button
-                          onClick={() => handleRemoveLanguage(index)}
-                          className="text-cyan-400 hover:text-red-400 transition-colors duration-300"
-                        >
-                          <IoMdClose size={16} />
-                        </button>
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      value={languageInput}
-                      onChange={(e) => setLanguageInput(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handleAddLanguage()}
-                      placeholder="Add language..."
-                      className="flex-1 px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300 text-white"
-                    />
-                    <button
-                      onClick={handleAddLanguage}
-                      className="bg-brandPrimary hover:bg-cyan-600 text-white p-2 rounded-lg transition-all duration-300"
-                    >
-                      <FaPlusCircle size={20} />
-                    </button>
-                  </div>
+                  <MultiSelectInput
+                    fieldName="Language"
+                    apiEndpoint={`${import.meta.env.VITE_API_URL}/api/v1/tag/language`}
+                    onTagsChange={setSelectedLanguages}
+                    defaultValue={selectedLanguages}
+                  />
                 </div>
               </motion.div>
             )}

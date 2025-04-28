@@ -15,7 +15,7 @@ import DefaultImg from "../../assets/profile.png";
 import { TbLogin, TbLogout, TbSignRight } from "react-icons/tb";
 import { BsGrid3X3Gap, BsPersonCircle } from "react-icons/bs";
 import { IoIosAlert } from "react-icons/io";
-import { MdMiscellaneousServices } from "react-icons/md";
+// import { MdMiscellaneousServices } from "react-icons/md";
 import { PiRankingFill } from "react-icons/pi";
 import { GiTrophy } from "react-icons/gi";
 import { SiFreelancer } from "react-icons/si";
@@ -156,12 +156,12 @@ export default function Header() {
       icon: <IoIosAlert />,
       guestOnly: true,
     },
-    {
-      name: "Services",
-      link: "/service",
-      icon: <MdMiscellaneousServices />,
-      guestOnly: true,
-    },
+    // {
+    //   name: "Services",
+    //   link: "/service",
+    //   icon: <MdMiscellaneousServices />,
+    //   guestOnly: true,
+    // },
     {
       name: "Leaderboard",
       link: "/leaderboard",

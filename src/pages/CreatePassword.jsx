@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 import createImg from '../assets/login-signup-imgs/create-pass-img.png'
 import { FaArrowRight, FaLock } from "react-icons/fa6";

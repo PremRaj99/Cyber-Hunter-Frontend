@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from "react";
-import { FaEye, FaGithub, FaCalendar, FaMedal } from "react-icons/fa";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { FaGithub, FaCalendar, FaMedal } from "react-icons/fa";
+import { motion, useScroll, useTransform } from "framer-motion";
 import axios from 'axios';
 import { format } from 'date-fns';
 import { Link, useNavigate } from "react-router-dom";

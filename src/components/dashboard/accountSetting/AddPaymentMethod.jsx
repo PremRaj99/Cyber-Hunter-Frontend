@@ -183,7 +183,7 @@ const AddPaymentMethod = ({ isOpen, onClose }) => {
                   {/* Submit Button */}
                   <motion.button
                     type="submit"
-                    className="w-full py-3 bg-brandPrimary text-black font-medium rounded-lg hover:bg-cyan-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className=" w-full px-4 py-2 rounded-xl bg-gradient-to-r bg-cyan-400 text-black font-medium transition-colors cursor-pointer space-x-2 hover:bg-black hover:text-cyan-400 hover:border hover:border-cyan-400"
                     disabled={isSubmitting}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}

@@ -1,5 +1,4 @@
 // import React from 'react';
-import { useEffect } from "react";
 import {
   FaLocationDot,
   FaPhone,
@@ -9,10 +8,7 @@ import {
 
 export default function Contact() {
 
-  useEffect(() => {
-    document.title = "Cyber Hunter | Contact";
-  }, []);
-
+  
   return (
     <div className="overflow-hidden">
       <section className="py-16 px-4 md:px-8 lg:px-16">

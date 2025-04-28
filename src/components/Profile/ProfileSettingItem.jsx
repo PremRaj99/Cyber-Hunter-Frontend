@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
@@ -37,6 +37,35 @@ export default function EditProfile() {
       twitter: user?.socialLinks?.twitter || "",
     },
   });
+  const [individualId, setIndividualId] = useState(user?.individualId);
+
+  // Update the fetchIndividualId function
+  useEffect(() => {
+    const fetchIndividualId = async () => {
+      try {
+        if (!individualId && user?._id) {
+          // Updated endpoint to use the new route
+          const response = await axios.get(
+            `${import.meta.env.VITE_API_URL}/api/v1/individual/user/${user._id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              },
+            }
+          );
+
+          if (response.data && response.data.data && response.data.data._id) {
+            setIndividualId(response.data.data._id);
+            console.log("Found individualId:", response.data.data._id);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching individual ID:", error);
+      }
+    };
+
+    fetchIndividualId();
+  }, [user, individualId]);
 
   useEffect(() => {
     document.title = "Edit Profile";
@@ -66,49 +95,56 @@ export default function EditProfile() {
       reader.readAsDataURL(file);
     }
   };
-
-  const handleInterestChange = (interest) => {
-    if (formData.interest.includes(interest)) {
-      setFormData({
-        ...formData,
-        interest: formData.interest.filter((item) => item !== interest),
-      });
-    } else {
-      setFormData({
-        ...formData,
-        interest: [...formData.interest, interest],
-      });
-    }
-  };
+  console.log("user", user);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
+      console.log("About to update individual, ID:", individualId);
+      // 1. Update bio (description) using individual route
+      if (individualId && formData.description) {
+        console.log("Updating individual with ID:", individualId);
+        console.log("Description:", formData.description);
+
+        const bioResponse = await axios.put(
+          `${import.meta.env.VITE_API_URL}/api/v1/individual/${individualId}`,
+          { description: formData.description },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        console.log("Bio update response:", bioResponse.data);
+      } else {
+        console.warn("No individualId found or no description provided");
+        if (!individualId) console.warn("individualId is missing");
+        if (!formData.description) console.warn("description is empty");
+      }
+
+      // 2. Update user profile (excluding bio/description)
       const formDataToSend = new FormData();
 
-      // Append all form fields
       Object.keys(formData).forEach(key => {
         if (key === 'socialLinks') {
-          // Handle nested socialLinks object
           formDataToSend.append('socialLinks', JSON.stringify(formData.socialLinks));
         } else if (key === 'interest') {
-          // Handle interest array
-          formDataToSend.append('interest', JSON.stringify(formData.interest));
-        } else {
+          // Skip this - we'll handle interests separately
+        } else if (key !== 'description') { // Exclude description here
           formDataToSend.append(key, formData[key]);
         }
       });
 
-      // Append profile picture if selected
       if (selectedFile) {
         formDataToSend.append('profilePicture', selectedFile);
       }
 
-      // Make sure the URL is correct and matches your backend route
       const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/v1/users/${user?._id}`, // Update this URL to match your backend route
+        `${import.meta.env.VITE_API_URL}/api/v1/user/${user._id}`,
         formDataToSend,
         {
           headers: {
@@ -124,8 +160,13 @@ export default function EditProfile() {
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      // Add error handling here
-      alert("Failed to update profile. Please try again.");
+      // Add more detailed error handling
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+        alert(`Failed to update profile: ${error.response.data.message || "Unknown error"}`);
+      } else {
+        alert("Failed to update profile. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -153,21 +194,6 @@ export default function EditProfile() {
       },
     },
   };
-
-  const availableInterests = [
-    "Web Development",
-    "Mobile Development",
-    "UI/UX Design",
-    "Data Science",
-    "Machine Learning",
-    "Cybersecurity",
-    "Blockchain",
-    "Cloud Computing",
-    "DevOps",
-    "Game Development",
-    "IoT",
-    "AR/VR",
-  ];
 
   return (
     <motion.div
@@ -244,7 +270,7 @@ export default function EditProfile() {
             <div className="w-full md:w-2/3">
               <div className="mb-6 border-b border-gray-700">
                 <div className="flex space-x-1 overflow-x-auto hide-scrollbar">
-                  {["basic", "education", "social", "interests"].map((tab) => (
+                  {["basic", "education", "social"].map((tab) => (
                     <button
                       key={tab}
                       type="button"
@@ -512,45 +538,6 @@ export default function EditProfile() {
                     </div>
                   </motion.div>
                 </div>
-              </motion.div>
-
-              {/* Interests Tab */}
-              <motion.div
-                className={`space-y-6 ${activeTab !== "interests" && "hidden"}`}
-                variants={containerVariants}
-                initial="hidden"
-                animate={activeTab === "interests" ? "visible" : "hidden"}
-              >
-                <motion.p className="text-gray-400 mb-4" variants={itemVariants}>
-                  Select your areas of interest (up to 5)
-                </motion.p>
-                <motion.div className="flex flex-wrap gap-3" variants={containerVariants}>
-                  {availableInterests.map((interest) => (
-                    <motion.button
-                      key={interest}
-                      type="button"
-                      onClick={() => handleInterestChange(interest)}
-                      className={`px-4 py-2 rounded-lg text-sm transition-all duration-300 ${formData.interest.includes(interest)
-                        ? "bg-brandPrimary/30 text-cyan-400 border border-brandPrimary/50"
-                        : "bg-gray-700/50 text-white border border-gray-600 hover:bg-gray-700"
-                        }`}
-                      disabled={
-                        !formData.interest.includes(interest) &&
-                        formData.interest.length >= 5
-                      }
-                      variants={itemVariants}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      {interest}
-                    </motion.button>
-                  ))}
-                </motion.div>
-                {formData.interest.length >= 5 && (
-                  <motion.p className="text-amber-400 text-sm" variants={itemVariants}>
-                    You've selected the maximum number of interests
-                  </motion.p>
-                )}
               </motion.div>
             </div>
           </motion.div>

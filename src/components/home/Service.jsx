@@ -1,6 +1,5 @@
 // import React from 'react';
 import { IoLayers } from "react-icons/io5";
-import { useEffect } from "react";
 import {
   BsDatabaseFillCheck,
   BsCloudsFill,
@@ -11,11 +10,6 @@ import { FaArrowRight, FaCode } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 export default function service() {
-  
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    document.title = "Cyber Hunter | Services";
-  }, []);
 
   return (
     <div>

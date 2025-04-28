@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronRight, Mail, Lock, User, Shield, CreditCard, Bell, HelpCircle } from "lucide-react";
+import { ChevronRight, Mail, User, Shield, CreditCard, Bell, HelpCircle, ChevronLeft } from "lucide-react";
 import { FiMenu, FiX } from "react-icons/fi";
 import AccountBillingSection from './accountSetting/AccountBillingSection';
 import HelpSupport from './accountSetting/HelpSupport';
@@ -40,30 +40,6 @@ const DAccountSetting = () => {
     duration: 0.4,
   };
 
-  // Container and item animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.1,
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.3 },
-    },
-    hover: {
-      scale: 1.02,
-      transition: { duration: 0.2 },
-    },
-  };
 
   // Sidebar animation variants
   const sidebarVariants = {
@@ -121,16 +97,25 @@ const DAccountSetting = () => {
       ></motion.div>
 
       <div className="container mx-auto px-4 py-4 relative z-10">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <motion.h1
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-2xl font-bold text-cyan-400"
-          >
-            Account <span className="hidden md:inline">Security</span>
-          </motion.h1>
+        {/* Back Button */}
+        <div className="flex items-center justify-between w-full mb-6">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => window.history.back()}
+              className="text-cyan-400 hover:text-cyan-300 transition-colors border-2 border-cyan-400 p-1.5 rounded-full flex items-center justify-center"
+            >
+              <ChevronLeft size={20} />
+            </button>
+
+            <motion.h1
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-2xl font-bold text-cyan-400"
+            >
+              Account <span className="hidden md:inline">Security</span>
+            </motion.h1>
+          </div>
 
           <button
             onClick={toggleMenu}
@@ -334,7 +319,7 @@ const ProfileSection = () => {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="px-6 py-2 bg-brandPrimary text-black font-medium rounded-lg shadow-lg hover:bg-cyan-400 transition-colors"
+          className="px-6 py-3 rounded-xl bg-gradient-to-r bg-cyan-400 text-black font-medium transition-colors cursor-pointer flex items-center space-x-2 hover:bg-black hover:text-cyan-400 hover:border hover:border-cyan-400"
         >
           Save Changes
         </motion.button>

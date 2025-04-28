@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import RankBadge from "../Input/RankBadge";
 
 export default function ProfileSection() {

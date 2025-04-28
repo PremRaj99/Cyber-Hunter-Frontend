@@ -80,7 +80,7 @@ const BillingSection = () => {
             <button className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
               Cancel Plan
             </button>
-            <button className="px-4 py-2 bg-brandPrimary text-black font-medium rounded-lg hover:bg-cyan-400 transition-colors">
+            <button className="px-4 py-2 rounded-lg bg-gradient-to-r bg-cyan-400 text-black font-medium transition-colors cursor-pointer flex items-center space-x-2 hover:bg-black hover:text-cyan-400 hover:border hover:border-cyan-400">
               Upgrade Plan
             </button>
           </div>
@@ -113,7 +113,7 @@ const BillingSection = () => {
             <button
               onClick={() => setSelectedPlan(plan.id)}
               className={`w-full py-2 rounded-lg transition-colors ${selectedPlan === plan.id
-                ? 'bg-brandPrimary text-black font-medium hover:bg-cyan-400'
+                ? 'bg-brandPrimary text-black font-medium hover:bg-black hover:text-brandPrimary hover:border hover:border-brandPrimary'
                 : 'bg-gray-800 text-white hover:bg-gray-700'
                 }`}
             >

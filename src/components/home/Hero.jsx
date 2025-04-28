@@ -1,4 +1,4 @@
-// import React from "react";
+import React from "react";
 // import banner2 from "../assets/bannerCarousel1.png";
 import { useNavigate } from "react-router-dom";
 import banner3 from "../../assets/bannerCarousel2.gif";
@@ -7,6 +7,11 @@ import { Carousel } from "flowbite-react";
 
 
 export default function Hero() {
+
+  // useffect for document title
+  React.useEffect(() => {
+    document.title = "Cyber Hunter | Home";
+  }, []);
 
   const navigate = useNavigate();
 
