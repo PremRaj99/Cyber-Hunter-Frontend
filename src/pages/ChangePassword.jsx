@@ -1,19 +1,37 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Mail, ArrowRight, Sparkles, ArrowLeft, X } from "lucide-react";
+import { LockKeyhole, ArrowRight, Sparkles, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { FaRocket } from "react-icons/fa";
 import { IoIosPlanet } from "react-icons/io";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "../utils/Axios";
 
-const SpaceForgotPassword = () => {
+const ChangePassword = () => {
   const [isLaunched, setIsLaunched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [stars, setStars] = useState([]);
-  const [formdata, setFormdata] = useState({
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [isCurrentPasswordVerified, setIsCurrentPasswordVerified] = useState(false);
+
+  const [formData, setFormData] = useState({
     currentPassword: "",
-    password: "",
+    newPassword: "",
     confirmPassword: "",
+  });
+
+  const [showPasswords, setShowPasswords] = useState({
+    current: false,
+    new: false,
+    confirm: false
+  });
+
+  const [errors, setErrors] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+    general: ""
   });
 
   const navigate = useNavigate();
@@ -30,16 +48,158 @@ const SpaceForgotPassword = () => {
     setStars(newStars);
   }, []);
 
+  // Password strength validation logic
+  const validatePassword = (password) => {
+    const criteria = {
+      minLength: password.length >= 8,
+      hasUppercase: /[A-Z]/.test(password),
+      hasLowercase: /[a-z]/.test(password),
+      hasNumber: /\d/.test(password),
+      hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    };
+
+    const strength = Object.values(criteria).filter(Boolean).length;
+    return { valid: strength >= 4, strength: (strength / 5) * 100 };
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+
+    // Clear specific error when user types
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  // Toggle password visibility
+  const togglePasswordVisibility = (field) => {
+    setShowPasswords(prev => ({
+      ...prev,
+      [field]: !prev[field]
+    }));
+  };
+
+  const validateForm = () => {
+    let valid = true;
+    const newErrors = { ...errors };
+
+    // Validate current password
+    if (!formData.currentPassword.trim()) {
+      newErrors.currentPassword = "Current password is required";
+      valid = false;
+    }
+
+    // Validate new password
+    if (!formData.newPassword.trim()) {
+      newErrors.newPassword = "New password is required";
+      valid = false;
+    } else {
+      const { valid: isStrongPassword } = validatePassword(formData.newPassword);
+      if (!isStrongPassword) {
+        newErrors.newPassword = "Password should be at least 8 characters with uppercase, lowercase, number and special character";
+        valid = false;
+      }
+    }
+
+    // Validate confirm password
+    if (formData.newPassword !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+      valid = false;
+    }
+
+    // Check if new password is same as current
+    if (formData.currentPassword && formData.newPassword === formData.currentPassword) {
+      newErrors.newPassword = "New password cannot be the same as current password";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
+  // Verify current password before proceeding
+  const verifyCurrentPassword = async () => {
+    if (!formData.currentPassword) {
+      setErrors(prev => ({
+        ...prev,
+        currentPassword: "Current password is required"
+      }));
+      return;
+    }
+
+    try {
+      setIsVerifying(true);
+
+      // Verify current password with backend
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/v1/auth/verify-password`,
+        { password: formData.currentPassword },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+          }
+        }
+      );
+
+      setIsCurrentPasswordVerified(true);
+      setErrors(prev => ({ ...prev, currentPassword: "" }));
+      toast.success("Current password verified!");
+    } catch (error) {
+      setErrors(prev => ({
+        ...prev,
+        currentPassword: "Current password is incorrect"
+      }));
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    // Verify current password first if not already verified
+    if (!isCurrentPasswordVerified) {
+      await verifyCurrentPassword();
+      if (!isCurrentPasswordVerified) return;
+    }
+
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsLoading(false);
-    setIsLaunched(true);
+
+    try {
+      // Update to correctly use your API endpoint with authorization header
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/v1/auth/change-password`,
+        {
+          currentPassword: formData.currentPassword,
+          newPassword: formData.newPassword
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+          }
+        }
+      );
+
+      // Show success animation
+      setIsLoading(false);
+      setIsLaunched(true);
+      toast.success("Password updated successfully!");
+
+    } catch (error) {
+      setIsLoading(false);
+      const errorMessage = error.response?.data?.message || "Failed to update password";
+      setErrors({ ...errors, general: errorMessage });
+      toast.error(errorMessage);
+    }
   };
 
   return (
-    <div className="bg-gradient-to-b  text-white relative overflow-hidden max-h-[calc(100vh-10rem)]">
+    <div className="bg-gradient-to-b text-white relative overflow-hidden">
       {/* Stars Background */}
       {stars.map((star) => (
         <motion.div
@@ -146,48 +306,168 @@ const SpaceForgotPassword = () => {
                   </p>
                 </div>
 
+                {errors.general && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-red-500/20 text-red-300 p-3 rounded-xl mb-4 text-sm"
+                  >
+                    {errors.general}
+                  </motion.div>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Current Password Field */}
                   <div className="relative group">
-                    <motion.div className="absolute inset-0  rounded-2xl " />
                     <div className="relative flex items-center">
                       <input
-                        type="password"
-                        value={formdata.currentPassword}
-                        onChange={(e) => setFormdata(e.target.value)}
+                        type={showPasswords.current ? "text" : "password"}
+                        name="currentPassword"
+                        value={formData.currentPassword}
+                        onChange={handleInputChange}
                         placeholder="Current password"
-                        className="w-full px-4 py-4 bg-white/5 text-white border border-white/10 rounded-2xl focus:outline-none focus:border-brandPrimary transition-all pl-12"
+                        className={`w-full px-4 py-4 bg-white/5 text-white border ${errors.currentPassword ? "border-red-500" :
+                            isCurrentPasswordVerified ? "border-green-500" : "border-white/10"
+                          } rounded-2xl focus:outline-none focus:border-brandPrimary transition-all pl-12`}
+                        disabled={isCurrentPasswordVerified}
                         required
                       />
-                      <Mail className="absolute left-4 w-5 h-5 text-gray-400" />
+                      <LockKeyhole className="absolute left-4 w-5 h-5 text-gray-400" />
+                      {!isCurrentPasswordVerified && (
+                        <button
+                          type="button"
+                          onClick={() => togglePasswordVisibility('current')}
+                          className="absolute right-4 text-gray-400 hover:text-white transition-colors"
+                        >
+                          {showPasswords.current ?
+                            <EyeOff className="w-5 h-5" /> :
+                            <Eye className="w-5 h-5" />
+                          }
+                        </button>
+                      )}
+                      {isCurrentPasswordVerified && (
+                        <span className="absolute right-4 text-green-500">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </span>
+                      )}
                     </div>
+                    {errors.currentPassword && (
+                      <p className="mt-1 text-sm text-red-400">{errors.currentPassword}</p>
+                    )}
+                    {!isCurrentPasswordVerified && !errors.currentPassword && (
+                      <div className="mt-2 flex justify-end">
+                        <button
+                          type="button"
+                          onClick={verifyCurrentPassword}
+                          disabled={isVerifying || !formData.currentPassword}
+                          className="px-3 py-1 text-xs bg-brandPrimary text-black rounded hover:opacity-90 disabled:opacity-50 flex items-center gap-1"
+                        >
+                          {isVerifying ? (
+                            <>
+                              <motion.div
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                              >
+                                <AiOutlineLoading3Quarters className="w-3 h-3" />
+                              </motion.div>
+                              <span>Verifying...</span>
+                            </>
+                          ) : (
+                            <span>Verify Password</span>
+                          )}
+                        </button>
+                      </div>
+                    )}
                   </div>
+
+                  {/* New Password Field */}
                   <div className="relative group">
-                    <motion.div className="absolute inset-0  rounded-2xl " />
                     <div className="relative flex items-center">
                       <input
-                        type="password"
-                        value={formdata.password}
-                        onChange={(e) => setEmail(e.target.value)}
+                        type={showPasswords.new ? "text" : "password"}
+                        name="newPassword"
+                        value={formData.newPassword}
+                        onChange={handleInputChange}
                         placeholder="New password"
-                        className="w-full px-4 py-4 bg-white/5 text-white border border-white/10 rounded-2xl focus:outline-none focus:border-brandPrimary transition-all pl-12"
+                        className={`w-full px-4 py-4 bg-white/5 text-white border ${errors.newPassword ? "border-red-500" : "border-white/10"
+                          } rounded-2xl focus:outline-none focus:border-brandPrimary transition-all pl-12`}
                         required
                       />
-                      <Mail className="absolute left-4 w-5 h-5 text-gray-400" />
+                      <LockKeyhole className="absolute left-4 w-5 h-5 text-gray-400" />
+                      <button
+                        type="button"
+                        onClick={() => togglePasswordVisibility('new')}
+                        className="absolute right-4 text-gray-400 hover:text-white transition-colors"
+                      >
+                        {showPasswords.new ?
+                          <EyeOff className="w-5 h-5" /> :
+                          <Eye className="w-5 h-5" />
+                        }
+                      </button>
                     </div>
+                    {errors.newPassword && (
+                      <p className="mt-1 text-sm text-red-400">{errors.newPassword}</p>
+                    )}
+
+                    {/* Password strength indicator */}
+                    {formData.newPassword && (
+                      <div className="mt-2">
+                        <div className="h-1 w-full bg-gray-700 rounded-full overflow-hidden">
+                          <motion.div
+                            className={`h-full ${validatePassword(formData.newPassword).strength < 40 ? "bg-red-500" :
+                              validatePassword(formData.newPassword).strength < 70 ? "bg-yellow-500" :
+                                "bg-green-500"
+                              }`}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${validatePassword(formData.newPassword).strength}%` }}
+                          />
+                        </div>
+                        <p className="text-xs mt-1 text-gray-400">Password strength:
+                          <span className={
+                            validatePassword(formData.newPassword).strength < 40 ? "text-red-400" :
+                              validatePassword(formData.newPassword).strength < 70 ? "text-yellow-400" :
+                                "text-green-400"
+                          }>
+                            {" "}
+                            {validatePassword(formData.newPassword).strength < 40 ? "Weak" :
+                              validatePassword(formData.newPassword).strength < 70 ? "Medium" :
+                                "Strong"}
+                          </span>
+                        </p>
+                      </div>
+                    )}
                   </div>
+
+                  {/* Confirm Password Field */}
                   <div className="relative group">
-                    <motion.div className="absolute inset-0 bg-transparent rounded-2xl " />
                     <div className="relative flex items-center">
                       <input
-                        type="password"
-                        value={formdata.confirmPassword}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Confirm Passowrd"
-                        className="w-full px-4 py-4 bg-white/5 text-white border border-white/10 rounded-2xl focus:outline-none focus:border-brandPrimary transition-all pl-12"
+                        type={showPasswords.confirm ? "text" : "password"}
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                        placeholder="Confirm Password"
+                        className={`w-full px-4 py-4 bg-white/5 text-white border ${errors.confirmPassword ? "border-red-500" : "border-white/10"
+                          } rounded-2xl focus:outline-none focus:border-brandPrimary transition-all pl-12`}
                         required
                       />
-                      <Mail className="absolute left-4 w-5 h-5 text-gray-400" />
+                      <LockKeyhole className="absolute left-4 w-5 h-5 text-gray-400" />
+                      <button
+                        type="button"
+                        onClick={() => togglePasswordVisibility('confirm')}
+                        className="absolute right-4 text-gray-400 hover:text-white transition-colors"
+                      >
+                        {showPasswords.confirm ?
+                          <EyeOff className="w-5 h-5" /> :
+                          <Eye className="w-5 h-5" />
+                        }
+                      </button>
                     </div>
+                    {errors.confirmPassword && (
+                      <p className="mt-1 text-sm text-red-400">{errors.confirmPassword}</p>
+                    )}
                   </div>
 
                   <motion.button
@@ -256,8 +536,8 @@ const SpaceForgotPassword = () => {
                 <br />
               </p>
               <motion.button
-                onClick={() => (window.location.href = "/auth/login")}
-                className="bg-brandPrimary text-gray-900 font-semibold py-3 px-6 rounded-lg  hover:bg-black hover:text-brandPrimary transition-colors duration-300"
+                onClick={() => navigate("/auth/login")}
+                className="bg-brandPrimary text-gray-900 font-semibold py-3 px-6 rounded-lg hover:bg-black hover:text-brandPrimary transition-colors duration-300"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -297,4 +577,4 @@ const SpaceForgotPassword = () => {
   );
 };
 
-export default SpaceForgotPassword;
+export default ChangePassword;
