@@ -282,7 +282,12 @@ export default function CreateTeamPopUp({
         </button>
         <button
           type="button"
-          onClick={handleCreateTeam}
+          onClick={(e) => handleCreateTeam(e, {
+            TeamName: newTeamName,
+            TeamDescription: teamDescription,
+            TeamLogo: fileName,
+            TeamMembers: selectedMembers.map(member => member._id)
+          })}
           disabled={isLoading || !newTeamName.trim()}
           className="px-6 py-3 rounded-xl bg-gradient-to-r bg-cyan-400 text-black font-medium cursor-pointer flex items-center space-x-2 hover:bg-black hover:text-cyan-400 hover:border hover:border-cyan-400 transition-all duration-300 "
         >

@@ -154,19 +154,9 @@ export default function CreateTeamItem() {
     console.log(`Form Data: `, formData);
 
     try {
-      // Make sure teamLogo is added to formData if it exists
-      if (teamLogo) {
-        formData.append("TeamLogo", teamLogo);
-      }
-
-      // Debug logging to verify formData contents
-      console.log("Form data entries:");
-      for (const pair of formData.entries()) {
-        console.log(pair[0] + ": " + pair[1]);
-      }
 
       // Make sure we have a team name
-      if (!formData.get("TeamName")) {
+      if (!formData.TeamName) {
         toast.error("Team name is required");
         setIsLoading(false);
         return;
