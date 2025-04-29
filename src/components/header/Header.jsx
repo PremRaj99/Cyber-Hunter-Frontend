@@ -20,6 +20,7 @@ import { PiRankingFill } from "react-icons/pi";
 import { GiTrophy } from "react-icons/gi";
 import { SiFreelancer } from "react-icons/si";
 import leaduserdemo from "../../assets/leaduserdemo.png";
+import { MdMiscellaneousServices } from "react-icons/md";
 
 
 export default function Header() {
@@ -156,12 +157,12 @@ export default function Header() {
       icon: <IoIosAlert />,
       guestOnly: true,
     },
-    // {
-    //   name: "Services",
-    //   link: "/service",
-    //   icon: <MdMiscellaneousServices />,
-    //   guestOnly: true,
-    // },
+    {
+      name: "Freelance",
+      link: "/freelancer",
+      icon: <MdMiscellaneousServices />,
+      guestOnly: false,
+    },
     {
       name: "Leaderboard",
       link: "/leaderboard",
