@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react/no-unknown-property */
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, Code, Search } from 'lucide-react';
 import MultiSelectInput from '../Input/MultiSelectInput';

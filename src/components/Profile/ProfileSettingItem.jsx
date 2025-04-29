@@ -43,8 +43,8 @@ export default function EditProfile() {
   useEffect(() => {
     const fetchIndividualId = async () => {
       try {
-        if (!individualId && user?._id) {
-          // Updated endpoint to use the new route
+        // Check if we have a valid user ID before making the API request
+        if (!individualId && user?._id && user._id !== "undefined") {
           const response = await axios.get(
             `${import.meta.env.VITE_API_URL}/api/v1/individual/user/${user._id}`,
             {
@@ -58,6 +58,9 @@ export default function EditProfile() {
             setIndividualId(response.data.data._id);
             console.log("Found individualId:", response.data.data._id);
           }
+        } else if (!user?._id || user._id === "undefined") {
+          console.warn("Cannot fetch individual info - user ID is missing or invalid");
+          // Optionally redirect to login or profile completion page if needed
         }
       } catch (error) {
         console.error("Error fetching individual ID:", error);
@@ -102,6 +105,11 @@ export default function EditProfile() {
     setIsLoading(true);
 
     try {
+      // Check for valid user ID first
+      if (!user?._id || user._id === "undefined") {
+        throw new Error("Invalid user ID. Please log in again.");
+      }
+
       console.log("About to update individual, ID:", individualId);
       // 1. Update bio (description) using individual route
       if (individualId && formData.description) {
@@ -165,7 +173,7 @@ export default function EditProfile() {
         console.error("Error response:", error.response.data);
         alert(`Failed to update profile: ${error.response.data.message || "Unknown error"}`);
       } else {
-        alert("Failed to update profile. Please try again.");
+        alert(error.message || "Failed to update profile. Please try again.");
       }
     } finally {
       setIsLoading(false);

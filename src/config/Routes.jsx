@@ -38,6 +38,9 @@ import ChangePassword from "../pages/ChangePassword";
 import Policy from "../pages/Policy";
 import VendorLogin from "../pages/VendorLogin";
 import OurTeam from "../pages/OurTeam";
+import AddTeamProject from "../pages/AddTeamProject";
+import ViewTeamProject from "../pages/ViewTeamProject";
+import EditTeamProject from "../pages/EditTeamProject";
 
 export const router = createBrowserRouter([
   {
@@ -196,12 +199,16 @@ export const router = createBrowserRouter([
             element: <Team />,
           },
           {
-            path: "addteamproject",
-            element: <AddProject />,
+            path: "addproject",
+            element: <AddTeamProject />,
           },
           {
-            path: "viewteamproject",
-            element: <ViewProject />,
+            path: "viewproject",
+            element: <ViewTeamProject />,
+          },
+          {
+            path: "editproject/:id",
+            element: <EditTeamProject />,
           },
           {
             path: "teamsetting",

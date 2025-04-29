@@ -1,12 +1,16 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { GiTeamIdea } from "react-icons/gi";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // You can create a theme context in your app, or pass isDarkMode as a prop
 const DTeam = ({ isDarkMode = true }) => {
@@ -52,10 +56,19 @@ const DTeam = ({ isDarkMode = true }) => {
   // Team action cards data
   const teamActions = [
     {
+      icon: <GiTeamIdea size={24} />,
+      text: "View Team",
+      description: "View Your Team Page",
+      path: "/dashboard/team",
+      color: "from-amber-500 to-orange-400",
+      textColor: "text-amber-100",
+      iconBg: "bg-amber-400 bg-opacity-20"
+    },
+    {
       icon: <AddCircleRoundedIcon fontSize="medium" />,
       text: "Add Project",
       description: "Create a new team project",
-      path: "/dashboard/team/addteamproject",
+      path: "/dashboard/team/addproject",
       color: "from-blue-500 to-cyan-400",
       textColor: "text-blue-100",
       iconBg: "bg-blue-400 bg-opacity-20"
@@ -64,7 +77,7 @@ const DTeam = ({ isDarkMode = true }) => {
       icon: <VisibilityOutlinedIcon fontSize="medium" />,
       text: "View Projects",
       description: "Browse existing projects",
-      path: "/dashboard/project/view",
+      path: "/dashboard/team/viewproject",
       color: "from-purple-500 to-indigo-500",
       textColor: "text-purple-100",
       iconBg: "bg-purple-400 bg-opacity-20"
@@ -77,15 +90,6 @@ const DTeam = ({ isDarkMode = true }) => {
       color: "from-green-500 to-emerald-400",
       textColor: "text-green-100",
       iconBg: "bg-green-400 bg-opacity-20"
-    },
-    {
-      icon: <ChatBubbleIcon fontSize="medium" />,
-      text: "Team Chat",
-      description: "Communicate with your team",
-      path: "/dashboard/team/chat",
-      color: "from-amber-500 to-orange-400",
-      textColor: "text-amber-100",
-      iconBg: "bg-amber-400 bg-opacity-20"
     },
     {
       icon: <GiTeamIdea size={24} />,
@@ -107,10 +111,42 @@ const DTeam = ({ isDarkMode = true }) => {
     },
   ];
 
+  const [teamId, setTeamId] = useState(null);
+  const [fetchingUserData, setFetchingUserData] = useState(false);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+      const fetchUserData = async () => {
+        try {
+          setFetchingUserData(true);
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/user/me`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+          });
+  
+          if (response.data && response.data.data && response.data.data.teamId) {
+            setTeamId(response.data.data.teamId);
+          } else {
+            toast.error("You don't belong to any team. Please join or create a team first.");
+            navigate("/dashboard");
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          toast.error("Failed to get your team information");
+        } finally {
+          setFetchingUserData(false);
+        }
+      };
+  
+      fetchUserData();
+    }, [navigate]);
+
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/project`, {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/project/team/${teamId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
@@ -157,7 +193,7 @@ const DTeam = ({ isDarkMode = true }) => {
             }`}
         >
           {[
-            { label: "Active Projects", value: projectCount.toString() }, // Use the dynamic count
+            { label: "Active Projects", value: projectCount}, // Use the dynamic count
             { label: "Team Members", value: "34" },
             { label: "Achievements", value: "28" },
             { label: "Pending Tasks", value: "18" }

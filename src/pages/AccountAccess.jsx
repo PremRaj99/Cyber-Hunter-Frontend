@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Key, Smartphone, Lock, Clock, AlertTriangle, LogOut, Check, X, Loader } from 'lucide-react';
@@ -245,9 +246,10 @@ const AccountAccessPage = () => {
                 <Lock className="w-5 h-5 text-cyan-400 mb-2" />
                 <h3 className="font-medium mb-1">Last Password Change</h3>
                 <p className="text-sm text-gray-400">
-                  {securityStatus.lastPasswordChange ?
-                    getTimeAgo(securityStatus.lastPasswordChange) :
-                    'Never changed'}
+                    {securityStatus.lastPasswordChange ?
+                      getTimeAgo(securityStatus.lastPasswordChange)
+                    : 'Never changed'}
+                <p className="text-xs text-gray-500 mt-1">Change your password regularly for better security</p>
                 </p>
               </div>
             </div>

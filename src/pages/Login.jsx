@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
@@ -12,8 +12,6 @@ import {
   Eye,
   EyeOff,
   Github,
-  Twitter,
-  AppleIcon,
 } from "lucide-react";
 import axios from "../utils/Axios";
 import { BsGoogle } from "react-icons/bs";

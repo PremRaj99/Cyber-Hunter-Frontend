@@ -1,43 +1,177 @@
-import React, { useState } from "react";
+/* eslint-disable no-unused-vars */
 import { motion } from "framer-motion";
+import axios from "../../utils/Axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import TeamProfileSection from "./TeamProfileSection";
 
 export default function TeamDashPage() {
+  const [team, setTeam] = useState(null);
+  const [teamProjects, setTeamProjects] = useState([]);
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [activeCategory, setActiveCategory] = useState("Frontend");
-
-  const technologies = [
-    "Java", "HTML", "JS", "React", "Node.js", "MongoDB", "CSS", "Next.js",
-    "Solidity", "Python", "Django", "Flask", "C++", "C#", "Unity", "AI",
-    "ML", "Firebase", "AWS", "Azure", "GCP", "DevOps", "Blockchain", "Cyber Security",
-  ];
+  const [user, setUser] = useState(null);
+  const [isTeamLeader, setIsTeamLeader] = useState(false);
+  const [userRole, setUserRole] = useState('Member');
+  const navigate = useNavigate();
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        delayChildren: 0.2,
         staggerChildren: 0.1,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
-      y: 0,
       opacity: 1,
+      y: 0,
       transition: {
-        type: "spring",
-        stiffness: 100,
+        duration: 0.4,
       },
     },
   };
 
   const hoverScale = {
-    scale: 1.01,
-    transition: { duration: 0.2 },
+    scale: 1.05,
   };
+
+  // Fetch user data
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const userRes = await axios.get("/api/v1/user/me");
+        if (userRes.data && userRes.data.data) {
+          setUser(userRes.data.data);
+        } else {
+          setError("Failed to load user data.");
+        }
+      } catch (error) {
+        setError("Failed to load user data.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchUserData();
+  }, [navigate]);
+
+  // Fetch team data
+  useEffect(() => {
+    const fetchTeamData = async () => {
+      if (!user || !user.teamId || user.teamId === "undefined") {
+        setTeam(null);
+        return;
+      }
+      try {
+        setIsLoading(true);
+        setError(null);
+        // Get team data with populated member details
+        const teamRes = await axios.get(`/api/v1/team/`);
+        // Debug: log the response to see what you get
+        console.log("Team API response:", teamRes.data);
+
+        if (teamRes.data && teamRes.data.success && teamRes.data.data) {
+          const teamData = Array.isArray(teamRes.data.data) ? teamRes.data.data[0] : teamRes.data.data;
+          setTeam(teamData);
+
+          // Properly format team members data
+          const formattedMembers = (teamData.TeamMembers || []).map(member => {
+            const memberData = typeof member.userId === 'object' ? member.userId : { _id: member.userId };
+            return {
+              userId: memberData,
+              _id: member._id,
+              role: member.role || "Member",
+              status: member.status || "Active",
+              points: member.points || 0,
+              skills: member.skills || [],
+              social: member.social || {}
+            };
+          });
+
+          setTeamMembers(formattedMembers);
+
+          // Projects
+          setTeamProjects(
+            Array.isArray(teamData.projectId)
+              ? teamData.projectId
+              : []
+          );
+
+          setIsTeamLeader(teamData.TeamCreaterId === user._id);
+          const member = formattedMembers.find(m => {
+            // Handle both populated and non-populated member objects
+            if (typeof m.userId === "object" && m.userId._id) {
+              return m.userId._id === user._id;
+            }
+            return m.userId === user._id;
+          });
+          setUserRole(member?.role || "Member");
+        } else {
+          setError("Failed to load team data.");
+        }
+      } catch (error) {
+        setError("Failed to load team data.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchTeamData();
+  }, [user]);
+
+  // List of technologies from team data or fallback
+  const technologies = team?.techStack || [
+    "React", "Node.js", "TypeScript", "MongoDB", "Express",
+    "GraphQL", "Next.js", "TailwindCSS", "AWS", "Docker",
+    "Redux", "Jest", "PostgreSQL", "Firebase"
+  ];
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="loader animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-400"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-red-400 text-center">
+          <p className="text-xl mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-cyan-800 text-white rounded-lg hover:bg-cyan-700"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!team) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <p className="text-xl mb-4 text-gray-300">You are not part of any team yet.</p>
+          <button
+            onClick={() => navigate("/dashboard/team/create")}
+            className="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-500 inline-block"
+          >
+            Create or Join a Team
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <motion.div

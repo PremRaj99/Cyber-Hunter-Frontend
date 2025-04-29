@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -312,18 +314,7 @@ const ProfileSection = () => {
         ))}
       </motion.ul>
 
-      <motion.div
-        variants={itemVariants}
-        className="mt-auto pt-6 flex justify-end"
-      >
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="px-6 py-3 rounded-xl bg-gradient-to-r bg-cyan-400 text-black font-medium transition-colors cursor-pointer flex items-center space-x-2 hover:bg-black hover:text-cyan-400 hover:border hover:border-cyan-400"
-        >
-          Save Changes
-        </motion.button>
-      </motion.div>
+     
     </motion.div>
   );
 };

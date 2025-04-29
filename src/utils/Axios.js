@@ -1,16 +1,15 @@
 import axios from "axios";
 
-const Axios = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  timeout: 10000,
-  headers: {
-    "Content-Type": "application/json",
-  },
+// Create Axios instance with base URL and default config
+const instance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
+  timeout: 10000, // 10 seconds timeout
 });
 
-// Add auth token to requests
-axios.interceptors.request.use(
+// Add request interceptor to automatically add auth token
+instance.interceptors.request.use(
   (config) => {
+    // Get token from localStorage and add to headers if available
     const token = localStorage.getItem("accessToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -22,41 +21,27 @@ axios.interceptors.request.use(
   }
 );
 
-// Handle token refresh or logout on auth errors
-axios.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+// Add response interceptor for global error handling
+instance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    // Handle specific error cases
+    if (error.response) {
+      // Handle 401 Unauthorized errors (e.g., token expired)
+      if (error.response.status === 401) {
+        // You could redirect to login or refresh token here
+        console.error("Authentication error:", error.response.data);
+      }
 
-    // If error is 401 and we haven't tried to refresh the token yet
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      try {
-        // Try to refresh token
-        const refreshToken = localStorage.getItem("refreshToken");
-        if (refreshToken) {
-          const response = await axios.post("/api/v1/auth/refresh-token", {
-            refreshToken,
-          });
-
-          if (response.data.data?.accessToken) {
-            localStorage.setItem("accessToken", response.data.data.accessToken);
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${response.data.data.accessToken}`;
-            return axios(originalRequest);
-          }
+      // Handle 400 Bad Request with specific messaging
+      if (error.response.status === 400) {
+        console.error("Bad Request:", error.response.data);
+        // Check if it's the specific "Invalid user ID" error
+        if (error.response.data?.message?.includes("Invalid user ID")) {
+          console.error("User ID validation error - check for undefined IDs");
         }
-        // If refresh fails, clear tokens and redirect to login
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        window.location.href = "/auth/login";
-      } catch (error) {
-        // If refresh token is invalid, clear tokens and redirect to login
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        window.location.href = "/auth/login";
       }
     }
 
@@ -64,4 +49,4 @@ axios.interceptors.response.use(
   }
 );
 
-export default Axios;
+export default instance;
