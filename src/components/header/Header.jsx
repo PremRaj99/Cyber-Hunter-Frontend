@@ -20,7 +20,7 @@ import { PiRankingFill } from "react-icons/pi";
 import { GiTrophy } from "react-icons/gi";
 import { SiFreelancer } from "react-icons/si";
 import leaduserdemo from "../../assets/leaduserdemo.png";
-import { MdMiscellaneousServices } from "react-icons/md";
+// import { MdMiscellaneousServices } from "react-icons/md";
 
 
 export default function Header() {
@@ -158,12 +158,6 @@ export default function Header() {
       guestOnly: true,
     },
     {
-      name: "Freelance",
-      link: "/freelancer",
-      icon: <MdMiscellaneousServices />,
-      guestOnly: false,
-    },
-    {
       name: "Leaderboard",
       link: "/leaderboard",
       icon: <PiRankingFill />,
@@ -176,11 +170,18 @@ export default function Header() {
       guestOnly: false,
     },
     {
+      name: "Freelance",
+      link: "/freelancer",
+      icon: <SiFreelancer />,
+      guestOnly: false,
+    },
+    {
       name: "Contact",
       link: "/contact",
       icon: <FaPhoneAlt />,
       guestOnly: false,
     },
+    
   ];
 
   const newNav = [
@@ -194,6 +195,7 @@ export default function Header() {
       link2: "/dashboard",
       icon: <BsGrid3X3Gap />,
     },
+    // Remove Freelance from here since we added it to the main nav array
   ];
 
   return (
@@ -264,27 +266,10 @@ export default function Header() {
                 </div>
                 <div className="absolute inset-0 bg-[#00D8FF]/0 group-hover:bg-[#00D8FF]/10 rounded-lg transition-all duration-300" />
               </NavLink>
-              <NavLink
-                to="/freelancer"
-                end
-                className={({ isActive }) =>
-                  `group relative px-4 py-2 rounded-lg transition-all duration-300 ${isActive
-                    ? "text-[#00D8FF]"
-                    : "text-gray-400 hover:text-white"
-                  }`
-                }
-              >
-                <div className="flex items-center space-x-3">
-                  <SiFreelancer size={26} />
-                  <span className="relative">
-                    Freelance
-                    <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#00D8FF] group-hover:w-full transition-all duration-300" />
-                  </span>
-                </div>
-                <div className="absolute inset-0 bg-[#00D8FF]/0 group-hover:bg-[#00D8FF]/10 rounded-lg transition-all duration-300" />
-              </NavLink>
 
-              {/* Filtered nav items (Leaderboard, Event, Contact) */}
+              {/* Remove the Freelance NavLink from here as it's now in the filtered nav items */}
+
+              {/* Filtered nav items (Leaderboard, Event, Contact, Freelance) */}
               {nav
                 .filter((item) => !item.guestOnly)
                 .map((item) => (
@@ -300,7 +285,7 @@ export default function Header() {
                   >
                     <div className="flex items-center space-x-3">
                       <span className="flex items-center justify-center">
-                        {React.cloneElement(item.icon, { size: 24 })}  {/* Explicitly set icon size to 24px */}
+                        {React.cloneElement(item.icon, { size: 24 })}
                       </span>
                       <span className="relative">
                         {item.name}
@@ -366,7 +351,7 @@ export default function Header() {
                 </div>
 
                 {/* Username */}
-                <span className="font-semibold relative"> 
+                <span className="font-semibold relative">
                   <span className="relative z-10 group-hover:text-[#00D8FF] transition-colors duration-300">
                     {currentUser.name || " "}
                   </span>

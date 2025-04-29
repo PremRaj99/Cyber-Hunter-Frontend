@@ -100,7 +100,7 @@ export default function CreateTeamPopUp({
   };
 
   return (
-    <div className="bg-gray-800 relative z-50 p-6 rounded-lg shadow-xl">
+    <div className="bg-gray-900 relative z-50 p-6 rounded-lg shadow-xl">
       <h2 className="text-xl font-bold text-white mb-6 border-b border-gray-700 pb-3">Create New Team</h2>
 
       <div className="grid grid-cols-1 gap-6">
@@ -281,16 +281,10 @@ export default function CreateTeamPopUp({
           Cancel
         </button>
         <button
-          type="button" // Changed from "submit" to "button" to prevent default form submission behavior
-          onClick={(e) => {
-            // Pass selected members to the handler
-            console.log("Selected members:", selectedMembers);
-            const memberIds = selectedMembers.map(m => m._id);
-            console.log("Member IDs being passed:", memberIds);
-            handleCreateTeam(e, memberIds);
-          }}
+          type="button"
+          onClick={handleCreateTeam}
           disabled={isLoading || !newTeamName.trim()}
-          className="px-6 py-3 rounded-xl bg-gradient-to-r bg-cyan-400 text-black font-medium transition-colors cursor-pointer flex items-center space-x-2 hover:bg-black hover:text-cyan-400 hover:border hover:border-cyan-400 disabled:opacity-50 disabled:hover:bg-cyan-400 disabled:hover:text-black"
+          className="px-6 py-3 rounded-xl bg-gradient-to-r bg-cyan-400 text-black font-medium cursor-pointer flex items-center space-x-2 hover:bg-black hover:text-cyan-400 hover:border hover:border-cyan-400 transition-all duration-300 "
         >
           {isLoading ? (
             <>
@@ -303,7 +297,7 @@ export default function CreateTeamPopUp({
           ) : (
             "Create Team"
           )}
-        </button>
+        </button>         
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-"use client"
+
 
 import { useState, useMemo, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -148,91 +147,59 @@ export default function CreateTeamItem() {
   }
 
   // Handle team creation
-  const handleCreateTeam = async (e, memberIds = []) => {
-    e.preventDefault()
+  const handleCreateTeam = async (e, formData) => {
+    e.preventDefault();
+    setIsLoading(true);
 
-    if (!newTeamName.trim()) {
-      toast.error("Team name is required")
-      return
-    }
+    console.log(`Form Data: `, formData);
 
     try {
-      setIsLoading(true)
-
-      // Create a new FormData instance
-      const formData = new FormData()
-
-      // Add required fields - TeamName is required
-      formData.append("TeamName", newTeamName)
-
-      if (teamDescription) {
-        formData.append("TeamDescription", teamDescription)
-      }
-
-      // Add team logo if provided
+      // Make sure teamLogo is added to formData if it exists
       if (teamLogo) {
-        formData.append("TeamLogo", teamLogo)
+        formData.append("TeamLogo", teamLogo);
       }
 
-      // Add team members if provided
-      if (memberIds && memberIds.length > 0) {
-        memberIds.forEach((id) => {
-          formData.append("TeamMembers", id)
-        })
+      // Debug logging to verify formData contents
+      console.log("Form data entries:");
+      for (const pair of formData.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
       }
 
-      // Add tech stack
-      const techStack = ["React", "Node.js", "MongoDB"]
-      techStack.forEach((tech) => {
-        formData.append("techStack", tech)
-      })
+      // Make sure we have a team name
+      if (!formData.get("TeamName")) {
+        toast.error("Team name is required");
+        setIsLoading(false);
+        return;
+      }
 
-      // Add interests
-      const interests = ["Web Development", "API Integration"]
-      interests.forEach((interest) => {
-        formData.append("interests", interest)
-      })
-
-      // Make the API call
       const response = await axios.post("/api/v1/team", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-        }
-      })
+        },
+      });
 
       if (response.data.success) {
-        toast.success("Team created successfully!")
-        setNewTeamName("")
-        setTeamDescription("")
-        setTeamLogo(null)
-        setIsFormVisible(false)
+        toast.success("Team created successfully!");
+        setIsFormVisible(false);
+        // Reset form fields
+        setNewTeamName("");
+        setTeamDescription("");
+        setTeamLogo(null);
 
-        // Redirect to team dashboard
-        navigate("/dashboard/team")
+        // Refresh teams list if needed
+        // fetchTeams();
       }
     } catch (error) {
-      console.error("Team creation error:", error)
+      console.error("Error creating team:", error);
 
-      // More detailed error handling
+      // More detailed error logging
       if (error.response) {
-        const errorMessage = error.response.data?.message || "Team creation failed"
-        toast.error(errorMessage)
-
-        // Handle specific error cases
-        if (error.response.status === 409) {
-          toast.error("Team name already exists. Please choose another name.")
-        } else if (error.response.status === 403) {
-          toast.error("You don't have permission to create a team.")
-        } else if (error.response.status === 413) {
-          toast.error("The team logo is too large. Maximum size is 2MB.")
-        }
-      } else if (error.request) {
-        toast.error("No response from server. Please check your connection.")
-      } else {
-        toast.error("Error preparing request: " + error.message)
+        console.error("Error response data:", error.response.data);
       }
+
+      toast.error(error.response?.data?.message || "Failed to create team");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 

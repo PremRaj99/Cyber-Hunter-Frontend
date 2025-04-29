@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Sidebar from "../components/dashboard/Sidebar";
@@ -7,6 +8,7 @@ import DContact from "../components/dashboard/dContact";
 import DLeaderBoard from "../components/dashboard/dLeaderBorad";
 import DNotification from "../components/dashboard/dNotification";
 import DSetting from "../components/dashboard/dSetting";
+import { X } from "lucide-react";
 
 export default function Dashboard() {
   // States

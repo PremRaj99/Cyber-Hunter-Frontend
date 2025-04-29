@@ -26,43 +26,43 @@ export const TeamService = {
   },
 
   // Create a new team
-  createTeam: async (teamData) => {
-    try {
-      const formData = new FormData();
+  // createTeam: async (teamData) => {
+  //   try {
+  //     const formData = new FormData();
 
-      // Append text fields
-      formData.append("TeamName", teamData.teamName);
-      formData.append("TeamDescription", teamData.description);
+  //     // Append text fields
+  //     formData.append("TeamName", teamData.teamName);
+  //     formData.append("TeamDescription", teamData.description);
 
-      // Append team logo if exists
-      if (teamData.teamLogo) {
-        formData.append("TeamLogo", teamData.teamLogo);
-      }
+  //     // Append team logo if exists
+  //     if (teamData.teamLogo) {
+  //       formData.append("TeamLogo", teamData.teamLogo);
+  //     }
 
-      // Append arrays if they exist
-      if (teamData.techStack && teamData.techStack.length > 0) {
-        teamData.techStack.forEach((tech, index) => {
-          formData.append(`techStack[${index}]`, tech);
-        });
-      }
+  //     // Append arrays if they exist
+  //     if (teamData.techStack && teamData.techStack.length > 0) {
+  //       teamData.techStack.forEach((tech, index) => {
+  //         formData.append(`techStack[${index}]`, tech);
+  //       });
+  //     }
 
-      if (teamData.interests && teamData.interests.length > 0) {
-        teamData.interests.forEach((interest, index) => {
-          formData.append(`interests[${index}]`, interest);
-        });
-      }
+  //     if (teamData.interests && teamData.interests.length > 0) {
+  //       teamData.interests.forEach((interest, index) => {
+  //         formData.append(`interests[${index}]`, interest);
+  //       });
+  //     }
 
-      const response = await axios.post(API_URL, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.error("Error creating team:", error);
-      throw error;
-    }
-  },
+  //     const response = await axios.post(API_URL, formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("Error creating team:", error);
+  //     throw error;
+  //   }
+  // },
 
   // Update team details
   updateTeam: async (teamId, teamData) => {

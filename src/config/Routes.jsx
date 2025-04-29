@@ -13,7 +13,7 @@ import ProjectDetail from "../../src/pages/Project";
 import Team from "../pages/Team";
 import CreateTeam from "../../src/pages/CreateTeam";
 import About from "../components/home/About";
-import Service from "../../src/pages/Service";
+// import Service from "../../src/pages/Service";
 import Contact from "../components/home/Contact";
 import Leaderboard from "../../src/pages/Leaderboard";
 import Event from "../../src/pages/Event";
