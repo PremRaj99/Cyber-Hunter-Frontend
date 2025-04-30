@@ -585,8 +585,8 @@ export default function EditTeamProject() {
                   <h3 className="text-xl font-semibold text-cyan-400 mb-4">Technologies Used</h3>
                   <MultiSelectInput
                     fieldName="Technology"
-                    apiEndpoint={`${import.meta.env.VITE_API_URL}/api/v1/tag/tech`}
-                    onTagsChange={setSelectedTechStack}
+                    apiEndpoint={`${import.meta.env.VITE_API_URL}/api/v1/techStack`}
+                    onTagsChange={(e) => setSelectedTechStack(prev => e)}
                     defaultValue={selectedTechStack}
                   />
                 </div>
@@ -596,8 +596,8 @@ export default function EditTeamProject() {
                   <h3 className="text-xl font-semibold text-cyan-400 mb-4">Programming Languages</h3>
                   <MultiSelectInput
                     fieldName="Language"
-                    apiEndpoint={`${import.meta.env.VITE_API_URL}/api/v1/tag/language`}
-                    onTagsChange={setSelectedLanguages}
+                    apiEndpoint={`${import.meta.env.VITE_API_URL}/api/v1/language`}
+                    onTagsChange={(e) => setSelectedLanguages(prev => e)}
                     defaultValue={selectedLanguages}
                   />
                 </div>

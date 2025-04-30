@@ -241,17 +241,12 @@ const TeamManageSettings = () => {
 
                 if (teamResponse.data && teamResponse.data.data) {
                   const team = teamResponse.data.data;
-                  console.log("User team data received:", team);
 
                   // Check if user is team leader
                   const isLeader = team.TeamCreaterId &&
                     userResponse.data.data._id &&
-                    (typeof team.TeamCreaterId === 'object'
-                      ? team.TeamCreaterId._id.toString() === userResponse.data.data._id.toString()
-                      : team.TeamCreaterId.toString() === userResponse.data.data._id.toString());
-
+                    team.TeamCreaterId.email === userResponse.data.data.email;
                   setIsTeamLeader(isLeader);
-                  console.log("User is team leader:", isLeader);
 
                   // Process team data - use async processTeamData
                   await processTeamData(team);

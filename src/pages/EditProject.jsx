@@ -33,6 +33,7 @@ export default function EditProject() {
   const [techInput, setTechInput] = useState("");
   const [languageInput, setLanguageInput] = useState("");
   const [selectedTechStack, setSelectedTechStack] = useState([]);
+  console.log(`selectedTechStack`, selectedTechStack);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
 
   const formatCreatedAt = (dateString) => {
@@ -527,8 +528,8 @@ export default function EditProject() {
                   <h3 className="text-xl font-semibold text-cyan-400 mb-4">Technologies Used</h3>
                   <MultiSelectInput
                     fieldName="Technology"
-                    apiEndpoint={`${import.meta.env.VITE_API_URL}/api/v1/tag/tech`}
-                    onTagsChange={setSelectedTechStack}
+                    apiEndpoint={`${import.meta.env.VITE_API_URL}/api/v1/techStack`}
+                    onTagsChange={(e) => setSelectedTechStack(prev => [...prev, e])}
                     defaultValue={selectedTechStack}
                   />
                 </div>
