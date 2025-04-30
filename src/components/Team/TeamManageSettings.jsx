@@ -165,7 +165,7 @@ const TeamManageSettings = () => {
           try {
             const teamResponse = await TeamService.getTeamById(paramTeamId);
 
-            if (teamResponse.success) {
+            if (teamResponse && teamResponse.data) {
               // Save team ID
               setTeamId(paramTeamId);
 
@@ -174,7 +174,10 @@ const TeamManageSettings = () => {
 
               if (userResponse.data && userResponse.data.data) {
                 const currentUserId = userResponse.data.data._id;
-                const team = teamResponse.data;
+                // Check if response has nested data structure
+                const team = teamResponse.data.data || teamResponse.data;
+
+                console.log("Team data received:", team);
 
                 // Check if user is team leader
                 const isLeader = team.TeamCreaterId &&
@@ -187,7 +190,7 @@ const TeamManageSettings = () => {
                 console.log("User is team leader:", isLeader);
 
                 // Check if user is part of the team
-                const isMember = team.TeamMembers.some(member => {
+                const isMember = team.TeamMembers && team.TeamMembers.some(member => {
                   const memberId = typeof member.userId === 'object'
                     ? member.userId._id
                     : member.userId;
@@ -207,6 +210,7 @@ const TeamManageSettings = () => {
                 throw new Error("Failed to get user data");
               }
             } else {
+              console.error("Invalid team response format:", teamResponse);
               throw new Error("Team data not available");
             }
           } catch (error) {
@@ -232,10 +236,12 @@ const TeamManageSettings = () => {
 
               // Fetch team data
               try {
-                const teamResponse = await TeamService.getTeamById(userTeamId);
+                // Try using direct axios request for consistency
+                const teamResponse = await axios.get(`/api/v1/team/${userTeamId}`);
 
-                if (teamResponse.success) {
-                  const team = teamResponse.data;
+                if (teamResponse.data && teamResponse.data.data) {
+                  const team = teamResponse.data.data;
+                  console.log("User team data received:", team);
 
                   // Check if user is team leader
                   const isLeader = team.TeamCreaterId &&
@@ -251,6 +257,7 @@ const TeamManageSettings = () => {
                   await processTeamData(team);
                   setUserStatus('hasTeam');
                 } else {
+                  console.error("Invalid team response format:", teamResponse);
                   throw new Error("Team data not available");
                 }
               } catch (error) {

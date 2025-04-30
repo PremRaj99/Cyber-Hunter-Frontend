@@ -55,11 +55,14 @@ export default function ProfileDash() {
             },
           }
         );
-        setProjects(response.data);
-
-        console.log("Fetched projects:", response.data);
+        // Ensure projects is always an array
+        const projectsData = response.data?.data || response.data;
+        setProjects(Array.isArray(projectsData) ? projectsData : []);
+        console.log("Fetched projects:", projectsData);
       } catch (error) {
         console.error("Error fetching projects:", error);
+        // Initialize with empty array on error
+        setProjects([]);
       }
     };
     fetchProjects();
@@ -191,7 +194,7 @@ export default function ProfileDash() {
               className="h-[450px] md:h-[525px] rounded-2xl overflow-y-auto pr-2 mt-6 md:mt-0 no-scrollbar"
               variants={itemVariants}
             >
-              {projects && projects.length > 0 ? (
+              {Array.isArray(projects) && projects.length > 0 ? (
                 projects.map((project) => (
                   <motion.div
                     key={project._id}
@@ -310,9 +313,9 @@ export default function ProfileDash() {
           </div>
 
           {/* Field of Excellence */}
-            <h2 className="text-lg font-semibold text-brandPrimary">
-              Field of Excellence
-            </h2>
+          <h2 className="text-lg font-semibold text-brandPrimary">
+            Field of Excellence
+          </h2>
           <motion.div
             className="flex w-full bg-gray-800/60 rounded-xl h-[210px] p-4 gap-4 border border-gray-700/50 backdrop-blur-sm "
             variants={itemVariants}
