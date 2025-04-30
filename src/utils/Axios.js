@@ -1,18 +1,19 @@
 import axios from "axios";
 
-// Create Axios instance with base URL and default config
+// Create axios instance with default config
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
-  timeout: 10000, // 10 seconds timeout
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000",
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-// Add request interceptor to automatically add auth token
+// Add request interceptor to add auth token
 instance.interceptors.request.use(
   (config) => {
-    // Get token from localStorage and add to headers if available
     const token = localStorage.getItem("accessToken");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
@@ -21,30 +22,21 @@ instance.interceptors.request.use(
   }
 );
 
-// Add response interceptor for global error handling
+// Add response interceptor to handle common errors
 instance.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    // Handle specific error cases
-    if (error.response) {
-      // Handle 401 Unauthorized errors (e.g., token expired)
-      if (error.response.status === 401) {
-        // You could redirect to login or refresh token here
-        console.error("Authentication error:", error.response.data);
-      }
-
-      // Handle 400 Bad Request with specific messaging
-      if (error.response.status === 400) {
-        console.error("Bad Request:", error.response.data);
-        // Check if it's the specific "Invalid user ID" error
-        if (error.response.data?.message?.includes("Invalid user ID")) {
-          console.error("User ID validation error - check for undefined IDs");
-        }
+    // Handle session expiration
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("user");
+      // Redirect to login if not already there
+      if (!window.location.pathname.includes("/login")) {
+        window.location.href = "/login";
       }
     }
-
     return Promise.reject(error);
   }
 );

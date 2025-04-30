@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useRef } from 'react';
 import { X, Search, UserPlus } from 'lucide-react';
@@ -8,43 +9,30 @@ export default function CreateTeamPopUp({
   setNewTeamName,
   teamDescription,
   setTeamDescription,
-  setTeamLogo,
   setIsFormVisible,
   handleCreateTeam,
-  isLoading
+  isLoading,
 }) {
-  const [fileName, setFileName] = useState("");
+  const searchInputRef = useRef(null);
+  const [logoFile, setLogoFile] = useState(null);
+  const [logoPreview, setLogoPreview] = useState("");
+  const [teamMembers, setTeamMembers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [selectedMembers, setSelectedMembers] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
+  const [techStack, setTechStack] = useState([]);
+  const [interests, setInterests] = useState([]);
   const dropdownRef = useRef(null);
-  const searchInputRef = useRef(null);
 
   // Handle file upload for team logo
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setFileName(file.name);
-      setTeamLogo(file);
+      setLogoFile(file);
+      setLogoPreview(URL.createObjectURL(file));
     }
   };
-
-  // Handle clicks outside the search dropdown
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target) &&
-        searchInputRef.current && !searchInputRef.current.contains(event.target)) {
-        setSearchFocused(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   // Search users by name or email
   useEffect(() => {
@@ -60,7 +48,7 @@ export default function CreateTeamPopUp({
         if (response.data.success) {
           // Filter out already selected members
           const filteredResults = response.data.data.filter(
-            user => !selectedMembers.some(member => member._id === user._id)
+            user => !teamMembers.some(member => member._id === user._id)
           );
           setSearchResults(filteredResults);
         }
@@ -71,7 +59,7 @@ export default function CreateTeamPopUp({
           { _id: '1', name: 'John Doe', email: 'john@example.com', profilePicture: 'https://i.pravatar.cc/150?img=1' },
           { _id: '2', name: 'Jane Smith', email: 'jane@example.com', profilePicture: 'https://i.pravatar.cc/150?img=2' },
           { _id: '3', name: 'Alex Johnson', email: 'alex@example.com', profilePicture: 'https://i.pravatar.cc/150?img=3' }
-        ].filter(user => !selectedMembers.some(member => member._id === user._id)));
+        ].filter(user => !teamMembers.some(member => member._id === user._id)));
       } finally {
         setIsSearching(false);
       }
@@ -79,12 +67,12 @@ export default function CreateTeamPopUp({
 
     const debounceTimeout = setTimeout(searchUsers, 500);
     return () => clearTimeout(debounceTimeout);
-  }, [searchQuery, selectedMembers]);
+  }, [searchQuery, teamMembers]);
 
   // Add member to selected members
   const addMember = (member) => {
-    if (selectedMembers.length < 5) {
-      setSelectedMembers(prev => [...prev, member]);
+    if (teamMembers.length < 5) {
+      setTeamMembers(prev => [...prev, member]);
       setSearchQuery('');
       setSearchResults([]);
       // Keep focus on input after selecting to allow for adding more members
@@ -96,7 +84,40 @@ export default function CreateTeamPopUp({
 
   // Remove member from selected members
   const removeMember = (memberId) => {
-    setSelectedMembers(selectedMembers.filter(member => member._id !== memberId));
+    setTeamMembers(teamMembers.filter(member => member._id !== memberId));
+  };
+
+  // New helper function to send join requests instead of direct member add
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Convert team members to email format for the backend
+    const formattedMembers = teamMembers.map(member => member.email);
+
+    // Create form data
+    const formData = new FormData();
+    formData.append("TeamName", newTeamName);
+    formData.append("TeamDescription", teamDescription);
+
+    if (logoFile) {
+      formData.append("TeamLogo", logoFile);
+    }
+
+    // Add tech stack
+    techStack.forEach(tech => {
+      formData.append("techStack", tech);
+    });
+
+    // Add interests
+    interests.forEach(interest => {
+      formData.append("interests", interest);
+    });
+
+    // Important: We're not adding members directly anymore
+    // Instead they'll get invitations after team creation
+
+    // Call the create team handler
+    handleCreateTeam(e, formData, formattedMembers);
   };
 
   return (
@@ -114,7 +135,7 @@ export default function CreateTeamPopUp({
             id="teamName"
             value={newTeamName}
             onChange={(e) => setNewTeamName(e.target.value)}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            className="w-full px-3 py-2 bg-gray-800 border-none border-gray-600 rounded-md text-white focus:outline-none focus:ring-none focus:ring-cyan-400"
             required
           />
         </div>
@@ -128,7 +149,7 @@ export default function CreateTeamPopUp({
             id="teamDescription"
             value={teamDescription}
             onChange={(e) => setTeamDescription(e.target.value)}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 h-24"
+            className="w-full px-3 py-2 bg-gray-800 border-none border-gray-600 rounded-md text-white focus:outline-none focus:ring-none focus:ring-cyan-400 h-24"
           />
         </div>
 
@@ -139,9 +160,9 @@ export default function CreateTeamPopUp({
           </label>
 
           {/* Selected Members Display */}
-          {selectedMembers.length > 0 && (
+          {teamMembers.length > 0 && (
             <div className="mb-3 flex flex-wrap gap-2">
-              {selectedMembers.map(member => (
+              {teamMembers.map(member => (
                 <div
                   key={member._id}
                   className="flex items-center bg-gray-700/50 rounded-full pl-1 pr-2 py-1"
@@ -165,10 +186,10 @@ export default function CreateTeamPopUp({
           )}
 
           {/* User Search Input */}
-          {selectedMembers.length < 5 && (
+          {teamMembers.length < 5 && (
             <div className="relative">
-              <div className="flex items-center w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md">
-                <Search size={18} className="text-gray-400 mr-2" />
+              <div className="flex items-center w-full px-3  bg-gray-800 border border-gray-600 rounded-md">
+                <Search size={20} className="text-gray-400" />
                 <input
                   type="text"
                   ref={searchInputRef}
@@ -176,8 +197,9 @@ export default function CreateTeamPopUp({
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setSearchFocused(true)}
                   placeholder="Search users by name or email"
-                  className="bg-transparent text-white w-full focus:outline-none"
+                  className="bg-transparent border-none text-white w-full focus:outline-none ring-0 focus:border-none  focus-within:ring-0"
                 />
+                
                 {isSearching && (
                   <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-cyan-400"></div>
                 )}
@@ -236,7 +258,7 @@ export default function CreateTeamPopUp({
 
           {/* Selected Members Count */}
           <div className="mt-2 text-xs text-gray-400">
-            {selectedMembers.length}/5 members selected
+            {teamMembers.length}/5 members selected
           </div>
         </div>
 
@@ -264,7 +286,7 @@ export default function CreateTeamPopUp({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 20H16M12 4v12" />
               </svg>
-              <span className="text-sm truncate max-w-xs">{fileName || "Choose file"}</span>
+              <span className="text-sm truncate max-w-xs">{logoPreview || "Choose file"}</span>
             </div>
           </div>
         </div>
@@ -282,12 +304,7 @@ export default function CreateTeamPopUp({
         </button>
         <button
           type="button"
-          onClick={(e) => handleCreateTeam(e, {
-            TeamName: newTeamName,
-            TeamDescription: teamDescription,
-            TeamLogo: fileName,
-            TeamMembers: selectedMembers.map(member => member._id)
-          })}
+          onClick={handleSubmit}
           disabled={isLoading || !newTeamName.trim()}
           className="px-6 py-3 rounded-xl bg-gradient-to-r bg-cyan-400 text-black font-medium cursor-pointer flex items-center space-x-2 hover:bg-black hover:text-cyan-400 hover:border hover:border-cyan-400 transition-all duration-300 "
         >
@@ -302,7 +319,7 @@ export default function CreateTeamPopUp({
           ) : (
             "Create Team"
           )}
-        </button>         
+        </button>
       </div>
     </div>
   );

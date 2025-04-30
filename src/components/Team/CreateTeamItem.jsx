@@ -1,12 +1,12 @@
-
-
-import { useState, useMemo, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { useNavigate } from "react-router-dom"
-import { toast } from "react-toastify"
-import axios from "../../utils/Axios"
-import leadUserDemo from "../../assets/leaduserdemo.png"
-import CreateTeamPopUp from "./CreateTeamPopUp"
+/* eslint-disable no-unused-vars */
+import { useState, useMemo, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "../../utils/Axios";
+import leadUserDemo from "../../assets/leaduserdemo.png";
+import CreateTeamPopUp from "./CreateTeamPopUp";
+import TeamRequestsPopUp from "./TeamRequestsPopUp";
 
 export default function CreateTeamItem() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -19,6 +19,7 @@ export default function CreateTeamItem() {
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const [userStatus, setUserStatus] = useState(null) // To check if user already has a team
+  const [isRequestsVisible, setIsRequestsVisible] = useState(false) // Add state for requests popup visibility
   const navigate = useNavigate()
 
   // Check user's team status
@@ -111,57 +112,97 @@ export default function CreateTeamItem() {
     )
   }, [searchQuery, teams])
 
-  // Handle team join
+  // Handle team join with proper integration with backend API
   const handleJoinTeam = async (teamId) => {
     try {
-      setIsLoading(true)
-      const response = await axios.post(`/api/v1/team/${teamId}/join-request`)
-      if (response.data.success) {
-        toast.success(response.data.message || "Join request submitted successfully!")
+      setIsLoading(true);
+      console.log(`Attempting to join team: ${teamId}`);
 
-        // If user was directly added to team (no approval required)
-        if (response.data.data?.directJoin) {
-          toast.info("You've been added to the team!")
-          navigate("/dashboard/team")
-        } else {
-          // Refresh team list to show updated join status
-          setPage(1)
-          setHasMore(true)
-        }
+      if (!teamId) {
+        toast.error("Invalid team ID");
+        setIsLoading(false);
+        return;
+      }
+
+      // Call the join request endpoint with empty message
+      const response = await axios.post(`/api/v1/team/${teamId}/join-request`, {
+        message: "" // Optional message parameter from backend
+      });
+
+      if (response.data.success) {
+        toast.success(response.data.message || "Join request sent successfully");
+
+        // No "directJoin" in your backend API, so we'll just refresh the team list
+        setPage(1);
+        setHasMore(true);
+
+        // Force a refresh of the teams list
+        const refreshTeams = async () => {
+          try {
+            const refreshResponse = await axios.get(`/api/v1/team/all?page=1&limit=10`);
+            if (refreshResponse.data.success) {
+              const fetchedTeams = refreshResponse.data.data.map(team => ({
+                id: team._id,
+                name: team.TeamName,
+                score: team.points || 0,
+                icon: team.TeamLogo || leadUserDemo,
+                description: team.TeamDescription || "No description available",
+                memberCount: team.TeamMembers?.length || 0,
+                techStack: team.techStack || [],
+              }));
+
+              setTeams(fetchedTeams);
+              setHasMore(fetchedTeams.length >= 10);
+            }
+          } catch (error) {
+            console.error("Error refreshing teams:", error);
+          }
+        };
+
+        refreshTeams();
       }
     } catch (error) {
-      const errorMsg = error.response?.data?.message || "Failed to join team"
-      toast.error(errorMsg)
-      console.error("Join team error:", error)
+      console.error("Join team error:", error);
 
-      // Handle specific error cases
-      if (error.response?.status === 409) {
-        toast.info("You have already requested to join this team")
-      } else if (error.response?.status === 403) {
-        toast.error("You are already part of a team")
-        navigate("/dashboard/team")
+      // Error handling based on status codes from your API
+      if (error.response) {
+        const status = error.response.status;
+        const errorMsg = error.response.data?.message || "Failed to join team";
+
+        if (status === 409) {
+          toast.info(errorMsg); // Already a member or already requested
+        } else if (status === 400) {
+          toast.error(errorMsg); // Team is full or other validation error
+        } else if (status === 404) {
+          toast.error(errorMsg); // Team not found
+        } else if (status === 403) {
+          toast.error("You are already part of a team");
+          navigate("/dashboard/team");
+        } else {
+          toast.error(errorMsg);
+        }
+      } else {
+        toast.error("Network error. Please try again later.");
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  // Handle team creation
-  const handleCreateTeam = async (e, formData) => {
+  // Modified handleCreateTeam to match your backend API
+  const handleCreateTeam = async (e, formData, teamMembers) => {
     e.preventDefault();
     setIsLoading(true);
 
-    console.log(`Form Data: `, formData);
-
     try {
-
-      // Make sure we have a team name
-      if (!formData.TeamName) {
+      // Validation check for team name
+      if (!formData.get("TeamName")) {
         toast.error("Team name is required");
         setIsLoading(false);
         return;
       }
 
+      // Step 1: Create the team first (matches your backend)
       const response = await axios.post("/api/v1/team", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -169,29 +210,60 @@ export default function CreateTeamItem() {
       });
 
       if (response.data.success) {
+        const newTeamId = response.data.data._id;
         toast.success("Team created successfully!");
+
+        // Step 2: Send invitations to team members if any were selected
+        if (teamMembers && teamMembers.length > 0) {
+          // Using the sendTeamInvitation endpoint from your backend
+          const invitePromises = teamMembers.map(async (memberEmail) => {
+            try {
+              // First get the user ID from email
+              const userSearchResponse = await axios.get(`/api/v1/user/search?q=${encodeURIComponent(memberEmail)}`);
+              const users = userSearchResponse.data?.data || [];
+              const userToInvite = users.find(u => u.email === memberEmail);
+
+              if (userToInvite) {
+                // Send invite using your backend endpoint
+                await axios.post(`/api/v1/team/${newTeamId}/invite`, {
+                  userId: userToInvite._id,
+                  message: `You've been invited to join ${formData.get("TeamName")}!`
+                });
+              } else {
+                console.warn(`User with email ${memberEmail} not found`);
+              }
+            } catch (err) {
+              console.error(`Failed to invite member: ${memberEmail}`, err);
+              // Don't throw error to allow other invitations to proceed
+            }
+          });
+
+          await Promise.allSettled(invitePromises);
+          toast.info(`Sent invitations to ${teamMembers.length} team members`);
+        }
+
+        // Reset UI state
         setIsFormVisible(false);
-        // Reset form fields
         setNewTeamName("");
         setTeamDescription("");
         setTeamLogo(null);
 
-        // Refresh teams list if needed
-        // fetchTeams();
+        // Navigate to the new team page
+        navigate(`/dashboard/team/${newTeamId}`);
       }
     } catch (error) {
       console.error("Error creating team:", error);
 
-      // More detailed error logging
       if (error.response) {
-        console.error("Error response data:", error.response.data);
+        const errorMsg = error.response.data?.message || "Failed to create team";
+        toast.error(errorMsg);
+      } else {
+        toast.error("Network error. Please try again later.");
       }
-
-      toast.error(error.response?.data?.message || "Failed to create team");
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   // Display empty state when no teams are available
   const EmptyTeamState = () => (
@@ -267,17 +339,17 @@ export default function CreateTeamItem() {
           </svg>
         </motion.div>
 
-        {/* Create Team Button */}
+        {/* Create Team and View Requests Buttons */}
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.3, delay: 0.1 }}
-          className="mb-8 flex justify-center"
+          className="mb-8 flex justify-center gap-4" // Added gap between buttons
         >
           <button
             onClick={() => setIsFormVisible(true)}
             disabled={isLoading}
-            className="flex items-center gap-2 rounded-full bg-white px-6 py-2 text-black transition-transform hover:scale-105 disabled:opacity-50"
+            className="flex items-center gap-1 rounded-full bg-white px-6 py-2 text-black transition-transform hover:scale-105 disabled:opacity-50"
           >
             {isLoading && teams.length === 0 ? (
               <span className="flex items-center">
@@ -290,9 +362,20 @@ export default function CreateTeamItem() {
             ) : (
               <>
                 <span className="text-2xl">+</span>
-                Create your team
+                Create team
               </>
             )}
+          </button>
+
+          {/* New View Requests button */}
+          <button
+            onClick={() => setIsRequestsVisible(true)}
+            className="flex items-center gap-2 rounded-full bg-gray-800 border border-cyan-400/30 px-6 py-2 text-white hover:bg-gray-700 transition-all hover:scale-105"
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            View Requests
           </button>
         </motion.div>
 
@@ -449,6 +532,9 @@ export default function CreateTeamItem() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Team Requests Pop-up */}
+        <TeamRequestsPopUp isOpen={isRequestsVisible} onClose={() => setIsRequestsVisible(false)} />
       </div>
     </motion.div>
   )

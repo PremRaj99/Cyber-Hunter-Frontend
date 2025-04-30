@@ -288,7 +288,7 @@ export default function EditTeamProject() {
         className="mb-6 flex items-center gap-4"
       >
         <button
-          onClick={() => navigate(`/dashboard/project/view`)}
+          onClick={() => navigate(-1)}
           className="p-2 rounded-full bg-gray-700/50 hover:bg-gray-600 transition-colors text-white"
           aria-label="Go back"
         >
@@ -331,7 +331,7 @@ export default function EditTeamProject() {
               <motion.button
                 onClick={handleSave}
                 disabled={saving}
-                className={`w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-gradient-to-r from-brandPrimary to-blue-500 text-white font-medium ${saving ? "opacity-70" : "hover:shadow-lg hover:scale-105"
+                className={`w-full flex items-center justify-center gap-2 py-3 rounded-lg hover:bg-black hover:text-cyan-400 bg-cyan-400 text-black font-medium hover:border hover:border-cyan-400 ${saving ? "opacity-70" : "hover:shadow-lg hover:scale-105"
                   } transition-all duration-300`}
                 whileHover={{ scale: saving ? 1 : 1.05 }}
                 whileTap={{ scale: saving ? 1 : 0.95 }}

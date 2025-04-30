@@ -273,7 +273,7 @@ export default function EditProject() {
               <motion.button
                 onClick={handleSave}
                 disabled={saving}
-                className={`w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-gradient-to-r from-brandPrimary to-blue-500 text-white font-medium ${saving ? "opacity-70" : "hover:shadow-lg hover:scale-105"
+                className={`w-full flex items-center justify-center gap-2 py-3 rounded-lg hover:bg-black hover:text-cyan-400 bg-cyan-400 text-black font-medium hover:border hover:border-cyan-400 ${saving ? "opacity-70" : "hover:shadow-lg hover:scale-105"
                   } transition-all duration-300`}
                 whileHover={{ scale: saving ? 1 : 1.05 }}
                 whileTap={{ scale: saving ? 1 : 0.95 }}

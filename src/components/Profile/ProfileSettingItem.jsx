@@ -558,7 +558,7 @@ export default function EditProfile() {
             <motion.button
               type="submit"
               disabled={isLoading}
-              className={`flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-brandPrimary to-blue-500 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ${isLoading ? "opacity-70 cursor-not-allowed" : "hover:scale-105"
+              className={`flex items-center gap-2 px-6 py-3  hover:bg-black hover:text-cyan-400 bg-cyan-400 text-black font-medium hover:border hover:border-cyan-400 font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ${isLoading ? "opacity-70 cursor-not-allowed" : "hover:scale-105"
                 }`}
               whileHover={{ scale: isLoading ? 1 : 1.05 }}
               whileTap={{ scale: isLoading ? 1 : 0.95 }}

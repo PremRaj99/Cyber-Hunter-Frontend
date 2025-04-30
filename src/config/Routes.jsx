@@ -30,7 +30,7 @@ import Freelancer from "../pages/Freelancer";
 import { AuthGuard, PublicRoute } from '../components/guards/AuthGuard';
 import EditProject from "../pages/EditProject";
 import DAccountSetting from "../components/dashboard/dAccountSetting";
-import TeamChat from "../components/Team/TeamChat";
+// import TeamChat from "../components/Team/TeamChat";
 import TeamManageSettings from "../components/Team/TeamManageSettings";
 import AccountAccessPage from "../pages/AccountAccess";
 import EmailSettings from "../pages/EmailSettings";
@@ -41,6 +41,8 @@ import OurTeam from "../pages/OurTeam";
 import AddTeamProject from "../pages/AddTeamProject";
 import ViewTeamProject from "../pages/ViewTeamProject";
 import EditTeamProject from "../pages/EditTeamProject";
+import TeamInvitationsPage from "../pages/TeamInvitationsPage";
+import TeamBrowse from "../pages/TeamBrowse";
 
 export const router = createBrowserRouter([
   {
@@ -223,8 +225,12 @@ export const router = createBrowserRouter([
             element: <CreateTeam />,
           },
           {
-            path: "chat",
-            element: <TeamChat />,
+            path: "viewrequest",
+            element: <TeamInvitationsPage />,
+          },
+          {
+            path: "browse",
+            element: <TeamBrowse />,
           },
         ],
       },

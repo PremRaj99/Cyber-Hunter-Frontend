@@ -222,19 +222,6 @@ const AccountSecurity = ({ accountSecurity }) => {
             />
           </div>
         </motion.div>
-
-        <motion.div
-          variants={itemVariants}
-          className="mt-auto pt-6 flex justify-end"
-        >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-6 py-2 bg-brandPrimary text-black font-medium rounded-lg shadow-lg hover:bg-cyan-400 transition-colors"
-          >
-            Save Changes
-          </motion.button>
-        </motion.div>
       </motion.div>
 
       {/* 2FA Modal */}

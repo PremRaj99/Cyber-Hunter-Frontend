@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
@@ -6,6 +7,8 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
+import SearchIcon from "@mui/icons-material/Search";
+import axios from "axios";
 
 const DPersonal = () => {
 
@@ -101,6 +104,15 @@ const DPersonal = () => {
       color: "from-amber-500 to-orange-400",
       textColor: "text-amber-100",
       iconBg: "bg-amber-400 bg-opacity-20"
+    },
+    {
+      icon: <SearchIcon fontSize="medium" />,
+      text: "Browse Teams",
+      description: "Find teams to join and collaborate",
+      path: "/dashboard/team/browse",
+      color: "from-pink-500 to-rose-400",
+      textColor: "text-pink-100",
+      iconBg: "bg-pink-400 bg-opacity-20"
     },
     {
       icon: <SettingsIcon fontSize="medium" />,

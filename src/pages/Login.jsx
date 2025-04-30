@@ -21,6 +21,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaApple } from "react-icons/fa6";
 import GoogleLogin from "../components/google/GoogleLogin";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { toast } from "react-toastify";
 
 const sanitizeInput = (input) => {
   return input.trim().replace(/[<>]/g, "");
@@ -198,6 +199,12 @@ const ModernAuthForm = () => {
 
         localStorage.setItem("accessToken", data.data.accessToken);
         localStorage.setItem("refreshToken", data.data.refreshToken);
+        toast.success(
+          isSignup
+            ? "Account created successfully!"
+            : "Login successful!",
+        );
+
 
         navigate(isSignup ? "/auth/userdetails" : "/dashboard/profile", {
           replace: true,
@@ -207,6 +214,17 @@ const ModernAuthForm = () => {
       const errorMessage = error.response?.data?.message || error.message;
       dispatch(signInFailure(errorMessage));
       setErrors({ ...errors, general: errorMessage });
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      console.error("Error during authentication:", errorMessage);
     } finally {
       setLoading(false);
     }

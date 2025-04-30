@@ -1,18 +1,48 @@
-import { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Camera, Users, User, LineChart, Bell, BookUser, Settings } from "lucide-react";
+import { Users, User, LineChart, Bell, BookUser, Settings } from "lucide-react";
 import { FaBars } from "react-icons/fa6";
 import { GiCrossMark } from "react-icons/gi";
+import { TeamService } from "../../services/TeamService";
 
 const Sidebar = ({ activeSection, onSectionChange }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [pendingRequests, setPendingRequests] = useState(0);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Fetch pending join requests for notification badge
+  useEffect(() => {
+    const fetchUserTeamsAndPendingRequests = async () => {
+      try {
+        const response = await TeamService.getUserJoinRequests();
+        // Count pending requests for notification badge
+        if (response && response.data) {
+          const pendingCount = response.data.filter(req => req.status === "pending").length;
+          setPendingRequests(pendingCount);
+        }
+      } catch (error) {
+        console.error("Error fetching join requests:", error);
+      }
+    };
+
+    fetchUserTeamsAndPendingRequests();
+
+    // Set up polling to check for new requests every minute
+    const interval = setInterval(fetchUserTeamsAndPendingRequests, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
   const sidebarItems = [
-    { icon: <Users className="w-6 h-6" />, text: "TEAM", section: "team" },
+    {
+      icon: <Users className="w-6 h-6" />,
+      text: "TEAM",
+      section: "team",
+      badge: pendingRequests > 0 ? pendingRequests : null
+    },
     { icon: <User className="w-6 h-6" />, text: "PERSONAL", section: "personal" },
     { icon: <LineChart className="w-6 h-6" />, text: "LEADERBOARD", section: "leaderboard" },
     { icon: <Bell className="w-6 h-6" />, text: "NOTIFICATION", section: "notification" },
@@ -108,13 +138,19 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
                 toggleMenu();
               }}
             >
-              {item.icon}
+              <div className="relative">
+                {item.icon}
+                {item.badge && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {item.badge}
+                  </span>
+                )}
+              </div>
               <span>{item.text}</span>
             </motion.div>
           ))}
         </div>
       </motion.div>
-
 
       {/* Desktop Menu */}
       <motion.ul className="hidden md:flex flex-col space-y-4">
@@ -138,7 +174,14 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
             }}
             whileTap={{ scale: 0.98 }}
           >
-            <span>{item.icon}</span>
+            <div className="relative">
+              <span>{item.icon}</span>
+              {item.badge && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {item.badge}
+                </span>
+              )}
+            </div>
             <span>{item.text}</span>
           </motion.li>
         ))}

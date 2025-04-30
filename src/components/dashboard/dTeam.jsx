@@ -7,16 +7,23 @@ import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
+import SearchIcon from "@mui/icons-material/Search";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { GiTeamIdea } from "react-icons/gi";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import TeamRequestsPopUp from "../../components/Team/TeamRequestsPopUp";
+import { TeamService } from "../../services/TeamService";
 
 // You can create a theme context in your app, or pass isDarkMode as a prop
 const DTeam = ({ isDarkMode = true }) => {
-
   const [projects, setProjects] = useState([]);
   const [projectCount, setProjectCount] = useState(0);
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [memberCount, setMemberCount] = useState(0);
+  const [showRequestsModal, setShowRequestsModal] = useState(false);
+  const [pendingRequests, setPendingRequests] = useState(0);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -53,7 +60,7 @@ const DTeam = ({ isDarkMode = true }) => {
     }
   };
 
-  // Team action cards data
+  // Add new team action for browsing teams
   const teamActions = [
     {
       icon: <GiTeamIdea size={24} />,
@@ -92,10 +99,10 @@ const DTeam = ({ isDarkMode = true }) => {
       iconBg: "bg-green-400 bg-opacity-20"
     },
     {
-      icon: <GiTeamIdea size={24} />,
-      text: "Create Team",
-      description: "Form a new team group",
-      path: "/dashboard/team/create",
+      icon: <SearchIcon fontSize="medium" />,
+      text: "Browse Teams",
+      description: "Find and join new teams",
+      path: "/dashboard/team/browse",
       color: "from-rose-500 to-pink-500",
       textColor: "text-rose-100",
       iconBg: "bg-rose-400 bg-opacity-20"
@@ -117,52 +124,88 @@ const DTeam = ({ isDarkMode = true }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-      const fetchUserData = async () => {
-        try {
-          setFetchingUserData(true);
-          const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/user/me`, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-            }
-          });
-  
-          if (response.data && response.data.data && response.data.data.teamId) {
-            setTeamId(response.data.data.teamId);
-          } else {
-            toast.error("You don't belong to any team. Please join or create a team first.");
-            navigate("/dashboard");
-          }
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-          toast.error("Failed to get your team information");
-        } finally {
-          setFetchingUserData(false);
-        }
-      };
-  
-      fetchUserData();
-    }, [navigate]);
-
-  useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchUserData = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/project/team/${teamId}`, {
+        setFetchingUserData(true);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/user/me`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+          }
+        });
+
+        if (response.data && response.data.data && response.data.data.teamId) {
+          setTeamId(response.data.data.teamId);
+        } else {
+          toast.error("You don't belong to any team. Please join or create a team first.");
+          navigate("/dashboard");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        toast.error("Failed to get your team information");
+      } finally {
+        setFetchingUserData(false);
+      }
+    };
+
+    fetchUserData();
+  }, [navigate]);
+
+  // Fetch team data
+  useEffect(() => {
+    const fetchTeamData = async () => {
+      if (!teamId) return;
+
+      try {
+        setIsLoading(true);
+
+        // Fetch team projects
+        const projectsResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/project/team/${teamId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        setProjects(response.data);
-        setProjectCount(response.data.length); // Set the project count
+
+        if (projectsResponse.data && projectsResponse.data.data) {
+          setProjects(projectsResponse.data.data);
+          setProjectCount(projectsResponse.data.data.length);
+        }
+
+        // Fetch team details with members
+        const teamResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/team/${teamId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+
+        if (teamResponse.data && teamResponse.data.data) {
+          setTeamMembers(teamResponse.data.data.TeamMembers || []);
+          setMemberCount(teamResponse.data.data.TeamMembers?.length || 0);
+        }
+
+        // Check for pending join requests if user is team leader
+        try {
+          const joinRequestsResponse = await TeamService.getTeamJoinRequests(teamId);
+          if (joinRequestsResponse && joinRequestsResponse.data) {
+            const pendingCount = joinRequestsResponse.data.filter(req => req.status === "pending").length;
+            setPendingRequests(pendingCount);
+          }
+        } catch (error) {
+          // Silently fail - user might not be team leader
+          console.log("Not a team leader or error fetching requests");
+        }
+
       } catch (error) {
-        console.error('Error fetching projects:', error);
+        console.error('Error fetching team data:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
-    fetchProjects();
-  }, []);
 
+    fetchTeamData();
+  }, [teamId]);
 
   return (
-    <div className="p-1  sm:p-4 md:p-8">
+    <div className="p-1 sm:p-4 md:p-8">
       <motion.div
         className="w-full"
         initial="hidden"
@@ -193,10 +236,9 @@ const DTeam = ({ isDarkMode = true }) => {
             }`}
         >
           {[
-            { label: "Active Projects", value: projectCount}, // Use the dynamic count
-            { label: "Team Members", value: "34" },
-            { label: "Achievements", value: "28" },
-            { label: "Pending Tasks", value: "18" }
+            { label: "Active Projects", value: projectCount },
+            { label: "Team Members", value: memberCount },
+            { label: "Pending Requests", value: pendingRequests },
           ].map((stat, index) => (
             <div
               key={index}
@@ -228,49 +270,99 @@ const DTeam = ({ isDarkMode = true }) => {
                 transition: { duration: 0.2 },
               }}
               whileTap={{ scale: 0.98 }}
-              className={`relative rounded-xl overflow-hidden bg-gray-800 bg-opacity-50  border-gray-700`}
+              className={`relative rounded-xl overflow-hidden bg-gray-800 bg-opacity-50 border-gray-700`}
             >
               {/* Card gradient background */}
               <div className={`absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-tr ${action.color} opacity-10`}></div>
 
-              <Link
-                to={action.path}
-                className="block p-6 h-full relative z-10"
-              >
-                <div className="flex flex-col ">
-                  {/* Icon Container */}
-                  <div className={`mb-4 w-12 h-12 flex items-center justify-center rounded-full ${action.iconBg}`}>
-                    <span className={`${action.textColor.replace('100', '500')}`}>
-                      {action.icon}
-                    </span>
-                  </div>
+              {action.onClick ? (
+                // Clickable div for modal-triggering actions
+                <div
+                  onClick={action.onClick}
+                  className="block p-6 h-full relative z-10 cursor-pointer"
+                >
+                  <div className="flex flex-col">
+                    {/* Icon Container */}
+                    <div className={`mb-4 w-12 h-12 flex items-center justify-center rounded-full ${action.iconBg} relative`}>
+                      <span className={`${action.textColor.replace('100', '500')}`}>
+                        {action.icon}
+                      </span>
+                      {action.badge && (
+                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                          {action.badge}
+                        </span>
+                      )}
+                    </div>
 
-                  {/* Text Content */}
-                  <div className="flex-grow">
-                    <h2 className="text-xl text-white font-semibold">
-                      {action.text}
-                    </h2>
-                    <p className="text-sm mt-2 text-gray-400">
-                      {action.description}
-                    </p>
-                  </div>
+                    {/* Text Content */}
+                    <div className="flex-grow">
+                      <h2 className="text-xl text-white font-semibold">
+                        {action.text}
+                      </h2>
+                      <p className="text-sm mt-2 text-gray-400">
+                        {action.description}
+                      </p>
+                    </div>
 
-                  {/* Arrow indicator */}
-                  <div className="mt-4 flex justify-end">
-                    <motion.span
-                      whileHover={{ x: 5 }}
-                      className={`text-sm ${isDarkMode ? action.textColor.replace('100', '300') : action.textColor.replace('100', '600')
-                        }`}
-                    >
-                      View →
-                    </motion.span>
+                    {/* Arrow indicator */}
+                    <div className="mt-4 flex justify-end">
+                      <motion.span
+                        whileHover={{ x: 5 }}
+                        className={`text-sm ${isDarkMode ? action.textColor.replace('100', '300') : action.textColor.replace('100', '600')}`}
+                      >
+                        View →
+                      </motion.span>
+                    </div>
                   </div>
                 </div>
-              </Link>
+              ) : (
+                // Regular link for navigation actions
+                <Link
+                  to={action.path}
+                  className="block p-6 h-full relative z-10"
+                >
+                  <div className="flex flex-col">
+                    {/* Icon Container */}
+                    <div className={`mb-4 w-12 h-12 flex items-center justify-center rounded-full ${action.iconBg} relative`}>
+                      <span className={`${action.textColor.replace('100', '500')}`}>
+                        {action.icon}
+                      </span>
+                      {action.badge && (
+                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                          {action.badge}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Text Content */}
+                    <div className="flex-grow">
+                      <h2 className="text-xl text-white font-semibold">
+                        {action.text}
+                      </h2>
+                      <p className="text-sm mt-2 text-gray-400">
+                        {action.description}
+                      </p>
+                    </div>
+
+                    {/* Arrow indicator */}
+                    <div className="mt-4 flex justify-end">
+                      <motion.span
+                        whileHover={{ x: 5 }}
+                        className={`text-sm ${isDarkMode ? action.textColor.replace('100', '300') : action.textColor.replace('100', '600')}`}
+                      >
+                        View →
+                      </motion.span>
+                    </div>
+                  </div>
+                </Link>
+              )}
             </motion.div>
           ))}
         </motion.div>
       </motion.div>
+
+      {/* Team Request Modal */}
+      <TeamRequestsPopUp isOpen={showRequestsModal} onClose={() => setShowRequestsModal(false)} />
     </div>
   );
 };

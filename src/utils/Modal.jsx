@@ -1,5 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom";
+/* eslint-disable react/prop-types */
+import ReactDOM from 'react-dom';
 
 const Modal = ({ isOpen, onClose, onConfirm, title, children }) => {
   if (!isOpen) return null;

@@ -4,6 +4,8 @@ import axios from "../../utils/Axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TeamProfileSection from "./TeamProfileSection";
+import { toast } from "react-toastify";
+import { X } from "react-feather";
 
 export default function TeamDashPage() {
   const [team, setTeam] = useState(null);
@@ -82,6 +84,17 @@ export default function TeamDashPage() {
           const teamData = Array.isArray(teamRes.data.data) ? teamRes.data.data[0] : teamRes.data.data;
           setTeam(teamData);
 
+          // Check if current user is the team leader
+          const isLeaderCheck = teamData.TeamCreaterId === user._id ||
+            teamData.TeamCreaterId?._id === user._id;
+          setIsTeamLeader(isLeaderCheck);
+
+          // Get user role in the team
+          const currentUserMember = teamData.TeamMembers.find(
+            member => member.userId === user._id || member.userId?._id === user._id
+          );
+          setUserRole(currentUserMember?.role || "Member");
+
           // Properly format team members data
           const formattedMembers = (teamData.TeamMembers || []).map(member => {
             const memberData = typeof member.userId === 'object' ? member.userId : { _id: member.userId };
@@ -104,16 +117,6 @@ export default function TeamDashPage() {
               ? teamData.projectId
               : []
           );
-
-          setIsTeamLeader(teamData.TeamCreaterId === user._id);
-          const member = formattedMembers.find(m => {
-            // Handle both populated and non-populated member objects
-            if (typeof m.userId === "object" && m.userId._id) {
-              return m.userId._id === user._id;
-            }
-            return m.userId === user._id;
-          });
-          setUserRole(member?.role || "Member");
         } else {
           setError("Failed to load team data.");
         }
@@ -125,6 +128,60 @@ export default function TeamDashPage() {
     };
     fetchTeamData();
   }, [user]);
+
+  // get team members details
+  useEffect(() => {
+    const fetchTeamMembersDetails = async () => {
+      if (!team || !team._id) return;
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+          // Use the proper team members details route
+          const membersRes = await axios.get(`/api/v1/team/${team._id}/members-detail`);
+
+          if (membersRes.data && membersRes.data.success && membersRes.data.data) {
+            console.log("Members detail response:", membersRes.data);
+
+            // Process the enhanced member data
+            const membersData = membersRes.data.data.TeamMembers.map(member => {
+              return {
+                _id: member._id,
+                userId: member.userId,
+                name: member.userDetailData?.name ||
+                  (member.userData?.email ? member.userData.email.split('@')[0] : 'Unknown User'),
+                email: member.userData?.email || '',
+                profilePicture: member.userData?.profilePicture || '',
+                phoneNumber: member.phoneNumber || '',
+                skills: member.skills || [],
+                social: member.social || {},
+                points: member.points || 0,
+                role: member.role || 'Member',
+                status: member.status || 'Active',
+                teamId: team._id,
+              };
+            });
+
+            setTeamMembers(membersData);
+          } else {
+            // Fallback to existing team members if endpoint doesn't return enhanced data
+            console.log("No enhanced member data available, using basic team data");
+          }
+        } catch (detailError) {
+          console.error("Error fetching detailed team members:", detailError);
+          // Don't show error to user, just log it - we already have basic team data
+        }
+      } catch (error) {
+        console.error("Error fetching team members details:", error);
+        // Don't set error state here since we already have the basic team information
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTeamMembersDetails();
+  }, [team]);
 
   // List of technologies from team data or fallback
   const technologies = team?.techStack || [
@@ -172,6 +229,32 @@ export default function TeamDashPage() {
       </div>
     );
   }
+
+  // Add a function to handle leaving the team
+  const handleLeaveTeam = async () => {
+    try {
+      setIsLoading(true);
+      if (isTeamLeader) {
+        toast.error("Team leaders cannot leave. Transfer leadership or delete the team instead.");
+        return;
+      }
+
+      // Only execute if user is a member, not the leader
+      const response = await axios.delete(`/api/v1/team/${team._id}/members/${user._id}`);
+
+      if (response.data.success) {
+        toast.success("You have left the team");
+        navigate("/dashboard/team/create");
+      } else {
+        toast.error(response.data.message || "Failed to leave team");
+      }
+    } catch (error) {
+      console.error("Error leaving team:", error);
+      toast.error(error.response?.data?.message || "Failed to leave team");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <motion.div
