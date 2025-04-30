@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create Axios instance with base URL and default config
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
+  baseURL: import.meta.env.VITE_API_URL,
   timeout: 10000, // 10 seconds timeout
 });
 
