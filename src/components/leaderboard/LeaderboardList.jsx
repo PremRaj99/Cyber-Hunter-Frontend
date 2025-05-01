@@ -1,9 +1,9 @@
-// import React from "react";
+/* eslint-disable react/prop-types */
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import leaduserdemo from "../../assets/leaduserdemo.png";
 
-export default function LeaderboardList(data) {
+export default function LeaderboardList({ data }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
@@ -45,7 +45,7 @@ export default function LeaderboardList(data) {
         animate={isInView ? "visible" : "hidden"}
         className="h-full overflow-y-auto space-y-2 py-4 px-2 md:px-4 no-scrollbar"
       >
-        {data.data.map((entry) => (
+        {data.map((entry) => (
           <motion.div
             key={entry.rank}
             variants={itemVariants}

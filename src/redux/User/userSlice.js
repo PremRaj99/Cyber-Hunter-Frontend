@@ -34,7 +34,6 @@ const userSlice = createSlice({
       state.currentUser = action.payload;
       state.isProfileComplete = action.payload.isProfileComplete || false;
       state.loading = false;
-      state.error = null;
     },
     updateFailure: (state, action) => {
       state.loading = false;
@@ -48,6 +47,7 @@ const userSlice = createSlice({
       state.currentUser = null;
       state.loading = false;
       state.error = null;
+      state.isProfileComplete = false;
     },
     deleteUserFailure: (state, action) => {
       state.loading = false;
@@ -55,11 +55,13 @@ const userSlice = createSlice({
     },
     signOutUserStart: (state) => {
       state.loading = true;
+      state.error = null;
     },
     signOutUserSuccess: (state) => {
       state.currentUser = null;
       state.loading = false;
       state.error = null;
+      state.isProfileComplete = false;
     },
     signOutUserFailure: (state, action) => {
       state.loading = false;

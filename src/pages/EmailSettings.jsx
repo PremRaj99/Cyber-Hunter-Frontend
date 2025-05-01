@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+/* eslint-disable no-unused-vars */
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Shield, Settings, Send, Lock, Cloud, MailCheck, Zap, ExternalLink } from 'lucide-react';
+import { Mail, Shield, Settings, Send, MailCheck, ExternalLink } from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 

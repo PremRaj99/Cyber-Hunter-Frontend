@@ -11,7 +11,6 @@ import ProjectList from "../../src/pages/ProjectList";
 import PostProject from "../../src/pages/PostProject";
 import ProjectDetail from "../../src/pages/Project";
 import Team from "../pages/Team";
-import CreateTeam from "../../src/pages/CreateTeam";
 import About from "../components/home/About";
 // import Service from "../../src/pages/Service";
 import Contact from "../components/home/Contact";
@@ -31,7 +30,6 @@ import { AuthGuard, PublicRoute } from '../components/guards/AuthGuard';
 import EditProject from "../pages/EditProject";
 import DAccountSetting from "../components/dashboard/dAccountSetting";
 // import TeamChat from "../components/Team/TeamChat";
-import TeamManageSettings from "../components/Team/TeamManageSettings";
 import AccountAccessPage from "../pages/AccountAccess";
 import EmailSettings from "../pages/EmailSettings";
 import ChangePassword from "../pages/ChangePassword";
@@ -43,6 +41,7 @@ import ViewTeamProject from "../pages/ViewTeamProject";
 import EditTeamProject from "../pages/EditTeamProject";
 import TeamInvitationsPage from "../pages/TeamInvitationsPage";
 import TeamBrowse from "../pages/TeamBrowse";
+import TeamSettings from "../pages/TeamSetting";
 
 export const router = createBrowserRouter([
   {
@@ -214,15 +213,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "teamsetting",
-            element: <TeamManageSettings />,
-          },
-          {
-            path: "create",
-            element: <CreateTeam />,
-          },
-          {
-            path: "createteam",
-            element: <CreateTeam />,
+            element: <TeamSettings />,
           },
           {
             path: "viewrequest",

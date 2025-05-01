@@ -57,7 +57,7 @@ const validatePassword = (password) => {
   };
 };
 
-const ModernAuthForm = () => {
+const Login = () => {
   const location = useLocation();
   const [isSignup, setIsSignup] = useState(
     location.search.includes("mode=signup")
@@ -519,4 +519,4 @@ const ModernAuthForm = () => {
   );
 };
 
-export default ModernAuthForm;
+export default Login;

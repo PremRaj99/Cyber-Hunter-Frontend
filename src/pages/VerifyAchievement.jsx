@@ -181,7 +181,7 @@ export default function VerifyAchievement() {
 
               {verificationResult === "failure" && (
                 <p className="text-white">
-                  We couldn't verify this achievement ID. Please double-check your ID and try again.
+                  We couldn&apos;t verify this achievement ID. Please double-check your ID and try again.
                 </p>
               )}
             </div>
