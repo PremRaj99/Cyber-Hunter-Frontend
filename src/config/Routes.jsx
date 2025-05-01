@@ -42,6 +42,7 @@ import EditTeamProject from "../pages/EditTeamProject";
 import TeamInvitationsPage from "../pages/TeamInvitationsPage";
 import TeamBrowse from "../pages/TeamBrowse";
 import TeamSettings from "../pages/TeamSetting";
+import GitHubAuthSuccess from '../pages/GitHubAuthSuccess';
 
 export const router = createBrowserRouter([
   {
@@ -114,7 +115,11 @@ export const router = createBrowserRouter([
       {
         path: "userdetails",
         element: <AuthGuard><UserDetail /></AuthGuard>,
-      }
+      },
+      {
+        path: "github/success",
+        element: <GitHubAuthSuccess />,
+      },
     ],
   },
   {
@@ -164,7 +169,7 @@ export const router = createBrowserRouter([
             path: "changepassword",
             element: <ChangePassword />
           }
-          
+
         ],
       },
       {
@@ -187,7 +192,7 @@ export const router = createBrowserRouter([
             element: <ViewProject />,
           },
           {
-            path: "edit/:id", 
+            path: "edit/:id",
             element: <EditProject />,
           },
         ],

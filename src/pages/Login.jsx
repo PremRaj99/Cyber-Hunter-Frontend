@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -20,6 +21,7 @@ import signup from "../assets/loginSignUp/signup.svg";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaApple } from "react-icons/fa6";
 import GoogleLogin from "../components/google/GoogleLogin";
+import GithubLogin from "../components/auth/GithubLogin";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { toast } from "react-toastify";
 
@@ -489,9 +491,7 @@ const Login = () => {
                 </GoogleLogin>
                 </GoogleOAuthProvider>
               </button>
-              <button className="flex items-center justify-center px-4 py-3 bg-gray-800 rounded-lg hover:bg-cyan-700   transition-colors">
-                <Github className="h-5 w-5 text-white hover:text-black" />
-              </button>
+              <GithubLogin />
               <button className="flex items-center justify-center px-4 py-3 bg-gray-800 rounded-lg hover:bg-cyan-700  transition-colors">
                 <FaApple className="h-5 w-5 text-white hover:text-black" />
               </button>

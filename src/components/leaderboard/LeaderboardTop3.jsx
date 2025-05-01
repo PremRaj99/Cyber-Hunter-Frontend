@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { motion } from "framer-motion";
 import leaduserdemo from "../../assets/leaduserdemo.png";
 import { default as goldCrown } from "../../assets/goldCrown.svg";
