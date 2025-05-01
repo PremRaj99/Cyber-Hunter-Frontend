@@ -61,7 +61,6 @@ const userSlice = createSlice({
       state.currentUser = null;
       state.loading = false;
       state.error = null;
-      state.isProfileComplete = false;
     },
     signOutUserFailure: (state, action) => {
       state.loading = false;
