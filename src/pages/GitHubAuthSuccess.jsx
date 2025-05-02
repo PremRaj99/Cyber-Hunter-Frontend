@@ -96,7 +96,7 @@ const GitHubAuthSuccess = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 p-4">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-black p-4">
         <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
         <h1 className="mt-8 text-2xl font-bold text-white">Processing GitHub Login...</h1>
         <p className="mt-2 text-gray-400">Please wait while we authenticate your account.</p>
@@ -117,7 +117,7 @@ const GitHubAuthSuccess = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-black p-4">
       <div className="p-6 bg-green-900/30 rounded-lg border border-green-500 max-w-md w-full">
         <h1 className="text-xl font-bold text-white mb-2">Authentication Successful</h1>
         <p className="text-gray-300">You are now signed in with GitHub!</p>

@@ -15,9 +15,10 @@ import {
   Github,
 } from "lucide-react";
 import axios from "../utils/Axios";
-import { BsGoogle } from "react-icons/bs";
+import google from "../assets/loginSignUp/google.svg";
 import login from "../assets/loginSignUp/login.svg";
 import signup from "../assets/loginSignUp/signup.svg";
+import metamask from "../assets/loginSignUp/metamask.svg";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaApple } from "react-icons/fa6";
 import GoogleLogin from "../components/google/GoogleLogin";
@@ -487,13 +488,15 @@ const Login = () => {
               <button className="flex items-center justify-center px-4 py-3 bg-gray-800 rounded-lg hover:bg-cyan-700  transition-colors">
               <GoogleOAuthProvider clientId={import.meta.env.VITE_APP_GOOGLE_CLIENT_ID}>
                 <GoogleLogin>
-                  <BsGoogle className="h-5 w-5 text-white hover:text-black" />
+                    <img src={google} alt="Google Icon" className="h-5 w-5" />
                 </GoogleLogin>
                 </GoogleOAuthProvider>
               </button>
               <GithubLogin />
               <button className="flex items-center justify-center px-4 py-3 bg-gray-800 rounded-lg hover:bg-cyan-700  transition-colors">
-                <FaApple className="h-5 w-5 text-white hover:text-black" />
+                {/* metamask icon svg for login*/}
+                <img src={metamask} alt="metamask icon" className="h-5 w-5" />
+
               </button>
             </div>
           </div>

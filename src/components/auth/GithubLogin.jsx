@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { Github } from 'lucide-react';
 import { useState } from 'react';
+import github from '../../assets/loginSignUp/github.svg';
 import { toast } from 'react-toastify';
 import Axios from "../../utils/Axios";
 import { useNavigate } from 'react-router-dom';
@@ -65,7 +65,7 @@ const GithubLogin = ({ children }) => {
       aria-label="Sign in with GitHub"
       type="button"
     >
-      <Github className="h-5 w-5 text-white hover:text-black" />
+      <img src={github} alt='Github Icon' className="h-5 w-5" />
     </button>
   );
 };
