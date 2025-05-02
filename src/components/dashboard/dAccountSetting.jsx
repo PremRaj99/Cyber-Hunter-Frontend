@@ -265,7 +265,7 @@ const ProfileSection = () => {
       transition: { duration: 0.3 },
     },
     hover: {
-      scale: 1.02,
+      scale: 1.01,
       transition: { duration: 0.2 },
     },
   };

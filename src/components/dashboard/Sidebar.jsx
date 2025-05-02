@@ -5,10 +5,12 @@ import { Users, User, LineChart, Bell, BookUser, Settings } from "lucide-react";
 import { FaBars } from "react-icons/fa6";
 import { GiCrossMark } from "react-icons/gi";
 import { TeamService } from "../../services/TeamService";
+import { useNotifications } from "../../context/NotificationContext";
 
 const Sidebar = ({ activeSection, onSectionChange }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [pendingRequests, setPendingRequests] = useState(0);
+  const { unreadCount } = useNotifications();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -45,7 +47,12 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
     },
     { icon: <User className="w-6 h-6" />, text: "PERSONAL", section: "personal" },
     { icon: <LineChart className="w-6 h-6" />, text: "LEADERBOARD", section: "leaderboard" },
-    { icon: <Bell className="w-6 h-6" />, text: "NOTIFICATION", section: "notification" },
+    {
+      icon: <Bell className="w-6 h-6" />,
+      text: "NOTIFICATION",
+      section: "notification",
+      badge: unreadCount > 0 ? unreadCount : null
+    },
     { icon: <BookUser className="w-6 h-6" />, text: "CONTACT", section: "contact" },
     { icon: <Settings className="w-6 h-6" />, text: "SETTINGS", section: "settings" }
   ];

@@ -1,11 +1,15 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
+import { toast } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
-import "../index.css"; 
+import "../index.css";
+
+// Import custom hook
+import useProfileData from "../hooks/useProfileData";
 
 // Import component sections
 import ProfilePictureSection from "../components/Profile/EditProfile/ProfilePictureSection";
@@ -16,81 +20,32 @@ import SocialLinksTab from "../components/Profile/EditProfile/SocialLinksTab";
 import SubmitButton from "../components/Profile/EditProfile/SubmitButton";
 
 export default function EditProfile() {
-  const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [previewImage, setPreviewImage] = useState(user?.profilePicture || "");
-  const [selectedFile, setSelectedFile] = useState(null);
+  const user = useSelector((state) => state.user.currentUser);
   const [activeTab, setActiveTab] = useState("basic");
-  const [formData, setFormData] = useState({
-    name: user?.name || "",
-    email: user?.email || "",
-    phoneNumber: user?.phoneNumber || "",
-    DOB: new Date(user?.DOB).toISOString().split("T")[0] || "",
-    qId: user?.qId || "",
-    course: user?.course || "",
-    branch: user?.branch || "",
-    session: user?.session || "",
-    gender: user?.gender || "",
-    description: user?.description || "",
-    interest: user?.interest || [],
-    socialLinks: {
-      github: user?.socialLinks?.github || "",
-      instagram: user?.socialLinks?.instagram || "",
-      linkedin: user?.socialLinks?.linkedin || "",
-      twitter: user?.socialLinks?.twitter || "",
-    },
-  });
-  const [individualId, setIndividualId] = useState(user?.individualId);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState("");
 
-  // Update the fetchIndividualId function
+  // Use our custom hook for profile data management
+  const {
+    formData,
+    isLoading,
+    handleInputChange,
+    handleDateChange,
+    updateProfile
+  } = useProfileData();
+
+  // Set preview image based on profile data when component mounts or when user changes
   useEffect(() => {
-    const fetchIndividualId = async () => {
-      try {
-        // Check if we have a valid user ID before making the API request
-        if (!individualId && user?._id && user._id !== "undefined") {
-          const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/v1/individual/${user._id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-              },
-            }
-          );
-
-          if (response.data && response.data.data && response.data.data._id) {
-            setIndividualId(response.data.data._id);
-            console.log("Found individualId:", response.data.data._id);
-          }
-        } else if (!user?._id || user._id === "undefined") {
-          console.warn("Cannot fetch individual info - user ID is missing or invalid");
-          // Optionally redirect to login or profile completion page if needed
-        }
-      } catch (error) {
-        console.error("Error fetching individual ID:", error);
-      }
-    };
-
-    fetchIndividualId();
-  }, [user, individualId]);
-
-  useEffect(() => {
-    document.title = "Edit Profile";
-  }, []);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (name.includes(".")) {
-      const [parent, child] = name.split(".");
-      setFormData({
-        ...formData,
-        [parent]: { ...formData[parent], [child]: value },
-      });
-    } else {
-      setFormData({ ...formData, [name]: value });
+    if (user?.profilePicture) {
+      setPreviewImage(user.profilePicture);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    document.title = "Edit Profile | Cyber Hunter";
+  }, []);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -104,90 +59,50 @@ export default function EditProfile() {
     }
   };
 
-  const handleDateChange = (date) => {
-    setFormData({
-      ...formData,
-      DOB: date ? date.toISOString().split('T')[0] : ''
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    
+    // Form validation
+    if (!formData.name) {
+      toast.error("Please enter your name");
+      return;
+    }
 
     try {
-      // Check for valid user ID first
-      if (!user?._id || user._id === "undefined") {
-        throw new Error("Invalid user ID. Please log in again.");
+      console.log("Submitting form data:", formData);
+      console.log("Selected file:", selectedFile ? selectedFile.name : "None");
+      
+      // Get the access token from localStorage instead of depending on cookies
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        throw new Error("Authentication token not found. Please login again.");
       }
-
-      console.log("About to update individual, ID:", individualId);
-      // 1. Update bio (description) using individual route
-      if (individualId && formData.description) {
-        console.log("Updating individual with ID:", individualId);
-        console.log("Description:", formData.description);
-
-        const bioResponse = await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/v1/individual/${individualId}`,
-          { description: formData.description },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-
-        console.log("Bio update response:", bioResponse.data);
-      } else {
-        console.warn("No individualId found or no description provided");
-        if (!individualId) console.warn("individualId is missing");
-        if (!formData.description) console.warn("description is empty");
-      }
-
-      // 2. Update user profile (excluding bio/description)
-      const formDataToSend = new FormData();
-
-      Object.keys(formData).forEach(key => {
-        if (key === 'socialLinks') {
-          formDataToSend.append('socialLinks', JSON.stringify(formData.socialLinks));
-        } else if (key === 'interest') {
-          // Skip this - we'll handle interests separately
-        } else if (key !== 'description') { // Exclude description here
-          formDataToSend.append(key, formData[key]);
-        }
-      });
-
-      if (selectedFile) {
-        formDataToSend.append('profilePicture', selectedFile);
-      }
-
-      const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/v1/user/${user._id}`,
-        formDataToSend,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-
-      if (response.data) {
-        dispatch({ type: "UPDATE_USER", payload: response.data });
+      
+      const result = await updateProfile(selectedFile);
+      console.log("Profile update successful:", result);
+      toast.success("Profile updated successfully!");
+      setTimeout(() => {
         navigate("/dashboard/profile");
-      }
+      }, 1000);
     } catch (error) {
       console.error("Error updating profile:", error);
-      // Add more detailed error handling
+      
+      let errorMessage = "Failed to update profile";
+      
       if (error.response) {
-        console.error("Error response:", error.response.data);
-        alert(`Failed to update profile: ${error.response.data.message || "Unknown error"}`);
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.error("Server error response:", error.response.data);
+        errorMessage = error.response.data.message || "Server error occurred";
+      } else if (error.request) {
+        // The request was made but no response was received
+        errorMessage = "No response from server. Please check your network connection.";
       } else {
-        alert(error.message || "Failed to update profile. Please try again.");
+        // Something happened in setting up the request
+        errorMessage = error.message || "Error occurred while submitting form";
       }
-    } finally {
-      setIsLoading(false);
+      
+      toast.error(errorMessage);
     }
   };
 

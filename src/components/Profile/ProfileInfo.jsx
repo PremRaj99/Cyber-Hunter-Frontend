@@ -52,7 +52,7 @@ const ProfileInfo = () => {
       transition={{ duration: 0.5 }}
     >
       <div className="flex flex-col justify-center items-center gap-4 mb-6">
-        <div className="w-32 h-32 rounded-full bg-blue-900 flex items-center justify-center">
+        <div className="w-32 h-32 rounded-full bg-gray-800 flex items-center justify-center">
           <img
             src={user?.profilePicture}
             alt="Profile"

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { motion } from "framer-motion";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -39,7 +40,8 @@ const BasicInfoTab = ({
             name="email"
             value={formData.email}
             onChange={handleInputChange}
-            className="w-full px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300"
+            readOnly
+            className="w-full px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent opacity-70 cursor-not-allowed"
           />
         </motion.div>
         <motion.div className="group" variants={itemVariants}>
@@ -70,8 +72,8 @@ const BasicInfoTab = ({
             className="w-full px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300"
             calendarClassName="bg-gray-800 border border-gray-700 text-white"
             wrapperClassName="w-full"
-            maxDate={new Date()} // Prevents selection of future dates
-            minDate={new Date('1900-01-01')} // Sets minimum date
+            maxDate={new Date()}
+            minDate={new Date('1900-01-01')}
           />
         </motion.div>
         <motion.div className="group" variants={itemVariants}>
@@ -88,8 +90,7 @@ const BasicInfoTab = ({
               <option value="" className="bg-gray-800 text-gray-400">Select Gender</option>
               <option value="male" className="bg-gray-800 text-white hover:bg-gray-700">Male</option>
               <option value="female" className="bg-gray-800 text-white hover:bg-gray-700">Female</option>
-              <option value="other" className="bg-gray-800 text-white hover:bg-gray-700">Other</option>
-              <option value="prefer-not-to-say" className="bg-gray-800 text-white hover:bg-gray-700">Prefer not to say</option>
+              <option value="others" className="bg-gray-800 text-white hover:bg-gray-700">Other</option>
             </select>
             <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
               <motion.svg
@@ -106,7 +107,7 @@ const BasicInfoTab = ({
             </div>
           </div>
         </motion.div>
-        <motion.div className="col-span-1 md:col-span-2 group" variants={itemVariants}>
+        <motion.div className="col-span-1 md:col-span-2 group " variants={itemVariants}>
           <label className="block text-sm font-medium text-gray-400 mb-1 group-hover:text-cyan-400 transition-colors duration-300">
             About Me
           </label>
@@ -115,7 +116,7 @@ const BasicInfoTab = ({
             value={formData.description}
             onChange={handleInputChange}
             rows="4"
-            className="w-full px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300 resize-none"
+            className="w-full px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300 resize-none no-scrollbar"
             placeholder="Tell us about yourself..."
           ></textarea>
         </motion.div>

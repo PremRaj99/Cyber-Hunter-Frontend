@@ -89,7 +89,7 @@ instance.interceptors.response.use(
       toast.error(message);
     } else if (error.request) {
       // The request was made but no response was received
-      toast.error("Network error. Please check your connection.");
+      // toast.error("Network error. Please check your connection.");
     } else {
       // Something happened in setting up the request
       toast.error("An error occurred while processing your request");
