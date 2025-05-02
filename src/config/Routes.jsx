@@ -11,7 +11,6 @@ import ProjectList from "../../src/pages/ProjectList";
 import PostProject from "../../src/pages/PostProject";
 import ProjectDetail from "../../src/pages/Project";
 import Team from "../pages/Team";
-import About from "../components/home/About";
 // import Service from "../../src/pages/Service";
 import Contact from "../components/home/Contact";
 import Leaderboard from "../../src/pages/Leaderboard";
@@ -43,6 +42,7 @@ import TeamInvitationsPage from "../pages/TeamInvitationsPage";
 import TeamBrowse from "../pages/TeamBrowse";
 import TeamSettings from "../pages/TeamSetting";
 import GitHubAuthSuccess from '../pages/GitHubAuthSuccess';
+import About from "../pages/About";
 
 export const router = createBrowserRouter([
   {

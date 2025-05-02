@@ -1,10 +1,14 @@
 // import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import aboutImg from '../../assets/aboutImg.png';
 import { useEffect } from 'react';
 
 
 
 export default function About() {
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.title = 'Cyber Hunter | About';
   }, []);
@@ -95,7 +99,9 @@ export default function About() {
               </div>
             </div>
             <div className="flex space-x-4  justify-center">
-              <button className="px-6 py-2 bg-brandPrimary text-[#000] font-bold mb-4 rounded-full hover:bg-black hover:text-brandPrimary hover:border-brandPrimary hover:border-2 transition duration-300 flex items-center hover:animate-pulse">
+              <button className="px-6 py-2 bg-brandPrimary text-[#000] font-bold mb-4 rounded-full hover:bg-black hover:text-brandPrimary hover:border-brandPrimary hover:border-2 transition duration-300 flex items-center hover:animate-pulse"
+                onClick={()=> navigate('/about')}
+              >
                 <span>Read More</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

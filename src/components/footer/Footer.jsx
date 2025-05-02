@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useRef, useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, useInView, AnimatePresence, useAnimation } from "framer-motion";
@@ -8,12 +9,15 @@ import xIcon from "../../assets/x_icon.png";
 import linkIcon from "../../assets/linkedin_icon.png";
 import emailLogo from "../../assets/email.png";
 import { Link } from "react-router-dom";
+import { NewsletterService } from "../../services/NewsletterService";
+import { toast } from "react-toastify";
 
 const Footer = () => {
   const footerRef = useRef(null);
   const isInView = useInView(footerRef, { amount: 0.1 });
   const [emailValue, setEmailValue] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [hoverPoint, setHoverPoint] = useState({ x: 0.5, y: 0.5 });
   const controls = useAnimation();
 
@@ -31,12 +35,28 @@ const Footer = () => {
     setHoverPoint({ x, y });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (emailValue) {
+
+    // Basic email validation
+    if (!emailValue || !emailValue.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await NewsletterService.subscribe(emailValue);
       setIsSubmitted(true);
-      setTimeout(() => setIsSubmitted(false), 3000);
+      toast.success("Thank you for subscribing!");
       setEmailValue("");
+      setTimeout(() => setIsSubmitted(false), 5000);
+    } catch (error) {
+      console.error("Newsletter subscription error:", error);
+      toast.error(error.response?.data?.message || "Failed to subscribe. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -109,8 +129,6 @@ const Footer = () => {
           <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
       </div>
-
-
 
       {/* Gradient Edge */}
       <div className="relative">
@@ -293,7 +311,7 @@ const Footer = () => {
             className="lg:col-span-5"
           >
             <motion.div
-              className="relative overflow-hidden rounded-2xl border border-gray-800 bg-gray-900/70 backdrop-blur-sm p-6 lg:p-8"
+              className="relative overflow-hidden rounded-3xl border border-gray-800 bg-gray-900/70 backdrop-blur-sm p-6 lg:p-8"
               whileHover={{ boxShadow: "0 0 30px rgba(8,145,178,0.15)" }}
             >
               {/* Animated Corner Accent */}
@@ -347,7 +365,7 @@ const Footer = () => {
                   </div>
                 </motion.div>
 
-                <form onSubmit={handleSubmit} className="relative z-10">
+                <form onSubmit={handleSubmit} className="space-y-6 w-full backdrop-blur-sm bg-black/40 p-8 rounded-3xl border border-cyan-400/20 shadow-xl shadow-cyan-900/20">
                   <div className="relative group">
                     <motion.div
                       className="absolute -inset-0.5 bg-gradient-to-r from-cyan-600 to-cyan-400 rounded-full opacity-30 group-hover:opacity-100 blur transition duration-300"
@@ -362,7 +380,7 @@ const Footer = () => {
                         value={emailValue}
                         onChange={(e) => setEmailValue(e.target.value)}
                         placeholder="your@email.com"
-                        className="w-full  bg-gray-800 border border-gray-700 rounded-full p-4 outline-none text-gray-200 placeholder-gray-500 focus:border-cyan-500 transition-all duration-300"
+                        className="w-full bg-gray-800 border border-gray-700 rounded-full p-4 outline-none text-gray-200 placeholder-gray-500 focus:border-cyan-500 transition-all duration-300"
                         required
                       />
                       <AnimatePresence mode="wait">
@@ -370,12 +388,24 @@ const Footer = () => {
                           <motion.button
                             key="subscribe"
                             type="submit"
-                            className="absolute m-2 right-1 top-1 bottom-1 bg-gradient-to-r from-cyan-600 to-cyan-500 text-white rounded-full px-6 font-medium hover:from-cyan-500 hover:to-cyan-400 transition-colors duration-300 overflow-hidden"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
+                            disabled={isSubmitting}
+                            className="absolute m-2 right-1 top-1 bottom-1 bg-gradient-to-r from-cyan-600 to-cyan-500 text-white rounded-full px-6 font-medium hover:from-cyan-500 hover:to-cyan-400 transition-colors duration-300 overflow-hidden disabled:opacity-70 disabled:cursor-not-allowed"
+                            whileHover={{ scale: isSubmitting ? 1 : 1.05 }}
+                            whileTap={{ scale: isSubmitting ? 1 : 0.95 }}
                             exit={{ opacity: 0, x: 20 }}
                           >
-                            <span className="relative z-10">Subscribe</span>
+                            {isSubmitting ? (
+                              <div className="flex items-center gap-2">
+                                <motion.div
+                                  animate={{ rotate: 360 }}
+                                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                  className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+                                />
+                                <span>Subscribing...</span>
+                              </div>
+                            ) : (
+                              <span className="relative z-10">Subscribe</span>
+                            )}
                             <motion.span
                               className="absolute inset-0 bg-cyan-400 opacity-0 hover:opacity-20 transition-opacity"
                               initial={{ x: "-100%" }}

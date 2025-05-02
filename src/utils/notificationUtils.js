@@ -80,12 +80,9 @@ export const groupNotificationsByDate = (notifications) => {
   const groups = {};
 
   notifications.forEach((notification) => {
-    const date = new Date(notification.time || notification.createdAt);
-    const dateKey = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
-    ).toISOString();
+    // Extract the date part from the createdAt or timestamp field
+    const date = new Date(notification.createdAt || notification.timestamp);
+    const dateKey = date.toDateString();
 
     if (!groups[dateKey]) {
       groups[dateKey] = [];
