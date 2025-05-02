@@ -98,9 +98,9 @@ export default function Team() {
       <div className="text-center mt-8">
         <button
           onClick={() => navigate("/ourteam")}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300"
+          className="px-6 py-3 rounded-xl bg-gradient-to-r bg-cyan-400 text-black font-medium transition-colors cursor-pointer  space-x-2 hover:bg-black hover:text-cyan-400 hover:border hover:border-cyan-400"
         >
-          Our Team
+          View Team
         </button>
       </div>
     </div>

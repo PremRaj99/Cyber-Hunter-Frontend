@@ -3,7 +3,7 @@ import leaduserdemo from "../assets/leaduserdemo.png";
 import axios from "../utils/Axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateSuccess } from "../redux/User/userSlice";
 
 // Import component sections
@@ -15,6 +15,21 @@ import TermsAndSubmit from "../components/UserDetail/TermsAndSubmit";
 export default function UserDetail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.user);
+
+  // Add debug logging when the component mounts
+  useEffect(() => {
+    console.log("UserDetail component mounted with currentUser:", currentUser);
+    console.log("Profile complete status:", currentUser?.isProfileComplete);
+    console.log("Using wallet?", currentUser?.walletConnected);
+
+    // Check if we already have user details (profile is complete)
+    if (currentUser?.isProfileComplete) {
+      console.log("User already has a complete profile, should not be here.");
+      // Redirect to dashboard if profile is already complete
+      navigate("/dashboard/profile", { replace: true });
+    }
+  }, [currentUser, navigate]);
 
   // Initial amounts
   const clubReg = 100;
@@ -120,6 +135,8 @@ export default function UserDetail() {
     e.preventDefault();
     setLoading(true);
 
+    console.log("Submitting user details form");
+
     // Validate profile picture
     if (!profilePicture && imageSrc === leaduserdemo) {
       // Convert the default leaduserdemo image to a File object
@@ -172,6 +189,7 @@ export default function UserDetail() {
         });
       }
 
+      console.log("Sending user details to server");
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/v1/user`,
         formData,
@@ -184,12 +202,13 @@ export default function UserDetail() {
       );
 
       if (response.data.success) {
+        console.log("User details saved successfully:", response.data);
         dispatch(
           updateSuccess({ ...response.data.data, isProfileComplete: true })
         );
         toast.success(response.data.message);
         resetForm();
-        navigate("/auth/login");
+        navigate("/dashboard/profile", { replace: true });
       }
     } catch (error) {
       console.error("Registration Error:", error);

@@ -23,6 +23,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaApple } from "react-icons/fa6";
 import GoogleLogin from "../components/google/GoogleLogin";
 import GithubLogin from "../components/auth/GithubLogin";
+import WalletLogin from "../components/auth/WalletLogin";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { toast } from "react-toastify";
 
@@ -299,9 +300,8 @@ const Login = () => {
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <input
                   type="email"
-                  className={`w-full bg-gray-800 text-white pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-brandPrimary transition-all duration-300 ${
-                    errors.email ? "border-red-500" : "border-gray-700"
-                  }`}
+                  className={`w-full bg-gray-800 text-white pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-brandPrimary transition-all duration-300 ${errors.email ? "border-red-500" : "border-gray-700"
+                    }`}
                   placeholder="Email address"
                   value={formData.email}
                   onChange={(e) =>
@@ -320,9 +320,8 @@ const Login = () => {
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <input
                   type={showPassword ? "text" : "password"}
-                  className={`w-full bg-gray-800 text-white pl-10 pr-12 py-3 rounded-lg focus:ring-2 focus:ring-brandPrimary transition-all duration-300 ${
-                    errors.password ? "border-red-500" : "border-gray-700"
-                  }`}
+                  className={`w-full bg-gray-800 text-white pl-10 pr-12 py-3 rounded-lg focus:ring-2 focus:ring-brandPrimary transition-all duration-300 ${errors.password ? "border-red-500" : "border-gray-700"
+                    }`}
                   placeholder="Password"
                   value={formData.password}
                   onChange={(e) =>
@@ -351,59 +350,53 @@ const Login = () => {
                   </p>
                   <ul className="text-sm space-y-1">
                     <li
-                      className={`flex items-center ${
-                        formData.password.length >= 8
+                      className={`flex items-center ${formData.password.length >= 8
                           ? "text-green-500"
                           : "text-gray-400"
-                      }`}
+                        }`}
                     >
                       <span className="mr-2">✓</span> At least 8 characters
                     </li>
                     <li
-                      className={`flex items-center ${
-                        /[A-Z]/.test(formData.password)
+                      className={`flex items-center ${/[A-Z]/.test(formData.password)
                           ? "text-green-500"
                           : "text-gray-400"
-                      }`}
+                        }`}
                     >
                       <span className="mr-2">✓</span> At least one uppercase
                       letter
                     </li>
                     <li
-                      className={`flex items-center ${
-                        /[a-z]/.test(formData.password)
+                      className={`flex items-center ${/[a-z]/.test(formData.password)
                           ? "text-green-500"
                           : "text-gray-400"
-                      }`}
+                        }`}
                     >
                       <span className="mr-2">✓</span> At least one lowercase
                       letter
                     </li>
                     <li
-                      className={`flex items-center ${
-                        /\d/.test(formData.password)
+                      className={`flex items-center ${/\d/.test(formData.password)
                           ? "text-green-500"
                           : "text-gray-400"
-                      }`}
+                        }`}
                     >
                       <span className="mr-2">✓</span> At least one number
                     </li>
                     <li
-                      className={`flex items-center ${
-                        /[!@#$%^&*(),.?":{}|<>]/.test(formData.password)
+                      className={`flex items-center ${/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)
                           ? "text-green-500"
                           : "text-gray-400"
-                      }`}
+                        }`}
                     >
                       <span className="mr-2">✓</span> At least one special
                       character
                     </li>
                     <li
-                      className={`flex items-center ${
-                        !/\s/.test(formData.password)
+                      className={`flex items-center ${!/\s/.test(formData.password)
                           ? "text-green-500"
                           : "text-gray-400"
-                      }`}
+                        }`}
                     >
                       <span className="mr-2">✓</span> No spaces
                     </li>
@@ -419,11 +412,10 @@ const Login = () => {
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
                   <input
                     type={showPassword ? "text" : "password"}
-                    className={`w-full bg-gray-800 text-white pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-brandPrimary transition-all duration-300 ${
-                      errors.confirmPassword
+                    className={`w-full bg-gray-800 text-white pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-brandPrimary transition-all duration-300 ${errors.confirmPassword
                         ? "border-red-500"
                         : "border-gray-700"
-                    }`}
+                      }`}
                     placeholder="Confirm password"
                     value={formData.confirmPassword}
                     onChange={(e) =>
@@ -486,18 +478,14 @@ const Login = () => {
 
             <div className="mt-6 flex justify-center gap-4 hover:text-black">
               <button className="flex items-center justify-center px-4 py-3 bg-gray-800 rounded-lg hover:bg-cyan-700  transition-colors">
-              <GoogleOAuthProvider clientId={import.meta.env.VITE_APP_GOOGLE_CLIENT_ID}>
-                <GoogleLogin>
+                <GoogleOAuthProvider clientId={import.meta.env.VITE_APP_GOOGLE_CLIENT_ID}>
+                  <GoogleLogin>
                     <img src={google} alt="Google Icon" className="h-5 w-5" />
-                </GoogleLogin>
+                  </GoogleLogin>
                 </GoogleOAuthProvider>
               </button>
               <GithubLogin />
-              <button className="flex items-center justify-center px-4 py-3 bg-gray-800 rounded-lg hover:bg-cyan-700  transition-colors">
-                {/* metamask icon svg for login*/}
-                <img src={metamask} alt="metamask icon" className="h-5 w-5" />
-
-              </button>
+              <WalletLogin />
             </div>
           </div>
 

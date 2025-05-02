@@ -6,6 +6,7 @@ const initialState = {
   error: null,
   loading: false,
   isProfileComplete: false,
+  walletConnected: false,
 };
 
 const userSlice = createSlice({
@@ -19,6 +20,7 @@ const userSlice = createSlice({
     signInSuccess: (state, action) => {
       state.currentUser = action.payload;
       state.isProfileComplete = action.payload.isProfileComplete || false;
+      state.walletConnected = action.payload.walletConnected || false;
       state.loading = false;
       state.error = null;
     },
@@ -33,6 +35,7 @@ const userSlice = createSlice({
     updateSuccess: (state, action) => {
       state.currentUser = action.payload;
       state.isProfileComplete = action.payload.isProfileComplete || false;
+      state.walletConnected = action.payload.walletConnected || false;
       state.loading = false;
     },
     updateFailure: (state, action) => {
@@ -48,6 +51,7 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.isProfileComplete = false;
+      state.walletConnected = false;
     },
     deleteUserFailure: (state, action) => {
       state.loading = false;
@@ -61,6 +65,8 @@ const userSlice = createSlice({
       state.currentUser = null;
       state.loading = false;
       state.error = null;
+      state.isProfileComplete = false;
+      state.walletConnected = false;
     },
     signOutUserFailure: (state, action) => {
       state.loading = false;

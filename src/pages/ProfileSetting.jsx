@@ -51,7 +51,7 @@ export default function EditProfile() {
         // Check if we have a valid user ID before making the API request
         if (!individualId && user?._id && user._id !== "undefined") {
           const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/v1/individual/user/${user._id}`,
+            `${import.meta.env.VITE_API_URL}/api/v1/individual/${user._id}`,
             {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -227,7 +227,9 @@ export default function EditProfile() {
       >
         <div className="flex justify-between items-center mb-8">
           <span className="border-b border-brandPrimary ">
-            <h1 className="text-2xl md:text-3xl font-bold text-white">Edit Your Profile</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-white">
+              Edit Your Profile
+            </h1>
           </span>
           <button
             onClick={() => navigate(-1)}

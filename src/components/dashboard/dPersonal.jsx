@@ -114,15 +114,6 @@ const DPersonal = () => {
       textColor: "text-pink-100",
       iconBg: "bg-pink-400 bg-opacity-20"
     },
-    {
-      icon: <SettingsIcon fontSize="medium" />,
-      text: "Personal Management",
-      description: "Configure personal settings",
-      path: "/teamManagement",
-      color: "from-slate-600 to-slate-500",
-      textColor: "text-slate-100",
-      iconBg: "bg-slate-400 bg-opacity-20"
-    },
   ];
 
   return (
