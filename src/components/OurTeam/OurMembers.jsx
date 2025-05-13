@@ -30,8 +30,7 @@ const teamMembers = [
   {
     name: "Ashish Kumar",
     role: "MERN Developer",
-    image:
-      "https://cdn.discordapp.com/attachments/972518165693210707/1319339083817947226/1000039010-removebg-preview.png?ex=680e59c5&is=680d0845&hm=dc1f1a134a6ac03c22ad70fe5e7a02ac0cff6618829f5716c2f533b18b314386&",
+    image:"https://res.cloudinary.com/dtgiujxll/image/upload/v1747129868/lfalxi5fuj8rumondvjl.png",
     description: "Building The Future Of Revolution",
     social: {
       twitter: "https://x.com/Rahul0470?t=ir1doj910zZFGwnH9QpJbQ&s=09",

@@ -225,7 +225,7 @@ const AboutSection = () => {
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            Cyberhunter was born from a simple idea: "What if students could lead each other into the world of ethical hacking, security research, and decentralized technology without waiting for formal instruction?"
+            Cyberhunter was born from a simple idea: &quot;What if students could lead each other into the world of ethical hacking, security research, and decentralized technology without waiting for formal instruction?&quot;
           </motion.p>
           <motion.p
             className="text-gray-300 text-lg leading-relaxed mb-6"
