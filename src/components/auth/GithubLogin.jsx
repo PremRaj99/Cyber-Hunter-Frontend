@@ -15,7 +15,7 @@ const GithubLogin = ({ children }) => {
       setLoading(true);
       // Create a timestamp to prevent caching issues
       const timestamp = new Date().getTime();
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const apiUrl = import.meta.env.VITE_API_URL;
       
       // First ensure GitHub authentication is configured properly
       Axios.get(`${apiUrl}/api/v1/auth/github-config`)
