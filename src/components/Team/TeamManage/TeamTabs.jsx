@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { GitBranch, Users, Code, GanttChart, Award } from 'lucide-react';
+import { GitBranch, Users, GanttChart, Award } from 'lucide-react';
 import { useContext } from 'react';
 import { TeamContext } from '../../../context/TeamContext';
 
@@ -9,7 +9,6 @@ const TeamTabs = () => {
   const tabs = [
     { id: 'overview', icon: Users, label: 'Overview' },
     { id: 'members', icon: GitBranch, label: 'Members' },
-    { id: 'tech', icon: Code, label: 'Tech Stack' },
     { id: 'projects', icon: GanttChart, label: 'Projects' },
     { id: 'achievements', icon: Award, label: 'Achievements' }
   ];

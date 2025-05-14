@@ -122,7 +122,6 @@ const TeamSettings = () => {
         {/* Render the active tab content */}
         {activeTab === 'overview' && <TeamOverviewTab />}
         {activeTab === 'members' && <TeamMembersTab />}
-        {activeTab === 'tech' && <TeamTechStackTab />}
         {/* Add other tab components here as needed */}
       </TeamContentWrapper>
     </TeamContext.Provider>

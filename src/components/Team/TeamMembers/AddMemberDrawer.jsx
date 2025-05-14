@@ -51,7 +51,7 @@ const AddMemberDrawer = ({
       {isOpen && (
         <>
           <motion.div
-            className="fixed inset-y-0 right-0 w-full max-w-md bg-gray-900 border-l border-gray-800 shadow-xl z-50 flex flex-col"
+            className="fixed inset-y-0 right-0 w-full max-w-md max-h-[100vh] bg-gray-900 border-l border-gray-800 shadow-xl z-50 flex flex-col"
             variants={drawerVariants}
             initial="closed"
             animate="open"
