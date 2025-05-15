@@ -27,9 +27,19 @@ export const AuthGuard = ({ children }) => {
     return <Navigate to="/auth/login" state={{ from: location }} replace />;
   }
 
-  // Only redirect to userdetails if profile is not complete and we're not already on the userdetails page
-  // Also check if we're coming from a wallet connection to prevent redirect loops
+  // Add check for 2FA authenticated users
+  // If user has just completed 2FA (has tokens) but profile isn't loading correctly,
+  // we should allow them to access dashboard without redirecting to userdetails
+  const hasAuthTokens = !!localStorage.getItem("accessToken") && !!localStorage.getItem("refreshToken");
+  const isExistingUser = currentUser?._id && currentUser?.email && !currentUser?.isNewUser;
+
   if (!isProfileComplete && location.pathname !== '/auth/userdetails') {
+    // Allow access to dashboard if the user appears to be an existing authenticated user
+    if (isExistingUser && hasAuthTokens) {
+      console.log('Existing user detected with tokens - allowing dashboard access');
+      return children;
+    }
+
     console.log('Redirecting to userdetails - Profile not complete');
     return <Navigate to="/auth/userdetails" replace />;
   }
@@ -40,6 +50,10 @@ export const AuthGuard = ({ children }) => {
 export const PublicRoute = ({ children }) => {
   const { currentUser, isProfileComplete } = useSelector((state) => state.user);
   const location = useLocation();
+
+  // Same check for PublicRoute to ensure consistent behavior
+  const hasAuthTokens = !!localStorage.getItem("accessToken") && !!localStorage.getItem("refreshToken");
+  const isExistingUser = currentUser?._id && currentUser?.email && !currentUser?.isNewUser;
 
   useEffect(() => {
     console.log('Public Route State:', {

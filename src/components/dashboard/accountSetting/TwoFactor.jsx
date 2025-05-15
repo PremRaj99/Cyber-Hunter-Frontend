@@ -74,7 +74,6 @@ const TwoFactor = ({ isOpen, onClose }) => {
     try {
       setLoading(true);
       setError('');
-      // Fix: Move headers to the third parameter of axios.post()
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/v1/auth/2fa/generate`,
         {}, // Empty object as the request body
@@ -96,10 +95,10 @@ const TwoFactor = ({ isOpen, onClose }) => {
     }
   };
 
-  // Enable 2FA - Fix headers here too
+  // Enable 2FA - Fix token formatting
   const enableTwoFactor = async () => {
     const code = verificationCode.join('');
-    if (code.length !== 6) {
+    if (code.length !== 6 || !/^\d+$/.test(code)) {
       setError('Please enter a valid 6-digit code');
       return;
     }
@@ -107,38 +106,43 @@ const TwoFactor = ({ isOpen, onClose }) => {
     try {
       setLoading(true);
       setError('');
-      // Fix: Include proper headers
-      await axios.post(
+      const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/v1/auth/2fa/verify`,
-        { token: code },
+        { token: code.toString() }, // Ensure it's a string
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            'Content-Type': 'application/json', // Explicitly set content type
           },
         }
       );
 
-      setIsEnabled(true);
-      setShowSuccessAnimation(true);
-      toast.success('Two-Factor Authentication enabled successfully');
+      if (response.data && response.data.success) {
+        setIsEnabled(true);
+        setShowSuccessAnimation(true);
+        toast.success('Two-Factor Authentication enabled successfully');
 
-      // Close the modal after showing success animation
-      setTimeout(() => {
-        setShowSuccessAnimation(false);
-        setTimeout(() => onClose(), 500);
-      }, 2000);
+        // Close the modal after showing success animation
+        setTimeout(() => {
+          setShowSuccessAnimation(false);
+          setTimeout(() => onClose(), 500);
+        }, 2000);
+      } else {
+        throw new Error(response.data?.message || 'Failed to verify code');
+      }
     } catch (error) {
-      setError('Failed to verify code. Please try again.');
-      toast.error('Failed to verify code');
+      console.error('2FA verification error:', error);
+      setError(error.response?.data?.message || 'Failed to verify code. Please try again.');
+      toast.error(error.response?.data?.message || 'Failed to verify code');
     } finally {
       setLoading(false);
     }
   };
 
-  // Disable 2FA - Fix headers here too
+  // Disable 2FA - Fix token formatting
   const disableTwoFactor = async () => {
     const code = verificationCode.join('');
-    if (code.length !== 6) {
+    if (code.length !== 6 || !/^\d+$/.test(code)) {
       setError('Please enter a valid 6-digit code');
       return;
     }
@@ -146,29 +150,34 @@ const TwoFactor = ({ isOpen, onClose }) => {
     try {
       setLoading(true);
       setError('');
-      // Fix: Include proper headers
-      await axios.post(
+      const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/v1/auth/2fa/disable`,
-        { token: code },
+        { token: code.toString() }, // Ensure it's a string
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            'Content-Type': 'application/json', // Explicitly set content type
           },
         }
       );
 
-      setIsEnabled(false);
-      setShowSuccessAnimation(true);
-      toast.success('Two-Factor Authentication disabled successfully');
+      if (response.data && response.data.success) {
+        setIsEnabled(false);
+        setShowSuccessAnimation(true);
+        toast.success('Two-Factor Authentication disabled successfully');
 
-      // Close the modal after showing success animation
-      setTimeout(() => {
-        setShowSuccessAnimation(false);
-        setTimeout(() => onClose(), 500);
-      }, 2000);
+        // Close the modal after showing success animation
+        setTimeout(() => {
+          setShowSuccessAnimation(false);
+          setTimeout(() => onClose(), 500);
+        }, 2000);
+      } else {
+        throw new Error(response.data?.message || 'Failed to verify code');
+      }
     } catch (error) {
-      setError('Failed to verify code. Please try again.');
-      toast.error('Failed to verify code');
+      console.error('2FA disable error:', error);
+      setError(error.response?.data?.message || 'Failed to verify code. Please try again.');
+      toast.error(error.response?.data?.message || 'Failed to verify code');
     } finally {
       setLoading(false);
     }
@@ -189,8 +198,9 @@ const TwoFactor = ({ isOpen, onClose }) => {
     }
   };
 
+  // Modify handleCodeChange to only accept digits
   const handleCodeChange = (index, value) => {
-    if (value.length <= 1) {
+    if (/^\d*$/.test(value) && value.length <= 1) {
       const newCode = [...verificationCode];
       newCode[index] = value;
       setVerificationCode(newCode);
@@ -368,6 +378,14 @@ const TwoFactor = ({ isOpen, onClose }) => {
                       <p className="text-gray-400 mb-4">
                         Once enabled, you&apos;ll need to enter a verification code from your authentication app each time you sign in.
                       </p>
+                      <div className="bg-cyan-900/20 p-4 rounded-lg border border-cyan-900/40 mb-4">
+                        <h4 className="text-cyan-300 font-medium mb-2">How it works:</h4>
+                        <ol className="list-decimal list-inside text-gray-300 space-y-2">
+                          <li>You&apos;ll set up an authentication app on your mobile device</li>
+                          <li>When logging in, after entering your password, you&apos;ll be prompted for a code</li>
+                          <li>Enter the 6-digit code from your authentication app to complete login</li>
+                        </ol>
+                      </div>
                       <div className="flex justify-center mt-6">
                         <button
                           onClick={generateSecret}

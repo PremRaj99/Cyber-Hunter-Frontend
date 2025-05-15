@@ -23,12 +23,12 @@ const TeamTechStack = ({ technologies = [], containerVariants }) => {
       initial={{ x: 50, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ delay: 0.7 }}
-      className="rounded-xl bg-gray-800/40 shadow-lg backdrop-blur-sm border border-gray-700/50 p-4 h-[400px]"
+      className="rounded-xl bg-gray-800/40 shadow-lg backdrop-blur-sm border border-gray-700/50 p-4 h-[715px]"
     >
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-white">Tech Stack</h2>
       </div>
-      <div className="max-h-[400px] overflow-y-auto pr-2 no-scrollbar">
+      <div className="max-h-[700px] overflow-y-auto pr-2 no-scrollbar">
         <motion.div
           variants={containerVariants}
           initial="hidden"

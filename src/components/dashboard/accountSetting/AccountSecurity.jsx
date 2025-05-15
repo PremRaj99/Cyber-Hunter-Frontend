@@ -186,42 +186,6 @@ const AccountSecurity = ({ accountSecurity }) => {
             </motion.li>
           ))}
         </motion.ul>
-
-        <motion.div
-          variants={itemVariants}
-          className={`mt-8 p-4 bg-gray-900/50 border ${securityLevel.borderColor} rounded-lg`}
-        >
-          <div className="flex items-center justify-between mb-2">
-            <h3 className={`${securityLevel.textColor} text-lg font-medium`}>
-              Security Status - {securityLevel.text}
-            </h3>
-            <span className={`${securityLevel.textColor} font-medium`}>
-              {score}%
-            </span>
-          </div>
-
-          {messages.length > 0 && (
-            <p className="text-white text-sm mb-4">
-              Recommendations:
-              <ul className="list-disc ml-5 mt-2 space-y-1">
-                {messages.map((message, index) => (
-                  <li key={index} className="text-gray-400">
-                    {message}
-                  </li>
-                ))}
-              </ul>
-            </p>
-          )}
-
-          <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${score}%` }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className={`${securityLevel.bgColor} h-full rounded-full`}
-            />
-          </div>
-        </motion.div>
       </motion.div>
 
       {/* 2FA Modal */}

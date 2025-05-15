@@ -200,7 +200,7 @@ export default function ContactPage() {
                     <div className="mb-6 p-4 rounded-lg bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 text-emerald-300">
                       <p className="flex items-center gap-2 font-medium">
                         <span className="text-emerald-300">✓</span>
-                        Message sent successfully! We'll get back to you soon.
+                        Message sent successfully! We&apos;ll get back to you soon.
                       </p>
                     </div>
                   )}

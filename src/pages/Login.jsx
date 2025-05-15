@@ -68,6 +68,7 @@ const Login = () => {
   );
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -182,53 +183,53 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    setLoading(true);
+    setError("");
 
     try {
-      dispatch(signInStart());
-      setLoading(true);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/auth/login`, {
+        email: formData.email,
+        password: formData.password,
+      });
 
-      const endpoint = isSignup ? "/api/v1/auth/signup" : "/api/v1/auth/login";
-      const { data } = await axios.post(endpoint, formData);
+      if (response.data.success) {
+        // Check if 2FA is required
+        if (response.data.data.requiresTwoFactor) {
+          // Redirect to 2FA verification page
+          navigate("/auth/verify", {
+            state: {
+              email: response.data.data.email,
+              type: "2fa",
+              userData: response.data.data.userData,
+              redirect: location.state?.from || "/dashboard"
+            }
+          });
+          return;
+        }
 
-      if (data.success) {
-        dispatch(
-          signInSuccess({
-            ...data.data,
-            isProfileComplete: isSignup
-              ? false
-              : Boolean(data.data.profilePicture),
-          })
-        );
+        // Normal login flow without 2FA
+        const { accessToken, refreshToken } = response.data.data;
 
-        localStorage.setItem("accessToken", data.data.accessToken);
-        localStorage.setItem("refreshToken", data.data.refreshToken);
-        toast.success(
-          isSignup
-            ? "Account created successfully!"
-            : "Login successful!",
-        );
+        // Set tokens in localStorage
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        localStorage.setItem("userId", response.data.data._id);
 
+        // Dispatch action to update user state
+        dispatch(signInSuccess(response.data.data));
 
-        navigate(isSignup ? "/auth/userdetails" : "/dashboard/profile", {
-          replace: true,
-        });
+        toast.success("Login successful");
+
+        // Redirect to dashboard or previous intended page
+        const redirectPath = location.state?.from || "/dashboard";
+        navigate(redirectPath);
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message;
-      dispatch(signInFailure(errorMessage));
-      setErrors({ ...errors, general: errorMessage });
-      toast.error(errorMessage, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-      console.error("Error during authentication:", errorMessage);
+      console.log(error);
+      const errorMessage =
+        error.response?.data?.message || "Something went wrong";
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -351,16 +352,16 @@ const Login = () => {
                   <ul className="text-sm space-y-1">
                     <li
                       className={`flex items-center ${formData.password.length >= 8
-                          ? "text-green-500"
-                          : "text-gray-400"
+                        ? "text-green-500"
+                        : "text-gray-400"
                         }`}
                     >
                       <span className="mr-2">✓</span> At least 8 characters
                     </li>
                     <li
                       className={`flex items-center ${/[A-Z]/.test(formData.password)
-                          ? "text-green-500"
-                          : "text-gray-400"
+                        ? "text-green-500"
+                        : "text-gray-400"
                         }`}
                     >
                       <span className="mr-2">✓</span> At least one uppercase
@@ -368,8 +369,8 @@ const Login = () => {
                     </li>
                     <li
                       className={`flex items-center ${/[a-z]/.test(formData.password)
-                          ? "text-green-500"
-                          : "text-gray-400"
+                        ? "text-green-500"
+                        : "text-gray-400"
                         }`}
                     >
                       <span className="mr-2">✓</span> At least one lowercase
@@ -377,16 +378,16 @@ const Login = () => {
                     </li>
                     <li
                       className={`flex items-center ${/\d/.test(formData.password)
-                          ? "text-green-500"
-                          : "text-gray-400"
+                        ? "text-green-500"
+                        : "text-gray-400"
                         }`}
                     >
                       <span className="mr-2">✓</span> At least one number
                     </li>
                     <li
                       className={`flex items-center ${/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)
-                          ? "text-green-500"
-                          : "text-gray-400"
+                        ? "text-green-500"
+                        : "text-gray-400"
                         }`}
                     >
                       <span className="mr-2">✓</span> At least one special
@@ -394,8 +395,8 @@ const Login = () => {
                     </li>
                     <li
                       className={`flex items-center ${!/\s/.test(formData.password)
-                          ? "text-green-500"
-                          : "text-gray-400"
+                        ? "text-green-500"
+                        : "text-gray-400"
                         }`}
                     >
                       <span className="mr-2">✓</span> No spaces
@@ -413,8 +414,8 @@ const Login = () => {
                   <input
                     type={showPassword ? "text" : "password"}
                     className={`w-full bg-gray-800 text-white pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-brandPrimary transition-all duration-300 ${errors.confirmPassword
-                        ? "border-red-500"
-                        : "border-gray-700"
+                      ? "border-red-500"
+                      : "border-gray-700"
                       }`}
                     placeholder="Confirm password"
                     value={formData.confirmPassword}

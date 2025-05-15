@@ -10,6 +10,7 @@ import DeleteProjectPopUp from "../components/Project/DeleteProjectPopUp";
 import { FaLink } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 const formatCreatedAt = (dateString) => {
   try {
@@ -129,15 +130,26 @@ export default function ViewTeamProject() {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-7xl mx-auto"
       >
-        <div className="flex justify-between items-center mb-8">
-          <motion.h1
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent"
-          >
-            Team Project Gallery
-          </motion.h1>
-        </div>
+        <motion.div  className=" flex text-center mb-12">
+          <div className="my-auto">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => navigate(-1)}
+              className="p-4 rounded-full bg-gray-800/50 text-gray-400 hover:bg-gray-800/30 hover:text-brandPrimary transition-colors border-2 border-cyan-800/50"
+            >
+              <ArrowLeft size={20} />
+            </motion.button>
+          </div>
+          <div className="flex-1">
+            <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-cyan-600 mb-4">
+              Team Projects
+            </h1>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              Manage your team projects, view details, and take action all in one place.
+            </p>
+          </div>
+        </motion.div>
 
         {projects.length > 0 ? (
           <motion.div

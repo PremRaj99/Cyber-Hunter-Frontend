@@ -43,6 +43,7 @@ import TeamBrowse from "../pages/TeamBrowse";
 import TeamSettings from "../pages/TeamSetting";
 import GitHubAuthSuccess from '../pages/GitHubAuthSuccess';
 import About from "../pages/About";
+import VerifyTwoFactor from "../pages/VerifyTwoFactor";
 
 export const router = createBrowserRouter([
   {
@@ -105,8 +106,12 @@ export const router = createBrowserRouter([
         element: <PublicRoute><ForgotPassword /></PublicRoute>,
       },
       {
-        path: "verify-otp",
+        path: "verifyOtp",
         element: <PublicRoute><VerifyOTP /></PublicRoute>,
+      },
+      {
+        path: "verify",
+        element: <PublicRoute><VerifyTwoFactor /></PublicRoute>,
       },
       {
         path: "userdetails",
