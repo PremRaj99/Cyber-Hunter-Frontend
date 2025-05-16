@@ -28,11 +28,53 @@ export default function Leaderboard() {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [isInitializing, setIsInitializing] = useState(false);
+  const initializationAttempted = useRef(false);
 
   // UseEffect to handle document title
   useEffect(() => {
     document.title = "Cyber Hunter | Leaderboard";
   }, []);
+
+  // Function to initialize leaderboard data
+  const initializeLeaderboard = async () => {
+    if (initializationAttempted.current || isInitializing) return;
+
+    try {
+      setIsInitializing(true);
+      initializationAttempted.current = true;
+
+      const token = localStorage.getItem("accessToken");
+      if (!token) return;
+
+      // Add force=true parameter to allow non-admin initialization if no data exists
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/v1/leaderboard/initialize?force=true`,
+        {}, // empty body
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      if (response.data && response.data.success) {
+        console.log("Leaderboard initialized successfully");
+        // Wait a moment for backend to process the data before refreshing
+        setTimeout(() => window.location.reload(), 1500);
+      }
+    } catch (error) {
+      console.error("Error initializing leaderboard:", error);
+
+      // Handle 403 Forbidden error specifically
+      if (error.response && error.response.status === 403) {
+        console.log("Waiting for admin to initialize the leaderboard data");
+        // No need to show error to user as this is an automatic operation
+      }
+    } finally {
+      setIsInitializing(false);
+    }
+  };
 
   // Fetch leaderboard filters (tech stacks, languages, tags)
   useEffect(() => {
@@ -98,6 +140,7 @@ export default function Leaderboard() {
               rank: item.rank,
               id: item.userId || item.teamId,
               name: item.name || "Anonymous",
+              email: item.email || null,
               points: item.points,
               techStack: item.techStack || "Not specified",
               language: item.language,
@@ -128,12 +171,27 @@ export default function Leaderboard() {
 
           // Set pagination details
           setTotalPages(response.data.data.pagination?.totalPages || 1);
+
+          // If there's no data and we haven't attempted initialization yet, try to initialize
+          if (formattedData.length === 0 && !initializationAttempted.current) {
+            initializeLeaderboard();
+          }
         } else {
           setError("Failed to load leaderboard data");
+
+          // If failed to load data, try initializing
+          if (!initializationAttempted.current) {
+            initializeLeaderboard();
+          }
         }
       } catch (error) {
         console.error("Error fetching leaderboard data:", error);
         setError("Failed to load leaderboard data. Please try again later.");
+
+        // If error occurred and data seems empty, try initializing
+        if (!initializationAttempted.current) {
+          initializeLeaderboard();
+        }
       } finally {
         setIsLoading(false);
       }
@@ -229,6 +287,23 @@ export default function Leaderboard() {
           <span className="border-b-2 border-cyan-400">LEADERBOARD</span>
         </motion.h2>
 
+        {/* Show initializing message if applicable */}
+        {isInitializing && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mb-8 text-center"
+          >
+            <div className="inline-flex items-center px-4 py-2 bg-gray-800/80 rounded-full">
+              <svg className="animate-spin -ml-0.5 mr-2 h-4 w-4 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span className="text-cyan-400 text-sm font-medium">Initializing leaderboard data...</span>
+            </div>
+          </motion.div>
+        )}
+
         {/* Top 3 Teams/Individuals */}
         {isLoading && (!currentTopThree || currentTopThree.length < 3) ? (
           <motion.div className="grid grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-12 relative">
@@ -279,7 +354,7 @@ export default function Leaderboard() {
             <motion.div whileFocus={{ scale: 1.02 }} className="relative">
               <input
                 type="text"
-                placeholder="Search Here"
+                placeholder="Search by name or email"
                 value={searchQuery}
                 onChange={handleSearchChange}
                 className="w-full px-4 py-2 bg-white bg-opacity-10 rounded-lg text-white 
