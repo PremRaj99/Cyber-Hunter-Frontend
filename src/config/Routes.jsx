@@ -12,7 +12,7 @@ import PostProject from "../../src/pages/PostProject";
 import ProjectDetail from "../../src/pages/Project";
 import Team from "../pages/Team";
 // import Service from "../../src/pages/Service";
-import Contact from "../components/home/Contact";
+import Contact from "../pages/Contact";
 import Leaderboard from "../../src/pages/Leaderboard";
 import Event from "../../src/pages/Event";
 import EventDetail from "../../src/pages/EventDetail";

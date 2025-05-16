@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Check, Trash2, Bell, X } from "lucide-react";
+import { Check, Trash2, Bell } from "lucide-react";
 import axios from "../../../utils/Axios";
 import { toast } from "react-toastify";
 import { formatDistanceToNow } from "date-fns";
@@ -268,7 +269,7 @@ const NotificationsList = () => {
             <Bell size={30} className="text-gray-500" />
           </div>
           <h3 className="text-xl font-medium text-white">No notifications</h3>
-          <p className="text-gray-400 mt-2">You don't have any notifications yet</p>
+          <p className="text-gray-400 mt-2">You do&apos;t have any notifications yet</p>
         </div>
       )}
 

@@ -47,7 +47,7 @@ export default function LeaderboardList({ data }) {
       >
         {data.map((entry) => (
           <motion.div
-            key={entry.rank}
+            key={entry.id || entry.rank}
             variants={itemVariants}
             whileHover={{
               scale: 1.02,
@@ -62,12 +62,16 @@ export default function LeaderboardList({ data }) {
             </span>
             <motion.div
               whileHover={{ scale: 1.1 }}
-              className="w-8 h-8 md:w-10 md:h-10 bg-gray-400 rounded-full"
+              className="w-8 h-8 md:w-10 md:h-10 bg-gray-400 rounded-full overflow-hidden"
             >
               <img
-                src={leaduserdemo}
-                alt="User Avatar"
-                className="w-full h-full rounded-full"
+                src={entry.profilePicture || leaduserdemo}
+                alt={`${entry.name}'s avatar`}
+                className="w-full h-full rounded-full object-cover"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = leaduserdemo;
+                }}
               />
             </motion.div>
             <span className="text-white flex-1 text-sm md:text-base">

@@ -1,9 +1,20 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaAngleDown } from "react-icons/fa6";
 
 export default function LeaderboardFilters({ dropdowns, selectedOptions, handleOptionSelect }) {
   const [openDropdown, setOpenDropdown] = useState(null);
+
+  // Add a function to handle clearing all filters
+  const clearAllFilters = () => {
+    // Reset all dropdown selections
+    dropdowns.forEach((_, index) => {
+      handleOptionSelect(index, dropdowns[index].label);
+    });
+    // Close any open dropdown
+    setOpenDropdown(null);
+  };
 
   return (
     <div className="w-full md:w-64 space-y-4">
@@ -22,7 +33,7 @@ export default function LeaderboardFilters({ dropdowns, selectedOptions, handleO
         <motion.div
           key={dropdown.label}
           whileTap={{ scale: 0.98 }}
-          className="relative"
+          className="relative no-scrollbar"
         >
           <div
             onClick={() =>
@@ -30,7 +41,7 @@ export default function LeaderboardFilters({ dropdowns, selectedOptions, handleO
             }
             className="w-full px-4 py-2 bg-white bg-opacity-10 rounded-lg 
             text-white flex items-center justify-between cursor-pointer 
-            focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            focus:outline-none focus:ring-2 focus:ring-cyan-400 "
           >
             {selectedOptions[index] || dropdown.label}
             <motion.div
@@ -67,6 +78,18 @@ export default function LeaderboardFilters({ dropdowns, selectedOptions, handleO
           )}
         </motion.div>
       ))}
+
+      {/* Clear All Filters Button - Make sure it's visible with proper margin */}
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={clearAllFilters}
+        className="w-full mt-6 px-4 py-3 bg-cyan-500 bg-opacity-20 text-cyan-400 
+        border border-cyan-500 rounded-lg hover:bg-cyan-500 hover:text-black 
+        font-medium transition-all duration-300 flex items-center justify-center"
+      >
+        Clear All Filters
+      </motion.button>
     </div>
   );
 }

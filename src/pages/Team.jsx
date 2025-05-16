@@ -125,6 +125,13 @@ export default function Team() {
     fetchTeamData();
   }, [user]);
 
+  useEffect(() => {
+    document.title = `Team - ${team?.TeamName || "Loading..."}`;
+    return () => {
+      document.title = "Team";
+    };  
+  }, [team]);
+
   // get team members details
   useEffect(() => {
     const fetchTeamMembersDetails = async () => {
