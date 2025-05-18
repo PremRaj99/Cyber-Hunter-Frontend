@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Send, User, Mail, MessageSquare, Sparkles } from "lucide-react";
+import { Send, User, Mail, MessageSquare, Sparkles, Loader2 } from "lucide-react";
 import AnimatedSuccess from "../Common/AnimatedSuccess";
+import { toast } from "react-toastify";
+import { ContactService } from "../../services/ContactService";
 
 const ModernContact = () => {
   const [formState, setFormState] = useState({
@@ -12,19 +14,89 @@ const ModernContact = () => {
   });
   const [focusedField, setFocusedField] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  // Form validation
+  const validateForm = () => {
+    const newErrors = {}
+
+    if (!formState.fullName.trim()) newErrors.fullName = "Name is required"
+
+    if (!formState.email.trim()) {
+      newErrors.email = "Email is required"
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) {
+      newErrors.email = "Please enter a valid email address"
+    }
+
+    if (!formState.subject.trim()) newErrors.subject = "Subject is required"
+    if (!formState.query.trim()) newErrors.query = "Message is required"
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   const handleChange = (e) => {
     setFormState({
       ...formState,
       [e.target.name]: e.target.value
     });
+
+    // Clear error for this field when user types
+    if (errors[e.target.name]) {
+      setErrors({
+        ...errors,
+        [e.target.name]: undefined
+      });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically handle form submission
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
+
+    // Validate form
+    if (!validateForm()) return;
+
+    setIsSubmitting(true);
+
+    try {
+      // Map form fields to match the API expectations
+      const formData = {
+        name: formState.fullName,
+        email: formState.email,
+        subject: formState.subject,
+        message: formState.query
+      };
+
+      // Use the contact service to submit the form
+      const response = await ContactService.submitContactForm(formData);
+
+      if (response.success) {
+        setSubmitted(true);
+        toast.success("Message sent successfully! We'll get back to you soon.");
+
+        // Reset form
+        setFormState({
+          fullName: "",
+          email: "",
+          subject: "",
+          query: ""
+        });
+
+        // Hide success message after 3 seconds
+        setTimeout(() => setSubmitted(false), 3000);
+      } else {
+        toast.error(response.message || "Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      console.error("Contact form submission error:", error);
+      toast.error(
+        error.response?.data?.message ||
+        "Failed to send message. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const containerVariants = {
@@ -114,7 +186,7 @@ const ModernContact = () => {
           PUT YOUR QUERY
         </h2>
         <p className="text-gray-400 max-w-md mx-auto">
-          Have a question or project in mind? <br/> We'd love to hear from you!
+          Have a question or project in mind? <br /> We'd love to hear from you!
         </p>
       </motion.div>
 
@@ -137,8 +209,9 @@ const ModernContact = () => {
             onFocus={() => setFocusedField("fullName")}
             onBlur={() => setFocusedField(null)}
             required
-            className="w-full bg-black/60 border-b-2 border-gray-600 focus:border-cyan-400 px-4 py-3 text-white rounded-lg outline-none transition-all duration-300 focus:shadow-lg focus:shadow-cyan-900/20"
+            className={`w-full bg-black/60 border-b-2 ${errors.fullName ? 'border-red-500' : 'border-gray-600 focus:border-cyan-400'} px-4 py-3 text-white rounded-lg outline-none transition-all duration-300 focus:shadow-lg focus:shadow-cyan-900/20`}
           />
+          {errors.fullName && <p className="text-red-400 text-xs mt-1">{errors.fullName}</p>}
         </motion.div>
 
         <motion.div
@@ -155,8 +228,9 @@ const ModernContact = () => {
             onFocus={() => setFocusedField("email")}
             onBlur={() => setFocusedField(null)}
             required
-            className="w-full bg-black/60 border-b-2 border-gray-600 focus:border-cyan-400 px-4 py-3 text-white rounded-lg outline-none transition-all duration-300 focus:shadow-lg focus:shadow-cyan-900/20"
+            className={`w-full bg-black/60 border-b-2 ${errors.email ? 'border-red-500' : 'border-gray-600 focus:border-cyan-400'} px-4 py-3 text-white rounded-lg outline-none transition-all duration-300 focus:shadow-lg focus:shadow-cyan-900/20`}
           />
+          {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
         </motion.div>
 
         <motion.div
@@ -173,8 +247,9 @@ const ModernContact = () => {
             onFocus={() => setFocusedField("subject")}
             onBlur={() => setFocusedField(null)}
             required
-            className="w-full bg-black/60 border-b-2 border-gray-600 focus:border-cyan-400 px-4 py-3 text-white rounded-lg outline-none transition-all duration-300 focus:shadow-lg focus:shadow-cyan-900/20"
+            className={`w-full bg-black/60 border-b-2 ${errors.subject ? 'border-red-500' : 'border-gray-600 focus:border-cyan-400'} px-4 py-3 text-white rounded-lg outline-none transition-all duration-300 focus:shadow-lg focus:shadow-cyan-900/20`}
           />
+          {errors.subject && <p className="text-red-400 text-xs mt-1">{errors.subject}</p>}
         </motion.div>
 
         <motion.div
@@ -194,8 +269,9 @@ const ModernContact = () => {
             onFocus={() => setFocusedField("query")}
             onBlur={() => setFocusedField(null)}
             rows="4"
-            className="w-full bg-black/60 border-b-2 border-gray-600 focus:border-cyan-400 px-4 py-3 text-white rounded-lg outline-none transition-all duration-300 focus:shadow-lg focus:shadow-cyan-900/20 resize-none no-scrollbar"
+            className={`w-full bg-black/60 border-b-2 ${errors.query ? 'border-red-500' : 'border-gray-600 focus:border-cyan-400'} px-4 py-3 text-white rounded-lg outline-none transition-all duration-300 focus:shadow-lg focus:shadow-cyan-900/20 resize-none no-scrollbar`}
           ></textarea>
+          {errors.query && <p className="text-red-400 text-xs mt-1">{errors.query}</p>}
         </motion.div>
 
         <div className="pt-4 relative">
@@ -204,12 +280,22 @@ const ModernContact = () => {
             whileHover="hover"
             whileTap="tap"
             type="submit"
+            disabled={isSubmitting}
             className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-black to-brandPrimary text-white font-medium rounded-full overflow-hidden relative group"
           >
             <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-600 blur-xl"></span>
             <span className="relative flex items-center justify-center gap-2">
-              <span>SUBMIT</span>
-              <Send className="w-4 h-4" />
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>SENDING...</span>
+                </>
+              ) : (
+                <>
+                  <span>SUBMIT</span>
+                  <Send className="w-4 h-4" />
+                </>
+              )}
             </span>
           </motion.button>
 

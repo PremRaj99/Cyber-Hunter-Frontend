@@ -215,7 +215,7 @@ const Testimonial = () => {
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.4, delay: 0.3 }}
                       >
-                        "{testimonials[activeTestimonial].quote}"
+                        &quot;{testimonials[activeTestimonial].quote}&quot;
                       </motion.p>
 
                       {/* Desktop name and role */}

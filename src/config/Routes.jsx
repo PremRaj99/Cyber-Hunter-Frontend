@@ -12,7 +12,7 @@ import PostProject from "../../src/pages/PostProject";
 import ProjectDetail from "../../src/pages/Project";
 import Team from "../pages/Team";
 // import Service from "../../src/pages/Service";
-import Contact from "../components/home/Contact";
+import Contact from "../pages/Contact";
 import Leaderboard from "../../src/pages/Leaderboard";
 import Event from "../../src/pages/Event";
 import EventDetail from "../../src/pages/EventDetail";
@@ -43,6 +43,7 @@ import TeamBrowse from "../pages/TeamBrowse";
 import TeamSettings from "../pages/TeamSetting";
 import GitHubAuthSuccess from '../pages/GitHubAuthSuccess';
 import About from "../pages/About";
+import VerifyTwoFactor from "../pages/VerifyTwoFactor";
 
 export const router = createBrowserRouter([
   {
@@ -105,8 +106,12 @@ export const router = createBrowserRouter([
         element: <PublicRoute><ForgotPassword /></PublicRoute>,
       },
       {
-        path: "verify-otp",
+        path: "verifyOtp",
         element: <PublicRoute><VerifyOTP /></PublicRoute>,
+      },
+      {
+        path: "verify",
+        element: <PublicRoute><VerifyTwoFactor /></PublicRoute>,
       },
       {
         path: "userdetails",

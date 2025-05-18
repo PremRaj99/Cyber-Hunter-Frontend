@@ -1,4 +1,5 @@
-import { useState } from "react"
+"use client"
+import { useState, useEffect } from "react"
 import {
   Mail,
   Phone,
@@ -12,6 +13,8 @@ import {
   Instagram,
   Facebook,
 } from "lucide-react"
+import { toast } from "react-toastify"
+import { ContactService } from "../services/ContactService"
 
 export default function ContactPage() {
   const [formState, setFormState] = useState({
@@ -22,35 +25,87 @@ export default function ContactPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [errors, setErrors] = useState({})
+
+  useEffect(() => {
+    document.title = "Cyber Hunter | Contact Us"
+  }, [])
+
+  // Form validation
+  const validateForm = () => {
+    const newErrors = {}
+
+    if (!formState.name.trim()) newErrors.name = "Name is required"
+
+    if (!formState.email.trim()) {
+      newErrors.email = "Email is required"
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) {
+      newErrors.email = "Please enter a valid email address"
+    }
+
+    if (!formState.subject.trim()) newErrors.subject = "Subject is required"
+    if (!formState.message.trim()) newErrors.message = "Message is required"
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   const handleChange = (e) => {
+    const { name, value } = e.target
     setFormState({
       ...formState,
-      [e.target.name]: e.target.value,
+      [name]: value,
     })
+
+    // Clear error for this field when user types
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: undefined
+      })
+    }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    // Validate form
+    if (!validateForm()) return
+
     setIsSubmitting(true)
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // Use the contact service to submit the form
+      const response = await ContactService.submitContactForm(formState);
+
+      if (response.success) {
+        setIsSuccess(true)
+        toast.success("Message sent successfully! We'll get back to you soon.")
+
+        // Reset form
+        setFormState({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        })
+
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          setIsSuccess(false)
+        }, 5000)
+      } else {
+        toast.error(response.message || "Failed to send message. Please try again.")
+      }
+    } catch (error) {
+      console.error("Contact form submission error:", error)
+      toast.error(
+        error.response?.data?.message ||
+        "Failed to send message. Please try again."
+      )
+    } finally {
       setIsSubmitting(false)
-      setIsSuccess(true)
-
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        setIsSuccess(false)
-      }, 5000)
-
-      setFormState({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-      })
-    }, 1500)
+    }
   }
 
   return (
@@ -158,14 +213,14 @@ export default function ContactPage() {
                   <h3 className="text-lg font-medium mb-4 text-white">Connect With Us</h3>
                   <div className="flex gap-4">
                     {[
-                      { icon: <Linkedin size={18} />, label: "LinkedIn" },
-                      { icon: <Twitter size={18} />, label: "Twitter" },
-                      { icon: <Instagram size={18} />, label: "Instagram" },
-                      { icon: <Facebook size={18} />, label: "Facebook" }
+                      { icon: <Linkedin size={18} />, label: "LinkedIn", url: "#" },
+                      { icon: <Twitter size={18} />, label: "Twitter", url: "#" },
+                      { icon: <Instagram size={18} />, label: "Instagram", url: "#" },
+                      { icon: <Facebook size={18} />, label: "Facebook", url: "#" }
                     ].map((social, index) => (
                       <a
                         key={index}
-                        href="#"
+                        href={social.url}
                         className="w-10 h-10 rounded-full flex items-center justify-center text-cyan-400 bg-slate-800/50 hover:bg-cyan-500/20 hover:text-cyan-300 transition-all duration-300"
                         aria-label={social.label}
                       >
@@ -214,9 +269,15 @@ export default function ContactPage() {
                           value={formState.name}
                           onChange={handleChange}
                           required
-                          className="w-full px-4 py-3 rounded-xl bg-slate-800/50 border border-slate-700/50 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 text-white placeholder:text-slate-500 outline-none transition-all duration-300"
+                          className={`w-full px-4 py-3 rounded-xl bg-slate-800/50 border focus:ring-2 text-white placeholder:text-slate-500 outline-none transition-all duration-300 ${errors.name
+                            ? "border-red-500/50 focus:border-red-500/50 focus:ring-red-500/20"
+                            : "border-slate-700/50 focus:border-cyan-500/50 focus:ring-cyan-500/20"
+                            }`}
                           placeholder="Enter your name"
                         />
+                        {errors.name && (
+                          <p className="text-red-400 text-sm mt-1">{errors.name}</p>
+                        )}
                       </div>
 
                       {/* Email Field */}
@@ -229,9 +290,15 @@ export default function ContactPage() {
                           value={formState.email}
                           onChange={handleChange}
                           required
-                          className="w-full px-4 py-3 rounded-xl bg-slate-800/50 border border-slate-700/50 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 text-white placeholder:text-slate-500 outline-none transition-all duration-300"
+                          className={`w-full px-4 py-3 rounded-xl bg-slate-800/50 border focus:ring-2 text-white placeholder:text-slate-500 outline-none transition-all duration-300 ${errors.email
+                            ? "border-red-500/50 focus:border-red-500/50 focus:ring-red-500/20"
+                            : "border-slate-700/50 focus:border-cyan-500/50 focus:ring-cyan-500/20"
+                            }`}
                           placeholder="youremail@example.com"
                         />
+                        {errors.email && (
+                          <p className="text-red-400 text-sm mt-1">{errors.email}</p>
+                        )}
                       </div>
                     </div>
 
@@ -245,9 +312,15 @@ export default function ContactPage() {
                         value={formState.subject}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 rounded-xl bg-slate-800/50 border border-slate-700/50 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 text-white placeholder:text-slate-500 outline-none transition-all duration-300"
+                        className={`w-full px-4 py-3 rounded-xl bg-slate-800/50 border focus:ring-2 text-white placeholder:text-slate-500 outline-none transition-all duration-300 ${errors.subject
+                          ? "border-red-500/50 focus:border-red-500/50 focus:ring-red-500/20"
+                          : "border-slate-700/50 focus:border-cyan-500/50 focus:ring-cyan-500/20"
+                          }`}
                         placeholder="How can we help you?"
                       />
+                      {errors.subject && (
+                        <p className="text-red-400 text-sm mt-1">{errors.subject}</p>
+                      )}
                     </div>
 
                     {/* Message Field */}
@@ -260,9 +333,15 @@ export default function ContactPage() {
                         onChange={handleChange}
                         required
                         rows={5}
-                        className="w-full px-4 py-3 rounded-xl bg-slate-800/50 border border-slate-700/50 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 text-white placeholder:text-slate-500 outline-none transition-all duration-300 resize-none"
+                        className={`w-full px-4 py-3 rounded-xl bg-slate-800/50 border focus:ring-2 text-white placeholder:text-slate-500 outline-none transition-all duration-300 resize-none ${errors.message
+                          ? "border-red-500/50 focus:border-red-500/50 focus:ring-red-500/20"
+                          : "border-slate-700/50 focus:border-cyan-500/50 focus:ring-cyan-500/20"
+                          }`}
                         placeholder="Tell us about your project or inquiry..."
                       />
+                      {errors.message && (
+                        <p className="text-red-400 text-sm mt-1">{errors.message}</p>
+                      )}
                     </div>
 
                     {/* Submit Button */}

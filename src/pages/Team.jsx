@@ -125,6 +125,13 @@ export default function Team() {
     fetchTeamData();
   }, [user]);
 
+  useEffect(() => {
+    document.title = `Team - ${team?.TeamName || "Loading..."}`;
+    return () => {
+      document.title = "Team";
+    };  
+  }, [team]);
+
   // get team members details
   useEffect(() => {
     const fetchTeamMembersDetails = async () => {
@@ -230,16 +237,16 @@ export default function Team() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="text-white p-4 md:p-6 bg-gradient-to-br"
+      className="text-white p-4 md:p-2 bg-gradient-to-br"
     >
       {/* Mobile Achievements */}
       <div className="lg:hidden mb-6">
         <TeamAchievements isMobile={true} />
       </div>
 
-      <div className="flex flex-col-reverse lg:grid lg:grid-cols-12 gap-6">
+      <div className="flex flex-col-reverse lg:grid lg:grid-cols-12 gap-2">
         {/* Left Column */}
-        <div className="lg:col-span-4 p-2 space-y-6">
+        <div className="lg:col-span-4 p-2 space-y-4">
           {/* Project Cards */}
           <TeamProjects
             projects={teamProjects}
@@ -253,14 +260,14 @@ export default function Team() {
         </div>
 
         {/* Right Column */}
-        <div className="lg:col-span-8 space-y-6">
+        <div className="lg:col-span-8 space-y-4">
           {/* Achievements for desktop */}
           <div className="hidden lg:block">
             <TeamAchievements />
           </div>
 
           {/* Profile and Tech Stack Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Team profile section */}
             <motion.div
               initial={{ x: -50, opacity: 0 }}
