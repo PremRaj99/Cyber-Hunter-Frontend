@@ -1,7 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { useRef, useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
-import { motion, useInView, AnimatePresence, useAnimation } from "framer-motion";
+import {
+  motion,
+  useInView,
+  AnimatePresence,
+  useAnimation,
+} from "framer-motion";
 import logo2 from "../../assets/logo2.png";
 import googleIcon from "../../assets/google_icon.png";
 import githubIcon from "../../assets/github_icon.png";
@@ -29,7 +34,8 @@ const Footer = () => {
 
   const handleMouseMove = (e) => {
     const { clientX, clientY } = e;
-    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const { left, top, width, height } =
+      e.currentTarget.getBoundingClientRect();
     const x = (clientX - left) / width;
     const y = (clientY - top) / height;
     setHoverPoint({ x, y });
@@ -54,7 +60,10 @@ const Footer = () => {
       setTimeout(() => setIsSubmitted(false), 5000);
     } catch (error) {
       console.error("Newsletter subscription error:", error);
-      toast.error(error.response?.data?.message || "Failed to subscribe. Please try again later.");
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to subscribe. Please try again later."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -113,17 +122,32 @@ const Footer = () => {
       <div
         className="absolute inset-0 opacity-30 pointer-events-none"
         style={{
-          background: `radial-gradient(circle at ${hoverPoint.x * 100}% ${hoverPoint.y * 100}%, rgba(8,145,178,0.2) 0%, rgba(0,0,0,0) 70%)`,
-          transition: "background 0.3s ease-out"
+          background: `radial-gradient(circle at ${hoverPoint.x * 100}% ${
+            hoverPoint.y * 100
+          }%, rgba(8,145,178,0.2) 0%, rgba(0,0,0,0) 70%)`,
+          transition: "background 0.3s ease-out",
         }}
       />
 
       {/* Animated Mesh Grid */}
       <div className="absolute inset-0 overflow-hidden">
-        <svg className="w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          className="w-full h-full opacity-10"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <defs>
-            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(6,182,212,0.3)" strokeWidth="0.5" />
+            <pattern
+              id="grid"
+              width="40"
+              height="40"
+              patternUnits="userSpaceOnUse"
+            >
+              <path
+                d="M 40 0 L 0 0 0 40"
+                fill="none"
+                stroke="rgba(6,182,212,0.3)"
+                strokeWidth="0.5"
+              />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />
@@ -155,12 +179,18 @@ const Footer = () => {
               <motion.div
                 className="absolute -inset-1 rounded-full opacity-70 blur-lg group-hover:opacity-100 transition duration-700"
                 style={{
-                  background: `conic-gradient(from ${Date.now() / 50}deg, #0891b2, #22d3ee, #0891b2)`
+                  background: `conic-gradient(from ${
+                    Date.now() / 50
+                  }deg, #0891b2, #22d3ee, #0891b2)`,
                 }}
                 animate={{
-                  filter: ["blur(10px)", "blur(15px)", "blur(10px)"]
+                  filter: ["blur(10px)", "blur(15px)", "blur(10px)"],
                 }}
-                transition={{ duration: 3, repeat: Infinity, repeatType: "mirror" }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  repeatType: "mirror",
+                }}
               />
               <motion.div
                 className="relative p-2 z-10"
@@ -193,13 +223,19 @@ const Footer = () => {
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-cyan-600">
                   CYBER HUNTER
                 </span>
+                <span className="text-[#00D8FF] font-medium">
+                  {"  "} X {"  "}{" "}
+                </span>{" "}
+                <span className="text-[#EC268F]">Qunatum</span>{" "}
+                <span className="text-[#fff]">University</span>
               </motion.h2>
               <motion.p
                 className="text-gray-400 max-w-xs"
                 initial={{ opacity: 0.8 }}
                 whileHover={{ opacity: 1 }}
               >
-                Join the elite squad of digital defenders. Where hacking meets innovation.
+                Join the elite squad of digital defenders. Where hacking meets
+                innovation.
               </motion.p>
             </motion.div>
 
@@ -224,9 +260,7 @@ const Footer = () => {
                     className="absolute -inset-2 rounded-lg blur-md opacity-0 group-hover:opacity-70 transition-opacity duration-300"
                     style={{ backgroundColor: social.color }}
                   />
-                  <motion.div
-                    className="relative flex items-center justify-center w-12 h-12 bg-gray-900 border border-gray-800 rounded-lg overflow-hidden z-10"
-                  >
+                  <motion.div className="relative flex items-center justify-center w-12 h-12 bg-gray-900 border border-gray-800 rounded-lg overflow-hidden z-10">
                     <motion.div
                       className="absolute inset-0 opacity-0 group-hover:opacity-10 bg-gradient-to-b from-white via-transparent to-transparent"
                       initial={{ y: "100%" }}
@@ -267,8 +301,15 @@ const Footer = () => {
               </motion.h3>
               <motion.div
                 className="absolute -bottom-2 left-0 h-px w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent"
-                animate={{ opacity: [0.4, 1, 0.4], width: ["30%", "100%", "30%"] }}
-                transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
+                animate={{
+                  opacity: [0.4, 1, 0.4],
+                  width: ["30%", "100%", "30%"],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                }}
               />
             </div>
 
@@ -282,9 +323,7 @@ const Footer = () => {
                   className="relative"
                 >
                   <Link to={link.to} className="group block">
-                    <motion.div
-                      className="relative overflow-hidden  rounded-lg p-3 flex items-center  transition-all duration-300"
-                    >
+                    <motion.div className="relative overflow-hidden  rounded-lg p-3 flex items-center  transition-all duration-300">
                       <span className="text-lg mr-3 text-cyan-500 transition-colors group-hover:text-cyan-400">
                         {link.icon}
                       </span>
@@ -306,10 +345,7 @@ const Footer = () => {
           </motion.div>
 
           {/* Newsletter Section - Futuristic */}
-          <motion.div
-            variants={itemVariants}
-            className="lg:col-span-5"
-          >
+          <motion.div variants={itemVariants} className="lg:col-span-5">
             <motion.div
               className="relative overflow-hidden rounded-3xl border border-gray-800 bg-gray-900/70 backdrop-blur-sm p-6 lg:p-8"
               whileHover={{ boxShadow: "0 0 30px rgba(8,145,178,0.15)" }}
@@ -320,7 +356,11 @@ const Footer = () => {
                 animate={{ rotate: 360 }}
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
               >
-                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  viewBox="0 0 100 100"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path d="M0 0L100 0L100 100Z" fill="rgba(8,145,178,0.3)" />
                 </svg>
               </motion.div>
@@ -340,7 +380,11 @@ const Footer = () => {
                     className="relative mr-4 bg-cyan-500/10 p-3 rounded-full overflow-hidden"
                     whileHover={{ scale: 1.1 }}
                     animate={{
-                      boxShadow: ["0 0 0px rgba(6,182,212,0.5)", "0 0 20px rgba(6,182,212,0.5)", "0 0 0px rgba(6,182,212,0.5)"],
+                      boxShadow: [
+                        "0 0 0px rgba(6,182,212,0.5)",
+                        "0 0 20px rgba(6,182,212,0.5)",
+                        "0 0 0px rgba(6,182,212,0.5)",
+                      ],
                     }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
@@ -353,26 +397,44 @@ const Footer = () => {
 
                     <motion.img
                       animate={{ rotate: [0, 5, 0, -5, 0] }}
-                      transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 3,
+                        ease: "easeInOut",
+                      }}
                       src={emailLogo}
                       alt="Email"
                       className="h-6 w-auto relative z-10"
                     />
                   </motion.div>
                   <div>
-                    <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-cyan-300">Stay Connected</h3>
-                    <p className="text-gray-400 text-sm">Get exclusive access to the latest updates</p>
+                    <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-cyan-300">
+                      Stay Connected
+                    </h3>
+                    <p className="text-gray-400 text-sm">
+                      Get exclusive access to the latest updates
+                    </p>
                   </div>
                 </motion.div>
 
-                <form onSubmit={handleSubmit} className="space-y-6 w-full backdrop-blur-sm bg-black/40 p-8 rounded-3xl border border-cyan-400/20 shadow-xl shadow-cyan-900/20">
+                <form
+                  onSubmit={handleSubmit}
+                  className="space-y-6 w-full backdrop-blur-sm bg-black/40 p-8 rounded-3xl border border-cyan-400/20 shadow-xl shadow-cyan-900/20"
+                >
                   <div className="relative group">
                     <motion.div
                       className="absolute -inset-0.5 bg-gradient-to-r from-cyan-600 to-cyan-400 rounded-full opacity-30 group-hover:opacity-100 blur transition duration-300"
                       animate={{
-                        background: ["linear-gradient(to right, #0891b2, #22d3ee)", "linear-gradient(to right, #22d3ee, #0891b2)"]
+                        background: [
+                          "linear-gradient(to right, #0891b2, #22d3ee)",
+                          "linear-gradient(to right, #22d3ee, #0891b2)",
+                        ],
                       }}
-                      transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                      }}
                     />
                     <div className="relative flex">
                       <input
@@ -398,7 +460,11 @@ const Footer = () => {
                               <div className="flex items-center gap-2">
                                 <motion.div
                                   animate={{ rotate: 360 }}
-                                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                  transition={{
+                                    duration: 1,
+                                    repeat: Infinity,
+                                    ease: "linear",
+                                  }}
                                   className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
                                 />
                                 <span>Subscribing...</span>
@@ -440,30 +506,34 @@ const Footer = () => {
                     initial={{ opacity: 0.7 }}
                     whileHover={{ opacity: 1 }}
                   >
-                    Join 5,000+ cyber security enthusiasts who receive our weekly newsletter with insider tips, tools, and exclusive content.
+                    Join 5,000+ cyber security enthusiasts who receive our
+                    weekly newsletter with insider tips, tools, and exclusive
+                    content.
                   </motion.p>
 
                   <motion.div
                     className="mt-6 flex flex-wrap gap-2"
                     variants={itemVariants}
                   >
-                    {["Tutorials", "Challenges", "News", "Community"].map((tag, i) => (
-                      <motion.span
-                        key={tag}
-                        className="px-3 py-1 bg-gray-800 text-xs text-gray-300 rounded-full border border-gray-700"
-                        whileHover={{
-                          scale: 1.05,
-                          backgroundColor: "#164e63",
-                          color: "#ffffff",
-                          borderColor: "#0e7490"
-                        }}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.1 }}
-                      >
-                        {tag}
-                      </motion.span>
-                    ))}
+                    {["Tutorials", "Challenges", "News", "Community"].map(
+                      (tag, i) => (
+                        <motion.span
+                          key={tag}
+                          className="px-3 py-1 bg-gray-800 text-xs text-gray-300 rounded-full border border-gray-700"
+                          whileHover={{
+                            scale: 1.05,
+                            backgroundColor: "#164e63",
+                            color: "#ffffff",
+                            borderColor: "#0e7490",
+                          }}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: i * 0.1 }}
+                        >
+                          {tag}
+                        </motion.span>
+                      )
+                    )}
                   </motion.div>
                 </form>
               </div>
@@ -517,22 +587,24 @@ const Footer = () => {
           </motion.p>
 
           <div className="flex space-x-8">
-            {["Terms & Conditions", "Privacy Policy", "Support"].map((item, index) => (
-              <motion.a
-                key={item}
-                whileHover={{ scale: 1.05, color: "#22d3ee" }}
-                href={item === "Privacy Policy" ? "/policy" : "#"}
-                className="relative text-gray-400 hover:text-cyan-400 transition-colors duration-300 text-sm"
-              >
-                {item}
-                <motion.span
-                  className="absolute -bottom-1 left-0 h-px w-full bg-cyan-500"
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.2 }}
-                />
-              </motion.a>
-            ))}
+            {["Terms & Conditions", "Privacy Policy", "Support"].map(
+              (item, index) => (
+                <motion.a
+                  key={item}
+                  whileHover={{ scale: 1.05, color: "#22d3ee" }}
+                  href={item === "Privacy Policy" ? "/policy" : "#"}
+                  className="relative text-gray-400 hover:text-cyan-400 transition-colors duration-300 text-sm"
+                >
+                  {item}
+                  <motion.span
+                    className="absolute -bottom-1 left-0 h-px w-full bg-cyan-500"
+                    initial={{ scaleX: 0 }}
+                    whileHover={{ scaleX: 1 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                </motion.a>
+              )
+            )}
           </div>
         </div>
       </motion.div>
@@ -546,13 +618,21 @@ const Footer = () => {
         }}
         transition={{ duration: 5, repeat: Infinity, repeatType: "mirror" }}
       >
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M0 100L100 0V100H0Z"
-            fill="url(#cornerGradient)"
-          />
+        <svg
+          viewBox="0 0 100 100"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M0 100L100 0V100H0Z" fill="url(#cornerGradient)" />
           <defs>
-            <linearGradient id="cornerGradient" x1="0" y1="100" x2="100" y2="0" gradientUnits="userSpaceOnUse">
+            <linearGradient
+              id="cornerGradient"
+              x1="0"
+              y1="100"
+              x2="100"
+              y2="0"
+              gradientUnits="userSpaceOnUse"
+            >
               <stop stopColor="#0891b2" stopOpacity="0.3" />
               <stop offset="1" stopColor="#0e7490" stopOpacity="0" />
             </linearGradient>
@@ -566,15 +646,28 @@ const Footer = () => {
         animate={{
           opacity: [0.3, 0.5, 0.3],
         }}
-        transition={{ duration: 5, repeat: Infinity, repeatType: "mirror", delay: 2.5 }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          repeatType: "mirror",
+          delay: 2.5,
+        }}
       >
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M0 0H100L0 100V0Z"
-            fill="url(#cornerGradient2)"
-          />
+        <svg
+          viewBox="0 0 100 100"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M0 0H100L0 100V0Z" fill="url(#cornerGradient2)" />
           <defs>
-            <linearGradient id="cornerGradient2" x1="100" y1="0" x2="0" y2="100" gradientUnits="userSpaceOnUse">
+            <linearGradient
+              id="cornerGradient2"
+              x1="100"
+              y1="0"
+              x2="0"
+              y2="100"
+              gradientUnits="userSpaceOnUse"
+            >
               <stop stopColor="#0891b2" stopOpacity="0.3" />
               <stop offset="1" stopColor="#0e7490" stopOpacity="0" />
             </linearGradient>
