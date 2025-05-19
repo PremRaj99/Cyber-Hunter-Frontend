@@ -35,10 +35,12 @@ export default function TeamBrowse() {
 
       try {
         setIsLoading(true);
-        const response = await axios.get(`/api/v1/team/all?page=${page}&limit=10`);
+        const response = await axios.get(
+          `/api/v1/team/all?page=${page}&limit=10`
+        );
 
         if (response.data && response.data.success) {
-          const fetchedTeams = response.data.data.map(team => ({
+          const fetchedTeams = response.data.data.map((team) => ({
             id: team._id,
             name: team.TeamName,
             description: team.TeamDescription || "No description available",
@@ -47,10 +49,12 @@ export default function TeamBrowse() {
             memberCount: team.TeamMembers?.length || 0,
             techStack: team.techStack || [],
             interests: team.interests || [],
-            raw: team // Store the raw team data
+            raw: team, // Store the raw team data
           }));
 
-          setTeams(prev => page === 1 ? fetchedTeams : [...prev, ...fetchedTeams]);
+          setTeams((prev) =>
+            page === 1 ? fetchedTeams : [...prev, ...fetchedTeams]
+          );
           setHasMore(fetchedTeams.length === 10); // If we got less than requested, no more pages
         } else {
           if (page === 1) setTeams([]);
@@ -73,13 +77,16 @@ export default function TeamBrowse() {
 
   // Filter teams based on search query and filters
   const filteredTeams = useMemo(() => {
-    return teams.filter(team => {
+    return teams.filter((team) => {
       // Search by name, description, and tech stack
       const matchesSearch =
         !searchQuery ||
         team.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (team.description && team.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        team.techStack.some(tech => tech.toLowerCase().includes(searchQuery.toLowerCase()));
+        (team.description &&
+          team.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        team.techStack.some((tech) =>
+          tech.toLowerCase().includes(searchQuery.toLowerCase())
+        );
 
       // Filter by member slots
       const hasSlots = !filters.hasMembersSlots || team.memberCount < 5;
@@ -87,8 +94,8 @@ export default function TeamBrowse() {
       // Filter by selected tech stack (if any)
       const matchesTechStack =
         filters.techStack.length === 0 ||
-        filters.techStack.some(tech =>
-          team.techStack.some(teamTech =>
+        filters.techStack.some((tech) =>
+          team.techStack.some((teamTech) =>
             teamTech.toLowerCase().includes(tech.toLowerCase())
           )
         );
@@ -104,7 +111,7 @@ export default function TeamBrowse() {
 
   const handleLoadMore = () => {
     if (!isLoading && hasMore) {
-      setPage(prev => prev + 1);
+      setPage((prev) => prev + 1);
     }
   };
 
@@ -114,9 +121,9 @@ export default function TeamBrowse() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05
-      }
-    }
+        staggerChildren: 0.05,
+      },
+    },
   };
 
   const itemVariants = {
@@ -124,8 +131,8 @@ export default function TeamBrowse() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.4, ease: "easeOut" }
-    }
+      transition: { duration: 0.4, ease: "easeOut" },
+    },
   };
 
   // Define handleCreateTeam function
@@ -135,11 +142,18 @@ export default function TeamBrowse() {
 
     try {
       // Validation check for team name
-      if (!formData.get("TeamName")) {
+      if (!formData.TeamName) {
         toast.error("Team name is required");
         setIsLoading(false);
         return;
       }
+
+      // console.log("Form Data:", formData.get("TeamName"));
+      // console.log("Team Data:", formData);
+
+      // return console.log("Creating team with data:", {
+      //   ...formData,
+      // });
 
       // Step 1: Create the team first
       const response = await axios.post("/api/v1/team", formData, {
@@ -158,15 +172,19 @@ export default function TeamBrowse() {
           const invitePromises = teamMembers.map(async (memberEmail) => {
             try {
               // First get the user ID from email
-              const userSearchResponse = await axios.get(`/api/v1/user/search?q=${encodeURIComponent(memberEmail)}`);
+              const userSearchResponse = await axios.get(
+                `/api/v1/user/search?q=${encodeURIComponent(memberEmail)}`
+              );
               const users = userSearchResponse.data?.data || [];
-              const userToInvite = users.find(u => u.email === memberEmail);
+              const userToInvite = users.find((u) => u.email === memberEmail);
 
               if (userToInvite) {
                 // Send invite using backend endpoint
                 await axios.post(`/api/v1/team/${newTeamId}/invite`, {
                   userId: userToInvite._id,
-                  message: `You've been invited to join ${formData.get("TeamName")}!`
+                  message: `You've been invited to join ${formData.get(
+                    "TeamName"
+                  )}!`,
                 });
               } else {
                 console.warn(`User with email ${memberEmail} not found`);
@@ -240,11 +258,14 @@ export default function TeamBrowse() {
           className="mb-8 flex flex-col md:flex-row gap-4"
         >
           <div className="flex-grow relative">
-            <Search size={18} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <Search
+              size={18}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+            />
             <input
               type="text"
               value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search teams by name, description, or tech stack..."
               className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
             />
@@ -256,11 +277,18 @@ export default function TeamBrowse() {
                 <input
                   type="checkbox"
                   checked={filters.hasMembersSlots}
-                  onChange={() => setFilters({ ...filters, hasMembersSlots: !filters.hasMembersSlots })}
+                  onChange={() =>
+                    setFilters({
+                      ...filters,
+                      hasMembersSlots: !filters.hasMembersSlots,
+                    })
+                  }
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-cyan-400 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-600"></div>
-                <span className="ms-3 text-sm font-medium text-gray-300">Has spots</span>
+                <span className="ms-3 text-sm font-medium text-gray-300">
+                  Has spots
+                </span>
               </label>
             </div>
           </div>
@@ -278,7 +306,7 @@ export default function TeamBrowse() {
             animate="visible"
             className="space-y-6"
           >
-            {filteredTeams.map(team => (
+            {filteredTeams.map((team) => (
               <motion.div
                 key={team.id}
                 variants={itemVariants}
@@ -292,7 +320,7 @@ export default function TeamBrowse() {
                         src={team.logo}
                         alt={team.name}
                         className="w-full h-full object-cover"
-                        onError={e => {
+                        onError={(e) => {
                           e.target.onerror = null;
                           e.target.src = leadUserDemo;
                         }}
@@ -302,7 +330,9 @@ export default function TeamBrowse() {
 
                   <div className="flex-grow">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                      <h2 className="text-xl font-bold text-white">{team.name}</h2>
+                      <h2 className="text-xl font-bold text-white">
+                        {team.name}
+                      </h2>
                       <div className="flex items-center gap-2 mt-2 md:mt-0">
                         <div className="px-3 py-1 bg-gray-700 rounded-full text-sm text-cyan-400 flex items-center gap-1">
                           <Zap size={14} />
@@ -338,10 +368,11 @@ export default function TeamBrowse() {
                       <button
                         onClick={() => handleJoinClick(team)}
                         disabled={team.memberCount >= 5}
-                        className={`px-3 py-2 rounded-lg font-medium ${team.memberCount >= 5
-                          ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                          : "bg-cyan-500 text-black border border-cyan-400 hover:bg-black hover:text-cyan-500"
-                          }`}
+                        className={`px-3 py-2 rounded-lg font-medium ${
+                          team.memberCount >= 5
+                            ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                            : "bg-cyan-500 text-black border border-cyan-400 hover:bg-black hover:text-cyan-500"
+                        }`}
                       >
                         {team.memberCount >= 5 ? "Team Full" : "Join Team"}
                       </button>

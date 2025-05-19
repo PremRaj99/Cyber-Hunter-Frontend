@@ -88,26 +88,29 @@ export default function CreateTeamPopUp({
     e.preventDefault();
 
     // Convert team members to email format for the backend
-    const formattedMembers = teamMembers.map(member => member.email);
+    const formattedMembers = teamMembers.map(member => member._id);
 
     // Create form data
-    const formData = new FormData();
-    formData.append("TeamName", newTeamName);
-    formData.append("TeamDescription", teamDescription);
 
-    if (logoFile) {
-      formData.append("TeamLogo", logoFile);
-    }
+    const formData = {
+      TeamName: newTeamName,
+      TeamDescription: teamDescription,
+      TeamMembers: formattedMembers,
+      TeamLogo: logoFile,
+    };
+    // formData.append("TeamName", newTeamName);
+    // formData.append("TeamDescription", teamDescription);
 
-    // Add tech stack
-    techStack.forEach(tech => {
-      formData.append("techStack", tech);
-    });
 
-    // Add interests
-    interests.forEach(interest => {
-      formData.append("interests", interest);
-    });
+    // // Add tech stack
+    // techStack.forEach(tech => {
+    //   formData.append("techStack", tech);
+    // });
+
+    // // Add interests
+    // interests.forEach(interest => {
+    //   formData.append("interests", interest);
+    // });
     // Call the create team handler
     handleCreateTeam(e, formData, formattedMembers);
   };
