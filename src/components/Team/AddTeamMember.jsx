@@ -185,7 +185,7 @@ const AddTeamMember = ({ teamId, teamMembers: propTeamMembers, setTeamMembers: s
 
       // More detailed error messaging based on backend response
       if (error.response?.status === 400) {
-        toast.error("Team is full or member invalid");
+        toast.error(error.response.data?.message);
       } else if (error.response?.status === 409) {
         toast.error("User is already a member of this team");
       } else {
@@ -224,19 +224,10 @@ const AddTeamMember = ({ teamId, teamMembers: propTeamMembers, setTeamMembers: s
         return;
       }
 
-      // Get the userId, ensuring it's a string
-      const userIdToRemove = typeof memberToRemove.userId === 'object'
-        ? memberToRemove.userId._id
-        : memberToRemove.userId;
-
-      if (!userIdToRemove) {
-        console.error("Invalid user ID:", memberToRemove);
-        toast.error("Invalid member ID");
-        return;
-      }
-
+      console.log("member to remove", memberToRemove.id);
       // Make the API call with the confirmed userId
-      const response = await axios.delete(`/api/v1/team/${teamId}/members/${userIdToRemove}`);
+      const response = await axios.delete(`/api/v1/team/${teamId}/members/${memberToRemove.id}`);
+
 
       if (response.data && response.data.success) {
         toast.success("Team member removed successfully");
@@ -251,7 +242,7 @@ const AddTeamMember = ({ teamId, teamMembers: propTeamMembers, setTeamMembers: s
 
       if (error.response?.status === 400) {
         console.error("400 error details:", error.response.data);
-        toast.error("Cannot remove: Invalid user ID or permission issue");
+        toast.error(error.response.data?.message);
       } else if (error.response?.status === 403) {
         toast.error("You are not authorized to remove team members");
       } else {
@@ -259,6 +250,9 @@ const AddTeamMember = ({ teamId, teamMembers: propTeamMembers, setTeamMembers: s
       }
     }
   };
+
+  
+
 
   const closeDrawer = () => {
     setDrawerOpen(false);

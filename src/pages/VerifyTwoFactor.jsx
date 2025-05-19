@@ -213,7 +213,7 @@ const VerifyTwoFactor = () => {
               const userId = response.data.data._id;
               console.log("Attempting fallback with userId:", userId);
 
-              const fallbackResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/user/${userId}`, {
+              const fallbackResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/user/me`, {
                 headers: {
                   Authorization: `Bearer ${accessToken}`
                 }

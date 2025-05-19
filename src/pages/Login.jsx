@@ -227,7 +227,7 @@ const Login = () => {
     } catch (error) {
       console.log(error);
       const errorMessage =
-        error.response?.data?.message || "Something went wrong";
+        error.response?.data?.message;
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
