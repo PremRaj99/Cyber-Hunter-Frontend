@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { X, Search, UserPlus } from 'lucide-react';
 import axios from '../../utils/Axios';
+import { toast } from 'react-toastify';
 
 export default function CreateTeamPopUp({
   newTeamName,
@@ -54,12 +55,7 @@ export default function CreateTeamPopUp({
         }
       } catch (error) {
         console.error("Error searching users:", error);
-        // Fallback data for testing
-        setSearchResults([
-          { _id: '1', name: 'John Doe', email: 'john@example.com', profilePicture: 'https://i.pravatar.cc/150?img=1' },
-          { _id: '2', name: 'Jane Smith', email: 'jane@example.com', profilePicture: 'https://i.pravatar.cc/150?img=2' },
-          { _id: '3', name: 'Alex Johnson', email: 'alex@example.com', profilePicture: 'https://i.pravatar.cc/150?img=3' }
-        ].filter(user => !teamMembers.some(member => member._id === user._id)));
+        toast.error("Error searching users. Please try again.");
       } finally {
         setIsSearching(false);
       }
@@ -112,10 +108,6 @@ export default function CreateTeamPopUp({
     interests.forEach(interest => {
       formData.append("interests", interest);
     });
-
-    // Important: We're not adding members directly anymore
-    // Instead they'll get invitations after team creation
-
     // Call the create team handler
     handleCreateTeam(e, formData, formattedMembers);
   };
