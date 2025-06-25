@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { FaAngleDown } from "react-icons/fa6";
+import { FaSyncAlt } from "react-icons/fa";
 import axios from "axios";
 import LeaderboardList from "../components/leaderboard/LeaderboardList";
 import LeaderboardTop3 from "../components/leaderboard/LeaderboardTop3";
@@ -29,6 +30,7 @@ export default function Leaderboard() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isInitializing, setIsInitializing] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const initializationAttempted = useRef(false);
 
   // UseEffect to handle document title
@@ -61,7 +63,7 @@ export default function Leaderboard() {
       if (response.data && response.data.success) {
         console.log("Leaderboard initialized successfully");
         // Wait a moment for backend to process the data before refreshing
-        setTimeout(() => window.location.reload(), 1500);
+        setTimeout(() => fetchLeaderboardData(), 1500);
       }
     } catch (error) {
       console.error("Error initializing leaderboard:", error);
@@ -73,6 +75,187 @@ export default function Leaderboard() {
       }
     } finally {
       setIsInitializing(false);
+    }
+  };
+
+  // Modified refreshLeaderboard function to prevent getting stuck
+  const refreshLeaderboard = async () => {
+    try {
+      setIsRefreshing(true);
+      setError(null);
+
+      const token = localStorage.getItem("accessToken");
+      if (!token) return;
+
+      // First refresh the leaderboard to add any missing entries
+      const refreshResponse = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/v1/leaderboard/refresh`,
+        {}, // empty body
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      if (refreshResponse.data && refreshResponse.data.success) {
+        console.log("Leaderboard refreshed successfully:", refreshResponse.data.data);
+
+        // Now update the rankings to ensure all entries have proper ranking
+        try {
+          const rankResponse = await axios.post(
+            `${import.meta.env.VITE_API_URL}/api/v1/leaderboard/update-rankings`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            }
+          );
+
+          if (rankResponse.data && rankResponse.data.success) {
+            console.log("Rankings updated successfully:", rankResponse.data);
+          }
+        } catch (rankError) {
+          console.error("Error updating rankings:", rankError);
+        }
+
+        // Show success message if new entries were added
+        const newUsers = refreshResponse.data.data.registeredUsers || 0;
+        const newTeams = refreshResponse.data.data.registeredTeams || 0;
+
+        if (newUsers > 0 || newTeams > 0) {
+          setError(`Added ${newUsers} new users and ${newTeams} new teams to the leaderboard!`);
+          setTimeout(() => setError(null), 5000);
+        }
+      }
+
+      // Simpler approach: Just reload current tab data with a cache buster
+      await fetchCurrentTabData(true);
+
+    } catch (error) {
+      console.error("Error refreshing leaderboard:", error);
+
+      if (error.response && error.response.status === 403) {
+        setError("You don't have permission to refresh the leaderboard. Please contact an administrator.");
+      } else {
+        setError("Failed to refresh leaderboard. Please try again later.");
+      }
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  // New helper function to fetch just the current tab's data
+  const fetchCurrentTabData = async (forceRefresh = false) => {
+    const type = activeTab.toLowerCase();
+
+    try {
+      // Build query parameters
+      const params = new URLSearchParams({
+        type: type,
+        page: currentPage,
+        limit: 20
+      });
+
+      // Add search query if provided
+      if (searchQuery) {
+        params.append('search', searchQuery);
+      }
+
+      // Add filters if selected
+      if (selectedOptions[0]) {
+        params.append('techStack', selectedOptions[0]);
+      }
+
+      if (selectedOptions[1]) {
+        params.append('language', selectedOptions[1]);
+      }
+
+      if (selectedOptions[2]) {
+        params.append('tag', selectedOptions[2]);
+      }
+
+      // Add cache buster if force refreshing
+      if (forceRefresh) {
+        params.append('_t', Date.now());
+      }
+
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/leaderboard?${params.toString()}`);
+
+      if (response.data && response.data.success) {
+        // Format the data to match our component's expected structure
+        const formattedData = (response.data.data.results || []).map(item => {
+          const profilePicture = item.profilePicture || item.teamLogo || leaduserdemo;
+
+          return {
+            rank: item.rank,
+            id: item.userId || item.teamId,
+            name: item.name || "Anonymous",
+            email: item.email || null,
+            points: item.points,
+            techStack: item.techStack || "Not specified",
+            language: item.language,
+            members: item.members,
+            profilePicture: profilePicture
+          };
+        });
+
+        // Save the formatted data for the requested type
+        setLeaderboardData(prev => ({
+          ...prev,
+          [type]: formattedData
+        }));
+
+        // Handle top three data
+        if (response.data.data.topThree && response.data.data.topThree.length > 0) {
+          const formattedTopThree = response.data.data.topThree.map(item => {
+            const profilePicture = item.profilePicture || item.teamLogo || leaduserdemo;
+
+            return {
+              rank: item.rank,
+              id: item.userId || item.teamId,
+              name: item.name || "Anonymous",
+              email: item.email || null,
+              points: item.points,
+              techStack: item.techStack || "Not specified",
+              language: item.language,
+              members: item.members,
+              profilePicture: profilePicture
+            };
+          });
+
+          setTopThree(prev => ({
+            ...prev,
+            [type]: formattedTopThree
+          }));
+        } else if (formattedData.length >= 3) {
+          setTopThree(prev => ({
+            ...prev,
+            [type]: formattedData.slice(0, 3)
+          }));
+        }
+
+        // Set pagination details
+        setTotalPages(response.data.data.pagination?.totalPages || 1);
+      }
+    } catch (error) {
+      console.error(`Error fetching ${type} leaderboard data:`, error);
+      setError("Failed to load leaderboard data. Please try again later.");
+    }
+  };
+
+  // Original fetchLeaderboardData can be kept simpler
+  const fetchLeaderboardData = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      await fetchCurrentTabData();
+    } catch (error) {
+      console.error("Error in fetchLeaderboardData:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -97,108 +280,10 @@ export default function Leaderboard() {
     fetchLeaderboardFilters();
   }, []);
 
-  // Fetch leaderboard data based on active tab, filters, and search
+  // Use the fetchLeaderboardData function in useEffect
   useEffect(() => {
-    const fetchLeaderboardData = async () => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        // Build query parameters
-        const params = new URLSearchParams({
-          type: activeTab.toLowerCase(),
-          page: currentPage,
-          limit: 20
-        });
-
-        // Add search query if provided
-        if (searchQuery) {
-          params.append('search', searchQuery);
-        }
-
-        // Add filters if selected
-        if (selectedOptions[0]) {
-          params.append('techStack', selectedOptions[0]);
-        }
-
-        if (selectedOptions[1]) {
-          params.append('language', selectedOptions[1]);
-        }
-
-        if (selectedOptions[2]) {
-          params.append('tag', selectedOptions[2]);
-        }
-
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/leaderboard?${params.toString()}`);
-
-        if (response.data && response.data.success) {
-          // Format the data to match our component's expected structure
-          const formattedData = response.data.data.results.map(item => {
-            const profilePicture = item.profilePicture || item.teamLogo || leaduserdemo;
-
-            return {
-              rank: item.rank,
-              id: item.userId || item.teamId,
-              name: item.name || "Anonymous",
-              email: item.email || null,
-              points: item.points,
-              techStack: item.techStack || "Not specified",
-              language: item.language,
-              members: item.members,
-              profilePicture: profilePicture
-            };
-          });
-
-          // Save the formatted data based on active tab
-          setLeaderboardData(prev => ({
-            ...prev,
-            [activeTab.toLowerCase()]: formattedData
-          }));
-
-          // Store the top three separately
-          if (response.data.data.topThree && response.data.data.topThree.length > 0) {
-            setTopThree(prev => ({
-              ...prev,
-              [activeTab.toLowerCase()]: response.data.data.topThree
-            }));
-          } else if (formattedData.length >= 3) {
-            // Use top 3 from results if topThree is not provided
-            setTopThree(prev => ({
-              ...prev,
-              [activeTab.toLowerCase()]: formattedData.slice(0, 3)
-            }));
-          }
-
-          // Set pagination details
-          setTotalPages(response.data.data.pagination?.totalPages || 1);
-
-          // If there's no data and we haven't attempted initialization yet, try to initialize
-          if (formattedData.length === 0 && !initializationAttempted.current) {
-            initializeLeaderboard();
-          }
-        } else {
-          setError("Failed to load leaderboard data");
-
-          // If failed to load data, try initializing
-          if (!initializationAttempted.current) {
-            initializeLeaderboard();
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching leaderboard data:", error);
-        setError("Failed to load leaderboard data. Please try again later.");
-
-        // If error occurred and data seems empty, try initializing
-        if (!initializationAttempted.current) {
-          initializeLeaderboard();
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchLeaderboardData();
-  }, [activeTab, selectedOptions, searchQuery, currentPage]);
+    fetchLeaderboardData(activeTab.toLowerCase());
+  }, [activeTab, selectedOptions, searchQuery, currentPage]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Handle option select for dropdown filters
   const handleOptionSelect = (dropdownIndex, option) => {
@@ -277,18 +362,32 @@ export default function Leaderboard() {
       className="h-full p-4"
     >
       <main ref={ref} className="max-w-6xl mx-auto">
-        {/* Title */}
-        <motion.h2
-          initial={{ opacity: 0, y: -50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="text-2xl md:text-3xl font-semibold text-cyan-400 text-center mb-20 md:mb-24"
-        >
-          <span className="border-b-2 border-cyan-400">LEADERBOARD</span>
-        </motion.h2>
+        {/* Title and Refresh Button */}
+        <div className="flex justify-between items-center mb-20">
+          <motion.h2
+            initial={{ opacity: 0, y: -50 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5 }}
+            className="text-2xl md:text-3xl font-semibold text-cyan-400 text-center"
+          >
+            <span className="border-b-2 border-cyan-400">LEADERBOARD</span>
+          </motion.h2>
 
-        {/* Show initializing message if applicable */}
-        {isInitializing && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            onClick={refreshLeaderboard}
+            disabled={isRefreshing || isLoading}
+            className="flex items-center gap-2 px-3 py-3 rounded-full text-cyan-400 hover:bg-cyan-950 transition-colors"
+            title="Refresh leaderboard data"
+          >
+            <FaSyncAlt className={`${isRefreshing ? 'animate-spin' : ''}`} />
+          </motion.button>
+        </div>
+
+        {/* Show initializing or refreshing message */}
+        {(isInitializing || isRefreshing) && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -299,14 +398,29 @@ export default function Leaderboard() {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              <span className="text-cyan-400 text-sm font-medium">Initializing leaderboard data...</span>
+              <span className="text-cyan-400 text-sm font-medium">
+                {isInitializing ? "Initializing leaderboard data..." : "Refreshing leaderboard data..."}
+              </span>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Error message with improved styling if applicable */}
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8 text-center"
+          >
+            <div className={`inline-flex items-center px-4 py-2 rounded-full ${error.includes("Added") ? "bg-green-900/30 text-green-400" : "bg-red-900/30 text-red-400"}`}>
+              <span className="text-sm font-medium">{error}</span>
             </div>
           </motion.div>
         )}
 
         {/* Top 3 Teams/Individuals */}
         {isLoading && (!currentTopThree || currentTopThree.length < 3) ? (
-          <motion.div className="grid grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-12 relative">
+          <motion.div className="grid grid-cols-3 gap-4 mt-16 md:gap-8 mb-8 md:mb-12 relative">
             {[1, 2, 3].map((position) => (
               <div key={position} className="flex flex-col items-center relative w-[100px] mx-auto">
                 {/* Skeleton for crown */}
@@ -445,8 +559,8 @@ export default function Leaderboard() {
                   </div>
                 ))}
               </div>
-            ) : error ? (
-              // Error state
+            ) : error && !error.includes("Added") ? (
+              // Error state (only show if it's not a success message)
               <div className="h-full flex flex-col items-center justify-center p-4">
                 <p className="text-red-400 mb-2">{error}</p>
                 <button
@@ -454,6 +568,7 @@ export default function Leaderboard() {
                     setCurrentPage(1);
                     setSelectedOptions({});
                     setSearchQuery("");
+                    fetchLeaderboardData();
                   }}
                   className="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-500"
                 >
@@ -465,6 +580,14 @@ export default function Leaderboard() {
               <div className="h-full flex flex-col items-center justify-center p-4">
                 <p className="text-gray-400 mb-2">No leaderboard data found</p>
                 <p className="text-gray-500 text-sm">Try adjusting your filters or search criteria</p>
+                <button
+                  onClick={refreshLeaderboard}
+                  disabled={isRefreshing}
+                  className="mt-4 px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-500 flex items-center gap-2"
+                >
+                  <FaSyncAlt className={`${isRefreshing ? 'animate-spin' : ''}`} />
+                  Refresh Leaderboard
+                </button>
               </div>
             ) : (
               // Data loaded successfully

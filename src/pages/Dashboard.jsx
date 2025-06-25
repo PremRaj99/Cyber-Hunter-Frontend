@@ -223,45 +223,6 @@ export default function Dashboard() {
                 activeSection={activeSection}
                 isDarkMode={isDarkMode}
               />
-
-              {/* Stats card at bottom of sidebar */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-                className={`mt-6 p-4 rounded-xl ${isDarkMode ? 'bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700' : 'bg-gradient-to-br from-indigo-50 to-sky-50 border border-indigo-100'}`}
-              >
-                <div className="flex justify-between items-center mb-3">
-                  <h3 className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-gray-700'}`}>
-                    Weekly Progress
-                  </h3>
-                  <span className={`text-xs font-medium px-2 py-1 rounded-full ${isDarkMode ? 'bg-cyan-900 bg-opacity-50 text-cyan-300' : 'bg-indigo-100 text-indigo-600'}`}>
-                    +12%
-                  </span>
-                </div>
-
-                <div className="space-y-2">
-                  <div>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Tasks</span>
-                      <span className={isDarkMode ? 'text-cyan-400' : 'text-indigo-600'}>78%</span>
-                    </div>
-                    <div className={`h-1.5 w-full rounded-full overflow-hidden ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`}>
-                      <div className={`h-full rounded-full ${isDarkMode ? 'bg-brandPrimary' : 'bg-indigo-500'}`} style={{ width: '78%' }}></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Hours</span>
-                      <span className={isDarkMode ? 'text-purple-400' : 'text-purple-600'}>62%</span>
-                    </div>
-                    <div className={`h-1.5 w-full rounded-full overflow-hidden ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`}>
-                      <div className={`h-full rounded-full ${isDarkMode ? 'bg-purple-500' : 'bg-purple-500'}`} style={{ width: '62%' }}></div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
             </motion.div>
           </motion.div>
 
