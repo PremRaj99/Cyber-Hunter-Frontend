@@ -1,12 +1,12 @@
 import { useRef, useState, useEffect } from "react";
 import { useTransform, useInView } from "framer-motion";
-import ProgressBar from "../components/event/ProgressBar";
-import AnimatedBackground from "../components/event/AnimatedBackground";
-import HeroSection from "../components/event/HeroSection";
-import StatsSection from "../components/event/StatsSection";
-import FeaturesSection from "../components/event/FeaturesSection";
-import HowItWorksSection from "../components/event/HowItWorksSection";
-import CTASection from "../components/event/CTASection";
+import ProgressBar from "../components/Event/ProgressBar";
+import AnimatedBackground from "../components/Event/AnimatedBackground";
+import HeroSection from "../components/Event/HeroSection";
+import StatsSection from "../components/Event/StatsSection";
+import FeaturesSection from "../components/Event/FeaturesSection";
+import HowItWorksSection from "../components/Event/HowItWorksSection";
+import CTASection from "../components/Event/CTASection";
 import Testimonial from "../components/home/Testimonial";
 
 export default function EventManagementLanding() {
