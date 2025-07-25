@@ -44,7 +44,7 @@ export const connectMetaMask = async () => {
       toast.error("MetaMask connection rejected. Please try again.");
       throw new Error("User rejected connection");
     } else {
-      toast.error("Failed to connect to MetaMask");
+      toast.error(error.message || "Failed to connect to MetaMask");
       throw error;
     }
   }
